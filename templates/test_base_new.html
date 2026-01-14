@@ -1,0 +1,205 @@
+{% extends "base_new.html" %}
+
+{% block title %}测试页面 - Base New{% endblock %}
+
+{% block page_css %}
+<style>
+    .test-section {
+        margin-bottom: 40px;
+    }
+
+    .button-group {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+        margin-bottom: 24px;
+    }
+
+    .card-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 24px;
+        margin-top: 24px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="header">
+        <h1>🧪 Base New 测试页面</h1>
+        <p>测试新的模板基础架构功能</p>
+    </div>
+
+    <!-- Toast测试 -->
+    <div class="test-section">
+        <h2>Toast通知测试</h2>
+        <div class="button-group">
+            <button class="btn btn-primary" onclick="toast.success('成功', '操作成功完成！')">显示成功Toast</button>
+            <button class="btn btn-warning" onclick="toast.warning('警告', '请注意这个警告！')">显示警告Toast</button>
+            <button class="btn btn-danger" onclick="toast.error('错误', '发生了一个错误！')">显示错误Toast</button>
+            <button class="btn btn-secondary" onclick="toast.info('信息', '这是一条信息。')">显示信息Toast</button>
+        </div>
+    </div>
+
+    <!-- 侧边栏测试 -->
+    <div class="test-section">
+        <h2>侧边栏测试</h2>
+        <p>当前侧边栏状态: <strong id="sidebarStatus">展开</strong></p>
+        <button class="btn btn-primary" onclick="toggleSidebar(); updateSidebarStatus()">切换侧边栏</button>
+        <p class="mt-md">你也可以使用 <kbd>Ctrl/Cmd + B</kbd> 快捷键切换侧边栏</p>
+    </div>
+
+    <!-- 按钮测试 -->
+    <div class="test-section">
+        <h2>按钮样式测试</h2>
+        <div class="button-group">
+            <button class="btn btn-primary">主要按钮</button>
+            <button class="btn btn-secondary">次要按钮</button>
+            <button class="btn btn-success">成功按钮</button>
+            <button class="btn btn-warning">警告按钮</button>
+            <button class="btn btn-danger">危险按钮</button>
+        </div>
+        <div class="button-group">
+            <button class="btn btn-primary btn-sm">小按钮</button>
+            <button class="btn btn-primary">默认大小</button>
+            <button class="btn btn-primary btn-lg">大按钮</button>
+        </div>
+    </div>
+
+    <!-- 卡片测试 -->
+    <div class="test-section">
+        <h2>卡片组件测试</h2>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">卡片标题 1</h3>
+                </div>
+                <div class="card-body">
+                    <p>这是卡片的内容区域。卡片具有阴影效果和圆角。</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">卡片标题 2</h3>
+                </div>
+                <div class="card-body">
+                    <p>鼠标悬停在卡片上可以看到阴影效果。</p>
+                    <button class="btn btn-primary mt-md">操作按钮</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">卡片标题 3</h3>
+                </div>
+                <div class="card-body">
+                    <p>所有卡片都使用统一的CSS变量系统。</p>
+                </div>
+                <div class="card-footer">
+                    <small>卡片底部</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 表单测试 -->
+    <div class="test-section">
+        <h2>表单组件测试</h2>
+        <div class="card" style="max-width: 600px;">
+            <form>
+                <div class="form-group">
+                    <label class="form-label">输入框</label>
+                    <input type="text" class="form-input" placeholder="请输入内容...">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">下拉选择</label>
+                    <select class="form-select">
+                        <option>选项 1</option>
+                        <option>选项 2</option>
+                        <option>选项 3</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">文本域</label>
+                    <textarea class="form-textarea" placeholder="请输入多行文本..."></textarea>
+                </div>
+
+                <button type="button" class="btn btn-primary">提交</button>
+                <button type="button" class="btn btn-secondary">取消</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 表格测试 -->
+    <div class="test-section">
+        <h2>表格组件测试</h2>
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>列 1</th>
+                        <th>列 2</th>
+                        <th>列 3</th>
+                        <th>状态</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>数据 1</td>
+                        <td>数据 2</td>
+                        <td>数据 3</td>
+                        <td><span class="badge badge-success">成功</span></td>
+                    </tr>
+                    <tr>
+                        <td>数据 4</td>
+                        <td>数据 5</td>
+                        <td>数据 6</td>
+                        <td><span class="badge badge-warning">警告</span></td>
+                    </tr>
+                    <tr>
+                        <td>数据 7</td>
+                        <td>数据 8</td>
+                        <td>数据 9</td>
+                        <td><span class="badge badge-danger">错误</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 移动端菜单测试提示 -->
+    <div class="test-section">
+        <div class="card" style="background: #e3f2fd; border-left: 4px solid var(--primary-color);">
+            <h3>📱 移动端测试</h3>
+            <p>调整浏览器窗口宽度到 ≤768px 可以看到：</p>
+            <ul>
+                <li>移动端菜单按钮（左上角）</li>
+                <li>侧边栏从左侧滑入</li>
+                <li>点击遮罩层或导航项后自动关闭</li>
+                <li>Toast通知适配移动端</li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block page_scripts %}
+<script>
+    function updateSidebarStatus() {
+        const statusEl = document.getElementById('sidebarStatus');
+        if (statusEl) {
+            statusEl.textContent = window.sidebarCollapsed ? '折叠' : '展开';
+        }
+    }
+
+    // 页面加载时更新侧边栏状态显示
+    document.addEventListener('DOMContentLoaded', function() {
+        updateSidebarStatus();
+        console.log('✅ 测试页面加载完成');
+    });
+</script>
+{% endblock %}

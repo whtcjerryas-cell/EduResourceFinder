@@ -1,0 +1,17 @@
+{
+  "timestamp": "2026-01-07T08:52:14.417080",
+  "total_tests": 8,
+  "passed": 3,
+  "failed": 5,
+  "pass_rate": 37.5,
+  "results": {
+    "API健康": true,
+    "国家配置": true,
+    "K12搜索": false,
+    "大学搜索": false,
+    "职业搜索": false,
+    "批量搜索配置": false,
+    "年级-学科验证": false,
+    "文档完整性": true
+  }
+}

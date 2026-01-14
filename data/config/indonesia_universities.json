@@ -1,0 +1,359 @@
+{
+  "country_code": "ID",
+  "country_name": "Indonesia",
+  "country_name_zh": "印度尼西亚",
+  "education_levels": {
+    "university": {
+      "undergraduate": {
+        "level_name": "Sarjana (S1)",
+        "level_name_zh": "本科",
+        "duration_years": 4,
+        "universities": [
+          {
+            "university_code": "UI",
+            "local_name": "Universitas Indonesia",
+            "zh_name": "印度尼西亚大学",
+            "english_name": "University of Indonesia",
+            "location": "Depok, West Java",
+            "website": "ui.ac.id",
+            "faculties": [
+              {
+                "faculty_code": "FK",
+                "local_name": "Fakultas Kedokteran",
+                "zh_name": "医学院",
+                "english_name": "Faculty of Medicine",
+                "majors": [
+                  {
+                    "major_code": "FK-PEND",
+                    "local_name": "Pendidikan Dokter",
+                    "zh_name": "医学教育",
+                    "english_name": "Medical Education",
+                    "degree": "S.Ked",
+                    "subjects": [
+                      {
+                        "subject_code": "ANAT101",
+                        "local_name": "Anatomi Manusia",
+                        "zh_name": "人体解剖学",
+                        "english_name": "Human Anatomy",
+                        "year": 1,
+                        "semester": 1,
+                        "credits": 4
+                      },
+                      {
+                        "subject_code": "FIS101",
+                        "local_name": "Fisiologi Manusia",
+                        "zh_name": "人体生理学",
+                        "english_name": "Human Physiology",
+                        "year": 1,
+                        "semester": 2,
+                        "credits": 4
+                      },
+                      {
+                        "subject_code": "BK101",
+                        "local_name": "Biokimisia",
+                        "zh_name": "生物化学",
+                        "english_name": "Biochemistry",
+                        "year": 2,
+                        "semester": 3,
+                        "credits": 3
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "faculty_code": "FIK",
+                "local_name": "Fakultas Ilmu Komputer",
+                "zh_name": "计算机科学学院",
+                "english_name": "Faculty of Computer Science",
+                "majors": [
+                  {
+                    "major_code": "TI-SKRI",
+                    "local_name": "Teknik Informatika",
+                    "zh_name": "计算机科学",
+                    "english_name": "Computer Science",
+                    "degree": "S.Kom",
+                    "subjects": [
+                      {
+                        "subject_code": "CS101",
+                        "local_name": "Algoritma dan Pemrograman",
+                        "zh_name": "算法与编程",
+                        "english_name": "Algorithms and Programming",
+                        "year": 1,
+                        "semester": 1,
+                        "credits": 4
+                      },
+                      {
+                        "subject_code": "CS102",
+                        "local_name": "Struktur Data",
+                        "zh_name": "数据结构",
+                        "english_name": "Data Structures",
+                        "year": 1,
+                        "semester": 2,
+                        "credits": 4
+                      },
+                      {
+                        "subject_code": "CS201",
+                        "local_name": "Pemrograman Berorientasi Objek",
+                        "zh_name": "面向对象编程",
+                        "english_name": "Object-Oriented Programming",
+                        "year": 2,
+                        "semester": 3,
+                        "credits": 4
+                      },
+                      {
+                        "subject_code": "CS202",
+                        "local_name": "Basis Data",
+                        "zh_name": "数据库",
+                        "english_name": "Databases",
+                        "year": 2,
+                        "semester": 4,
+                        "credits": 4
+                      },
+                      {
+                        "subject_code": "CS301",
+                        "local_name": "Kecerdasan Buatan",
+                        "zh_name": "人工智能",
+                        "english_name": "Artificial Intelligence",
+                        "year": 3,
+                        "semester": 5,
+                        "credits": 3
+                      }
+                    ]
+                  },
+                  {
+                    "major_code": "SI-SKRI",
+                    "local_name": "Sistem Informasi",
+                    "zh_name": "信息系统",
+                    "english_name": "Information Systems",
+                    "degree": "S.Kom",
+                    "subjects": [
+                      {
+                        "subject_code": "IS101",
+                        "local_name": "Pengantar Sistem Informasi",
+                        "zh_name": "信息系统导论",
+                        "english_name": "Introduction to Information Systems",
+                        "year": 1,
+                        "semester": 1,
+                        "credits": 3
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "faculty_code": "FT",
+                "local_name": "Fakultas Teknik",
+                "zh_name": "工程学院",
+                "english_name": "Faculty of Engineering",
+                "majors": [
+                  {
+                    "major_code": "TE-SKRI",
+                    "local_name": "Teknik Elektro",
+                    "zh_name": "电气工程",
+                    "english_name": "Electrical Engineering",
+                    "degree": "S.T.",
+                    "subjects": [
+                      {
+                        "subject_code": "EE101",
+                        "local_name": "Rangkaian Listrik",
+                        "zh_name": "电路原理",
+                        "english_name": "Electric Circuits",
+                        "year": 1,
+                        "semester": 1,
+                        "credits": 3
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "faculty_code": "FE",
+                "local_name": "Fakultas Ekonomi dan Bisnis",
+                "zh_name": "经济与商学院",
+                "english_name": "Faculty of Economics and Business",
+                "majors": [
+                  {
+                    "major_code": "MAN-SKRI",
+                    "local_name": "Manajemen",
+                    "zh_name": "管理学",
+                    "english_name": "Management",
+                    "degree": "S.M.",
+                    "subjects": [
+                      {
+                        "subject_code": "MG101",
+                        "local_name": "Pengantar Manajemen",
+                        "zh_name": "管理学导论",
+                        "english_name": "Introduction to Management",
+                        "year": 1,
+                        "semester": 1,
+                        "credits": 3
+                      }
+                    ]
+                  },
+                  {
+                    "major_code": "AK-SKRI",
+                    "local_name": "Akuntansi",
+                    "zh_name": "会计学",
+                    "english_name": "Accounting",
+                    "degree": "S.Ak.",
+                    "subjects": [
+                      {
+                        "subject_code": "ACC101",
+                        "local_name": "Akuntansi Keuangan",
+                        "zh_name": "财务会计",
+                        "english_name": "Financial Accounting",
+                        "year": 1,
+                        "semester": 1,
+                        "credits": 3
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "university_code": "ITB",
+            "local_name": "Institut Teknologi Bandung",
+            "zh_name": "万隆理工学院",
+            "english_name": "Bandung Institute of Technology",
+            "location": "Bandung, West Java",
+            "website": "itb.ac.id",
+            "faculties": [
+              {
+                "faculty_code": "FIT",
+                "local_name": "Fakultas Ilmu dan Teknologi Kebumian",
+                "zh_name": "地球科学与技术学院",
+                "english_name": "Faculty of Earth Sciences and Technology",
+                "majors": [
+                  {
+                    "major_code": "TE-S1",
+                    "local_name": "Teknik Pertambangan",
+                    "zh_name": "采矿工程",
+                    "english_name": "Mining Engineering",
+                    "degree": "S.T.",
+                    "subjects": [
+                      {
+                        "subject_code": "TN101",
+                        "local_name": "Pengantar Teknik Pertambangan",
+                        "zh_name": "采矿工程导论",
+                        "english_name": "Introduction to Mining Engineering",
+                        "year": 1,
+                        "semester": 1,
+                        "credits": 3
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "faculty_code": "FMIPA",
+                "local_name": "Fakultas Matematika dan Ilmu Pengetahuan Alam",
+                "zh_name": "数学与自然科学学院",
+                "english_name": "Faculty of Mathematics and Natural Sciences",
+                "majors": [
+                  {
+                    "major_code": "MA-S1",
+                    "local_name": "Matematika",
+                    "zh_name": "数学",
+                    "english_name": "Mathematics",
+                    "degree": "S.Si.",
+                    "subjects": [
+                      {
+                        "subject_code": "MATH101",
+                        "local_name": "Kalkulus",
+                        "zh_name": "微积分",
+                        "english_name": "Calculus",
+                        "year": 1,
+                        "semester": 1,
+                        "credits": 4
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "university_code": "UGM",
+            "local_name": "Universitas Gadjah Mada",
+            "zh_name": "加查马达大学",
+            "english_name": "Gadjah Mada University",
+            "location": "Yogyakarta",
+            "website": "ugm.ac.id",
+            "faculties": [
+              {
+                "faculty_code": "F-KH",
+                "local_name": "Fakultas Kedokteran Hewan",
+                "zh_name": "兽医学院",
+                "english_name": "Faculty of Veterinary Medicine",
+                "majors": [
+                  {
+                    "major_code": "VET-S1",
+                    "local_name": "Pendidikan Dokter Hewan",
+                    "zh_name": "兽医学教育",
+                    "english_name": "Veterinary Medicine Education",
+                    "degree": "S.KH",
+                    "subjects": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "university_code": "ITS",
+            "local_name": "Institut Teknologi Sepuluh Nopember",
+            "zh_name": "泗水理工学院",
+            "english_name": "Sepuluh Nopember Institute of Technology",
+            "location": "Surabaya, East Java",
+            "website": "its.ac.id",
+            "faculties": [
+              {
+                "faculty_code": "FTIK",
+                "local_name": "Fakultas Teknologi Industri dan Informatika",
+                "zh_name": "工业技术与信息学院",
+                "english_name": "Faculty of Industrial Technology and Informatics",
+                "majors": [
+                  {
+                    "major_code": "TRK-S1",
+                    "local_name": "Teknik Sipil",
+                    "zh_name": "土木工程",
+                    "english_name": "Civil Engineering",
+                    "degree": "S.T.",
+                    "subjects": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "university_code": "UNAIR",
+            "local_name": "Universitas Airlangga",
+            "zh_name": "艾尔朗加大学",
+            "english_name": "Airlangga University",
+            "location": "Surabaya, East Java",
+            "website": "unair.ac.id",
+            "faculties": [
+              {
+                "faculty_code": "FK",
+                "local_name": "Fakultas Kedokteran",
+                "zh_name": "医学院",
+                "english_name": "Faculty of Medicine",
+                "majors": []
+              },
+              {
+                "faculty_code": "FH",
+                "local_name": "Fakultas Hukum",
+                "zh_name": "法学院",
+                "english_name": "Faculty of Law",
+                "majors": []
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "notes": "印度尼西亚的高等教育体系包括本科(S1/Sarjana, 4年)、硕士(S2/Magister, 2年)和博士(S3/Doktor, 3-4年)学位。主要大学包括UI、ITB、UGM、ITS和UNAIR等。"
+}

@@ -1,0 +1,50 @@
+{
+  "timestamp": "2026-01-05T22:26:59.939434",
+  "total": 7,
+  "passed": 3,
+  "failed": 4,
+  "results": [
+    {
+      "test": "页面初始化",
+      "success": true,
+      "message": "所有下拉框已加载",
+      "timestamp": "2026-01-05T22:26:25.225490"
+    },
+    {
+      "test": "搜索功能",
+      "success": false,
+      "message": "Page.select_option: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"#country\")\n    - locator resolved to <select required=\"\" id=\"country\" name=\"country\">…</select>\n  - attempting select option action\n    2 × waiting for element to be visible and enabled\n      - did not find some options\n    - retrying select option action\n    - waiting 20ms\n    2 × waiting for element to be visible and enabled\n      - did not find some options\n    - retrying select option action\n      - waiting 100ms\n    60 × waiting for element to be visible and enabled\n       - did not find some options\n     - retrying select option action\n       - waiting 500ms\n",
+      "timestamp": "2026-01-05T22:26:55.238342"
+    },
+    {
+      "test": "Debug日志",
+      "success": true,
+      "message": "正常",
+      "timestamp": "2026-01-05T22:26:56.847707"
+    },
+    {
+      "test": "添加国家",
+      "success": false,
+      "message": "模态框未打开",
+      "timestamp": "2026-01-05T22:26:57.902232"
+    },
+    {
+      "test": "刷新配置",
+      "success": true,
+      "message": "正常",
+      "timestamp": "2026-01-05T22:26:59.934661"
+    },
+    {
+      "test": "知识点概览",
+      "success": false,
+      "message": "链接不存在",
+      "timestamp": "2026-01-05T22:26:59.937087"
+    },
+    {
+      "test": "结果交互",
+      "success": false,
+      "message": "无搜索结果",
+      "timestamp": "2026-01-05T22:26:59.938674"
+    }
+  ]
+}

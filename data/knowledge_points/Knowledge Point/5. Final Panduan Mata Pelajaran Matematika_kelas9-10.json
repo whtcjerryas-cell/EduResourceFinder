@@ -1,0 +1,169 @@
+{
+  "metadata": {
+    "source_file": "/Users/shmiwanghao8/Desktop/education/Indonesia/syllabus/5. Final Panduan Mata Pelajaran Matematika_12_09_2025_Revisi 3_182-202.pdf",
+    "total_pages": 21,
+    "total_knowledge_points": 9,
+    "check_iterations": 2,
+    "has_remaining_issues": true
+  },
+  "knowledge_points": [
+    {
+      "id": "MAT-9-01-01",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 9",
+      "subject": "Matematika",
+      "chapter_title": "Analisis Data dan Peluang",
+      "topic_title_id": "Penentuan Sampel dan Populasi",
+      "topic_title_cn": "样本与总体的确定",
+      "learning_objective": "Siswa mampu membedakan antara populasi dan sampel, memahami karakteristik sampel yang baik (representatif, acak, dan cukup besar), serta menerapkan konsep ini dalam konteks nyata untuk pengambilan data sederhana.",
+      "mapping_tags": [
+        "Sampel",
+        "Populasi",
+        "Survei",
+        "Pengambilan Data",
+        "Representatif"
+      ]
+    },
+    {
+      "id": "MAT-9-01-02",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 9",
+      "subject": "Matematika",
+      "chapter_title": "Analisis Data dan Peluang",
+      "topic_title_id": "Penentuan Mean, Median, Modus, dan Range",
+      "topic_title_cn": "平均数、中位数、众数和极差的确定",
+      "learning_objective": "Siswa mampu menghitung dan menginterpretasikan ukuran pemusatan data (mean, median, modus) dan ukuran penyebaran data (range) dari suatu kumpulan data tunggal, serta memahami maknanya dalam konteks kehidupan sehari-hari.",
+      "mapping_tags": [
+        "Mean",
+        "Median",
+        "Modus",
+        "Range",
+        "Ukuran Pemusatan Data"
+      ]
+    },
+    {
+      "id": "MAT-9-01-03",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 9",
+      "subject": "Matematika",
+      "chapter_title": "Analisis Data dan Peluang",
+      "topic_title_id": "Penghitungan Peluang, Peluang Empiris, dan Frekuensi Harapan",
+      "topic_title_cn": "概率计算、经验概率与期望频率",
+      "learning_objective": "Siswa mampu memahami dan menghitung nilai peluang teoretis, peluang empiris, dan frekuensi harapan dari suatu percobaan acak, serta mampu membandingkan antara hasil teoretis dan hasil percobaan.",
+      "mapping_tags": [
+        "Peluang",
+        "Peluang Empiris",
+        "Frekuensi Harapan",
+        "Peluang Teoretis",
+        "Percobaan Acak"
+      ]
+    },
+    {
+      "id": "MAT-10-01-01",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 10",
+      "subject": "Matematika",
+      "chapter_title": "Bilangan",
+      "topic_title_id": "Penerapan Sifat-sifat Operasi Bilangan Berpangkat",
+      "topic_title_cn": "指数运算性质的应用",
+      "learning_objective": "Siswa mampu memahami dan menerapkan sifat-sifat operasi bilangan berpangkat (eksponen) untuk menyederhanakan ekspresi dan menyelesaikan masalah, termasuk yang berkaitan dengan notasi ilmiah dan pertumbuhan.",
+      "mapping_tags": [
+        "Bilangan Berpangkat",
+        "Eksponen",
+        "Sifat-sifat Eksponen",
+        "Notasi Ilmiah",
+        "Bentuk Akar"
+      ]
+    },
+    {
+      "id": "MAT-10-02-01",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 10",
+      "subject": "Matematika",
+      "chapter_title": "Aljabar dan Fungsi",
+      "topic_title_id": "Sistem Pertidaksamaan Linear Dua Variabel",
+      "topic_title_cn": "二元线性不等式组",
+      "learning_objective": "Siswa mampu memodelkan masalah kontekstual ke dalam sistem pertidaksamaan linear dua variabel, menentukan daerah penyelesaiannya menggunakan metode grafik, dan menginterpretasikan solusi dalam konteks masalah.",
+      "mapping_tags": [
+        "SPtLDV",
+        "Pertidaksamaan Linear",
+        "Daerah Penyelesaian",
+        "Program Linear",
+        "Model Matematika"
+      ]
+    },
+    {
+      "id": "MAT-10-02-02",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 10",
+      "subject": "Matematika",
+      "chapter_title": "Aljabar dan Fungsi",
+      "topic_title_id": "Persamaan dan Fungsi Kuadrat",
+      "topic_title_cn": "一元二次方程与二次函数",
+      "learning_objective": "Siswa mampu menganalisis karakteristik grafik fungsi kuadrat, menyelesaikan persamaan kuadrat dengan berbagai metode, serta memodelkan dan menyelesaikan masalah kontekstual yang berkaitan dengan persamaan dan fungsi kuadrat.",
+      "mapping_tags": [
+        "Fungsi Kuadrat",
+        "Persamaan Kuadrat",
+        "Grafik Parabola",
+        "Diskriminan",
+        "Titik Puncak"
+      ]
+    },
+    {
+      "id": "MAT-10-02-03",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 10",
+      "subject": "Matematika",
+      "chapter_title": "Aljabar dan Fungsi",
+      "topic_title_id": "Persamaan dan Fungsi Eksponensial",
+      "topic_title_cn": "指数方程与指数函数",
+      "learning_objective": "Siswa mampu memahami konsep fungsi eksponensial, menganalisis pengaruh parameter pada grafiknya, serta menggunakannya untuk memodelkan dan menyelesaikan masalah kontekstual yang berkaitan dengan pertumbuhan dan peluruhan.",
+      "mapping_tags": [
+        "Fungsi Eksponensial",
+        "Persamaan Eksponensial",
+        "Pertumbuhan Eksponensial",
+        "Peluruhan",
+        "Grafik Eksponen"
+      ]
+    },
+    {
+      "id": "MAT-10-03-01",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 10",
+      "subject": "Matematika",
+      "chapter_title": "Geometri",
+      "topic_title_id": "Perbandingan Trigonometri pada Segitiga Siku-siku",
+      "topic_title_cn": "直角三角形中的三角比",
+      "learning_objective": "Siswa mampu mendefinisikan perbandingan trigonometri (sinus, kosinus, tangen) pada segitiga siku-siku dan menggunakannya untuk menyelesaikan masalah kontekstual, seperti menentukan tinggi atau jarak objek.",
+      "mapping_tags": [
+        "Trigonometri",
+        "Sinus",
+        "Kosinus",
+        "Tangen",
+        "Segitiga Siku-siku"
+      ]
+    },
+    {
+      "id": "MAT-10-04-01",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 10",
+      "subject": "Matematika",
+      "chapter_title": "Analisis Data dan Peluang",
+      "topic_title_id": "Penyajian Data dengan Dot Plot dan Box Plot",
+      "topic_title_cn": "数据表示：点图与箱形图",
+      "learning_objective": "Siswa mampu menyajikan, membaca, dan menginterpretasikan data menggunakan dot plot dan box plot untuk menganalisis distribusi data, termasuk mengidentifikasi modus, median, kuartil, dan pencilan.",
+      "mapping_tags": [
+        "Dot Plot",
+        "Box Plot",
+        "Diagram Titik",
+        "Diagram Kotak Garis",
+        "Distribusi Data"
+      ]
+    }
+  ],
+  "issues": [
+    "ID 'MAT-10-01-01' 的 mapping_tags 中 'Pangkat' 与 'Eksponen' 词义重复，且未能覆盖紧密相关的知识点 'Bentuk Akar' (根式)。",
+    "ID 'MAT-10-02-02' 的 mapping_tags 中 'Akar Kuadrat' (平方根) 虽然相关，但不如 'Diskriminan' (判别式)更能体现该知识点（一元二次方程与函数）的核心分析方法。",
+    "知识点 MAT-10-04-01 的 chapter_title 'Analisis Data' 不完整。根据 Kurikulum Merdeka 课程标准，该数学领域（Elemen）的官方名称应为 'Analisis Data dan Peluang' (数据分析与概率)，这与九年级的章节标题命名也保持了一致性。"
+  ]
+}

@@ -1,0 +1,37 @@
+# 统一依赖文件 - Python 3.13
+# 合并自 requirements_web.txt, requirements_v3.txt, requirements_search.txt, requirements_gunicorn.txt
+
+# Web框架
+flask>=2.3.0
+flask-cors>=4.0.0
+
+# 核心依赖
+pydantic>=2.0.0
+requests>=2.31.0
+python-dotenv>=1.0.0
+
+# 数据处理
+pandas>=2.0.0
+openpyxl>=3.1.0
+
+# 视频处理
+yt-dlp>=2023.12.30
+ffmpeg-python>=0.2.0
+
+# 图像处理
+Pillow>=10.0.0
+
+# AI/ML
+openai-whisper>=20231117
+openai>=1.0.0
+
+# 搜索引擎
+duckduckgo-search>=4.0.0
+
+# 配置文件处理
+PyYAML>=6.0
+
+# 生产服务器（可选）
+gunicorn>=21.2.0
+gevent>=23.9.1
+

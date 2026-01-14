@@ -1,0 +1,80 @@
+{
+  "request_id": "ffbf80f8",
+  "timestamp": "2025-12-30T06:25:16.509262+00:00",
+  "video_url": "https://www.youtube.com/playlist?list=PL5zojcZkL9Zv4ntCTqkE5UJG9fzqwTlkx",
+  "video_metadata": {
+    "title": "Cara Pembulatan Ribuan Terdekat dengan Mudah",
+    "description": "Video pembelajaran cara  pembulatan ribuan dari RUMBASHA telah hadir!\n\nHalo sahabat rumbasha pada video pembelajaran kali ini membahas bagaimana  cara mengerjakan pembulatan ribuan terdekat dengan mudah tentunya. \n\nSemoga video pembelajaran ini bermanfaat ya...\n\nApabila ada pertanyaan? tinggalkan komentar di bawah ini ya\n\nInfo bimbingan dan kelas Online Hubungi Tim RUMBASHA di:: \n☎ Telepon: 0856-4056-6209\n✉ E-mail: rumahbelajarnayasha@gmail.com\nIG : https://www.instagram.com/rumahbelajarnayasha/",
+    "duration": 374,
+    "upload_date": "20200812",
+    "view_count": 3423,
+    "like_count": 69,
+    "channel": "Rumah Belajar Nayasha",
+    "channel_id": "UCGMeEOGfs4x6ept3fhsI2EA",
+    "resolution": "640x360",
+    "max_resolution_height": 360,
+    "fps": 25,
+    "format": "18 - 640x360 (360p)",
+    "ext": "mp4",
+    "url": "https://www.youtube.com/watch?v=MXQVGDNh-Tg",
+    "tags": [
+      "pembulatan",
+      "pembulatan ke satuan puluhan dan ribuan terdekat",
+      "pembulatan ke ribuan terdekat",
+      "pembulatan ribuan matematika",
+      "pembulatan bilangan ribuan",
+      "pembulatan bilangan",
+      "pembulatan matematika kelas 4",
+      "pembulatan angka",
+      "cara pembulatan ribuan terdekat",
+      "pembulatan bilangan ribuan terdekat",
+      "Cara Pembulatan Ribuan Terdekat dengan Mudah"
+    ],
+    "categories": [
+      "People & Blogs"
+    ],
+    "thumbnail": "https://i.ytimg.com/vi/MXQVGDNh-Tg/maxresdefault.jpg"
+  },
+  "evaluation": {
+    "overall_score": 4.44,
+    "visual_quality": {
+      "tech_score": 2.0,
+      "design_score": 6.5,
+      "combined_score": 3.8,
+      "details": "硬指标: 分辨率较低 (360p); 软指标: 板书布局清晰，字体大小适中，适合移动端阅读。使用了颜色区分不同部分，但整体配色较单调。缺乏图表和动画等视觉辅助工具，信息层次较为简单。教师位置未遮挡板书。"
+    },
+    "relevance": {
+      "score": 5.0,
+      "details": "无知识点信息，使用默认分数"
+    },
+    "pedagogy": {
+      "score": 5.0,
+      "details": "教学质量评估响应解析失败。原始响应: 基于我搜索到的教学视频评估标准和数学教学视频评估的相关信息，我现在可以对提供的教学视频进行专业评估。让我分析这个视频的字幕/转录文本。\n\n从提供的视频字幕/转录文本来看，这是一个关于数学\"四舍五入\"（pembulatan）的教学视频，使用印度尼西亚语进行讲解。让我根据五个维度进行评估：\n\n## 评估分析：\n\n### 1. **讲解逻辑**：\n- 视频有清晰的引入：\"Halo, saya Betul..."
+    },
+    "metadata": {
+      "score": 1.8,
+      "details": "观看次数: 3,423 (得分1.0), 点赞率: 2.02% (得分3.0)"
+    },
+    "breakdown": {
+      "visual_weight": 0.2,
+      "relevance_weight": 0.4,
+      "pedagogy_weight": 0.3,
+      "metadata_weight": 0.1
+    },
+    "matched_knowledge_point": null
+  },
+  "matched_knowledge_point": null,
+  "search_params": {},
+  "files": {
+    "video_path": "data/videos/analyzed/Cara Pembulatan Ribuan Terdekat dengan Mudah.mp4",
+    "audio_path": "data/videos/analyzed/Cara Pembulatan Ribuan Terdekat dengan Mudah.mp3",
+    "frames_paths": [
+      "data/videos/analyzed/Cara Pembulatan Ribuan Terdekat dengan Mudah_frame_01.jpg",
+      "data/videos/analyzed/Cara Pembulatan Ribuan Terdekat dengan Mudah_frame_02.jpg",
+      "data/videos/analyzed/Cara Pembulatan Ribuan Terdekat dengan Mudah_frame_03.jpg",
+      "data/videos/analyzed/Cara Pembulatan Ribuan Terdekat dengan Mudah_frame_04.jpg",
+      "data/videos/analyzed/Cara Pembulatan Ribuan Terdekat dengan Mudah_frame_05.jpg",
+      "data/videos/analyzed/Cara Pembulatan Ribuan Terdekat dengan Mudah_frame_06.jpg"
+    ]
+  }
+}

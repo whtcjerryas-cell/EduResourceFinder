@@ -1,0 +1,70 @@
+# 监控系统配置
+
+# 指标监控配置
+metrics:
+  # 错误率监控
+  error_rate:
+    enabled: true
+    threshold_critical: 0.05  # 5% - 严重报警
+    threshold_warning: 0.02   # 2% - 警告
+    window_minutes: 5
+
+  # 响应时间监控
+  response_time:
+    enabled: true
+    threshold_warning: 5.0    # 5秒 - 警告
+    threshold_critical: 10.0  # 10秒 - 严重报警
+    percentile: 95           # 监控P95
+
+  # 质量分数监控
+  quality_score:
+    enabled: true
+    threshold_warning: 6.5    # 6.5分 - 警告
+    threshold_critical: 5.0   # 5.0分 - 严重报警
+    evaluation_interval: 100  # 每100次搜索评估一次
+
+  # 用户满意度监控
+  user_satisfaction:
+    enabled: true
+    threshold_warning: 4.0    # 4.0/5.0 - 警告
+    threshold_critical: 3.5   # 3.5/5.0 - 严重报警
+    min_feedback_count: 10    # 最少反馈数
+
+# 报警配置
+alerts:
+  # 邮件通知
+  email:
+    enabled: false  # 初始关闭
+    smtp_server: "smtp.gmail.com"
+    smtp_port: 587
+    from_address: "alerts@yourdomain.com"
+    to_addresses:
+      - "admin@yourdomain.com"
+    subject_prefix: "[搜索系统报警]"
+
+  # 报警去重（相同报警N分钟内只发送一次）
+  deduplication:
+    enabled: true
+    interval_minutes: 30
+
+  # 报警升级（未确认的报警会升级）
+  escalation:
+    enabled: false
+    levels:
+      - after_minutes: 30
+        severity: "warning"
+      - after_minutes: 60
+        severity: "critical"
+
+# 数据保留配置
+retention:
+  metrics_days: 30          # 指标数据保留30天
+  alerts_days: 90           # 报警数据保留90天
+  feedback_days: 365        # 反馈数据保留1年
+  optimization_cycles: 50   # 保留最近50次优化循环
+
+# 性能监控
+performance:
+  enabled: true
+  trace_slow_queries: true  # 记录慢查询
+  slow_query_threshold: 3.0 # 慢查询阈值（秒）

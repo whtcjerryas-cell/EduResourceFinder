@@ -1,0 +1,236 @@
+/*
+ * Base Styles - K12教育资源搜索系统
+ * 包含CSS变量、重置、基础样式
+ */
+
+/* ========== CSS变量（设计系统核心） ========== */
+:root {
+    /* 颜色系统 */
+    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --primary-color: #667eea;
+    --primary-dark: #5a67d8;
+    --primary-light: #a3bffa;
+
+    --success-color: #48bb78;
+    --warning-color: #ed8936;
+    --danger-color: #f56565;
+    --info-color: #4299e1;
+
+    /* 背景色 */
+    --bg-primary: #f5f7fa;
+    --bg-secondary: #ffffff;
+    --bg-card: #ffffff;
+    --bg-sidebar: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+
+    /* 文字颜色 */
+    --text-primary: #2d3748;
+    --text-secondary: #718096;
+    --text-sidebar: #ffffff;
+    --text-muted: #a0aec0;
+
+    /* 边框和阴影 */
+    --border-color: #e2e8f0;
+    --border-radius: 8px;
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+
+    /* 间距系统 */
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+    --spacing-2xl: 48px;
+
+    /* 字体大小 */
+    --font-xs: 0.75rem;    /* 12px */
+    --font-sm: 0.875rem;   /* 14px */
+    --font-base: 1rem;     /* 16px */
+    --font-lg: 1.125rem;   /* 18px */
+    --font-xl: 1.25rem;    /* 20px */
+    --font-2xl: 1.5rem;    /* 24px */
+    --font-3xl: 1.875rem;  /* 30px */
+    --font-4xl: 2.25rem;   /* 36px */
+
+    /* 侧边栏 */
+    --sidebar-width: 180px;
+    --sidebar-collapsed-width: 70px;
+
+    /* 过渡 */
+    --transition-fast: 0.15s ease;
+    --transition-base: 0.3s ease;
+    --transition-slow: 0.5s ease;
+}
+
+/* ========== CSS重置 ========== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ========== 基础元素样式 ========== */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-size: var(--font-base);
+    line-height: 1.6;
+    color: var(--text-primary);
+    background: var(--bg-primary);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* ========== 键盘导航优化（可访问性） ========== */
+*:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+/* ========== 标题 ========== */
+h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--text-primary);
+}
+
+h1 { font-size: var(--font-4xl); }
+h2 { font-size: var(--font-3xl); }
+h3 { font-size: var(--font-2xl); }
+h4 { font-size: var(--font-xl); }
+h5 { font-size: var(--font-lg); }
+h6 { font-size: var(--font-base); }
+
+/* ========== 段落和文本 ========== */
+p {
+    margin: 0;
+}
+
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+a:hover {
+    color: var(--primary-dark);
+}
+
+/* ========== 列表 ========== */
+ul, ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+/* ========== 图片 ========== */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* ========== 表单元素基础 ========== */
+input, button, textarea, select {
+    font: inherit;
+    color: inherit;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    background: none;
+}
+
+/* ========== 滚动条样式 ========== */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary-gradient);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-dark);
+}
+
+/* ========== 选择文本样式 ========== */
+::selection {
+    background: var(--primary-color);
+    color: white;
+}
+
+/* ========== 容器 ========== */
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-md);
+}
+
+/* ========== 页面头部 ========== */
+.header {
+    background: var(--bg-secondary);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-xl) var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+    box-shadow: var(--shadow-md);
+}
+
+.header h1 {
+    font-size: var(--font-3xl);
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-sm);
+}
+
+.header p {
+    color: var(--text-secondary);
+    font-size: var(--font-base);
+}
+
+/* ========== 工具类 ========== */
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+.mt-sm { margin-top: var(--spacing-sm); }
+.mt-md { margin-top: var(--spacing-md); }
+.mt-lg { margin-top: var(--spacing-lg); }
+
+.mb-sm { margin-bottom: var(--spacing-sm); }
+.mb-md { margin-bottom: var(--spacing-md); }
+.mb-lg { margin-bottom: var(--spacing-lg); }
+
+.p-sm { padding: var(--spacing-sm); }
+.p-md { padding: var(--spacing-md); }
+.p-lg { padding: var(--spacing-lg); }
+
+/* ========== 响应式 ========== */
+@media (max-width: 768px) {
+    :root {
+        --spacing-lg: 20px;
+        --spacing-xl: 28px;
+    }
+
+    .header {
+        padding: var(--spacing-lg) var(--spacing-md);
+    }
+
+    .header h1 {
+        font-size: var(--font-2xl);
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0 var(--spacing-sm);
+    }
+}

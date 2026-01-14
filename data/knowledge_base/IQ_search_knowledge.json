@@ -1,0 +1,414 @@
+{
+  "metadata": {
+    "country": "IQ",
+    "country_name": "伊拉克",
+    "created_at": "2026-01-09T15:30:00Z",
+    "last_updated": "2026-01-09T07:02:51.025502+00:00",
+    "total_searches": 2,
+    "avg_quality_score": 74.0,
+    "notes": "基于批量搜索_2026-01-09.xlsx数据初始化"
+  },
+  "grade_expressions": {
+    "Grade 2": {
+      "local_variants": [
+        {
+          "arabic": "الصف الثاني",
+          "confidence": 0.98,
+          "verified_by": "ai,manual",
+          "source": "Excel数据分析",
+          "note": "必须识别，常被LLM误判"
+        },
+        {
+          "arabic": "الصف الثاني ابتدائي",
+          "confidence": 0.95,
+          "verified_by": "ai",
+          "source": "Excel数据分析",
+          "note": "小学二年级"
+        },
+        {
+          "english": "G2",
+          "confidence": 0.9,
+          "verified_by": "ai",
+          "source": "Excel数据分析",
+          "note": "不是8年级！G2=Grade 2，这是关键错误模式"
+        },
+        {
+          "english": "Second Grade",
+          "confidence": 0.95,
+          "verified_by": "ai",
+          "source": "通用知识"
+        },
+        {
+          "english": "Grade 2",
+          "confidence": 0.99,
+          "verified_by": "ai",
+          "source": "标准表达"
+        }
+      ],
+      "common_mistakes": [
+        {
+          "mistake": "G2被识别为8年级",
+          "correction": "G2 = Grade 2 (二年级)，不是8年级！",
+          "frequency": 3,
+          "severity": "high",
+          "example": "\"G2 فيديو كرتون الرياضيات\" 被评为\"标题显示为八年级\""
+        },
+        {
+          "mistake": "الصف الثاني 未被识别",
+          "correction": "الصف الثاني = Second Grade，这是标准阿拉伯语表达",
+          "frequency": 5,
+          "severity": "high",
+          "example": "\"رياضيات للصف الثاني ابتدائي\" 被评为\"年级不符，标题中未提及具体年级\""
+        },
+        {
+          "mistake": "\"الصف الثاني متوسط\" 被识别为小学二年级",
+          "correction": "\"متوسط\" = 初中！الصف الثاني متوسط = 初中二年级，不是小学二年级",
+          "frequency": 10,
+          "severity": "critical",
+          "example": "\"الرياضيات الصف الثاني متوسط\" 被评为\"年级完全匹配\"，实际应该是0分（年级不符）"
+        },
+        {
+          "mistake": "\"الصف الثاني عشر\" 被识别为二年级",
+          "correction": "\"عشر\" = 十！الصف الثاني عشر = 十二年级(Grade 12)，不是二年级(Grade 2)",
+          "frequency": 10,
+          "severity": "critical",
+          "example": "\"شرح رياضيات الصف الثاني عشر\" 被评为\"年级完全匹配\"，实际是十二年级，应该0分"
+        },
+        {
+          "mistake": "\"الصف الثاني ابتدائي\" 被评为年级不符或低分",
+          "correction": "\"ابتدائي\" = 小学！الصف الثاني ابتدائي = 小学二年级，完全匹配，应该给高分",
+          "frequency": 5,
+          "severity": "high",
+          "example": "\"رياضيات للصف الثاني ابتدائي\" 评分5.5，理由\"年级匹配度较高\"，实际应该是9-10分"
+        }
+      ]
+    },
+    "Grade 3": {
+      "local_variants": [
+        {
+          "arabic": "الصف الثالث",
+          "confidence": 0.98,
+          "verified_by": "ai",
+          "source": "推断自Grade 2模式"
+        },
+        {
+          "arabic": "الصف الثالث ابتدائي",
+          "confidence": 0.95,
+          "verified_by": "ai",
+          "source": "推断自Grade 2模式"
+        },
+        {
+          "english": "G3",
+          "confidence": 0.9,
+          "verified_by": "ai",
+          "source": "标准缩写",
+          "note": "不是9年级！G3=Grade 3"
+        },
+        {
+          "english": "Third Grade",
+          "confidence": 0.95,
+          "verified_by": "ai",
+          "source": "标准表达"
+        }
+      ],
+      "common_mistakes": []
+    },
+    "Grade 4": {
+      "local_variants": [
+        {
+          "arabic": "الصف الرابع",
+          "confidence": 0.95,
+          "verified_by": "ai",
+          "discovered_at": "2026-01-09T07:02:51.025428+00:00"
+        }
+      ],
+      "common_mistakes": []
+    }
+  },
+  "critical_arabic_terms": {
+    "education_levels": [
+      {
+        "arabic": "ابتدائي",
+        "english": "Primary/Elementary School",
+        "grade_range": "Grade 1-6",
+        "note": "小学，如果看到 الصف الثاني ابتدائي = 小学二年级(Grade 2)"
+      },
+      {
+        "arabic": "متوسط",
+        "english": "Middle School",
+        "grade_range": "Grade 7-9",
+        "note": "初中，如果看到 الصف الثاني متوسط = 初中二年级(Grade 8)，不是小学二年级！"
+      },
+      {
+        "arabic": "ثانوي",
+        "english": "High School",
+        "grade_range": "Grade 10-12",
+        "note": "高中"
+      }
+    ],
+    "numbers": [
+      {
+        "arabic": "عشر",
+        "english": "Ten",
+        "number": 10,
+        "note": "الصف الثاني عشر = 第十二(12) = Grade 12，不是二年级！"
+      },
+      {
+        "arabic": "احد عشر",
+        "english": "Eleven",
+        "number": 11,
+        "note": "الصف الثاني احد عشر = 第十一(11) = Grade 11"
+      },
+      {
+        "arabic": "اثني عشر",
+        "english": "Twelve",
+        "number": 12,
+        "note": "另一表达方式"
+      }
+    ],
+    "grade_keywords": [
+      {
+        "pattern": "الصف الثاني",
+        "correct_grade": "Grade 2",
+        "warning": "必须检查后面是否有修饰词！",
+        "examples": [
+          {"text": "الصف الثاني ابتدائي", "grade": "Grade 2 (小学)", "correct": true},
+          {"text": "الصف الثاني متوسط", "grade": "Grade 8 (初中)", "correct": false},
+          {"text": "الصف الثاني عشر", "grade": "Grade 12 (高中)", "correct": false}
+        ]
+      }
+    ]
+  },
+  "subject_keywords": {
+    "Mathematics": {
+      "local_variants": [
+        {
+          "arabic": "الرياضيات",
+          "confidence": 0.99,
+          "verified_by": "ai,manual",
+          "source": "Excel数据分析"
+        },
+        {
+          "english": "Math",
+          "confidence": 0.95,
+          "verified_by": "ai",
+          "source": "通用知识"
+        },
+        {
+          "english": "Mathematics",
+          "confidence": 0.99,
+          "verified_by": "ai",
+          "source": "标准表达"
+        }
+      ]
+    },
+    "رياضيات": {
+      "local_variants": [
+        {
+          "english": "Mathematics",
+          "confidence": 0.99,
+          "verified_by": "manual",
+          "note": "阿拉伯语数学"
+        }
+      ]
+    },
+    "Science": {
+      "local_variants": [
+        {
+          "arabic": "العلوم",
+          "confidence": 0.95,
+          "verified_by": "ai",
+          "source": "推断"
+        },
+        {
+          "english": "Science",
+          "confidence": 0.99,
+          "verified_by": "ai",
+          "source": "标准表达"
+        }
+      ]
+    },
+    "Arabic": {
+      "local_variants": [
+        {
+          "arabic": "اللغة العربية",
+          "confidence": 0.99,
+          "verified_by": "ai",
+          "source": "推断"
+        },
+        {
+          "english": "Arabic",
+          "confidence": 0.99,
+          "verified_by": "ai",
+          "source": "标准表达"
+        }
+      ]
+    }
+  },
+  "search_patterns": {
+    "successful_queries": [
+      {
+        "query": "الرياضيات الصف الثاني playlist",
+        "avg_score": 73.0,
+        "results_count": 23,
+        "youtube_ratio": 0.96,
+        "notes": "高质量但来源单一，96%是YouTube",
+        "timestamp": "2026-01-09T15:30:00Z"
+      },
+      {
+        "query": "الرياضيات الصف الثاني playlist",
+        "avg_score": 75.0,
+        "results_count": 3,
+        "youtube_ratio": 0.6666666666666666,
+        "notes": "",
+        "timestamp": "2026-01-09T07:02:51.025468+00:00"
+      }
+    ],
+    "failed_queries": []
+  },
+  "domain_preferences": {
+    "tier_1_platforms": [
+      {
+        "domain": "youtube.com",
+        "avg_quality": 10.243478260869566,
+        "abundance": "high",
+        "results_count": 24,
+        "notes": "占据96%的结果，需要减少依赖"
+      },
+      {
+        "domain": "t.me",
+        "avg_quality": 40.5,
+        "abundance": "low",
+        "results_count": 2,
+        "notes": "Telegram频道"
+      }
+    ],
+    "tier_2_platforms": [],
+    "missing_platforms": [
+      {
+        "domain": "khanacademy.org",
+        "note": "未找到阿拉伯语内容"
+      },
+      {
+        "domain": "ruangguru.com",
+        "note": "印尼平台，伊拉克可能不适用"
+      },
+      {
+        "domain": "iq educational platforms",
+        "note": "需要调研伊拉克本地教育平台"
+      }
+    ]
+  },
+  "llm_insights": {
+    "accuracy_issues": [
+      {
+        "issue": "阿拉伯语年级识别失败",
+        "example": "\"رياضيات للصف الثاني ابتدائي\" - 评分4.5，理由\"年级不符，标题中未提及具体年级\"",
+        "fix": "在LLM prompt中强调: الصف الثاني = Grade 2，这是标准阿拉伯语表达，必须识别",
+        "severity": "high",
+        "status": "pending_fix",
+        "frequency": 5,
+        "reported_at": "2026-01-09T15:30:00Z"
+      },
+      {
+        "issue": "英文缩写G2被误解",
+        "example": "\"G2 فيديو كرتون الرياضيات\" - 评分5.5，理由\"标题显示为八年级\"",
+        "fix": "在LLM prompt中强调: G2 = Grade 2 (二年级)，G3 = Grade 3，不是G8或G9！",
+        "severity": "high",
+        "status": "pending_fix",
+        "frequency": 3,
+        "reported_at": "2026-01-09T15:30:00Z"
+      },
+      {
+        "issue": "grade_detection_failure",
+        "example": "رياضيات للصف الثاني ابتدائي (评分: 4.5, 理由: 年级不符，标题中未提及具体年级)",
+        "fix": "标题包含年级表达: ['الصف الثاني', 'الصف الثاني ابتدائي', 'G2', 'Second Grade', 'Grade 2']",
+        "severity": "high",
+        "status": "pending_fix",
+        "reported_at": "2026-01-09T07:02:51.025187+00:00",
+        "frequency": 1
+      },
+      {
+        "issue": "grade_detection_failure",
+        "example": "G2 فيديو كرتون الرياضيات (评分: 5.5, 理由: 年级不符，标题显示为八年级)",
+        "fix": "标题包含年级表达: ['الصف الثاني', 'الصف الثاني ابتدائي', 'G2', 'Second Grade', 'Grade 2']",
+        "severity": "high",
+        "status": "pending_fix",
+        "reported_at": "2026-01-09T07:02:51.025329+00:00",
+        "frequency": 1
+      },
+      {
+        "issue": "test_mistake",
+        "example": "测试错误",
+        "fix": "测试修正",
+        "severity": "low",
+        "status": "pending_fix",
+        "reported_at": "2026-01-09T07:02:51.025397+00:00",
+        "frequency": 1
+      }
+    ],
+    "discovered_variants": [
+      {
+        "grade": "Grade 2",
+        "variant": "الصف الثاني",
+        "language": "arabic",
+        "confidence": 0.98,
+        "discovered_at": "2026-01-09T15:30:00Z",
+        "status": "approved",
+        "note": "关键表达，LLM经常漏识别"
+      },
+      {
+        "grade": "Grade 2",
+        "variant": "G2",
+        "language": "english",
+        "confidence": 0.9,
+        "discovered_at": "2026-01-09T15:30:00Z",
+        "status": "approved",
+        "note": "易被误解为8年级"
+      },
+      {
+        "grade": "Grade 4",
+        "variant": "الصف الرابع",
+        "language": "arabic",
+        "confidence": 0.95,
+        "discovered_at": "2026-01-09T07:02:51.025455+00:00",
+        "status": "pending_review"
+      }
+    ],
+    "prompt_improvements": [
+      {
+        "area": "年级识别",
+        "suggestion": "添加明确的年级表达对照表到prompt",
+        "priority": "high"
+      },
+      {
+        "area": "语言支持",
+        "suggestion": "增强阿拉伯语识别能力",
+        "priority": "high"
+      },
+      {
+        "area": "缩写理解",
+        "suggestion": "添加常见教育缩写知识 (G1-G12, K1-K12)",
+        "priority": "high"
+      }
+    ]
+  },
+  "optimization_history": [
+    {
+      "date": "2026-01-09",
+      "action": "初始化知识库",
+      "baseline_metrics": {
+        "llm_accuracy": 33,
+        "results_count": 23,
+        "youtube_ratio": 0.96,
+        "avg_quality_score": 73.0
+      },
+      "target_metrics": {
+        "llm_accuracy": 85,
+        "results_count": 50,
+        "youtube_ratio": 0.6,
+        "avg_quality_score": 80.0
+      }
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>搜索测试</title>
+</head>
+<body>
+    <h1>API测试页面</h1>
+    <button onclick="testSearch()">测试搜索API</button>
+    <div id="result"></div>
+
+    <script>
+        async function testSearch() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '<p>正在测试...</p>';
+
+            try {
+                const response = await fetch('/api/search', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        country: 'ID',
+                        grade: 'Kelas 1',
+                        subject: 'Matematika',
+                        semester: '',
+                        resourceType: 'all'
+                    })
+                });
+
+                const data = await response.json();
+                resultDiv.innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+            } catch (error) {
+                resultDiv.innerHTML = '<p style="color: red;">错误: ' + error.message + '</p>';
+            }
+        }
+    </script>
+</body>
+</html>

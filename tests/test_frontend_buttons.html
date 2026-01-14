@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>前端按钮功能测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-section h2 {
+            color: #667eea;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        .button-test {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            border-radius: 4px;
+        }
+        .button-test strong {
+            color: #333;
+        }
+        .status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-left: 10px;
+        }
+        .status.pass {
+            background: #d4edda;
+            color: #155724;
+        }
+        .status.fail {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .status.pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+        .test-result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #e7f3ff;
+            border-radius: 4px;
+        }
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Indonesia 搜索系统 - 前端按钮测试</h1>
+
+    <div class="test-section">
+        <h2>📋 测试说明</h2>
+        <p>本页面用于测试前端所有按钮的功能和响应。请在主页面 (http://localhost:5001) 上手动测试每个按钮，然后在此记录结果。</p>
+    </div>
+
+    <div class="test-section">
+        <h2>🔝 顶部导航按钮</h2>
+
+        <div class="button-test">
+            <strong>1. 📚 知识点概览按钮</strong>
+            <span class="status pending" id="btn-knowledge">待测试</span>
+            <div>功能：跳转到知识点概览页面</div>
+            <div>测试方法：点击按钮，检查是否正确跳转</div>
+        </div>
+
+        <div class="button-test">
+            <strong>2. 📊 评估报告按钮</strong>
+            <span class="status pending" id="btn-evaluation">待测试</span>
+            <div>功能：打开评估历史弹窗</div>
+            <div>测试方法：点击按钮，检查是否弹出窗口</div>
+        </div>
+
+        <div class="button-test">
+            <strong>3. 🐛 Debug日志按钮</strong>
+            <span class="status pending" id="btn-debug">待测试</span>
+            <div>功能：打开/关闭Debug日志模态框</div>
+            <div>测试方法：点击按钮，检查模态框是否正常显示</div>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>🔍 搜索表单按钮</h2>
+
+        <div class="button-test">
+            <strong>4. [+] 添加国家按钮</strong>
+            <span class="status pending" id="btn-add-country">待测试</span>
+            <div>功能：打开添加新国家模态框</div>
+            <div>测试方法：点击按钮，检查模态框是否弹出</div>
+        </div>
+
+        <div class="button-test">
+            <strong>5. [⟳] 刷新配置按钮</strong>
+            <span class="status pending" id="btn-refresh">待测试</span>
+            <div>功能：重新加载当前国家的配置</div>
+            <div>测试方法：选择国家后点击，检查年级和学科是否刷新</div>
+        </div>
+
+        <div class="button-test">
+            <strong>6. 🚀 开始搜索按钮</strong>
+            <span class="status pending" id="btn-search">待测试</span>
+            <div>功能：执行搜索并显示结果</div>
+            <div>测试方法：填写表单后点击，检查是否显示搜索结果</div>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>📚 历史记录按钮</h2>
+
+        <div class="button-test">
+            <strong>7. 🔍 筛选按钮</strong>
+            <span class="status pending" id="btn-filter">待测试</span>
+            <div>功能：根据条件筛选历史记录</div>
+            <div>测试方法：设置筛选条件后点击，检查列表是否更新</div>
+        </div>
+
+        <div class="button-test">
+            <strong>8. 清除按钮</strong>
+            <span class="status pending" id="btn-clear">待测试</span>
+            <div>功能：清除筛选条件，显示所有历史</div>
+            <div>测试方法：筛选后点击，检查是否显示全部</div>
+        </div>
+
+        <div class="button-test">
+            <strong>9. 📥 导出选中按钮</strong>
+            <span class="status pending" id="btn-export">待测试</span>
+            <div>功能：导出选中的历史记录</div>
+            <div>测试方法：选择历史记录后点击，检查是否下载文件</div>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>🪟 模态框按钮</h2>
+
+        <div class="button-test">
+            <strong>10. 取消按钮（添加国家）</strong>
+            <span class="status pending" id="btn-cancel">待测试</span>
+            <div>功能：关闭添加国家模态框</div>
+            <div>测试方法：点击，检查模态框是否关闭</div>
+        </div>
+
+        <div class="button-test">
+            <strong>11. 开始调研按钮</strong>
+            <span class="status pending" id="btn-discover">待测试</span>
+            <div>功能：提交新国家调研请求</div>
+            <div>测试方法：输入国家名后点击，检查是否开始调研</div>
+        </div>
+
+        <div class="button-test">
+            <strong>12. × 关闭按钮（Debug）</strong>
+            <span class="status pending" id="btn-close-debug">待测试</span>
+            <div>功能：关闭Debug日志模态框</div>
+            <div>测试方法：点击，检查模态框是否关闭</div>
+        </div>
+
+        <div class="button-test">
+            <strong>13. 清空日志按钮</strong>
+            <span class="status pending" id="btn-clear-log">待测试</span>
+            <div>功能：清空Debug日志显示</div>
+            <div>测试方法：点击，检查日志是否被清空</div>
+        </div>
+
+        <div class="button-test">
+            <strong>14. 导出全部日志按钮</strong>
+            <span class="status pending" id="btn-export-log">待测试</span>
+            <div>功能：导出所有Debug日志</div>
+            <div>测试方法：点击，检查是否下载日志文件</div>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>🎨 视觉增强测试</h2>
+
+        <div class="button-test">
+            <strong>按钮悬停效果</strong>
+            <span class="status pending" id="visual-hover">待测试</span>
+            <div>检查悬停时是否有视觉反馈（颜色变化/阴影/位移）</div>
+        </div>
+
+        <div class="button-test">
+            <strong>按钮点击效果</strong>
+            <span class="status pending" id="visual-click">待测试</span>
+            <div>检查点击时是否有按压效果</div>
+        </div>
+
+        <div class="button-test">
+            <strong>加载状态显示</strong>
+            <span class="status pending" id="visual-loading">待测试</span>
+            <div>搜索时按钮是否显示加载状态（旋转器/禁用）</div>
+        </div>
+
+        <div class="button-test">
+            <strong>Toast通知</strong>
+            <span class="status pending" id="visual-toast">待测试</span>
+            <div>操作成功/失败时是否显示通知提示</div>
+        </div>
+
+        <div class="button-test">
+            <strong>表单验证反馈</strong>
+            <span class="status pending" id="visual-validation">待测试</span>
+            <div>必填字段为空时是否显示错误提示</div>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>📊 测试结果汇总</h2>
+        <div class="test-result">
+            <h3>统计信息</h3>
+            <p>总按钮数：<strong>14</strong></p>
+            <p>视觉增强项：<strong>5</strong></p>
+            <p>通过：<strong id="pass-count">0</strong></p>
+            <p>失败：<strong id="fail-count">0</strong></p>
+            <p>待测试：<strong id="pending-count">19</strong></p>
+            <p>通过率：<strong id="pass-rate">0%</strong></p>
+        </div>
+    </div>
+
+    <script>
+        // 更新测试统计
+        function updateStats() {
+            const all = document.querySelectorAll('.status');
+            const pass = document.querySelectorAll('.status.pass');
+            const fail = document.querySelectorAll('.status.fail');
+            const pending = document.querySelectorAll('.status.pending');
+
+            document.getElementById('pass-count').textContent = pass.length;
+            document.getElementById('fail-count').textContent = fail.length;
+            document.getElementById('pending-count').textContent = pending.length;
+
+            const rate = all.length > 0 ? Math.round((pass.length / all.length) * 100) : 0;
+            document.getElementById('pass-rate').textContent = rate + '%';
+        }
+
+        // 标记按钮状态（手动测试后调用）
+        function markStatus(id, status) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.className = 'status ' + status;
+                el.textContent = status === 'pass' ? '✅ 通过' : status === 'fail' ? '❌ 失败' : '⏳ 待测试';
+                updateStats();
+            }
+        }
+
+        // 示例：快速标记所有为通过（仅用于演示）
+        function markAllPass() {
+            const statuses = document.querySelectorAll('.status.pending');
+            statuses.forEach(el => {
+                el.className = 'status pass';
+                el.textContent = '✅ 通过';
+            });
+            updateStats();
+        }
+
+        // 初始化统计
+        updateStats();
+    </script>
+
+    <div style="margin-top: 20px; padding: 15px; background: #fff3cd; border-radius: 4px;">
+        <strong>💡 提示：</strong>
+        <ul>
+            <li>打开 <a href="http://localhost:5001" target="_blank">http://localhost:5001</a> 进行实际测试</li>
+            <li>测试每个按钮后，返回此页面记录结果</li>
+            <li>使用控制台命令：<code>markStatus('btn-search', 'pass')</code> 来标记状态</li>
+            <li>或使用 <code>markAllPass()</code> 快速标记全部为通过（演示用）</li>
+        </ul>
+    </div>
+</body>
+</html>

@@ -1,0 +1,41 @@
+{# 统一的侧边栏组件 #}
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <h1>🎓 <span class="text">K12搜索</span></h1>
+    </div>
+
+    <!-- 核心功能 -->
+    <div class="sidebar-section">
+        <div class="sidebar-section-title">核心功能</div>
+        <a class="sidebar-nav-item {% if page_name == 'index' %}active{% endif %}" href="/" title="资源搜索">
+            <span class="icon">🔍</span>
+            <span class="text">资源搜索</span>
+        </a>
+        <a class="sidebar-nav-item {% if page_name == 'knowledge_points' %}active{% endif %}" href="/knowledge_points" title="知识点概览">
+            <span class="icon">📚</span>
+            <span class="text">知识点概览</span>
+        </a>
+        <a class="sidebar-nav-item {% if page_name == 'evaluation_reports' %}active{% endif %}" href="/evaluation_reports" title="评估报告">
+            <span class="icon">📊</span>
+            <span class="text">评估报告</span>
+        </a>
+        <a class="sidebar-nav-item {% if page_name == 'search_history' %}active{% endif %}" href="/search_history" title="搜索历史">
+            <span class="icon">📜</span>
+            <span class="text">搜索历史</span>
+        </a>
+    </div>
+
+    <div class="sidebar-footer">
+        <p>Version 3.1.0</p>
+        <p>© 2026 K12 Search System</p>
+    </div>
+</div>
+
+<!-- 侧边栏折叠按钮 -->
+<button class="sidebar-toggle" id="sidebarToggle" onclick="toggleSidebar()"
+        title="收起侧边栏 (Ctrl+B)"
+        data-title-collapsed="展开侧边栏 (Ctrl+B)"
+        data-title-expanded="收起侧边栏 (Ctrl+B)">
+    <span class="icon-open">◀</span>
+    <span class="icon-close">▶</span>
+</button>

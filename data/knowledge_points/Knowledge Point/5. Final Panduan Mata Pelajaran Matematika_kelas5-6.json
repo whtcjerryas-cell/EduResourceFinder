@@ -1,0 +1,408 @@
+{
+  "metadata": {
+    "source_file": "/Users/shmiwanghao8/Desktop/education/Indonesia/syllabus/5. Final Panduan Mata Pelajaran Matematika_12_09_2025_Revisi 3_94-131.pdf",
+    "total_pages": 38,
+    "total_knowledge_points": 23,
+    "check_iterations": 2,
+    "has_remaining_issues": true
+  },
+  "knowledge_points": [
+    {
+      "id": "MAT-56-01-01",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 5 & 6 (Fase C)",
+      "subject": "Matematika",
+      "chapter_title": "Bilangan",
+      "topic_title_id": "Perluasan Intuisi Bilangan (Number Sense) pada Bilangan Cacah sampai 1.000.000 dan Penentuan Nilai Tempat",
+      "topic_title_cn": "数感拓展与百万以内自然数的位值",
+      "learning_objective": "学生能够理解百万以内自然数的位值规律，并能进行数的合成与分解，在生活情境中读写、比较和解释大数。",
+      "mapping_tags": [
+        "Nilai Tempat",
+        "Bilangan Cacah",
+        "Number Sense",
+        "Komposisi Bilangan",
+        "Dekomposisi Bilangan"
+      ]
+    },
+    {
+      "id": "MAT-56-01-02",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 5 & 6 (Fase C)",
+      "subject": "Matematika",
+      "chapter_title": "Bilangan",
+      "topic_title_id": "Operasi Bilangan Cacah sampai 100.000",
+      "topic_title_cn": "十万以内自然数的运算",
+      "learning_objective": "学生能够掌握十万以内自然数的加、减、乘、除运算，并能运用正确的计算步骤和策略解决实际问题。",
+      "mapping_tags": [
+        "Operasi Bilangan",
+        "Penjumlahan",
+        "Pengurangan",
+        "Perkalian",
+        "Pembagian"
+      ]
+    },
+    {
+      "id": "MAT-56-01-03",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 5 & 6 (Fase C)",
+      "subject": "Matematika",
+      "chapter_title": "Bilangan",
+      "topic_title_id": "KPK dan FPB",
+      "topic_title_cn": "最小公倍数(KPK)和最大公因数(FPB)",
+      "learning_objective": "学生能够理解最小公倍数(KPK)和最大公因数(FPB)的概念，并能运用它们解决与周期性事件和平均分配相关的实际问题。",
+      "mapping_tags": [
+        "KPK",
+        "FPB",
+        "Kelipatan Persekutuan Terkecil",
+        "Faktor Persekutuan Terbesar",
+        "Bilangan Bulat"
+      ]
+    },
+    {
+      "id": "MAT-56-01-04",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 5 & 6 (Fase C)",
+      "subject": "Matematika",
+      "chapter_title": "Bilangan",
+      "topic_title_id": "Operasi Penjumlahan dan Pengurangan Pecahan",
+      "topic_title_cn": "分数的加减运算",
+      "learning_objective": "学生能够进行异分母分数的加减运算，理解通分的必要性，并能运用多种策略解决涉及分数加减的实际问题。",
+      "mapping_tags": [
+        "Pecahan",
+        "Penjumlahan Pecahan",
+        "Pengurangan Pecahan",
+        "Penyebut Berbeda",
+        "Pecahan Campuran"
+      ]
+    },
+    {
+      "id": "MAT-56-01-05",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 5 & 6 (Fase C)",
+      "subject": "Matematika",
+      "chapter_title": "Bilangan",
+      "topic_title_id": "Operasi Perkalian dan Pembagian Pecahan",
+      "topic_title_cn": "分数的乘除运算",
+      "learning_objective": "学生能够理解分数乘除法的概念意义（如部分取值、等量划分），并能运用正确的程序进行分数与分数、分数与自然数的乘除运算，解决实际问题。",
+      "mapping_tags": [
+        "Perkalian Pecahan",
+        "Pembagian Pecahan",
+        "Pecahan",
+        "Bilangan Asli",
+        "Operasi Pecahan"
+      ]
+    },
+    {
+      "id": "MAT-56-01-06",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 5 & 6 (Fase C)",
+      "subject": "Matematika",
+      "chapter_title": "Bilangan",
+      "topic_title_id": "Hubungan Pecahan, Persen dan Desimal",
+      "topic_title_cn": "分数、百分数与小数的关系",
+      "learning_objective": "学生能够理解分数、小数和百分数之间的等价关系，并能在不同形式之间进行转换，以解决日常生活中的问题（如折扣计算）。",
+      "mapping_tags": [
+        "Pecahan",
+        "Desimal",
+        "Persen",
+        "Konversi Pecahan",
+        "Bentuk Pecahan"
+      ]
+    },
+    {
+      "id": "MAT-56-01-07",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 5 & 6 (Fase C)",
+      "subject": "Matematika",
+      "chapter_title": "Bilangan",
+      "topic_title_id": "Membandingkan dan Mengurutkan bilangan desimal (sampai dua angka di belakang koma)",
+      "topic_title_cn": "比较和排序小数（至小数点后两位）",
+      "learning_objective": "学生能够理解十分位和百分位的概念，使用数轴等工具比较和排序小数点后至多两位的小数，并能运用大于(>)、小于(<)等符号表示它们之间的关系。",
+      "mapping_tags": [
+        "Bilangan Desimal",
+        "Membandingkan Desimal",
+        "Mengurutkan Desimal",
+        "Nilai Tempat Desimal",
+        "Perseratusan"
+      ]
+    },
+    {
+      "id": "MAT-56-01-08",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 5 & 6 (Fase C)",
+      "subject": "Matematika",
+      "chapter_title": "Bilangan",
+      "topic_title_id": "Bilangan Bulat Negatif dan Operasinya",
+      "topic_title_cn": "负整数及其运算",
+      "learning_objective": "学生能够理解负数的概念，在数轴上表示负整数，并能进行涉及负整数的加减运算，解决生活中的实际问题（如温度、海拔）。",
+      "mapping_tags": [
+        "Bilangan Bulat",
+        "Bilangan Negatif",
+        "Garis Bilangan",
+        "Penjumlahan Bilangan Bulat",
+        "Pengurangan Bilangan Bulat"
+      ]
+    },
+    {
+      "id": "MAT-56-01-09",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 5 & 6 (Fase C)",
+      "subject": "Matematika",
+      "chapter_title": "Bilangan",
+      "topic_title_id": "Pangkat Dua dan Akar Pangkat Dua",
+      "topic_title_cn": "平方与平方根",
+      "learning_objective": "学生能够理解平方和平方根的概念，确定整数的平方值和完全平方数的平方根，并将其应用于与面积相关的计算中。",
+      "mapping_tags": [
+        "Pangkat Dua",
+        "Kuadrat",
+        "Akar Pangkat Dua",
+        "Akar Kuadrat",
+        "Bilangan Kuadrat"
+      ]
+    },
+    {
+      "id": "MAT-56-02-01",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 5 & 6 (Fase C)",
+      "subject": "Matematika",
+      "chapter_title": "Aljabar",
+      "topic_title_id": "Menentukan Nilai yang belum diketahui dalam Kalimat Matematika",
+      "topic_title_cn": "求解数学算式中的未知数",
+      "learning_objective": "学生能够理解包含加、减、乘、除的数学算式，并能求解其中的未知数，同时能将实际问题转化为数学算式并进行解答。",
+      "mapping_tags": [
+        "Kalimat Matematika",
+        "Nilai yang belum diketahui",
+        "Variabel",
+        "Persamaan Sederhana",
+        "Operasi Hitung"
+      ]
+    },
+    {
+      "id": "MAT-56-02-02",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 5 & 6 (Fase C)",
+      "subject": "Matematika",
+      "chapter_title": "Aljabar",
+      "topic_title_id": "Pola Bilangan Membesar dan Mengecil yang berkaitan dengan Perkalian dan Pembagian",
+      "topic_title_cn": "与乘除法相关的递增和递减数列规律",
+      "learning_objective": "学生能够识别、描述和扩展与乘法或除法相关的递增和递减数列，并能运用规律解决实际问题。",
+      "mapping_tags": [
+        "Pola Bilangan",
+        "Barisan Geometri",
+        "Aturan Pola",
+        "Perkalian Berulang",
+        "Pembagian Berulang"
+      ]
+    },
+    {
+      "id": "MAT-56-02-03",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 5 & 6 (Fase C)",
+      "subject": "Matematika",
+      "chapter_title": "Aljabar",
+      "topic_title_id": "Penyelesaian masalah Rasio dan Proporsi",
+      "topic_title_cn": "解决比与比例问题",
+      "learning_objective": "学生能够理解比的概念，运用比例思维（乘法思维）来解决涉及单位比率和比例关系的实际问题，并能区分加法关系和乘法关系。",
+      "mapping_tags": [
+        "Rasio",
+        "Proporsi",
+        "Perbandingan Senilai",
+        "Penalaran Proporsional",
+        "Multiplikatif"
+      ]
+    },
+    {
+      "id": "MAT-56-03-01",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 5 & 6 (Fase C)",
+      "subject": "Matematika",
+      "chapter_title": "Pengukuran",
+      "topic_title_id": "Keliling dan Luas Berbagai Bangun Datar dan Gabungannya",
+      "topic_title_cn": "各种平面图形及其组合图形的周长和面积",
+      "learning_objective": "学生能够理解周长和面积的概念，推导并运用公式计算常见平面图形（如正方形、长方形、三角形）及其组合图形的周长和面积。",
+      "mapping_tags": [
+        "Keliling",
+        "Luas",
+        "Bangun Datar",
+        "Bangun Gabungan",
+        "Rumus Luas"
+      ]
+    },
+    {
+      "id": "MAT-56-03-02",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 5 & 6 (Fase C)",
+      "subject": "Matematika",
+      "chapter_title": "Pengukuran",
+      "topic_title_id": "Penghitungan Durasi Waktu",
+      "topic_title_cn": "时间段计算",
+      "learning_objective": "学生能够计算两个时间点之间的时间间隔（时长），并能解决涉及时间单位换算和时长计算的实际问题。",
+      "mapping_tags": [
+        "Durasi Waktu",
+        "Selang Waktu",
+        "Satuan Waktu",
+        "Jam",
+        "Menit"
+      ]
+    },
+    {
+      "id": "MAT-56-03-03",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 5 & 6 (Fase C)",
+      "subject": "Matematika",
+      "chapter_title": "Pengukuran",
+      "topic_title_id": "Pengukuran Sudut",
+      "topic_title_cn": "角的测量",
+      "learning_objective": "学生能够理解角的概念，识别周角、平角和直角，并能使用量角器等工具测量和绘制特定度数的角。",
+      "mapping_tags": [
+        "Sudut",
+        "Derajat",
+        "Busur Derajat",
+        "Mengukur Sudut",
+        "Jenis Sudut"
+      ]
+    },
+    {
+      "id": "MAT-56-03-04",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 5 & 6 (Fase C)",
+      "subject": "Matematika",
+      "chapter_title": "Pengukuran",
+      "topic_title_id": "Volume Bangun Ruang (Kubus dan Balok)",
+      "topic_title_cn": "立体图形的体积（立方体和长方体）",
+      "learning_objective": "学生能够理解体积的概念，推导并运用公式计算立方体和长方体的体积，并解决涉及体积的实际问题。",
+      "mapping_tags": [
+        "Volume",
+        "Kubus",
+        "Balok",
+        "Satuan Kubik",
+        "Isi"
+      ]
+    },
+    {
+      "id": "MAT-56-04-01",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 5 & 6 (Fase C)",
+      "subject": "Matematika",
+      "chapter_title": "Geometri",
+      "topic_title_id": "Mengonstruksi dan mengurai bangun ruang",
+      "topic_title_cn": "构建和分解立体图形",
+      "learning_objective": "学生能够通过组合和分解基本立体图形（如立方体、长方体）来构建更复杂的立体图形，并理解其构成关系。",
+      "mapping_tags": [
+        "Bangun Ruang",
+        "Komposisi Bangun",
+        "Dekomposisi Bangun",
+        "Kubus",
+        "Balok"
+      ]
+    },
+    {
+      "id": "MAT-56-04-02",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 5 & 6 (Fase C)",
+      "subject": "Matematika",
+      "chapter_title": "Geometri",
+      "topic_title_id": "Visualisasi Spasial",
+      "topic_title_cn": "空间想象",
+      "learning_objective": "学生能够从不同视角（如前、上、侧）观察和识别立体图形，并能将其三维形态在二维平面上进行绘制和表达。",
+      "mapping_tags": [
+        "Visualisasi Spasial",
+        "Tiga Dimensi",
+        "Dua Dimensi",
+        "Perspektif",
+        "Sudut Pandang"
+      ]
+    },
+    {
+      "id": "MAT-56-04-03",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 5 & 6 (Fase C)",
+      "subject": "Matematika",
+      "chapter_title": "Geometri",
+      "topic_title_id": "Posisi benda terhadap benda lain (lokasi)",
+      "topic_title_cn": "物体间的相对位置（定位）",
+      "learning_objective": "学生能够使用网格系统在地图或平面图上描述物体的位置，并能根据方向指令规划和解释路线。",
+      "mapping_tags": [
+        "Lokasi",
+        "Posisi",
+        "Sistem Petak",
+        "Peta",
+        "Denah"
+      ]
+    },
+    {
+      "id": "MAT-56-05-01",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 5 & 6 (Fase C)",
+      "subject": "Matematika",
+      "chapter_title": "Analisis Data dan Peluang",
+      "topic_title_id": "Membaca dan Menafsirkan Data dalam Bentuk Tabel dan Diagram",
+      "topic_title_cn": "读取和解释表格与图表中的数据",
+      "learning_objective": "学生能够从表格、象形图、条形图、折线图和饼状图中读取、比较和解释数据，以回答与日常生活相关的问题。",
+      "mapping_tags": [
+        "Analisis Data",
+        "Tabel",
+        "Diagram Batang",
+        "Diagram Garis",
+        "Diagram Lingkaran"
+      ]
+    },
+    {
+      "id": "MAT-56-05-02",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 5 & 6 (Fase C)",
+      "subject": "Matematika",
+      "chapter_title": "Analisis Data dan Peluang",
+      "topic_title_id": "Ukuran Pemusatan Data (Modus, Median, dan Mean)",
+      "topic_title_cn": "集中趋势的度量（众数、中位数和平均数）",
+      "learning_objective": "学生能够理解并确定一组数据的众数、中位数和平均数，并能解释这些值在特定情境下的意义。",
+      "mapping_tags": [
+        "Mean",
+        "Median",
+        "Modus",
+        "Rata-rata",
+        "Ukuran Pemusatan"
+      ]
+    },
+    {
+      "id": "MAT-56-05-03",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 5 & 6 (Fase C)",
+      "subject": "Matematika",
+      "chapter_title": "Analisis Data dan Peluang",
+      "topic_title_id": "Membandingkan Dua Kelompok Data",
+      "topic_title_cn": "比较两组数据",
+      "learning_objective": "学生能够使用平均数、中位数或众数来比较两组不同的数据，并根据比较结果得出结论。",
+      "mapping_tags": [
+        "Membandingkan Data",
+        "Mean",
+        "Median",
+        "Analisis Komparatif",
+        "Statistika"
+      ]
+    },
+    {
+      "id": "MAT-56-05-04",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 5 & 6 (Fase C)",
+      "subject": "Matematika",
+      "chapter_title": "Analisis Data dan Peluang",
+      "topic_title_id": "Konsep Dasar Peluang",
+      "topic_title_cn": "概率的基本概念",
+      "learning_objective": "学生能够理解事件发生的可能性（可能、不可能、一定），并能比较不同事件发生的概率大小。",
+      "mapping_tags": [
+        "Peluang",
+        "Kemungkinan",
+        "Kejadian",
+        "Probabilitas",
+        "Eksperimen"
+      ]
+    }
+  ],
+  "issues": [
+    "覆盖率问题：缺少了 Kurikulum Merdeka Fase C 数学中的一个主要章节：'Analisis Data dan Peluang' (数据分析与概率)。",
+    "覆盖率问题：在 'Pengukuran' (测量) 章节中，遗漏了核心知识点 'Volume bangun ruang' (立体图形的体积)。",
+    "1. 覆盖率问题：数据遗漏了 Kurikulum Merdeka Fase C (Kelas 5 & 6) 数学课程中的几个核心知识点，包括：'负整数及其运算 (Bilangan Bulat Negatif)'、'平方与平方根 (Pangkat dan Akar Kuadrat)' 以及 '概率的基本概念 (Konsep Dasar Peluang)'。",
+    "2. 覆盖深度不足：部分现有知识点的范围小于课程标准的要求。例如，'分数运算'应包含分数与分数的乘除法；'小数'应覆盖到小数点后两位；'数据分析'应包含饼状图 (Diagram Lingkaran)。"
+  ]
+}

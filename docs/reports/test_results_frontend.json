@@ -1,0 +1,59 @@
+{
+  "summary": {
+    "total": 8,
+    "passed": 6,
+    "failed": 2,
+    "pass_rate": 75.0
+  },
+  "results": [
+    {
+      "name": "页面加载",
+      "success": true,
+      "message": "页面成功加载，所有元素显示正常",
+      "timestamp": "2026-01-05T20:55:56.369747"
+    },
+    {
+      "name": "知识点概览按钮",
+      "success": true,
+      "message": "成功跳转到知识点页面",
+      "timestamp": "2026-01-05T20:55:58.196983"
+    },
+    {
+      "name": "Debug日志按钮",
+      "success": false,
+      "message": "Locator.wait_for: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"#debugModal\") to be hidden\n    15 × locator resolved to visible <div id=\"debugModal\" class=\"debug-modal\">…</div>\n",
+      "timestamp": "2026-01-05T20:56:03.549107"
+    },
+    {
+      "name": "搜索功能",
+      "success": true,
+      "message": "⚠️ 搜索执行成功，但返回0个结果",
+      "timestamp": "2026-01-05T20:56:07.510448"
+    },
+    {
+      "name": "历史记录按钮",
+      "success": true,
+      "message": "所有历史记录按钮响应正常",
+      "timestamp": "2026-01-05T20:56:09.694290"
+    },
+    {
+      "name": "添加国家按钮",
+      "success": false,
+      "message": "Locator.wait_for: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"#addCountryModal\") to be visible\n    15 × locator resolved to hidden <div class=\"modal\" id=\"addCountryModal\">…</div>\n",
+      "timestamp": "2026-01-05T20:56:14.913841"
+    },
+    {
+      "name": "刷新配置按钮",
+      "success": true,
+      "message": "成功刷新国家配置",
+      "timestamp": "2026-01-05T20:56:17.154805"
+    },
+    {
+      "name": "交互元素",
+      "success": true,
+      "message": "发现9个可见按钮，8个可点击",
+      "timestamp": "2026-01-05T20:56:17.266962"
+    }
+  ],
+  "timestamp": "2026-01-05T20:56:17.267199"
+}

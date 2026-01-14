@@ -1,0 +1,1946 @@
+{
+  "opt_req_20260109034744": {
+    "request_id": "opt_req_20260109034744",
+    "timestamp": "2026-01-09T03:47:44.840140Z",
+    "detected_issues": [
+      "平均分偏低: 6.13 < 6.5",
+      "播放列表比例过低: 0.0% < 30.0%"
+    ],
+    "quality_summary": {
+      "overall_score": 100,
+      "quality_level": "合格",
+      "total_results": 15,
+      "avg_score": 6.13,
+      "playlist_count": 0
+    },
+    "search_params": {
+      "country": "IQ",
+      "grade": "الصف الثالث",
+      "subject": "اللغة الإنجليزية",
+      "semester": null
+    },
+    "optimization_plans": [
+      {
+        "plan_id": "plan_1",
+        "name": "强化播放列表搜索",
+        "description": "在搜索查询中添加\"playlist\"和\"完整课程\"关键词，提高播放列表资源覆盖率",
+        "strategy": "add_playlist_keywords",
+        "modifications": {
+          "add_keywords": [
+            "playlist",
+            "full course",
+            "完整课程",
+            "الكامل"
+          ]
+        },
+        "expected_improvement": "+15-25% 播放列表覆盖率",
+        "risk": "低 - 仅添加关键词，不改变核心搜索逻辑"
+      },
+      {
+        "plan_id": "plan_2",
+        "name": "扩大搜索范围",
+        "description": "放宽搜索约束，增加搜索引擎数量，提高结果数量",
+        "strategy": "expand_search_scope",
+        "modifications": {
+          "increase_engines": true,
+          "relax_constraints": true
+        },
+        "expected_improvement": "+50-100% 结果数量",
+        "risk": "中 - 可能引入部分低质量结果"
+      },
+      {
+        "plan_id": "plan_3",
+        "name": "组合优化方案",
+        "description": "同时应用多项优化策略，全面提升搜索质量",
+        "strategy": "combined_optimization",
+        "modifications": {
+          "add_playlist_keywords": true,
+          "expand_search_scope": false,
+          "enhance_language_matching": true
+        },
+        "expected_improvement": "+20-30% 综合质量分数",
+        "risk": "中 - 多项调整可能需要更多时间"
+      }
+    ],
+    "status": "pending_approval",
+    "selected_plan": null,
+    "execution_result": null
+  },
+  "opt_req_20260109055745": {
+    "request_id": "opt_req_20260109055745",
+    "timestamp": "2026-01-09T05:57:45.776337Z",
+    "detected_issues": [
+      "平均分偏低: 6.25 < 6.5",
+      "播放列表比例过低: 0.0% < 30.0%"
+    ],
+    "quality_summary": {
+      "overall_score": 100,
+      "quality_level": "合格",
+      "total_results": 20,
+      "avg_score": 6.25,
+      "playlist_count": 0
+    },
+    "search_params": {
+      "country": "IQ",
+      "grade": "الصف الأول",
+      "subject": "الرياضيات",
+      "semester": null
+    },
+    "optimization_plans": [
+      {
+        "plan_id": "plan_1",
+        "name": "强化播放列表搜索",
+        "description": "在搜索查询中添加\"playlist\"和\"完整课程\"关键词，提高播放列表资源覆盖率",
+        "strategy": "add_playlist_keywords",
+        "modifications": {
+          "add_keywords": [
+            "playlist",
+            "full course",
+            "完整课程",
+            "الكامل"
+          ]
+        },
+        "expected_improvement": "+15-25% 播放列表覆盖率",
+        "risk": "低 - 仅添加关键词，不改变核心搜索逻辑"
+      },
+      {
+        "plan_id": "plan_2",
+        "name": "扩大搜索范围",
+        "description": "放宽搜索约束，增加搜索引擎数量，提高结果数量",
+        "strategy": "expand_search_scope",
+        "modifications": {
+          "increase_engines": true,
+          "relax_constraints": true
+        },
+        "expected_improvement": "+50-100% 结果数量",
+        "risk": "中 - 可能引入部分低质量结果"
+      },
+      {
+        "plan_id": "plan_3",
+        "name": "组合优化方案",
+        "description": "同时应用多项优化策略，全面提升搜索质量",
+        "strategy": "combined_optimization",
+        "modifications": {
+          "add_playlist_keywords": true,
+          "expand_search_scope": false,
+          "enhance_language_matching": true
+        },
+        "expected_improvement": "+20-30% 综合质量分数",
+        "risk": "中 - 多项调整可能需要更多时间"
+      }
+    ],
+    "status": "pending_approval",
+    "selected_plan": null,
+    "execution_result": null
+  },
+  "opt_req_20260109055746": {
+    "request_id": "opt_req_20260109055746",
+    "timestamp": "2026-01-09T05:57:46.225621Z",
+    "detected_issues": [
+      "平均分偏低: 4.75 < 6.5",
+      "播放列表比例过低: 0.0% < 30.0%",
+      "高质量结果比例过低: 12.5%"
+    ],
+    "quality_summary": {
+      "overall_score": 58.5,
+      "quality_level": "差",
+      "total_results": 16,
+      "avg_score": 4.75,
+      "playlist_count": 0
+    },
+    "search_params": {
+      "country": "IQ",
+      "grade": "الصف الأول",
+      "subject": "اللغة الإنجليزية",
+      "semester": null
+    },
+    "optimization_plans": [
+      {
+        "plan_id": "plan_1",
+        "name": "强化播放列表搜索",
+        "description": "在搜索查询中添加\"playlist\"和\"完整课程\"关键词，提高播放列表资源覆盖率",
+        "strategy": "add_playlist_keywords",
+        "modifications": {
+          "add_keywords": [
+            "playlist",
+            "full course",
+            "完整课程",
+            "الكامل"
+          ]
+        },
+        "expected_improvement": "+15-25% 播放列表覆盖率",
+        "risk": "低 - 仅添加关键词，不改变核心搜索逻辑"
+      },
+      {
+        "plan_id": "plan_2",
+        "name": "扩大搜索范围",
+        "description": "放宽搜索约束，增加搜索引擎数量，提高结果数量",
+        "strategy": "expand_search_scope",
+        "modifications": {
+          "increase_engines": true,
+          "relax_constraints": true
+        },
+        "expected_improvement": "+50-100% 结果数量",
+        "risk": "中 - 可能引入部分低质量结果"
+      },
+      {
+        "plan_id": "plan_3",
+        "name": "提升语言和地区匹配度",
+        "description": "强化IQ相关的本地化关键词，提高相关性",
+        "strategy": "enhance_language_matching",
+        "modifications": {
+          "add_local_keywords": true,
+          "target_country": "IQ"
+        },
+        "expected_improvement": "+10-20% 相关性分数",
+        "risk": "低 - 优化本地化表达"
+      },
+      {
+        "plan_id": "plan_4",
+        "name": "组合优化方案",
+        "description": "同时应用多项优化策略，全面提升搜索质量",
+        "strategy": "combined_optimization",
+        "modifications": {
+          "add_playlist_keywords": true,
+          "expand_search_scope": false,
+          "enhance_language_matching": true
+        },
+        "expected_improvement": "+20-30% 综合质量分数",
+        "risk": "中 - 多项调整可能需要更多时间"
+      }
+    ],
+    "status": "pending_approval",
+    "selected_plan": null,
+    "execution_result": null
+  },
+  "opt_req_20260109060005": {
+    "request_id": "opt_req_20260109060005",
+    "timestamp": "2026-01-09T06:00:05.062205Z",
+    "detected_issues": [
+      "播放列表比例过低: 0.0% < 30.0%"
+    ],
+    "quality_summary": {
+      "overall_score": 100,
+      "quality_level": "合格",
+      "total_results": 20,
+      "avg_score": 6.9,
+      "playlist_count": 0
+    },
+    "search_params": {
+      "country": "IQ",
+      "grade": "الصف الأول",
+      "subject": "الرياضيات",
+      "semester": null
+    },
+    "optimization_plans": [
+      {
+        "plan_id": "plan_1",
+        "name": "强化播放列表搜索",
+        "description": "在搜索查询中添加\"playlist\"和\"完整课程\"关键词，提高播放列表资源覆盖率",
+        "strategy": "add_playlist_keywords",
+        "modifications": {
+          "add_keywords": [
+            "playlist",
+            "full course",
+            "完整课程",
+            "الكامل"
+          ]
+        },
+        "expected_improvement": "+15-25% 播放列表覆盖率",
+        "risk": "低 - 仅添加关键词，不改变核心搜索逻辑"
+      }
+    ],
+    "status": "pending_approval",
+    "selected_plan": null,
+    "execution_result": null
+  },
+  "opt_req_20260109060553": {
+    "request_id": "opt_req_20260109060553",
+    "timestamp": "2026-01-09T06:05:53.000267Z",
+    "detected_issues": [
+      "播放列表比例过低: 0.0% < 30.0%"
+    ],
+    "quality_summary": {
+      "overall_score": 100,
+      "quality_level": "良好",
+      "total_results": 19,
+      "avg_score": 8.0,
+      "playlist_count": 0
+    },
+    "search_params": {
+      "country": "IQ",
+      "grade": "الصف السادس",
+      "subject": "الرياضيات",
+      "semester": null
+    },
+    "optimization_plans": [
+      {
+        "plan_id": "plan_1",
+        "name": "强化播放列表搜索",
+        "description": "在搜索查询中添加\"playlist\"和\"完整课程\"关键词，提高播放列表资源覆盖率",
+        "strategy": "add_playlist_keywords",
+        "modifications": {
+          "add_keywords": [
+            "playlist",
+            "full course",
+            "完整课程",
+            "الكامل"
+          ]
+        },
+        "expected_improvement": "+15-25% 播放列表覆盖率",
+        "risk": "低 - 仅添加关键词，不改变核心搜索逻辑"
+      }
+    ],
+    "status": "pending_approval",
+    "selected_plan": null,
+    "execution_result": null
+  },
+  "opt_req_20260109061001": {
+    "request_id": "opt_req_20260109061001",
+    "timestamp": "2026-01-09T06:10:01.409566Z",
+    "detected_issues": [
+      "播放列表比例过低: 0.0% < 30.0%"
+    ],
+    "quality_summary": {
+      "overall_score": 100,
+      "quality_level": "良好",
+      "total_results": 19,
+      "avg_score": 7.58,
+      "playlist_count": 0
+    },
+    "search_params": {
+      "country": "IQ",
+      "grade": "الصف الثالث",
+      "subject": "الرياضيات",
+      "semester": null
+    },
+    "optimization_plans": [
+      {
+        "plan_id": "plan_1",
+        "name": "强化播放列表搜索",
+        "description": "在搜索查询中添加\"playlist\"和\"完整课程\"关键词，提高播放列表资源覆盖率",
+        "strategy": "add_playlist_keywords",
+        "modifications": {
+          "add_keywords": [
+            "playlist",
+            "full course",
+            "完整课程",
+            "الكامل"
+          ]
+        },
+        "expected_improvement": "+15-25% 播放列表覆盖率",
+        "risk": "低 - 仅添加关键词，不改变核心搜索逻辑"
+      }
+    ],
+    "status": "pending_approval",
+    "selected_plan": null,
+    "execution_result": null
+  },
+  "opt_req_20260109061623": {
+    "request_id": "opt_req_20260109061623",
+    "timestamp": "2026-01-09T06:16:23.607950Z",
+    "detected_issues": [
+      "播放列表比例过低: 0.0% < 30.0%"
+    ],
+    "quality_summary": {
+      "overall_score": 100,
+      "quality_level": "合格",
+      "total_results": 20,
+      "avg_score": 6.65,
+      "playlist_count": 0
+    },
+    "search_params": {
+      "country": "IQ",
+      "grade": "الصف الأول",
+      "subject": "الرياضيات",
+      "semester": null
+    },
+    "optimization_plans": [
+      {
+        "plan_id": "plan_1",
+        "name": "强化播放列表搜索",
+        "description": "在搜索查询中添加\"playlist\"和\"完整课程\"关键词，提高播放列表资源覆盖率",
+        "strategy": "add_playlist_keywords",
+        "modifications": {
+          "add_keywords": [
+            "playlist",
+            "full course",
+            "完整课程",
+            "الكامل"
+          ]
+        },
+        "expected_improvement": "+15-25% 播放列表覆盖率",
+        "risk": "低 - 仅添加关键词，不改变核心搜索逻辑"
+      }
+    ],
+    "status": "pending_approval",
+    "selected_plan": null,
+    "execution_result": null
+  },
+  "opt_req_20260109062238": {
+    "request_id": "opt_req_20260109062238",
+    "timestamp": "2026-01-09T06:22:38.299087Z",
+    "detected_issues": [
+      "播放列表比例过低: 0.0% < 30.0%"
+    ],
+    "quality_summary": {
+      "overall_score": 100,
+      "quality_level": "合格",
+      "total_results": 20,
+      "avg_score": 6.65,
+      "playlist_count": 0
+    },
+    "search_params": {
+      "country": "IQ",
+      "grade": "الصف الأول",
+      "subject": "الرياضيات",
+      "semester": null
+    },
+    "optimization_plans": [
+      {
+        "plan_id": "plan_1",
+        "name": "强化播放列表搜索",
+        "description": "在搜索查询中添加\"playlist\"和\"完整课程\"关键词，提高播放列表资源覆盖率",
+        "strategy": "add_playlist_keywords",
+        "modifications": {
+          "add_keywords": [
+            "playlist",
+            "full course",
+            "完整课程",
+            "الكامل"
+          ]
+        },
+        "expected_improvement": "+15-25% 播放列表覆盖率",
+        "risk": "低 - 仅添加关键词，不改变核心搜索逻辑"
+      }
+    ],
+    "status": "approved",
+    "selected_plan": {
+      "plan_id": "plan_1",
+      "name": "强化播放列表搜索",
+      "description": "在搜索查询中添加\"playlist\"和\"完整课程\"关键词，提高播放列表资源覆盖率",
+      "strategy": "add_playlist_keywords",
+      "modifications": {
+        "add_keywords": [
+          "playlist",
+          "full course",
+          "完整课程",
+          "الكامل"
+        ]
+      },
+      "expected_improvement": "+15-25% 播放列表覆盖率",
+      "risk": "低 - 仅添加关键词，不改变核心搜索逻辑"
+    },
+    "execution_result": null,
+    "approval": {
+      "approver": "web_user",
+      "approved_at": "2026-01-09T06:23:15.939703Z",
+      "plan_id": "plan_1"
+    }
+  },
+  "opt_req_20260109062437": {
+    "request_id": "opt_req_20260109062437",
+    "timestamp": "2026-01-09T06:24:37.497641Z",
+    "detected_issues": [
+      "播放列表比例过低: 0.0% < 30.0%"
+    ],
+    "quality_summary": {
+      "overall_score": 100,
+      "quality_level": "合格",
+      "total_results": 20,
+      "avg_score": 6.92,
+      "playlist_count": 0
+    },
+    "search_params": {
+      "country": "IQ",
+      "grade": "الصف الأول",
+      "subject": "الرياضيات",
+      "semester": null
+    },
+    "optimization_plans": [
+      {
+        "plan_id": "plan_1",
+        "name": "强化播放列表搜索",
+        "description": "在搜索查询中添加\"playlist\"和\"完整课程\"关键词，提高播放列表资源覆盖率",
+        "strategy": "add_playlist_keywords",
+        "modifications": {
+          "add_keywords": [
+            "playlist",
+            "full course",
+            "完整课程",
+            "الكامل"
+          ]
+        },
+        "expected_improvement": "+15-25% 播放列表覆盖率",
+        "risk": "低 - 仅添加关键词，不改变核心搜索逻辑"
+      }
+    ],
+    "status": "pending_approval",
+    "selected_plan": null,
+    "execution_result": null
+  },
+  "opt_req_20260109062456": {
+    "request_id": "opt_req_20260109062456",
+    "timestamp": "2026-01-09T06:24:56.940639Z",
+    "detected_issues": [
+      "播放列表比例过低: 0.0% < 30.0%"
+    ],
+    "quality_summary": {
+      "overall_score": 100,
+      "quality_level": "合格",
+      "total_results": 19,
+      "avg_score": 6.76,
+      "playlist_count": 0
+    },
+    "search_params": {
+      "country": "IQ",
+      "grade": "الصف الثاني",
+      "subject": "الرياضيات",
+      "semester": null
+    },
+    "optimization_plans": [
+      {
+        "plan_id": "plan_1",
+        "name": "强化播放列表搜索",
+        "description": "在搜索查询中添加\"playlist\"和\"完整课程\"关键词，提高播放列表资源覆盖率",
+        "strategy": "add_playlist_keywords",
+        "modifications": {
+          "add_keywords": [
+            "playlist",
+            "full course",
+            "完整课程",
+            "الكامل"
+          ]
+        },
+        "expected_improvement": "+15-25% 播放列表覆盖率",
+        "risk": "低 - 仅添加关键词，不改变核心搜索逻辑"
+      }
+    ],
+    "status": "pending_approval",
+    "selected_plan": null,
+    "execution_result": null
+  },
+  "opt_req_20260109062536": {
+    "request_id": "opt_req_20260109062536",
+    "timestamp": "2026-01-09T06:25:36.751358Z",
+    "detected_issues": [
+      "播放列表比例过低: 0.0% < 30.0%"
+    ],
+    "quality_summary": {
+      "overall_score": 100,
+      "quality_level": "良好",
+      "total_results": 19,
+      "avg_score": 7.71,
+      "playlist_count": 0
+    },
+    "search_params": {
+      "country": "IQ",
+      "grade": "الصف الثالث",
+      "subject": "الرياضيات",
+      "semester": null
+    },
+    "optimization_plans": [
+      {
+        "plan_id": "plan_1",
+        "name": "强化播放列表搜索",
+        "description": "在搜索查询中添加\"playlist\"和\"完整课程\"关键词，提高播放列表资源覆盖率",
+        "strategy": "add_playlist_keywords",
+        "modifications": {
+          "add_keywords": [
+            "playlist",
+            "full course",
+            "完整课程",
+            "الكامل"
+          ]
+        },
+        "expected_improvement": "+15-25% 播放列表覆盖率",
+        "risk": "低 - 仅添加关键词，不改变核心搜索逻辑"
+      }
+    ],
+    "status": "pending_approval",
+    "selected_plan": null,
+    "execution_result": null
+  },
+  "opt_req_20260109062809": {
+    "request_id": "opt_req_20260109062809",
+    "timestamp": "2026-01-09T06:28:09.037622Z",
+    "detected_issues": [
+      "播放列表比例过低: 0.0% < 30.0%"
+    ],
+    "quality_summary": {
+      "overall_score": 100,
+      "quality_level": "合格",
+      "total_results": 19,
+      "avg_score": 6.89,
+      "playlist_count": 0
+    },
+    "search_params": {
+      "country": "IQ",
+      "grade": "الصف الثاني",
+      "subject": "الرياضيات",
+      "semester": null
+    },
+    "optimization_plans": [
+      {
+        "plan_id": "plan_1",
+        "name": "强化播放列表搜索",
+        "description": "在搜索查询中添加\"playlist\"和\"完整课程\"关键词，提高播放列表资源覆盖率",
+        "strategy": "add_playlist_keywords",
+        "modifications": {
+          "add_keywords": [
+            "playlist",
+            "full course",
+            "完整课程",
+            "الكامل"
+          ]
+        },
+        "expected_improvement": "+15-25% 播放列表覆盖率",
+        "risk": "低 - 仅添加关键词，不改变核心搜索逻辑"
+      }
+    ],
+    "status": "pending_approval",
+    "selected_plan": null,
+    "execution_result": null
+  },
+  "opt_req_20260109062822": {
+    "request_id": "opt_req_20260109062822",
+    "timestamp": "2026-01-09T06:28:22.506116Z",
+    "detected_issues": [
+      "平均分偏低: 4.00 < 6.5",
+      "播放列表比例过低: 0.0% < 30.0%",
+      "高质量结果比例过低: 0.0%"
+    ],
+    "quality_summary": {
+      "overall_score": 34.6,
+      "quality_level": "差",
+      "total_results": 20,
+      "avg_score": 4.0,
+      "playlist_count": 0
+    },
+    "search_params": {
+      "country": "IQ",
+      "grade": "الصف الأول",
+      "subject": "الرياضيات",
+      "semester": null
+    },
+    "optimization_plans": [
+      {
+        "plan_id": "plan_1",
+        "name": "强化播放列表搜索",
+        "description": "在搜索查询中添加\"playlist\"和\"完整课程\"关键词，提高播放列表资源覆盖率",
+        "strategy": "add_playlist_keywords",
+        "modifications": {
+          "add_keywords": [
+            "playlist",
+            "full course",
+            "完整课程",
+            "الكامل"
+          ]
+        },
+        "expected_improvement": "+15-25% 播放列表覆盖率",
+        "risk": "低 - 仅添加关键词，不改变核心搜索逻辑"
+      },
+      {
+        "plan_id": "plan_2",
+        "name": "扩大搜索范围",
+        "description": "放宽搜索约束，增加搜索引擎数量，提高结果数量",
+        "strategy": "expand_search_scope",
+        "modifications": {
+          "increase_engines": true,
+          "relax_constraints": true
+        },
+        "expected_improvement": "+50-100% 结果数量",
+        "risk": "中 - 可能引入部分低质量结果"
+      },
+      {
+        "plan_id": "plan_3",
+        "name": "提升语言和地区匹配度",
+        "description": "强化IQ相关的本地化关键词，提高相关性",
+        "strategy": "enhance_language_matching",
+        "modifications": {
+          "add_local_keywords": true,
+          "target_country": "IQ"
+        },
+        "expected_improvement": "+10-20% 相关性分数",
+        "risk": "低 - 优化本地化表达"
+      },
+      {
+        "plan_id": "plan_4",
+        "name": "组合优化方案",
+        "description": "同时应用多项优化策略，全面提升搜索质量",
+        "strategy": "combined_optimization",
+        "modifications": {
+          "add_playlist_keywords": true,
+          "expand_search_scope": false,
+          "enhance_language_matching": true
+        },
+        "expected_improvement": "+20-30% 综合质量分数",
+        "risk": "中 - 多项调整可能需要更多时间"
+      }
+    ],
+    "status": "pending_approval",
+    "selected_plan": null,
+    "execution_result": null
+  },
+  "opt_req_20260109062914": {
+    "request_id": "opt_req_20260109062914",
+    "timestamp": "2026-01-09T06:29:14.111901Z",
+    "detected_issues": [
+      "播放列表比例过低: 0.0% < 30.0%"
+    ],
+    "quality_summary": {
+      "overall_score": 100,
+      "quality_level": "良好",
+      "total_results": 19,
+      "avg_score": 7.5,
+      "playlist_count": 0
+    },
+    "search_params": {
+      "country": "IQ",
+      "grade": "الصف الثالث",
+      "subject": "الرياضيات",
+      "semester": null
+    },
+    "optimization_plans": [
+      {
+        "plan_id": "plan_1",
+        "name": "强化播放列表搜索",
+        "description": "在搜索查询中添加\"playlist\"和\"完整课程\"关键词，提高播放列表资源覆盖率",
+        "strategy": "add_playlist_keywords",
+        "modifications": {
+          "add_keywords": [
+            "playlist",
+            "full course",
+            "完整课程",
+            "الكامل"
+          ]
+        },
+        "expected_improvement": "+15-25% 播放列表覆盖率",
+        "risk": "低 - 仅添加关键词，不改变核心搜索逻辑"
+      }
+    ],
+    "status": "pending_approval",
+    "selected_plan": null,
+    "execution_result": null
+  },
+  "opt_req_20260109070922": {
+    "request_id": "opt_req_20260109070922",
+    "timestamp": "2026-01-09T07:09:22.459917Z",
+    "detected_issues": [
+      "平均分偏低: 6.36 < 6.5",
+      "播放列表比例过低: 0.0% < 30.0%",
+      "高质量结果比例过低: 35.7%"
+    ],
+    "quality_summary": {
+      "overall_score": 100,
+      "quality_level": "合格",
+      "total_results": 14,
+      "avg_score": 6.36,
+      "playlist_count": 0
+    },
+    "search_params": {
+      "country": "IQ",
+      "grade": "الصف الثاني",
+      "subject": "الرياضيات",
+      "semester": null
+    },
+    "optimization_plans": [
+      {
+        "plan_id": "plan_1",
+        "name": "强化播放列表搜索",
+        "description": "在搜索查询中添加\"playlist\"和\"完整课程\"关键词，提高播放列表资源覆盖率",
+        "strategy": "add_playlist_keywords",
+        "modifications": {
+          "add_keywords": [
+            "playlist",
+            "full course",
+            "完整课程",
+            "الكامل"
+          ]
+        },
+        "expected_improvement": "+15-25% 播放列表覆盖率",
+        "risk": "低 - 仅添加关键词，不改变核心搜索逻辑"
+      },
+      {
+        "plan_id": "plan_2",
+        "name": "扩大搜索范围",
+        "description": "放宽搜索约束，增加搜索引擎数量，提高结果数量",
+        "strategy": "expand_search_scope",
+        "modifications": {
+          "increase_engines": true,
+          "relax_constraints": true
+        },
+        "expected_improvement": "+50-100% 结果数量",
+        "risk": "中 - 可能引入部分低质量结果"
+      },
+      {
+        "plan_id": "plan_3",
+        "name": "组合优化方案",
+        "description": "同时应用多项优化策略，全面提升搜索质量",
+        "strategy": "combined_optimization",
+        "modifications": {
+          "add_playlist_keywords": true,
+          "expand_search_scope": false,
+          "enhance_language_matching": true
+        },
+        "expected_improvement": "+20-30% 综合质量分数",
+        "risk": "中 - 多项调整可能需要更多时间"
+      }
+    ],
+    "status": "pending_approval",
+    "selected_plan": null,
+    "execution_result": null
+  },
+  "opt_req_20260109070932": {
+    "request_id": "opt_req_20260109070932",
+    "timestamp": "2026-01-09T07:09:32.610116Z",
+    "detected_issues": [
+      "平均分偏低: 6.45 < 6.5",
+      "播放列表比例过低: 0.0% < 30.0%",
+      "高质量结果比例过低: 35.0%"
+    ],
+    "quality_summary": {
+      "overall_score": 100,
+      "quality_level": "合格",
+      "total_results": 20,
+      "avg_score": 6.45,
+      "playlist_count": 0
+    },
+    "search_params": {
+      "country": "IQ",
+      "grade": "الصف الأول",
+      "subject": "الرياضيات",
+      "semester": null
+    },
+    "optimization_plans": [
+      {
+        "plan_id": "plan_1",
+        "name": "强化播放列表搜索",
+        "description": "在搜索查询中添加\"playlist\"和\"完整课程\"关键词，提高播放列表资源覆盖率",
+        "strategy": "add_playlist_keywords",
+        "modifications": {
+          "add_keywords": [
+            "playlist",
+            "full course",
+            "完整课程",
+            "الكامل"
+          ]
+        },
+        "expected_improvement": "+15-25% 播放列表覆盖率",
+        "risk": "低 - 仅添加关键词，不改变核心搜索逻辑"
+      },
+      {
+        "plan_id": "plan_2",
+        "name": "扩大搜索范围",
+        "description": "放宽搜索约束，增加搜索引擎数量，提高结果数量",
+        "strategy": "expand_search_scope",
+        "modifications": {
+          "increase_engines": true,
+          "relax_constraints": true
+        },
+        "expected_improvement": "+50-100% 结果数量",
+        "risk": "中 - 可能引入部分低质量结果"
+      },
+      {
+        "plan_id": "plan_3",
+        "name": "组合优化方案",
+        "description": "同时应用多项优化策略，全面提升搜索质量",
+        "strategy": "combined_optimization",
+        "modifications": {
+          "add_playlist_keywords": true,
+          "expand_search_scope": false,
+          "enhance_language_matching": true
+        },
+        "expected_improvement": "+20-30% 综合质量分数",
+        "risk": "中 - 多项调整可能需要更多时间"
+      }
+    ],
+    "status": "pending_approval",
+    "selected_plan": null,
+    "execution_result": null
+  },
+  "opt_req_20260109074024": {
+    "request_id": "opt_req_20260109074024",
+    "timestamp": "2026-01-09T07:40:24.305298Z",
+    "detected_issues": [
+      "播放列表比例过低: 0.0% < 30.0%"
+    ],
+    "quality_summary": {
+      "overall_score": 100,
+      "quality_level": "合格",
+      "total_results": 19,
+      "avg_score": 6.71,
+      "playlist_count": 0
+    },
+    "search_params": {
+      "country": "IQ",
+      "grade": "الصف الثاني",
+      "subject": "الرياضيات",
+      "semester": null
+    },
+    "optimization_plans": [
+      {
+        "plan_id": "plan_1",
+        "name": "强化播放列表搜索",
+        "description": "在搜索查询中添加\"playlist\"和\"完整课程\"关键词，提高播放列表资源覆盖率",
+        "strategy": "add_playlist_keywords",
+        "modifications": {
+          "add_keywords": [
+            "playlist",
+            "full course",
+            "完整课程",
+            "الكامل"
+          ]
+        },
+        "expected_improvement": "+15-25% 播放列表覆盖率",
+        "risk": "低 - 仅添加关键词，不改变核心搜索逻辑"
+      }
+    ],
+    "status": "pending_approval",
+    "selected_plan": null,
+    "execution_result": null
+  },
+  "opt_req_20260109081721": {
+    "request_id": "opt_req_20260109081721",
+    "timestamp": "2026-01-09T08:17:21.004979Z",
+    "detected_issues": [
+      "播放列表比例过低: 0.0% < 30.0%",
+      "高质量结果比例过低: 36.8%"
+    ],
+    "quality_summary": {
+      "overall_score": 100,
+      "quality_level": "合格",
+      "total_results": 19,
+      "avg_score": 6.74,
+      "playlist_count": 0
+    },
+    "search_params": {
+      "country": "IQ",
+      "grade": "الصف الثاني",
+      "subject": "الرياضيات",
+      "semester": null
+    },
+    "optimization_plans": [
+      {
+        "plan_id": "plan_1",
+        "name": "强化播放列表搜索",
+        "description": "在搜索查询中添加\"playlist\"和\"完整课程\"关键词，提高播放列表资源覆盖率",
+        "strategy": "add_playlist_keywords",
+        "modifications": {
+          "add_keywords": [
+            "playlist",
+            "full course",
+            "完整课程",
+            "الكامل"
+          ]
+        },
+        "expected_improvement": "+15-25% 播放列表覆盖率",
+        "risk": "低 - 仅添加关键词，不改变核心搜索逻辑"
+      },
+      {
+        "plan_id": "plan_2",
+        "name": "组合优化方案",
+        "description": "同时应用多项优化策略，全面提升搜索质量",
+        "strategy": "combined_optimization",
+        "modifications": {
+          "add_playlist_keywords": true,
+          "expand_search_scope": false,
+          "enhance_language_matching": false
+        },
+        "expected_improvement": "+20-30% 综合质量分数",
+        "risk": "中 - 多项调整可能需要更多时间"
+      }
+    ],
+    "status": "pending_approval",
+    "selected_plan": null,
+    "execution_result": null
+  },
+  "opt_req_20260109101809": {
+    "request_id": "opt_req_20260109101809",
+    "timestamp": "2026-01-09T10:18:09.232424Z",
+    "detected_issues": [
+      "平均分偏低: 5.75 < 6.5",
+      "播放列表比例过低: 0.0% < 30.0%",
+      "高质量结果比例过低: 30.0%"
+    ],
+    "quality_summary": {
+      "overall_score": 90.8,
+      "quality_level": "合格",
+      "total_results": 20,
+      "avg_score": 5.75,
+      "playlist_count": 0
+    },
+    "search_params": {
+      "country": "IQ",
+      "grade": "الصف الأول",
+      "subject": "الرياضيات",
+      "semester": null
+    },
+    "optimization_plans": [
+      {
+        "plan_id": "plan_1",
+        "name": "强化播放列表搜索",
+        "description": "在搜索查询中添加\"playlist\"和\"完整课程\"关键词，提高播放列表资源覆盖率",
+        "strategy": "add_playlist_keywords",
+        "modifications": {
+          "add_keywords": [
+            "playlist",
+            "full course",
+            "完整课程",
+            "الكامل"
+          ]
+        },
+        "expected_improvement": "+15-25% 播放列表覆盖率",
+        "risk": "低 - 仅添加关键词，不改变核心搜索逻辑"
+      },
+      {
+        "plan_id": "plan_2",
+        "name": "扩大搜索范围",
+        "description": "放宽搜索约束，增加搜索引擎数量，提高结果数量",
+        "strategy": "expand_search_scope",
+        "modifications": {
+          "increase_engines": true,
+          "relax_constraints": true
+        },
+        "expected_improvement": "+50-100% 结果数量",
+        "risk": "中 - 可能引入部分低质量结果"
+      },
+      {
+        "plan_id": "plan_3",
+        "name": "提升语言和地区匹配度",
+        "description": "强化IQ相关的本地化关键词，提高相关性",
+        "strategy": "enhance_language_matching",
+        "modifications": {
+          "add_local_keywords": true,
+          "target_country": "IQ"
+        },
+        "expected_improvement": "+10-20% 相关性分数",
+        "risk": "低 - 优化本地化表达"
+      },
+      {
+        "plan_id": "plan_4",
+        "name": "组合优化方案",
+        "description": "同时应用多项优化策略，全面提升搜索质量",
+        "strategy": "combined_optimization",
+        "modifications": {
+          "add_playlist_keywords": true,
+          "expand_search_scope": false,
+          "enhance_language_matching": true
+        },
+        "expected_improvement": "+20-30% 综合质量分数",
+        "risk": "中 - 多项调整可能需要更多时间"
+      }
+    ],
+    "status": "pending_approval",
+    "selected_plan": null,
+    "execution_result": null
+  },
+  "opt_req_20260109105053": {
+    "request_id": "opt_req_20260109105053",
+    "timestamp": "2026-01-09T10:50:53.786659Z",
+    "detected_issues": [
+      "平均分偏低: 3.10 < 6.5",
+      "播放列表比例过低: 0.0% < 30.0%",
+      "高质量结果比例过低: 10.0%"
+    ],
+    "quality_summary": {
+      "overall_score": 39.2,
+      "quality_level": "差",
+      "total_results": 10,
+      "avg_score": 3.1,
+      "playlist_count": 0
+    },
+    "search_params": {
+      "country": "IQ",
+      "grade": "الصف الأول",
+      "subject": "الرياضيات",
+      "semester": null
+    },
+    "optimization_plans": [
+      {
+        "plan_id": "plan_1",
+        "name": "强化播放列表搜索",
+        "description": "在搜索查询中添加\"playlist\"和\"完整课程\"关键词，提高播放列表资源覆盖率",
+        "strategy": "add_playlist_keywords",
+        "modifications": {
+          "add_keywords": [
+            "playlist",
+            "full course",
+            "完整课程",
+            "الكامل"
+          ]
+        },
+        "expected_improvement": "+15-25% 播放列表覆盖率",
+        "risk": "低 - 仅添加关键词，不改变核心搜索逻辑"
+      },
+      {
+        "plan_id": "plan_2",
+        "name": "扩大搜索范围",
+        "description": "放宽搜索约束，增加搜索引擎数量，提高结果数量",
+        "strategy": "expand_search_scope",
+        "modifications": {
+          "increase_engines": true,
+          "relax_constraints": true
+        },
+        "expected_improvement": "+50-100% 结果数量",
+        "risk": "中 - 可能引入部分低质量结果"
+      },
+      {
+        "plan_id": "plan_3",
+        "name": "提升语言和地区匹配度",
+        "description": "强化IQ相关的本地化关键词，提高相关性",
+        "strategy": "enhance_language_matching",
+        "modifications": {
+          "add_local_keywords": true,
+          "target_country": "IQ"
+        },
+        "expected_improvement": "+10-20% 相关性分数",
+        "risk": "低 - 优化本地化表达"
+      },
+      {
+        "plan_id": "plan_4",
+        "name": "组合优化方案",
+        "description": "同时应用多项优化策略，全面提升搜索质量",
+        "strategy": "combined_optimization",
+        "modifications": {
+          "add_playlist_keywords": true,
+          "expand_search_scope": false,
+          "enhance_language_matching": true
+        },
+        "expected_improvement": "+20-30% 综合质量分数",
+        "risk": "中 - 多项调整可能需要更多时间"
+      }
+    ],
+    "status": "pending_approval",
+    "selected_plan": null,
+    "execution_result": null
+  },
+  "opt_req_20260109105206": {
+    "request_id": "opt_req_20260109105206",
+    "timestamp": "2026-01-09T10:52:06.369374Z",
+    "detected_issues": [
+      "平均分偏低: 4.75 < 6.5",
+      "播放列表比例过低: 0.0% < 30.0%"
+    ],
+    "quality_summary": {
+      "overall_score": 93.5,
+      "quality_level": "差",
+      "total_results": 10,
+      "avg_score": 4.75,
+      "playlist_count": 0
+    },
+    "search_params": {
+      "country": "IQ",
+      "grade": "الصف الثالث",
+      "subject": "اللغة العربية",
+      "semester": null
+    },
+    "optimization_plans": [
+      {
+        "plan_id": "plan_1",
+        "name": "强化播放列表搜索",
+        "description": "在搜索查询中添加\"playlist\"和\"完整课程\"关键词，提高播放列表资源覆盖率",
+        "strategy": "add_playlist_keywords",
+        "modifications": {
+          "add_keywords": [
+            "playlist",
+            "full course",
+            "完整课程",
+            "الكامل"
+          ]
+        },
+        "expected_improvement": "+15-25% 播放列表覆盖率",
+        "risk": "低 - 仅添加关键词，不改变核心搜索逻辑"
+      },
+      {
+        "plan_id": "plan_2",
+        "name": "扩大搜索范围",
+        "description": "放宽搜索约束，增加搜索引擎数量，提高结果数量",
+        "strategy": "expand_search_scope",
+        "modifications": {
+          "increase_engines": true,
+          "relax_constraints": true
+        },
+        "expected_improvement": "+50-100% 结果数量",
+        "risk": "中 - 可能引入部分低质量结果"
+      },
+      {
+        "plan_id": "plan_3",
+        "name": "提升语言和地区匹配度",
+        "description": "强化IQ相关的本地化关键词，提高相关性",
+        "strategy": "enhance_language_matching",
+        "modifications": {
+          "add_local_keywords": true,
+          "target_country": "IQ"
+        },
+        "expected_improvement": "+10-20% 相关性分数",
+        "risk": "低 - 优化本地化表达"
+      },
+      {
+        "plan_id": "plan_4",
+        "name": "组合优化方案",
+        "description": "同时应用多项优化策略，全面提升搜索质量",
+        "strategy": "combined_optimization",
+        "modifications": {
+          "add_playlist_keywords": true,
+          "expand_search_scope": false,
+          "enhance_language_matching": true
+        },
+        "expected_improvement": "+20-30% 综合质量分数",
+        "risk": "中 - 多项调整可能需要更多时间"
+      }
+    ],
+    "status": "pending_approval",
+    "selected_plan": null,
+    "execution_result": null
+  },
+  "opt_req_20260109105358": {
+    "request_id": "opt_req_20260109105358",
+    "timestamp": "2026-01-09T10:53:58.920864Z",
+    "detected_issues": [
+      "播放列表比例过低: 0.0% < 30.0%"
+    ],
+    "quality_summary": {
+      "overall_score": 100,
+      "quality_level": "良好",
+      "total_results": 15,
+      "avg_score": 7.2,
+      "playlist_count": 0
+    },
+    "search_params": {
+      "country": "CN",
+      "grade": "小学五年级",
+      "subject": "数学",
+      "semester": null
+    },
+    "optimization_plans": [
+      {
+        "plan_id": "plan_1",
+        "name": "强化播放列表搜索",
+        "description": "在搜索查询中添加\"playlist\"和\"完整课程\"关键词，提高播放列表资源覆盖率",
+        "strategy": "add_playlist_keywords",
+        "modifications": {
+          "add_keywords": [
+            "playlist",
+            "full course",
+            "完整课程",
+            "الكامل"
+          ]
+        },
+        "expected_improvement": "+15-25% 播放列表覆盖率",
+        "risk": "低 - 仅添加关键词，不改变核心搜索逻辑"
+      }
+    ],
+    "status": "pending_approval",
+    "selected_plan": null,
+    "execution_result": null
+  },
+  "opt_req_20260109111930": {
+    "request_id": "opt_req_20260109111930",
+    "timestamp": "2026-01-09T11:19:30.638872Z",
+    "detected_issues": [
+      "平均分偏低: 3.00 < 6.5",
+      "播放列表比例过低: 0.0% < 30.0%",
+      "高质量结果比例过低: 10.0%"
+    ],
+    "quality_summary": {
+      "overall_score": 38.6,
+      "quality_level": "差",
+      "total_results": 10,
+      "avg_score": 3.0,
+      "playlist_count": 0
+    },
+    "search_params": {
+      "country": "IQ",
+      "grade": "الصف الأول",
+      "subject": "الرياضيات",
+      "semester": null
+    },
+    "optimization_plans": [
+      {
+        "plan_id": "plan_1",
+        "name": "强化播放列表搜索",
+        "description": "在搜索查询中添加\"playlist\"和\"完整课程\"关键词，提高播放列表资源覆盖率",
+        "strategy": "add_playlist_keywords",
+        "modifications": {
+          "add_keywords": [
+            "playlist",
+            "full course",
+            "完整课程",
+            "الكامل"
+          ]
+        },
+        "expected_improvement": "+15-25% 播放列表覆盖率",
+        "risk": "低 - 仅添加关键词，不改变核心搜索逻辑"
+      },
+      {
+        "plan_id": "plan_2",
+        "name": "扩大搜索范围",
+        "description": "放宽搜索约束，增加搜索引擎数量，提高结果数量",
+        "strategy": "expand_search_scope",
+        "modifications": {
+          "increase_engines": true,
+          "relax_constraints": true
+        },
+        "expected_improvement": "+50-100% 结果数量",
+        "risk": "中 - 可能引入部分低质量结果"
+      },
+      {
+        "plan_id": "plan_3",
+        "name": "提升语言和地区匹配度",
+        "description": "强化IQ相关的本地化关键词，提高相关性",
+        "strategy": "enhance_language_matching",
+        "modifications": {
+          "add_local_keywords": true,
+          "target_country": "IQ"
+        },
+        "expected_improvement": "+10-20% 相关性分数",
+        "risk": "低 - 优化本地化表达"
+      },
+      {
+        "plan_id": "plan_4",
+        "name": "组合优化方案",
+        "description": "同时应用多项优化策略，全面提升搜索质量",
+        "strategy": "combined_optimization",
+        "modifications": {
+          "add_playlist_keywords": true,
+          "expand_search_scope": false,
+          "enhance_language_matching": true
+        },
+        "expected_improvement": "+20-30% 综合质量分数",
+        "risk": "中 - 多项调整可能需要更多时间"
+      }
+    ],
+    "status": "pending_approval",
+    "selected_plan": null,
+    "execution_result": null
+  },
+  "opt_req_20260109112846": {
+    "request_id": "opt_req_20260109112846",
+    "timestamp": "2026-01-09T11:28:46.723605Z",
+    "detected_issues": [
+      "平均分偏低: 3.05 < 6.5",
+      "播放列表比例过低: 0.0% < 30.0%",
+      "高质量结果比例过低: 10.0%"
+    ],
+    "quality_summary": {
+      "overall_score": 39.5,
+      "quality_level": "差",
+      "total_results": 10,
+      "avg_score": 3.05,
+      "playlist_count": 0
+    },
+    "search_params": {
+      "country": "IQ",
+      "grade": "الصف الأول",
+      "subject": "الرياضيات",
+      "semester": null
+    },
+    "optimization_plans": [
+      {
+        "plan_id": "plan_1",
+        "name": "强化播放列表搜索",
+        "description": "在搜索查询中添加\"playlist\"和\"完整课程\"关键词，提高播放列表资源覆盖率",
+        "strategy": "add_playlist_keywords",
+        "modifications": {
+          "add_keywords": [
+            "playlist",
+            "full course",
+            "完整课程",
+            "الكامل"
+          ]
+        },
+        "expected_improvement": "+15-25% 播放列表覆盖率",
+        "risk": "低 - 仅添加关键词，不改变核心搜索逻辑"
+      },
+      {
+        "plan_id": "plan_2",
+        "name": "扩大搜索范围",
+        "description": "放宽搜索约束，增加搜索引擎数量，提高结果数量",
+        "strategy": "expand_search_scope",
+        "modifications": {
+          "increase_engines": true,
+          "relax_constraints": true
+        },
+        "expected_improvement": "+50-100% 结果数量",
+        "risk": "中 - 可能引入部分低质量结果"
+      },
+      {
+        "plan_id": "plan_3",
+        "name": "提升语言和地区匹配度",
+        "description": "强化IQ相关的本地化关键词，提高相关性",
+        "strategy": "enhance_language_matching",
+        "modifications": {
+          "add_local_keywords": true,
+          "target_country": "IQ"
+        },
+        "expected_improvement": "+10-20% 相关性分数",
+        "risk": "低 - 优化本地化表达"
+      },
+      {
+        "plan_id": "plan_4",
+        "name": "组合优化方案",
+        "description": "同时应用多项优化策略，全面提升搜索质量",
+        "strategy": "combined_optimization",
+        "modifications": {
+          "add_playlist_keywords": true,
+          "expand_search_scope": false,
+          "enhance_language_matching": true
+        },
+        "expected_improvement": "+20-30% 综合质量分数",
+        "risk": "中 - 多项调整可能需要更多时间"
+      }
+    ],
+    "status": "pending_approval",
+    "selected_plan": null,
+    "execution_result": null
+  },
+  "opt_req_20260109112942": {
+    "request_id": "opt_req_20260109112942",
+    "timestamp": "2026-01-09T11:29:42.876485Z",
+    "detected_issues": [
+      "平均分偏低: 6.40 < 6.5",
+      "播放列表比例过低: 0.0% < 30.0%",
+      "高质量结果比例过低: 30.0%"
+    ],
+    "quality_summary": {
+      "overall_score": 100,
+      "quality_level": "合格",
+      "total_results": 10,
+      "avg_score": 6.4,
+      "playlist_count": 0
+    },
+    "search_params": {
+      "country": "IQ",
+      "grade": "الصف الأول",
+      "subject": "اللغة الإنجليزية",
+      "semester": null
+    },
+    "optimization_plans": [
+      {
+        "plan_id": "plan_1",
+        "name": "强化播放列表搜索",
+        "description": "在搜索查询中添加\"playlist\"和\"完整课程\"关键词，提高播放列表资源覆盖率",
+        "strategy": "add_playlist_keywords",
+        "modifications": {
+          "add_keywords": [
+            "playlist",
+            "full course",
+            "完整课程",
+            "الكامل"
+          ]
+        },
+        "expected_improvement": "+15-25% 播放列表覆盖率",
+        "risk": "低 - 仅添加关键词，不改变核心搜索逻辑"
+      },
+      {
+        "plan_id": "plan_2",
+        "name": "扩大搜索范围",
+        "description": "放宽搜索约束，增加搜索引擎数量，提高结果数量",
+        "strategy": "expand_search_scope",
+        "modifications": {
+          "increase_engines": true,
+          "relax_constraints": true
+        },
+        "expected_improvement": "+50-100% 结果数量",
+        "risk": "中 - 可能引入部分低质量结果"
+      },
+      {
+        "plan_id": "plan_3",
+        "name": "组合优化方案",
+        "description": "同时应用多项优化策略，全面提升搜索质量",
+        "strategy": "combined_optimization",
+        "modifications": {
+          "add_playlist_keywords": true,
+          "expand_search_scope": false,
+          "enhance_language_matching": true
+        },
+        "expected_improvement": "+20-30% 综合质量分数",
+        "risk": "中 - 多项调整可能需要更多时间"
+      }
+    ],
+    "status": "pending_approval",
+    "selected_plan": null,
+    "execution_result": null
+  },
+  "opt_req_20260109113329": {
+    "request_id": "opt_req_20260109113329",
+    "timestamp": "2026-01-09T11:33:29.249631Z",
+    "detected_issues": [
+      "平均分偏低: 2.63 < 6.5",
+      "播放列表比例过低: 0.0% < 30.0%",
+      "高质量结果比例过低: 5.3%"
+    ],
+    "quality_summary": {
+      "overall_score": 28.7,
+      "quality_level": "差",
+      "total_results": 19,
+      "avg_score": 2.63,
+      "playlist_count": 0
+    },
+    "search_params": {
+      "country": "IQ",
+      "grade": "الصف الأول",
+      "subject": "الرياضيات",
+      "semester": null
+    },
+    "optimization_plans": [
+      {
+        "plan_id": "plan_1",
+        "name": "强化播放列表搜索",
+        "description": "在搜索查询中添加\"playlist\"和\"完整课程\"关键词，提高播放列表资源覆盖率",
+        "strategy": "add_playlist_keywords",
+        "modifications": {
+          "add_keywords": [
+            "playlist",
+            "full course",
+            "完整课程",
+            "الكامل"
+          ]
+        },
+        "expected_improvement": "+15-25% 播放列表覆盖率",
+        "risk": "低 - 仅添加关键词，不改变核心搜索逻辑"
+      },
+      {
+        "plan_id": "plan_2",
+        "name": "扩大搜索范围",
+        "description": "放宽搜索约束，增加搜索引擎数量，提高结果数量",
+        "strategy": "expand_search_scope",
+        "modifications": {
+          "increase_engines": true,
+          "relax_constraints": true
+        },
+        "expected_improvement": "+50-100% 结果数量",
+        "risk": "中 - 可能引入部分低质量结果"
+      },
+      {
+        "plan_id": "plan_3",
+        "name": "提升语言和地区匹配度",
+        "description": "强化IQ相关的本地化关键词，提高相关性",
+        "strategy": "enhance_language_matching",
+        "modifications": {
+          "add_local_keywords": true,
+          "target_country": "IQ"
+        },
+        "expected_improvement": "+10-20% 相关性分数",
+        "risk": "低 - 优化本地化表达"
+      },
+      {
+        "plan_id": "plan_4",
+        "name": "组合优化方案",
+        "description": "同时应用多项优化策略，全面提升搜索质量",
+        "strategy": "combined_optimization",
+        "modifications": {
+          "add_playlist_keywords": true,
+          "expand_search_scope": false,
+          "enhance_language_matching": true
+        },
+        "expected_improvement": "+20-30% 综合质量分数",
+        "risk": "中 - 多项调整可能需要更多时间"
+      }
+    ],
+    "status": "pending_approval",
+    "selected_plan": null,
+    "execution_result": null
+  },
+  "opt_req_20260109115137": {
+    "request_id": "opt_req_20260109115137",
+    "timestamp": "2026-01-09T11:51:37.349819Z",
+    "detected_issues": [
+      "平均分偏低: 2.76 < 6.5",
+      "播放列表比例过低: 0.0% < 30.0%",
+      "高质量结果比例过低: 5.3%"
+    ],
+    "quality_summary": {
+      "overall_score": 29.5,
+      "quality_level": "差",
+      "total_results": 19,
+      "avg_score": 2.76,
+      "playlist_count": 0
+    },
+    "search_params": {
+      "country": "IQ",
+      "grade": "الصف الأول",
+      "subject": "الرياضيات",
+      "semester": null
+    },
+    "optimization_plans": [
+      {
+        "plan_id": "plan_1",
+        "name": "强化播放列表搜索",
+        "description": "在搜索查询中添加\"playlist\"和\"完整课程\"关键词，提高播放列表资源覆盖率",
+        "strategy": "add_playlist_keywords",
+        "modifications": {
+          "add_keywords": [
+            "playlist",
+            "full course",
+            "完整课程",
+            "الكامل"
+          ]
+        },
+        "expected_improvement": "+15-25% 播放列表覆盖率",
+        "risk": "低 - 仅添加关键词，不改变核心搜索逻辑"
+      },
+      {
+        "plan_id": "plan_2",
+        "name": "扩大搜索范围",
+        "description": "放宽搜索约束，增加搜索引擎数量，提高结果数量",
+        "strategy": "expand_search_scope",
+        "modifications": {
+          "increase_engines": true,
+          "relax_constraints": true
+        },
+        "expected_improvement": "+50-100% 结果数量",
+        "risk": "中 - 可能引入部分低质量结果"
+      },
+      {
+        "plan_id": "plan_3",
+        "name": "提升语言和地区匹配度",
+        "description": "强化IQ相关的本地化关键词，提高相关性",
+        "strategy": "enhance_language_matching",
+        "modifications": {
+          "add_local_keywords": true,
+          "target_country": "IQ"
+        },
+        "expected_improvement": "+10-20% 相关性分数",
+        "risk": "低 - 优化本地化表达"
+      },
+      {
+        "plan_id": "plan_4",
+        "name": "组合优化方案",
+        "description": "同时应用多项优化策略，全面提升搜索质量",
+        "strategy": "combined_optimization",
+        "modifications": {
+          "add_playlist_keywords": true,
+          "expand_search_scope": false,
+          "enhance_language_matching": true
+        },
+        "expected_improvement": "+20-30% 综合质量分数",
+        "risk": "中 - 多项调整可能需要更多时间"
+      }
+    ],
+    "status": "pending_approval",
+    "selected_plan": null,
+    "execution_result": null
+  },
+  "opt_req_20260110074740": {
+    "request_id": "opt_req_20260110074740",
+    "timestamp": "2026-01-10T07:47:40.659932Z",
+    "detected_issues": [
+      "平均分偏低: 5.72 < 6.5",
+      "播放列表比例过低: 0.0% < 30.0%",
+      "高质量结果比例过低: 20.0%"
+    ],
+    "quality_summary": {
+      "overall_score": 78.7,
+      "quality_level": "合格",
+      "total_results": 20,
+      "avg_score": 5.72,
+      "playlist_count": 0
+    },
+    "search_params": {
+      "country": "IQ",
+      "grade": "الصف الأول",
+      "subject": "اللغة الإنجليزية",
+      "semester": null
+    },
+    "optimization_plans": [
+      {
+        "plan_id": "plan_1",
+        "name": "强化播放列表搜索",
+        "description": "在搜索查询中添加\"playlist\"和\"完整课程\"关键词，提高播放列表资源覆盖率",
+        "strategy": "add_playlist_keywords",
+        "modifications": {
+          "add_keywords": [
+            "playlist",
+            "full course",
+            "完整课程",
+            "الكامل"
+          ]
+        },
+        "expected_improvement": "+15-25% 播放列表覆盖率",
+        "risk": "低 - 仅添加关键词，不改变核心搜索逻辑"
+      },
+      {
+        "plan_id": "plan_2",
+        "name": "扩大搜索范围",
+        "description": "放宽搜索约束，增加搜索引擎数量，提高结果数量",
+        "strategy": "expand_search_scope",
+        "modifications": {
+          "increase_engines": true,
+          "relax_constraints": true
+        },
+        "expected_improvement": "+50-100% 结果数量",
+        "risk": "中 - 可能引入部分低质量结果"
+      },
+      {
+        "plan_id": "plan_3",
+        "name": "提升语言和地区匹配度",
+        "description": "强化IQ相关的本地化关键词，提高相关性",
+        "strategy": "enhance_language_matching",
+        "modifications": {
+          "add_local_keywords": true,
+          "target_country": "IQ"
+        },
+        "expected_improvement": "+10-20% 相关性分数",
+        "risk": "低 - 优化本地化表达"
+      },
+      {
+        "plan_id": "plan_4",
+        "name": "组合优化方案",
+        "description": "同时应用多项优化策略，全面提升搜索质量",
+        "strategy": "combined_optimization",
+        "modifications": {
+          "add_playlist_keywords": true,
+          "expand_search_scope": false,
+          "enhance_language_matching": true
+        },
+        "expected_improvement": "+20-30% 综合质量分数",
+        "risk": "中 - 多项调整可能需要更多时间"
+      }
+    ],
+    "status": "pending_approval",
+    "selected_plan": null,
+    "execution_result": null
+  },
+  "opt_req_20260110080338": {
+    "request_id": "opt_req_20260110080338",
+    "timestamp": "2026-01-10T08:03:38.715072Z",
+    "detected_issues": [
+      "平均分偏低: 2.98 < 6.5",
+      "播放列表比例过低: 0.0% < 30.0%",
+      "高质量结果比例过低: 5.0%"
+    ],
+    "quality_summary": {
+      "overall_score": 31.0,
+      "quality_level": "差",
+      "total_results": 20,
+      "avg_score": 2.98,
+      "playlist_count": 0
+    },
+    "search_params": {
+      "country": "IQ",
+      "grade": "الصف الأول",
+      "subject": "الرياضيات",
+      "semester": null
+    },
+    "optimization_plans": [
+      {
+        "plan_id": "plan_1",
+        "name": "强化播放列表搜索",
+        "description": "在搜索查询中添加\"playlist\"和\"完整课程\"关键词，提高播放列表资源覆盖率",
+        "strategy": "add_playlist_keywords",
+        "modifications": {
+          "add_keywords": [
+            "playlist",
+            "full course",
+            "完整课程",
+            "الكامل"
+          ]
+        },
+        "expected_improvement": "+15-25% 播放列表覆盖率",
+        "risk": "低 - 仅添加关键词，不改变核心搜索逻辑"
+      },
+      {
+        "plan_id": "plan_2",
+        "name": "扩大搜索范围",
+        "description": "放宽搜索约束，增加搜索引擎数量，提高结果数量",
+        "strategy": "expand_search_scope",
+        "modifications": {
+          "increase_engines": true,
+          "relax_constraints": true
+        },
+        "expected_improvement": "+50-100% 结果数量",
+        "risk": "中 - 可能引入部分低质量结果"
+      },
+      {
+        "plan_id": "plan_3",
+        "name": "提升语言和地区匹配度",
+        "description": "强化IQ相关的本地化关键词，提高相关性",
+        "strategy": "enhance_language_matching",
+        "modifications": {
+          "add_local_keywords": true,
+          "target_country": "IQ"
+        },
+        "expected_improvement": "+10-20% 相关性分数",
+        "risk": "低 - 优化本地化表达"
+      },
+      {
+        "plan_id": "plan_4",
+        "name": "组合优化方案",
+        "description": "同时应用多项优化策略，全面提升搜索质量",
+        "strategy": "combined_optimization",
+        "modifications": {
+          "add_playlist_keywords": true,
+          "expand_search_scope": false,
+          "enhance_language_matching": true
+        },
+        "expected_improvement": "+20-30% 综合质量分数",
+        "risk": "中 - 多项调整可能需要更多时间"
+      }
+    ],
+    "status": "pending_approval",
+    "selected_plan": null,
+    "execution_result": null
+  },
+  "opt_req_20260110082553": {
+    "request_id": "opt_req_20260110082553",
+    "timestamp": "2026-01-10T08:25:53.181097Z",
+    "detected_issues": [
+      "平均分偏低: 3.00 < 6.5",
+      "播放列表比例过低: 0.0% < 30.0%",
+      "高质量结果比例过低: 5.0%"
+    ],
+    "quality_summary": {
+      "overall_score": 31.8,
+      "quality_level": "差",
+      "total_results": 20,
+      "avg_score": 3.0,
+      "playlist_count": 0
+    },
+    "search_params": {
+      "country": "IQ",
+      "grade": "الصف الأول",
+      "subject": "الرياضيات",
+      "semester": null
+    },
+    "optimization_plans": [
+      {
+        "plan_id": "plan_1",
+        "name": "强化播放列表搜索",
+        "description": "在搜索查询中添加\"playlist\"和\"完整课程\"关键词，提高播放列表资源覆盖率",
+        "strategy": "add_playlist_keywords",
+        "modifications": {
+          "add_keywords": [
+            "playlist",
+            "full course",
+            "完整课程",
+            "الكامل"
+          ]
+        },
+        "expected_improvement": "+15-25% 播放列表覆盖率",
+        "risk": "低 - 仅添加关键词，不改变核心搜索逻辑"
+      },
+      {
+        "plan_id": "plan_2",
+        "name": "扩大搜索范围",
+        "description": "放宽搜索约束，增加搜索引擎数量，提高结果数量",
+        "strategy": "expand_search_scope",
+        "modifications": {
+          "increase_engines": true,
+          "relax_constraints": true
+        },
+        "expected_improvement": "+50-100% 结果数量",
+        "risk": "中 - 可能引入部分低质量结果"
+      },
+      {
+        "plan_id": "plan_3",
+        "name": "提升语言和地区匹配度",
+        "description": "强化IQ相关的本地化关键词，提高相关性",
+        "strategy": "enhance_language_matching",
+        "modifications": {
+          "add_local_keywords": true,
+          "target_country": "IQ"
+        },
+        "expected_improvement": "+10-20% 相关性分数",
+        "risk": "低 - 优化本地化表达"
+      },
+      {
+        "plan_id": "plan_4",
+        "name": "组合优化方案",
+        "description": "同时应用多项优化策略，全面提升搜索质量",
+        "strategy": "combined_optimization",
+        "modifications": {
+          "add_playlist_keywords": true,
+          "expand_search_scope": false,
+          "enhance_language_matching": true
+        },
+        "expected_improvement": "+20-30% 综合质量分数",
+        "risk": "中 - 多项调整可能需要更多时间"
+      }
+    ],
+    "status": "pending_approval",
+    "selected_plan": null,
+    "execution_result": null
+  },
+  "opt_req_20260110083714": {
+    "request_id": "opt_req_20260110083714",
+    "timestamp": "2026-01-10T08:37:14.229311Z",
+    "detected_issues": [
+      "平均分偏低: 2.98 < 6.5",
+      "播放列表比例过低: 0.0% < 30.0%",
+      "高质量结果比例过低: 5.0%"
+    ],
+    "quality_summary": {
+      "overall_score": 31.0,
+      "quality_level": "差",
+      "total_results": 20,
+      "avg_score": 2.98,
+      "playlist_count": 0
+    },
+    "search_params": {
+      "country": "IQ",
+      "grade": "الصف الأول",
+      "subject": "الرياضيات",
+      "semester": null
+    },
+    "optimization_plans": [
+      {
+        "plan_id": "plan_1",
+        "name": "强化播放列表搜索",
+        "description": "在搜索查询中添加\"playlist\"和\"完整课程\"关键词，提高播放列表资源覆盖率",
+        "strategy": "add_playlist_keywords",
+        "modifications": {
+          "add_keywords": [
+            "playlist",
+            "full course",
+            "完整课程",
+            "الكامل"
+          ]
+        },
+        "expected_improvement": "+15-25% 播放列表覆盖率",
+        "risk": "低 - 仅添加关键词，不改变核心搜索逻辑"
+      },
+      {
+        "plan_id": "plan_2",
+        "name": "扩大搜索范围",
+        "description": "放宽搜索约束，增加搜索引擎数量，提高结果数量",
+        "strategy": "expand_search_scope",
+        "modifications": {
+          "increase_engines": true,
+          "relax_constraints": true
+        },
+        "expected_improvement": "+50-100% 结果数量",
+        "risk": "中 - 可能引入部分低质量结果"
+      },
+      {
+        "plan_id": "plan_3",
+        "name": "提升语言和地区匹配度",
+        "description": "强化IQ相关的本地化关键词，提高相关性",
+        "strategy": "enhance_language_matching",
+        "modifications": {
+          "add_local_keywords": true,
+          "target_country": "IQ"
+        },
+        "expected_improvement": "+10-20% 相关性分数",
+        "risk": "低 - 优化本地化表达"
+      },
+      {
+        "plan_id": "plan_4",
+        "name": "组合优化方案",
+        "description": "同时应用多项优化策略，全面提升搜索质量",
+        "strategy": "combined_optimization",
+        "modifications": {
+          "add_playlist_keywords": true,
+          "expand_search_scope": false,
+          "enhance_language_matching": true
+        },
+        "expected_improvement": "+20-30% 综合质量分数",
+        "risk": "中 - 多项调整可能需要更多时间"
+      }
+    ],
+    "status": "pending_approval",
+    "selected_plan": null,
+    "execution_result": null
+  }
+}

@@ -1,0 +1,202 @@
+# ============================================
+# 视频处理配置
+# ============================================
+# 用途：配置视频下载、处理、转写相关参数
+# 修改后：重启服务生效
+# ============================================
+
+video:
+  # ----------------------------------------
+  # 下载配置
+  # ----------------------------------------
+  download:
+    # 默认视频质量
+    default_quality: "480p"    # 可选: 360p, 480p, 720p, 1080p, best
+
+    # 最大分辨率回退（如果找不到指定质量）
+    max_resolution_fallback: 1080
+
+    # 重试配置
+    retries: 5                        # 下载重试次数
+    fragment_retries: 5               # 分片重试次数
+    sleep_interval: 1                 # 重试间隔（秒）
+    max_sleep_interval: 3             # 最大重试间隔（秒）
+
+    # YouTube客户端顺序（优先级）
+    youtube_client_order:
+      - "ios"                         # iOS客户端
+      - "android"                     # Android客户端
+      - "web"                         # Web客户端
+
+    # HTTP请求头
+    headers:
+      User-Agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+      Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+      Accept-Language: "en-US,en;q=0.5"
+
+  # ----------------------------------------
+  # 格式选择器
+  # ----------------------------------------
+  # yt-dlp格式选择字符串
+  formats:
+    360p: "bestaudio[ext=m4a]/bestaudio+worstvideo[height>=360]/worst[height>=360]/worst"
+    480p: "bestaudio[ext=m4a]/bestaudio+worstvideo[height>=480]/worstvideo[height>=480]/worst[height>=480]/worst"
+    720p: "bestaudio[ext=m4a]/bestaudio+worstvideo[height>=720]/worstvideo[height>=720]/worst[height>=720]/worst"
+    1080p: "bestaudio[ext=m4a]/bestaudio+worstvideo[height>=1080]/worst[height>=1080]/worst[height>=1080]/worst"
+
+  # ----------------------------------------
+  # 帧提取配置
+  # ----------------------------------------
+  frames:
+    # 默认提取的关键帧数量
+    default_count: 6
+
+    # 帧分布方式: "even"（均匀分布）或 "smart"（智能选择）
+    distribution: "even"
+
+    # 结尾填充（秒）- 避免提取最后N秒
+    end_padding: 0.5
+
+    # 帧质量（JPEG qscale）
+    quality: 2                     # 范围: 1-31，越小质量越好
+
+    # 帧文件名格式
+    # {stem}: 视频文件名（不含扩展名）
+    # {number}: 帧序号（01, 02, ...）
+    filename_format: "{stem}_frame_{number:02d}.jpg"
+
+  # ----------------------------------------
+  # 音频提取配置
+  # ----------------------------------------
+  audio:
+    # 音频编解码器
+    codec: "libmp3lame"            # 或 "aac", "opus"
+
+    # 音频比特率
+    bitrate: "192k"                # 128k, 192k, 256k, 320k
+
+  # ----------------------------------------
+  # 转写配置
+  # ----------------------------------------
+  transcription:
+    # Whisper模型大小
+    # tiny: 最快，准确度较低
+    # base: 平衡（推荐）
+    # small: 较准确
+    # medium: 更准确
+    # large: 最准确，最慢
+    whisper_model: "base"
+
+    # 语言设置
+    language: "auto"               # 自动检测或指定（如 "en", "id", "zh"）
+
+    # 转写温度（较低温度更准确）
+    temperature: 0.0
+
+  # ----------------------------------------
+  # 字幕配置
+  # ----------------------------------------
+  subtitles:
+    # 字幕格式
+    format: "vtt"                   # 或 "srt", "ass"
+
+    # 语言优先级（按优先级排序）
+    language_priority:
+      - "en"                       # 英语
+      - "id"                       # 印尼语
+      - "zh"                       # 中文（通用）
+      - "zh-CN"                    # 中文（简体）
+      - "zh-TW"                    # 中文（繁体）
+      - "ms"                       # 马来语
+      - "ar"                       # 阿拉伯语
+
+    # YouTube客户端（用于字幕下载）
+    youtube_client:
+      - "android"                  # Android客户端
+      - "web"                      # Web客户端
+
+    # 重试配置
+    retries: 3
+    fragment_retries: 3
+
+    # HTTP请求头
+    headers:
+      User-Agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+
+  # ----------------------------------------
+  # 视觉分析配置
+  # ----------------------------------------
+  vision:
+    # 视觉分析模型
+    model: "gpt-4o"
+
+    # 每次分析的最大帧数
+    max_frames: 6
+
+    # LLM参数
+    max_tokens: 500
+    temperature: 0.3              # 低温度保证一致性
+
+  # ----------------------------------------
+  # 知识点匹配配置
+  # ----------------------------------------
+  knowledge_point_matching:
+    # 文本长度限制
+    learning_objective_preview: 200    # 学习目标预览长度
+    video_description_preview: 300     # 视频描述预览长度
+    transcript_preview: 500            # 转录文本预览长度
+
+    # 相关性评估使用的转录长度
+    relevance_transcript_length: 2000   # 相关性评估
+
+    # 教学法评估使用的转录长度
+    pedagogy_transcript_length: 2000    # 教学法评估
+
+  # ----------------------------------------
+  # 文件路径配置
+  # ----------------------------------------
+  paths:
+    # 视频存储目录
+    videos: "data/videos"
+
+    # 音频存储目录
+    audio: "data/audio"
+
+    # 帧存储目录
+    frames: "data/frames"
+
+    # 字幕存储目录
+    subtitles: "data/subtitles"
+
+    # 转录文本存储目录
+    transcripts: "data/transcripts"
+
+  # ----------------------------------------
+  # 性能优化
+  # ----------------------------------------
+  performance:
+    # 是否并发处理
+    enable_parallel: true
+
+    # 最大并发下载数
+    max_parallel_downloads: 3
+
+    # 是否缓存已处理的视频
+    enable_cache: true
+
+    # 缓存TTL（秒）
+    cache_ttl: 86400              # 24小时
+
+  # ----------------------------------------
+  # YouTube特定配置
+  # ----------------------------------------
+  youtube:
+    # YouTube格式ID映射
+    format_id_map:
+      5: "240p"                   # flv
+      17: "144p"                  # 3gp
+      18: "360p"                  # mp4
+      22: "720p"                  # mp4
+      137: "1080p"                # mp4
+      298: "720p"                 # mp4
+      299: "1080p"                # mp4

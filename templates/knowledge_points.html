@@ -1,0 +1,1099 @@
+{% extends "base_new.html" %}
+
+{% block title %}知识点概览 - K12教育资源搜索系统{% endblock %}
+
+{% block page_css %}
+<style>
+    .filters {
+        background: var(--bg-card);
+        padding: var(--spacing-lg);
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow-md);
+        margin-bottom: var(--spacing-md);
+        display: flex;
+        gap: var(--spacing-md);
+        flex-wrap: wrap;
+        align-items: end;
+    }
+
+    .filter-group {
+        flex: 1;
+        min-width: 200px;
+    }
+
+    .filter-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+        color: var(--text-primary);
+        font-size: var(--font-sm);
+    }
+
+    .filter-group select {
+        width: 100%;
+        padding: 10px 12px;
+        border: 2px solid var(--border-color);
+        border-radius: var(--border-radius);
+        font-size: var(--font-base);
+        background: var(--bg-secondary);
+        cursor: pointer;
+        transition: all var(--transition-fast);
+    }
+
+    .filter-group select:hover {
+        border-color: var(--primary-color);
+    }
+
+    .filter-group select:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .search-btn {
+        background: var(--primary-gradient);
+        color: white;
+        border: none;
+        padding: 10px 24px;
+        border-radius: var(--border-radius);
+        cursor: pointer;
+        font-size: var(--font-base);
+        font-weight: 500;
+        transition: transform var(--transition-base);
+        white-space: nowrap;
+    }
+
+    .search-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    }
+
+    .search-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+    }
+
+    .stats {
+        display: flex;
+        gap: var(--spacing-lg);
+        margin-bottom: var(--spacing-lg);
+        flex-wrap: wrap;
+    }
+
+    .stat-card {
+        flex: 1;
+        min-width: 200px;
+        background: var(--primary-gradient);
+        color: white;
+        padding: var(--spacing-lg);
+        border-radius: var(--border-radius);
+        text-align: center;
+    }
+
+    .stat-card h3 {
+        font-size: var(--font-sm);
+        opacity: 0.9;
+        margin-bottom: var(--spacing-sm);
+    }
+
+    .stat-card .value {
+        font-size: 32px;
+        font-weight: bold;
+    }
+
+    .knowledge-points-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+        gap: var(--spacing-lg);
+    }
+
+    .knowledge-point-card {
+        background: var(--bg-card);
+        border: 2px solid var(--border-color);
+        border-radius: var(--border-radius);
+        padding: var(--spacing-lg);
+        transition: all var(--transition-base);
+        box-shadow: var(--shadow-md);
+    }
+
+    .knowledge-point-card:hover {
+        box-shadow: var(--shadow-lg);
+        transform: translateY(-2px);
+    }
+
+    .kp-header {
+        margin-bottom: var(--spacing-lg);
+    }
+
+    .kp-header h3 {
+        font-size: var(--font-lg);
+        color: var(--text-primary);
+        margin-bottom: var(--spacing-sm);
+        line-height: 1.4;
+    }
+
+    .kp-header .chapter {
+        font-size: var(--font-sm);
+        color: var(--text-secondary);
+        margin-bottom: 5px;
+    }
+
+    .kp-header .objective {
+        font-size: var(--font-xs);
+        color: var(--text-secondary);
+        line-height: 1.5;
+        max-height: 60px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .charts-container {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-lg);
+        margin-top: var(--spacing-md);
+    }
+
+    .chart-section {
+        border: 2px solid var(--border-color);
+        border-radius: var(--border-radius);
+        padding: var(--spacing-md);
+        background: var(--bg-primary);
+    }
+
+    .chart-section-title {
+        font-size: var(--font-sm);
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: var(--spacing-md);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .chart-section-title .icon {
+        font-size: 18px;
+    }
+
+    .chart-wrapper {
+        position: relative;
+        height: 200px;
+        width: 100%;
+    }
+
+    .chart-wrapper canvas {
+        cursor: pointer;
+    }
+
+    .chart-empty {
+        text-align: center;
+        padding: 40px 20px;
+        color: var(--text-secondary);
+        font-size: var(--font-sm);
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: var(--text-secondary);
+    }
+
+    .empty-state h3 {
+        font-size: var(--font-lg);
+        margin-bottom: 10px;
+        color: var(--text-secondary);
+    }
+
+    /* Modal样式 */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 2000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.5);
+        overflow-y: auto;
+    }
+
+    .modal-content {
+        background-color: var(--bg-card);
+        margin: 30px auto;
+        padding: var(--spacing-xl);
+        border-radius: var(--border-radius);
+        max-width: 900px;
+        width: 90%;
+        max-height: 90vh;
+        overflow-y: auto;
+        box-shadow: var(--shadow-lg);
+    }
+
+    .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: var(--spacing-lg);
+        padding-bottom: var(--spacing-md);
+        border-bottom: 2px solid var(--border-color);
+    }
+
+    .modal-header h2 {
+        font-size: var(--font-2xl);
+        color: var(--text-primary);
+    }
+
+    .close-btn {
+        background: var(--danger-color);
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: var(--border-radius);
+        cursor: pointer;
+        font-size: var(--font-sm);
+    }
+
+    .close-btn:hover {
+        background: #d32f2f;
+    }
+
+    .detail-section {
+        margin-bottom: var(--spacing-lg);
+    }
+
+    .detail-section h3 {
+        font-size: var(--font-lg);
+        color: var(--primary-color);
+        margin-bottom: var(--spacing-md);
+        padding-bottom: var(--spacing-sm);
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .video-item {
+        background: var(--bg-primary);
+        padding: var(--spacing-md);
+        border-radius: var(--border-radius);
+        margin-bottom: 12px;
+        border-left: 4px solid var(--primary-color);
+    }
+
+    .video-item h4 {
+        font-size: var(--font-base);
+        color: var(--text-primary);
+        margin-bottom: var(--spacing-sm);
+    }
+
+    .video-item a {
+        color: var(--primary-color);
+        text-decoration: none;
+        font-size: var(--font-sm);
+    }
+
+    .video-item a:hover {
+        text-decoration: underline;
+    }
+
+    .score-badge {
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: var(--font-xs);
+        font-weight: 600;
+        margin-right: 8px;
+    }
+
+    .score-excellent {
+        background: var(--success-color);
+        color: white;
+    }
+
+    .score-good {
+        background: #8bc34a;
+        color: white;
+    }
+
+    .score-fair {
+        background: var(--warning-color);
+        color: white;
+    }
+
+    .score-poor {
+        background: var(--danger-color);
+        color: white;
+    }
+
+    .score-details {
+        margin-top: 10px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 10px;
+    }
+
+    .score-item {
+        background: white;
+        padding: 8px;
+        border-radius: 6px;
+        font-size: var(--font-xs);
+    }
+
+    .score-item .label {
+        color: var(--text-secondary);
+        margin-bottom: 4px;
+    }
+
+    .score-item .value {
+        font-weight: 600;
+        color: var(--text-primary);
+    }
+
+    /* 视图切换按钮样式 */
+    .view-btn {
+        padding: 8px 16px;
+        border: 2px solid var(--border-color);
+        border-radius: var(--border-radius);
+        background: var(--bg-card);
+        color: var(--text-secondary);
+        cursor: pointer;
+        font-size: var(--font-sm);
+        transition: all var(--transition-fast);
+    }
+
+    .view-btn:hover {
+        border-color: var(--primary-color);
+        color: var(--primary-color);
+    }
+
+    .view-btn.active {
+        background: var(--primary-color);
+        color: white;
+        border-color: var(--primary-color);
+    }
+
+    /* 热力图容器样式 */
+    #heatmapContainer {
+        display: none;
+    }
+
+    #heatmapContainer.active {
+        display: block;
+    }
+
+    .heatmap-grid {
+        display: grid;
+        gap: var(--spacing-md);
+    }
+
+    .heatmap-cell {
+        padding: var(--spacing-lg);
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all var(--transition-base);
+        position: relative;
+        border: 2px solid transparent;
+    }
+
+    .heatmap-cell:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-lg);
+        border-color: var(--primary-color);
+    }
+
+    .heatmap-cell h4 {
+        font-size: var(--font-lg);
+        margin-bottom: var(--spacing-sm);
+        color: var(--text-primary);
+    }
+
+    .heatmap-cell .chapter {
+        font-size: var(--font-sm);
+        color: var(--text-secondary);
+        margin-bottom: 10px;
+    }
+
+    .heatmap-cell .stats {
+        font-size: var(--font-sm);
+        color: var(--text-primary);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="header">
+        <h1>📚 知识点概览</h1>
+        <p>查看知识点及其教育资源完成度</p>
+    </div>
+
+    <div class="filters">
+        <div class="filter-group">
+            <label>国家</label>
+            <select id="countrySelect">
+                <option value="">-- 请选择国家 --</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label>年级</label>
+            <select id="gradeSelect">
+                <option value="">-- 请先选择国家 --</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label>学科</label>
+            <select id="subjectSelect">
+                <option value="">-- 请先选择国家 --</option>
+            </select>
+        </div>
+        <div class="filter-group" style="flex: 0 0 auto;">
+            <button class="search-btn" id="searchBtn" onclick="loadKnowledgePoints()" disabled>查询</button>
+        </div>
+    </div>
+
+    <!-- 视图切换 -->
+    <div class="filters">
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <span style="font-weight: 500; color: var(--text-primary);">视图模式：</span>
+            <button class="view-btn active" data-view="list" onclick="switchView('list')">📋 列表视图</button>
+            <button class="view-btn" data-view="heatmap" onclick="switchView('heatmap')">🌈 热力图视图</button>
+        </div>
+    </div>
+
+    <div id="statsContainer" class="stats" style="display: none;">
+        <div class="stat-card">
+            <h3>总知识点数</h3>
+            <div class="value" id="totalKpCount">0</div>
+        </div>
+        <div class="stat-card">
+            <h3>总视频数</h3>
+            <div class="value" id="totalVideoCount">0</div>
+        </div>
+        <div class="stat-card">
+            <h3>平均资源丰富度</h3>
+            <div class="value" id="avgRichness">0.0</div>
+        </div>
+    </div>
+
+    <div id="contentArea">
+        <div class="empty-state">
+            <h3>请选择国家、年级和学科后点击查询</h3>
+            <p>系统将展示该条件下的所有知识点及其资源完成度</p>
+        </div>
+    </div>
+
+    <!-- 热力图视图容器 -->
+    <div id="heatmapContainer">
+        <div id="heatmapContent" class="heatmap-grid"></div>
+    </div>
+</div>
+
+<!-- 详情Modal -->
+<div id="detailModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 id="detailTitle">详情</h2>
+            <button class="close-btn" onclick="closeDetailModal()">关闭</button>
+        </div>
+        <div id="detailContent"></div>
+    </div>
+</div>
+{% endblock %}
+
+{% block page_scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+    let countriesList = [];
+    let currentCountryConfig = null;
+    let knowledgePointsData = [];
+
+    // 页面加载时初始化
+    document.addEventListener('DOMContentLoaded', async () => {
+        await loadCountries();
+
+        // 从URL参数获取初始筛选条件
+        const urlParams = new URLSearchParams(window.location.search);
+        const country = urlParams.get('country');
+        const grade = urlParams.get('grade');
+        const subject = urlParams.get('subject');
+
+        if (country && grade && subject) {
+            document.getElementById('countrySelect').value = country;
+            await loadCountryConfig(country);
+            document.getElementById('gradeSelect').value = grade;
+            document.getElementById('subjectSelect').value = subject;
+            document.getElementById('searchBtn').disabled = false;
+            await loadKnowledgePoints();
+        }
+    });
+
+    // 加载国家列表
+    async function loadCountries() {
+        try {
+            const response = await fetch('/api/countries');
+            const data = await response.json();
+
+            if (data.success) {
+                countriesList = data.countries;
+                const select = document.getElementById('countrySelect');
+                countriesList.forEach(country => {
+                    const option = document.createElement('option');
+                    option.value = country.country_code;
+                    option.textContent = country.country_name;
+                    select.appendChild(option);
+                });
+
+                select.addEventListener('change', async (e) => {
+                    if (e.target.value) {
+                        await loadCountryConfig(e.target.value);
+                    } else {
+                        document.getElementById('gradeSelect').innerHTML = '<option value="">-- 请先选择国家 --</option>';
+                        document.getElementById('subjectSelect').innerHTML = '<option value="">-- 请先选择国家 --</option>';
+                        document.getElementById('searchBtn').disabled = true;
+                    }
+                });
+            }
+        } catch (error) {
+            console.error('加载国家列表失败:', error);
+            toast.error('加载失败', '无法加载国家列表');
+        }
+    }
+
+    // 加载国家配置
+    async function loadCountryConfig(countryCode) {
+        try {
+            const response = await fetch(`/api/config/${countryCode}`);
+            const data = await response.json();
+
+            if (data.success && data.config) {
+                currentCountryConfig = data.config;
+
+                // 加载年级
+                const gradeSelect = document.getElementById('gradeSelect');
+                gradeSelect.innerHTML = '<option value="">-- 请选择年级 --</option>';
+                data.config.grades.forEach(grade => {
+                    const option = document.createElement('option');
+                    option.value = grade.local_name;
+                    option.textContent = `${grade.local_name} (${grade.zh_name})`;
+                    gradeSelect.appendChild(option);
+                });
+
+                // 加载学科
+                const subjectSelect = document.getElementById('subjectSelect');
+                subjectSelect.innerHTML = '<option value="">-- 请选择学科 --</option>';
+                data.config.subjects.forEach(subject => {
+                    const option = document.createElement('option');
+                    option.value = subject.local_name;
+                    option.textContent = `${subject.local_name} (${subject.zh_name})`;
+                    subjectSelect.appendChild(option);
+                });
+
+                // 检查是否可以启用查询按钮
+                checkSearchButton();
+
+                gradeSelect.addEventListener('change', checkSearchButton);
+                subjectSelect.addEventListener('change', checkSearchButton);
+            }
+        } catch (error) {
+            console.error('加载国家配置失败:', error);
+            toast.error('加载失败', '无法加载国家配置');
+        }
+    }
+
+    function checkSearchButton() {
+        const country = document.getElementById('countrySelect').value;
+        const grade = document.getElementById('gradeSelect').value;
+        const subject = document.getElementById('subjectSelect').value;
+        document.getElementById('searchBtn').disabled = !(country && grade && subject);
+    }
+
+    // 加载知识点数据
+    async function loadKnowledgePoints() {
+        const country = document.getElementById('countrySelect').value;
+        const grade = document.getElementById('gradeSelect').value;
+        const subject = document.getElementById('subjectSelect').value;
+
+        if (!country || !grade || !subject) {
+            return;
+        }
+
+        const contentArea = document.getElementById('contentArea');
+        const statsContainer = document.getElementById('statsContainer');
+        const heatmapContainer = document.getElementById('heatmapContainer');
+
+        contentArea.innerHTML = '<div class="loading"><div class="spinner"></div><p>加载中...</p></div>';
+        statsContainer.style.display = 'none';
+        heatmapContainer.classList.remove('active');
+
+        try {
+            const response = await fetch(`/api/knowledge_points?country=${encodeURIComponent(country)}&grade=${encodeURIComponent(grade)}&subject=${encodeURIComponent(subject)}`);
+            const data = await response.json();
+
+            if (data.success) {
+                knowledgePointsData = data.knowledge_points || [];
+
+                if (knowledgePointsData.length === 0) {
+                    contentArea.innerHTML = '<div class="empty-state"><h3>暂无知识点数据</h3><p>请尝试其他筛选条件</p></div>';
+                    return;
+                }
+
+                // 显示统计信息
+                displayStats(knowledgePointsData);
+
+                // 根据当前视图模式显示
+                const currentView = document.querySelector('.view-btn.active').dataset.view;
+                if (currentView === 'list') {
+                    displayKnowledgePoints(knowledgePointsData);
+                } else {
+                    displayHeatmap(knowledgePointsData);
+                }
+            } else {
+                throw new Error(data.message || '加载失败');
+            }
+        } catch (error) {
+            console.error('加载知识点失败:', error);
+            contentArea.innerHTML = `<div class="empty-state"><h3>加载失败</h3><p>${error.message}</p></div>`;
+            toast.error('加载失败', error.message);
+        }
+    }
+
+    // 显示统计信息
+    function displayStats(kps) {
+        const statsContainer = document.getElementById('statsContainer');
+        statsContainer.style.display = 'flex';
+
+        const totalKpCount = kps.length;
+        const totalVideoCount = kps.reduce((sum, kp) => sum + (kp.videos?.length || 0), 0);
+        const avgRichness = totalKpCount > 0
+            ? (kps.reduce((sum, kp) => {
+                const videoCount = kp.videos?.length || 0;
+                const materialCount = kp.learning_materials_count || 0;
+                const questionCount = kp.practice_questions_count || 0;
+                return sum + (videoCount + materialCount + questionCount);
+            }, 0) / totalKpCount).toFixed(1)
+            : '0.0';
+
+        document.getElementById('totalKpCount').textContent = totalKpCount;
+        document.getElementById('totalVideoCount').textContent = totalVideoCount;
+        document.getElementById('avgRichness').textContent = avgRichness;
+    }
+
+    // 切换视图
+    function switchView(view) {
+        const buttons = document.querySelectorAll('.view-btn');
+        buttons.forEach(btn => btn.classList.remove('active'));
+        document.querySelector(`[data-view="${view}"]`).classList.add('active');
+
+        const contentArea = document.getElementById('contentArea');
+        const heatmapContainer = document.getElementById('heatmapContainer');
+
+        if (view === 'list') {
+            contentArea.style.display = 'block';
+            heatmapContainer.classList.remove('active');
+            if (knowledgePointsData.length > 0) {
+                displayKnowledgePoints(knowledgePointsData);
+            }
+        } else {
+            contentArea.style.display = 'none';
+            heatmapContainer.classList.add('active');
+            if (knowledgePointsData.length > 0) {
+                displayHeatmap(knowledgePointsData);
+            }
+        }
+    }
+
+    // 显示热力图
+    function displayHeatmap(kps) {
+        const heatmapContent = document.getElementById('heatmapContent');
+
+        // 计算资源丰富度并排序
+        const kpsWithRichness = kps.map(kp => {
+            const videoCount = kp.videos?.length || 0;
+            const materialCount = kp.learning_materials_count || 0;
+            const questionCount = kp.practice_questions_count || 0;
+            const richness = videoCount + materialCount + questionCount;
+            return { ...kp, richness };
+        }).sort((a, b) => b.richness - a.richness);
+
+        // 获取最大丰富度用于颜色计算
+        const maxRichness = Math.max(...kpsWithRichness.map(kp => kp.richness), 1);
+
+        let html = '';
+        kpsWithRichness.forEach((kp, index) => {
+            const richnessPercent = (kp.richness / maxRichness) * 100;
+            const hue = (richnessPercent / 100) * 120; // 0-120: 红到绿
+            const bgColor = `hsl(${hue}, 70%, 85%)`;
+            const borderColor = `hsl(${hue}, 70%, 65%)`;
+
+            html += `
+                <div class="heatmap-cell" style="background: ${bgColor}; border-color: ${borderColor};"
+                     onclick="showKpHeatmapDetail(${index})">
+                    <div style="position: absolute; top: 15px; right: 15px; font-size: 24px; font-weight: bold; opacity: 0.6;">
+                        ${kp.richness}
+                    </div>
+                    <h4>${escapeHtml(kp.topic_title_cn || kp.topic_title_id)}</h4>
+                    ${kp.chapter_title ? `<div class="chapter">${escapeHtml(kp.chapter_title)}</div>` : ''}
+                    <div class="stats">
+                        📹 ${kp.videos?.length || 0} |
+                        📚 ${kp.learning_materials_count || 0} |
+                        ✏️ ${kp.practice_questions_count || 0}
+                    </div>
+                </div>
+            `;
+        });
+
+        heatmapContent.innerHTML = html;
+
+        // 保存数据供点击使用
+        window.heatmapData = kpsWithRichness;
+    }
+
+    // 显示知识点列表
+    function displayKnowledgePoints(kps) {
+        const contentArea = document.getElementById('contentArea');
+
+        if (kps.length === 0) {
+            contentArea.innerHTML = '<div class="empty-state"><h3>暂无知识点数据</h3><p>请尝试其他筛选条件</p></div>';
+            return;
+        }
+
+        contentArea.innerHTML = '<div class="knowledge-points-grid"></div>';
+        const grid = contentArea.querySelector('.knowledge-points-grid');
+
+        kps.forEach((kp, index) => {
+            const card = createKnowledgePointCard(kp, index);
+            grid.appendChild(card);
+        });
+    }
+
+    // 创建知识点卡片
+    function createKnowledgePointCard(kp, index) {
+        const card = document.createElement('div');
+        card.className = 'knowledge-point-card';
+
+        const videos = kp.videos || [];
+        const materialsCount = kp.learning_materials_count || 0;
+        const questionsCount = kp.practice_questions_count || 0;
+
+        card.innerHTML = `
+            <div class="kp-header">
+                <h3>${escapeHtml(kp.topic_title_cn || kp.topic_title_id || '未知知识点')}</h3>
+                ${kp.chapter_title ? `<div class="chapter">章节: ${escapeHtml(kp.chapter_title)}</div>` : ''}
+                ${kp.learning_objective ? `<div class="objective">${escapeHtml(kp.learning_objective.substring(0, 100))}${kp.learning_objective.length > 100 ? '...' : ''}</div>` : ''}
+            </div>
+            <div class="charts-container">
+                <div class="chart-section">
+                    <div class="chart-section-title">
+                        <span class="icon">📹</span>
+                        <span>视频 (${videos.length}个)</span>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="videoChart_${index}"></canvas>
+                    </div>
+                </div>
+                <div class="chart-section">
+                    <div class="chart-section-title">
+                        <span class="icon">📚</span>
+                        <span>学习资料 (${materialsCount}个)</span>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="materialChart_${index}"></canvas>
+                    </div>
+                </div>
+                <div class="chart-section">
+                    <div class="chart-section-title">
+                        <span class="icon">✏️</span>
+                        <span>互动题目 (${questionsCount}个)</span>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="questionChart_${index}"></canvas>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // 创建柱状图
+        setTimeout(() => {
+            createVideoBarChart(`videoChart_${index}`, videos, kp);
+            createMaterialBarChart(`materialChart_${index}`, materialsCount, kp);
+            createQuestionBarChart(`questionChart_${index}`, questionsCount, kp);
+        }, 100);
+
+        return card;
+    }
+
+    // 创建视频柱状图（高度代表AI评分）
+    function createVideoBarChart(canvasId, videos, kp) {
+        const canvas = document.getElementById(canvasId);
+        if (!canvas) return;
+
+        if (videos.length === 0) {
+            canvas.parentElement.innerHTML = '<div class="chart-empty">暂无视频数据</div>';
+            return;
+        }
+
+        const ctx = canvas.getContext('2d');
+        const scores = videos.map(v => v.overall_score || 0);
+        const labels = videos.map((v, i) => `视频${i + 1}`);
+        const colors = scores.map(score => {
+            if (score >= 8) return '#f44336';
+            if (score >= 6) return '#ff9800';
+            if (score >= 4) return '#8bc34a';
+            return '#4caf50';
+        });
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'AI评分',
+                    data: scores,
+                    backgroundColor: colors,
+                    borderColor: colors,
+                    borderWidth: 2,
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 10,
+                        ticks: {
+                            stepSize: 2,
+                            callback: function(value) {
+                                return value + '分';
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'AI评分 (0-10分)'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const video = videos[context.dataIndex];
+                                return [
+                                    `评分: ${context.parsed.y.toFixed(1)}/10`,
+                                    `标题: ${video.video_title.substring(0, 30)}${video.video_title.length > 30 ? '...' : ''}`
+                                ];
+                            }
+                        }
+                    }
+                },
+                onClick: (event, elements) => {
+                    if (elements.length > 0) {
+                        const index = elements[0].index;
+                        showVideoDetail(videos[index], kp);
+                    }
+                }
+            }
+        });
+    }
+
+    // 创建学习资料柱状图
+    function createMaterialBarChart(canvasId, count, kp) {
+        const canvas = document.getElementById(canvasId);
+        if (!canvas) return;
+
+        const ctx = canvas.getContext('2d');
+
+        if (count === 0) {
+            canvas.parentElement.innerHTML = '<div class="chart-empty">暂无学习资料</div>';
+            return;
+        }
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['学习资料'],
+                datasets: [{
+                    label: '数量',
+                    data: [count],
+                    backgroundColor: '#4caf50',
+                    borderWidth: 2,
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                onClick: () => {
+                    showDetail('materials', kp);
+                }
+            }
+        });
+    }
+
+    // 创建互动题目柱状图
+    function createQuestionBarChart(canvasId, count, kp) {
+        const canvas = document.getElementById(canvasId);
+        if (!canvas) return;
+
+        const ctx = canvas.getContext('2d');
+
+        if (count === 0) {
+            canvas.parentElement.innerHTML = '<div class="chart-empty">暂无互动题目</div>';
+            return;
+        }
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['互动题目'],
+                datasets: [{
+                    label: '数量',
+                    data: [count],
+                    backgroundColor: '#ff9800',
+                    borderWidth: 2,
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 10
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                onClick: () => {
+                    showDetail('questions', kp);
+                }
+            }
+        });
+    }
+
+    // 显示单个视频详情
+    function showVideoDetail(video, kp) {
+        const modal = document.getElementById('detailModal');
+        const title = document.getElementById('detailTitle');
+        const content = document.getElementById('detailContent');
+
+        title.textContent = `视频详情 - ${video.video_title.substring(0, 50)}${video.video_title.length > 50 ? '...' : ''}`;
+
+        const score = video.overall_score || 0;
+        const scoreClass = score >= 8 ? 'score-excellent' : score >= 6 ? 'score-good' : score >= 4 ? 'score-fair' : 'score-poor';
+
+        content.innerHTML = `
+            <div class="detail-section">
+                <h3>视频信息</h3>
+                <div class="video-item">
+                    <h4><a href="${escapeHtml(video.video_url)}" target="_blank">${escapeHtml(video.video_title)}</a></h4>
+                    <div style="margin-top: 10px;">
+                        <span class="score-badge ${scoreClass}">总分: ${score.toFixed(1)}/10</span>
+                        <span style="font-size: 12px; color: #666; margin-left: 10px;">评估日期: ${formatDate(video.evaluation_date)}</span>
+                    </div>
+                    <div class="score-details" style="margin-top: 15px;">
+                        <div class="score-item">
+                            <div class="label">视觉质量</div>
+                            <div class="value">${(video.visual_quality || 0).toFixed(1)}/10</div>
+                        </div>
+                        <div class="score-item">
+                            <div class="label">内容相关度</div>
+                            <div class="value">${(video.relevance || 0).toFixed(1)}/10</div>
+                        </div>
+                        <div class="score-item">
+                            <div class="label">教学质量</div>
+                            <div class="value">${(video.pedagogy || 0).toFixed(1)}/10</div>
+                        </div>
+                        <div class="score-item">
+                            <div class="label">热度/元数据</div>
+                            <div class="value">${(video.metadata || 0).toFixed(1)}/10</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="detail-section">
+                <h3>所属知识点</h3>
+                <p><strong>${escapeHtml(kp.topic_title_cn || kp.topic_title_id)}</strong></p>
+                ${kp.chapter_title ? `<p style="color: #666; margin-top: 5px;">章节: ${escapeHtml(kp.chapter_title)}</p>` : ''}
+                ${kp.learning_objective ? `<p style="color: #666; margin-top: 5px; line-height: 1.6;">学习目标: ${escapeHtml(kp.learning_objective)}</p>` : ''}
+            </div>
+        `;
+
+        modal.style.display = 'block';
+    }
+
+    // 显示详情（用于学习资料和互动题目）
+    function showDetail(type, kp) {
+        const modal = document.getElementById('detailModal');
+        const title = document.getElementById('detailTitle');
+        const content = document.getElementById('detailContent');
+
+        if (type === 'materials') {
+            title.textContent = `学习资料 - ${kp.topic_title_cn || kp.topic_title_id}`;
+            content.innerHTML = '<div class="empty-state"><h3>功能开发中</h3><p>学习资料功能即将上线</p></div>';
+        } else if (type === 'questions') {
+            title.textContent = `互动题目 - ${kp.topic_title_cn || kp.topic_title_id}`;
+            content.innerHTML = '<div class="empty-state"><h3>功能开发中</h3><p>互动题目功能即将上线</p></div>';
+        }
+
+        modal.style.display = 'block';
+    }
+
+    // 关闭详情Modal
+    function closeDetailModal() {
+        document.getElementById('detailModal').style.display = 'none';
+    }
+
+    // 点击Modal外部关闭
+    window.onclick = function(event) {
+        const modal = document.getElementById('detailModal');
+        if (event.target === modal) {
+            closeDetailModal();
+        }
+    }
+
+    // 工具函数
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    function formatDate(dateString) {
+        if (!dateString) return '未知';
+        try {
+            const date = new Date(dateString);
+            return date.toLocaleString('zh-CN', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        } catch {
+            return dateString;
+        }
+    }
+</script>
+{% endblock %}

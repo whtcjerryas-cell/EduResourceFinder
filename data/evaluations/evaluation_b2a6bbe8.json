@@ -1,0 +1,83 @@
+{
+  "request_id": "b2a6bbe8",
+  "timestamp": "2025-12-31T03:07:27.173555+00:00",
+  "video_url": "https://www.youtube.com/playlist?list=PLuIz32wKYDEZ4OsP9xWkHt3tLQYsUrsTk",
+  "video_metadata": {
+    "title": "Matematika Kelas 3 SD Kurikulum Merdeka BAB 5 PENYAJIAN DATA DALAM TABEL",
+    "description": "PENYAJIAN DATA DALAM TABEL @BelajarBersamaMutiara \nMateri Belajar Matematika Kelas 3 SD/MI Semester 1\nKURIKULUM MERDEKA \nBAB 5\n\nTujuan Pembelajaran: Setelah mempelajari bab ini, peserta didik diharapkan dapat: \n1. Mengurutkan data dari terkecil ke terbesar dengan benar. \n2. Membandingkan data dengan benar. \n3. Menyajikan data dalam bentuk tabel dengan benar. \n4. Menentukan data paling banyak dan paling sedikit dalam bentuk tabel dengan benar\n\nMatematika Kelas 3 SD \nSEMESTER 1 \n\nBAB 1 : BILANGAN ",
+    "duration": 963,
+    "upload_date": "20250709",
+    "view_count": 633,
+    "like_count": 7,
+    "channel": "Belajar Bersama Mutiara",
+    "channel_id": "UCl4ZndgbVXF6o_X6LjHCA2g",
+    "resolution": "640x360",
+    "max_resolution_height": 1080,
+    "fps": 30,
+    "format": "18 - 640x360 (360p)",
+    "ext": "mp4",
+    "url": "https://www.youtube.com/watch?v=OkPlWdaN4qA",
+    "tags": [
+      "matematika",
+      "matematika kelas 3 sd",
+      "matematika kurikulum merdeka",
+      "kurikulum merdeka",
+      "kelas 3 sd",
+      "matematika kelas 3 sd kurikulum merdeka"
+    ],
+    "categories": [
+      "Education"
+    ],
+    "thumbnail": "https://i.ytimg.com/vi/OkPlWdaN4qA/maxresdefault.jpg"
+  },
+  "evaluation": {
+    "overall_score": 5.05,
+    "visual_quality": {
+      "tech_score": 10.0,
+      "design_score": 8.0,
+      "combined_score": 9.2,
+      "details": "硬指标: 支持1080p及以上 (1080p); 软指标: 整体设计清晰，板书和文本易于阅读。使用了对话框和表格来辅助理解，信息层次分明。色彩对比度良好，但可以增加更多视觉辅助以提高互动性。"
+    },
+    "relevance": {
+      "score": 2.5,
+      "details": "视频内容主要聚焦于数据在表格中的呈现、排序和比较数据（如家庭成员数量和选举投票），而非直接讲解学习目标中的核心知识点：计数、阅读、书写和比较自然数到100。未覆盖目标所有关键概念，如数字书写和基本比较符号（>、<、=）。内容偏离主题，包含无关的数据处理活动，深度适合3年级但不匹配目标。"
+    },
+    "pedagogy": {
+      "score": 7.0,
+      "details": "讲解逻辑有引入故事和活动例子，但结构不够清晰，缺少明确总结；内容适合小学3年级学生，语速通过简单语言体现；有引导性提问如回顾和活动问题；重点强调了范围和比较概念；互动性强，通过小组活动增强参与。"
+    },
+    "metadata": {
+      "score": 1.1,
+      "details": "观看次数: 633 (得分0.5), 点赞率: 1.11% (得分2.0)"
+    },
+    "breakdown": {
+      "visual_weight": 0.2,
+      "relevance_weight": 0.4,
+      "pedagogy_weight": 0.3,
+      "metadata_weight": 0.1
+    },
+    "matched_knowledge_point": {
+      "id": "MAT-1-2-BIL-01",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 1 & 2",
+      "subject": "Matematika",
+      "chapter_title": "Bilangan",
+      "topic_title_id": "Membilang, membaca, menulis, dan membandingkan bilangan cacah sampai 100",
+      "topic_title_cn": "100以内整数的数数、读写和比较",
+      "learning_objective": "Siswa mampu membilang, membaca, menulis lambang bilangan, dan membandingkan (lebih dari, kurang dari, sama dengan) bilangan cacah hingga 100.",
+      "mapping_tags": [
+        "membilang",
+        "membandingkan bilangan",
+        "bilangan cacah",
+        "kurang dari lebih dari",
+        "angka 1-100"
+      ]
+    }
+  },
+  "matched_knowledge_point": null,
+  "search_params": {
+    "country": "ID",
+    "grade": "Kelas 3",
+    "subject": "Matematika"
+  }
+}

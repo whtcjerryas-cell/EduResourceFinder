@@ -1,0 +1,69 @@
+{
+  "timestamp": "2026-01-06T08:59:55.792871",
+  "total_tests": 10,
+  "passed": 8,
+  "failed": 2,
+  "pass_rate": 80.0,
+  "results": [
+    {
+      "test_name": "服务器运行状态",
+      "passed": true,
+      "details": "服务器响应正常: http://localhost:5001",
+      "timestamp": "2026-01-06T08:58:25.536558"
+    },
+    {
+      "test_name": "搜索API响应",
+      "passed": true,
+      "details": "找到 20 个结果",
+      "timestamp": "2026-01-06T08:58:55.751988"
+    },
+    {
+      "test_name": "搜索结果数量",
+      "passed": true,
+      "details": "返回 20 个资源",
+      "timestamp": "2026-01-06T08:58:55.751999"
+    },
+    {
+      "test_name": "资源分类功能",
+      "passed": true,
+      "details": "成功分类为 4 种类型",
+      "timestamp": "2026-01-06T08:58:55.752062"
+    },
+    {
+      "test_name": "资源类型过滤-仅视频",
+      "passed": false,
+      "details": "异常: HTTPConnectionPool(host='localhost', port=5001): Read timed out. (read timeout=60)",
+      "timestamp": "2026-01-06T08:59:55.757096"
+    },
+    {
+      "test_name": "LLM推荐理由生成",
+      "passed": false,
+      "details": "推荐理由过于相似（只有2个不同的）",
+      "timestamp": "2026-01-06T08:59:55.757347"
+    },
+    {
+      "test_name": "YouTube播放列表检测",
+      "passed": true,
+      "details": "前端代码包含播放列表检测逻辑",
+      "timestamp": "2026-01-06T08:59:55.775724"
+    },
+    {
+      "test_name": "AI深度评估按钮",
+      "passed": true,
+      "details": "前端包含AI评估按钮和YouTube检测代码",
+      "timestamp": "2026-01-06T08:59:55.781535"
+    },
+    {
+      "test_name": "资源类型下拉框",
+      "passed": true,
+      "details": "前端包含资源类型选择器，包含'仅视频'选项",
+      "timestamp": "2026-01-06T08:59:55.785591"
+    },
+    {
+      "test_name": "彩色类型标签",
+      "passed": true,
+      "details": "前端包含类型标签（🎬 📚）和渐变色样式",
+      "timestamp": "2026-01-06T08:59:55.789301"
+    }
+  ]
+}

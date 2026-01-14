@@ -1,0 +1,42 @@
+{
+  "url": "https://www.youtube.com/watch?v=epHRx091W7M",
+  "criteria": {
+    "url": "https://www.youtube.com/watch?v=epHRx091W7M",
+    "country": "伊拉克",
+    "grade": "高中一年级",
+    "subject": "伊斯兰教育"
+  },
+  "page_info": {
+    "title": "الصف الأول الثانوي - التربية الإسلامية - الجزء الأول - الإيمان - الدرس الأول",
+    "description": "القناة التعليمية للمنتدى اليمني لذوي الإعاقة",
+    "author": "القناة التعليمية للمنتدى اليمني لذوي الإعاقة",
+    "thumbnail": ""
+  },
+  "llm_evaluation": null,
+  "rule_evaluation": {
+    "url": "https://www.youtube.com/watch?v=epHRx091W7M",
+    "criteria": {
+      "url": "https://www.youtube.com/watch?v=epHRx091W7M",
+      "country": "伊拉克",
+      "grade": "高中一年级",
+      "subject": "伊斯兰教育"
+    },
+    "page_info": {
+      "title": "الصف الأول الثانوي - التربية الإسلامية - الجزء الأول - الإيمان - الدرس الأول",
+      "description": "القناة التعليمية للمنتدى اليمني لذوي الإعاقة"
+    },
+    "scores": {
+      "grade": 2.0,
+      "subject": 2.0,
+      "country": 9.0
+    },
+    "overall_score": 4.3,
+    "analysis": {
+      "grade": "年级匹配度: 2.0/10",
+      "subject": "学科匹配度: 2.0/10",
+      "country": "地区相关性: 9.0/10"
+    }
+  },
+  "final_score": 4.3,
+  "recommendation": "❌ 不推荐 - 不符合要求"
+}

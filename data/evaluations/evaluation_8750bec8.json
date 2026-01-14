@@ -1,0 +1,94 @@
+{
+  "request_id": "8750bec8",
+  "timestamp": "2025-12-30T05:41:29.524067+00:00",
+  "video_url": "https://www.youtube.com/playlist?list=PLuIz32wKYDEYfzS279yUlNfJ-vPrl-_bs",
+  "video_metadata": {
+    "title": "Matematika Kelas 4 SD Kurikulum Merdeka Pembagian BAB 2 Evaluasi Latihan Soal Pembagian",
+    "description": "PEMBAGIAN @BelajarBersamaMutiara \nBelajar Pembagian Kelas 4 SD\nMATERI BELAJAR MATEMATIKA KELAS 4 SD/MI KURIKULUM MERDEKA\nSEMESTER 1\nBAB 2 / Part 2\n\nVideo part 1 : https://youtu.be/84PYZpyTs3A\n\nPada tahun ketiga, siswa diperkenalkan metode pembagian sebagai perhitungan baru, dan mempelajari pembagian dalam kisaran yang ada pada tabel perkalian 99. Termasuk juga belajar mengenai \"pembagian dengan \"sisa\". Pada tahun ke-4, siswa akan belajar pembagian bersusun, kemudian belajar pembagian hingga (Bil",
+    "duration": 519,
+    "upload_date": "20221014",
+    "view_count": 1456,
+    "like_count": 18,
+    "channel": "Belajar Bersama Mutiara",
+    "channel_id": "UCl4ZndgbVXF6o_X6LjHCA2g",
+    "resolution": "480x360",
+    "max_resolution_height": 360,
+    "fps": 30,
+    "format": "18 - 480x360 (360p)",
+    "ext": "mp4",
+    "url": "https://www.youtube.com/watch?v=id28c7nhcXY",
+    "tags": [
+      "pembagian",
+      "matematika",
+      "kelas 4 SD",
+      "kurikulum merdeka",
+      "latihan dan soal",
+      "persoalan pembagian",
+      "hasil bagi",
+      "evaluasi",
+      "aturan pembagian",
+      "bilangan",
+      "pembagi",
+      "matematika pembagian",
+      "belajar pembagian",
+      "cara membagi angka",
+      "matematika kelas 4 SD",
+      "matematika kurikulum merdeka",
+      "pembagian bilangan",
+      "cara membagi bilangan"
+    ],
+    "categories": [
+      "Education"
+    ],
+    "thumbnail": "https://i.ytimg.com/vi_webp/id28c7nhcXY/sddefault.webp"
+  },
+  "evaluation": {
+    "overall_score": 4.97,
+    "visual_quality": {
+      "tech_score": 2.0,
+      "design_score": 8.0,
+      "combined_score": 4.4,
+      "details": "硬指标: 分辨率较低 (360p); 软指标: 板书和PPT排版整齐，字体大小适中，适合移动端阅读。使用了颜色和箭头作为视觉辅助，帮助理解内容。色彩对比度良好，信息层次清晰。但整体设计较为简单，缺少更丰富的图表或动画辅助。"
+    },
+    "relevance": {
+      "score": 5.0,
+      "details": "无知识点信息，使用默认分数"
+    },
+    "pedagogy": {
+      "score": 6.5,
+      "details": {
+        "讲解逻辑": "视频有基本的教学结构（引入->概念->例子），但逻辑连贯性一般。从文本看，讲解从具体问题直接开始，缺少系统的概念引入和总结。数学推理过程展示较为零散，缺乏清晰的思维导引。",
+        "语速": "从文本密度判断，语速可能偏快。在2000字符的文本中包含了多个数学问题的讲解，信息密度较高，可能不适合初学者或需要时间思考的学生。",
+        "引导性提问": "严重缺乏引导性提问。视频主要是单向讲解，没有看到'为什么这样？'、'你觉得呢？'等引导学生思考的问题。缺少苏格拉底式提问或启发式教学元素。",
+        "重点强调": "有一定程度的重点强调，通过重复关键数字和运算步骤来突出重点，如'pembaginya kita kali 3 sementara hasil baginya kita bagi dengan 3'。但缺乏系统的重点总结和视觉强调。",
+        "互动性": "互动性较差。视频主要是教师单向讲解，缺少学生参与、提问、练习等互动元素。没有看到暂停让学生思考或回答问题的设计。",
+        "综合评估": "这是一个基础的教学视频，完成了知识传递的基本功能，但在教学法设计上较为简单。适合作为复习材料或辅助学习资源，但作为主要教学资源时，需要补充更多的互动和思考引导元素。视频在数学内容准确性方面表现尚可，但在促进学生深度理解和思考方面有待加强。"
+      }
+    },
+    "metadata": {
+      "score": 1.4,
+      "details": "观看次数: 1,456 (得分1.0), 点赞率: 1.24% (得分2.0)"
+    },
+    "breakdown": {
+      "visual_weight": 0.2,
+      "relevance_weight": 0.4,
+      "pedagogy_weight": 0.3,
+      "metadata_weight": 0.1
+    },
+    "matched_knowledge_point": null
+  },
+  "matched_knowledge_point": null,
+  "search_params": {},
+  "files": {
+    "video_path": "data/videos/analyzed/Matematika Kelas 4 SD Kurikulum Merdeka Pembagian BAB 2 Evaluasi Latihan Soal Pembagian.mp4",
+    "audio_path": "data/videos/analyzed/Matematika Kelas 4 SD Kurikulum Merdeka Pembagian BAB 2 Evaluasi Latihan Soal Pembagian.mp3",
+    "frames_paths": [
+      "data/videos/analyzed/Matematika Kelas 4 SD Kurikulum Merdeka Pembagian BAB 2 Evaluasi Latihan Soal Pembagian_frame_01.jpg",
+      "data/videos/analyzed/Matematika Kelas 4 SD Kurikulum Merdeka Pembagian BAB 2 Evaluasi Latihan Soal Pembagian_frame_02.jpg",
+      "data/videos/analyzed/Matematika Kelas 4 SD Kurikulum Merdeka Pembagian BAB 2 Evaluasi Latihan Soal Pembagian_frame_03.jpg",
+      "data/videos/analyzed/Matematika Kelas 4 SD Kurikulum Merdeka Pembagian BAB 2 Evaluasi Latihan Soal Pembagian_frame_04.jpg",
+      "data/videos/analyzed/Matematika Kelas 4 SD Kurikulum Merdeka Pembagian BAB 2 Evaluasi Latihan Soal Pembagian_frame_05.jpg",
+      "data/videos/analyzed/Matematika Kelas 4 SD Kurikulum Merdeka Pembagian BAB 2 Evaluasi Latihan Soal Pembagian_frame_06.jpg"
+    ]
+  }
+}

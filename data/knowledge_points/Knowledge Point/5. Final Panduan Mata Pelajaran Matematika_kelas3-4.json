@@ -1,0 +1,390 @@
+{
+  "metadata": {
+    "source_file": "/Users/shmiwanghao8/Desktop/education/Indonesia/syllabus/5. Final Panduan Mata Pelajaran Matematika_12_09_2025_Revisi 3_58-94.pdf",
+    "total_pages": 37,
+    "total_knowledge_points": 22,
+    "check_iterations": 2,
+    "has_remaining_issues": true
+  },
+  "knowledge_points": [
+    {
+      "id": "MAT-1-2-BIL-01",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 1 & 2",
+      "subject": "Matematika",
+      "chapter_title": "Bilangan",
+      "topic_title_id": "Membilang, membaca, menulis, dan membandingkan bilangan cacah sampai 100",
+      "topic_title_cn": "100以内整数的数数、读写和比较",
+      "learning_objective": "Siswa mampu membilang, membaca, menulis lambang bilangan, dan membandingkan (lebih dari, kurang dari, sama dengan) bilangan cacah hingga 100.",
+      "mapping_tags": [
+        "membilang",
+        "membandingkan bilangan",
+        "bilangan cacah",
+        "kurang dari lebih dari",
+        "angka 1-100"
+      ]
+    },
+    {
+      "id": "MAT-1-2-BIL-02",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 1 & 2",
+      "subject": "Matematika",
+      "chapter_title": "Bilangan",
+      "topic_title_id": "Nilai tempat puluhan dan satuan",
+      "topic_title_cn": "十位和个位的位值",
+      "learning_objective": "Siswa mampu memahami dan menentukan nilai tempat (puluhan dan satuan) dari bilangan dua angka dan menggunakannya untuk mengomposisi dan dekomposisi bilangan.",
+      "mapping_tags": [
+        "nilai tempat",
+        "puluhan satuan",
+        "dekomposisi bilangan",
+        "place value",
+        "bilangan dua angka"
+      ]
+    },
+    {
+      "id": "MAT-1-2-BIL-03",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 1 & 2",
+      "subject": "Matematika",
+      "chapter_title": "Bilangan",
+      "topic_title_id": "Penjumlahan dan pengurangan bilangan cacah sampai 20",
+      "topic_title_cn": "20以内整数的加减法",
+      "learning_objective": "Siswa mampu melakukan operasi penjumlahan dan pengurangan bilangan cacah dalam rentang hingga 20 dengan berbagai strategi (misalnya, menggunakan jari, benda konkret, garis bilangan) dan menyelesaikan soal cerita sederhana.",
+      "mapping_tags": [
+        "penjumlahan",
+        "pengurangan",
+        "hitung tambah kurang",
+        "soal cerita",
+        "garis bilangan"
+      ]
+    },
+    {
+      "id": "MAT-1-2-GEO-01",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 1 & 2",
+      "subject": "Matematika",
+      "chapter_title": "Geometri",
+      "topic_title_id": "Pengenalan bangun datar dan bangun ruang",
+      "topic_title_cn": "平面图形和立体图形的认知",
+      "learning_objective": "Siswa mampu mengenali, menyebutkan nama, dan mendeskripsikan ciri-ciri dasar (jumlah sisi, sudut, permukaan) dari berbagai bentuk bangun datar (segitiga, persegi, lingkaran) dan bangun ruang (kubus, balok, tabung) yang ada di lingkungan sekitar.",
+      "mapping_tags": [
+        "bangun datar",
+        "bangun ruang",
+        "bentuk geometri",
+        "ciri-ciri bangun",
+        "sisi sudut"
+      ]
+    },
+    {
+      "id": "MAT-1-2-GEO-02",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 1 & 2",
+      "subject": "Matematika",
+      "chapter_title": "Geometri",
+      "topic_title_id": "Komposisi dan dekomposisi bangun datar",
+      "topic_title_cn": "平面图形的组合与分解",
+      "learning_objective": "Siswa mampu menyusun (komposisi) bentuk baru dari beberapa bangun datar dasar dan menguraikan (dekomposisi) suatu bangun datar menjadi bagian-bagian pembentuknya, menggunakan alat seperti tangram atau blok bangun.",
+      "mapping_tags": [
+        "komposisi bangun",
+        "dekomposisi bangun",
+        "menyusun bentuk",
+        "tangram",
+        "pazel geometri"
+      ]
+    },
+    {
+      "id": "MAT-1-2-GEO-03",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 1 & 2",
+      "subject": "Matematika",
+      "chapter_title": "Geometri",
+      "topic_title_id": "Posisi benda terhadap benda lain",
+      "topic_title_cn": "物体相对位置",
+      "learning_objective": "Siswa mampu memahami dan menggunakan kosakata posisi dan arah seperti kiri-kanan, atas-bawah, di dalam-di luar untuk mendeskripsikan lokasi suatu benda terhadap benda lain.",
+      "mapping_tags": [
+        "posisi benda",
+        "relasi posisi",
+        "arah",
+        "kiri kanan",
+        "atas bawah"
+      ]
+    },
+    {
+      "id": "MAT-1-2-ADP-01",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 1 & 2",
+      "subject": "Matematika",
+      "chapter_title": "Analisis Data dan Peluang",
+      "topic_title_id": "Pengurutan, penyortiran, pengelompokkan, perbandingan, dan penyajian data",
+      "topic_title_cn": "数据的排序、分类、分组、比较和呈现",
+      "learning_objective": "Siswa mampu mengurutkan, menyortir, mengelompokkan, dan membandingkan data banyak benda (hingga empat kategori) serta menyajikannya dalam bentuk turus dan piktogram sederhana.",
+      "mapping_tags": [
+        "turus",
+        "piktogram",
+        "menyajikan data",
+        "mengelompokkan data",
+        "membandingkan data"
+      ]
+    },
+    {
+      "id": "MAT-3-4-BIL-01",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 3 & 4",
+      "subject": "Matematika",
+      "chapter_title": "Bilangan",
+      "topic_title_id": "Perluasan intuisi bilangan (number sense) pada bilangan cacah sampai 10.000",
+      "topic_title_cn": "一万以内整数的数感拓展",
+      "learning_objective": "Siswa mampu mengembangkan intuisi bilangan (number sense) untuk bilangan cacah hingga 10.000, termasuk memahami nilai tempat, membandingkan, mengurutkan, serta melakukan estimasi hasil operasi hitung.",
+      "mapping_tags": [
+        "number sense",
+        "intuisi bilangan",
+        "bilangan cacah",
+        "membandingkan bilangan",
+        "mengurutkan bilangan"
+      ]
+    },
+    {
+      "id": "MAT-3-4-BIL-02",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 3 & 4",
+      "subject": "Matematika",
+      "chapter_title": "Bilangan",
+      "topic_title_id": "Membaca dan menulis bilangan sampai 10.000",
+      "topic_title_cn": "读写一万以内的数",
+      "learning_objective": "Siswa mampu membaca dan menulis bilangan cacah hingga 10.000 dalam bentuk angka dan kata, serta memahami representasi bilangan dalam berbagai konteks seperti uang.",
+      "mapping_tags": [
+        "membaca bilangan",
+        "menulis bilangan",
+        "angka dan kata",
+        "lambang bilangan",
+        "nama bilangan"
+      ]
+    },
+    {
+      "id": "MAT-3-4-BIL-03",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 3 & 4",
+      "subject": "Matematika",
+      "chapter_title": "Bilangan",
+      "topic_title_id": "Menentukan dan menggunakan nilai tempat bilangan sampai 10.000",
+      "topic_title_cn": "确定和使用一万以内数的位值",
+      "learning_objective": "Siswa mampu menentukan dan menggunakan konsep nilai tempat (ribuan, ratusan, puluhan, satuan) pada bilangan hingga 10.000 untuk membandingkan, mengurutkan, dan membulatkan bilangan.",
+      "mapping_tags": [
+        "nilai tempat",
+        "place value",
+        "ribuan ratusan",
+        "membulatkan bilangan",
+        "posisi digit"
+      ]
+    },
+    {
+      "id": "MAT-3-4-BIL-04",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 3 & 4",
+      "subject": "Matematika",
+      "chapter_title": "Bilangan",
+      "topic_title_id": "Melakukan komposisi dan dekomposisi bilangan sampai 10.000",
+      "topic_title_cn": "一万以内数的组合与分解",
+      "learning_objective": "Siswa mampu melakukan komposisi (menyusun) dan dekomposisi (menguraikan) bilangan cacah hingga 10.000 berdasarkan nilai tempatnya dalam berbagai cara untuk memperkuat fleksibilitas berhitung.",
+      "mapping_tags": [
+        "komposisi bilangan",
+        "dekomposisi bilangan",
+        "mengurai bilangan",
+        "menyusun bilangan",
+        "partisi bilangan"
+      ]
+    },
+    {
+      "id": "MAT-3-4-BIL-05",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 3 & 4",
+      "subject": "Matematika",
+      "chapter_title": "Bilangan",
+      "topic_title_id": "Penjumlahan dan pengurangan bilangan cacah sampai 1.000",
+      "topic_title_cn": "一千以内整数的加减法",
+      "learning_objective": "Siswa mampu melakukan operasi penjumlahan dan pengurangan bilangan cacah hingga 1.000 dengan menggunakan berbagai strategi berbasis nilai tempat dan menyelesaikan masalah kontekstual yang relevan.",
+      "mapping_tags": [
+        "penjumlahan",
+        "pengurangan",
+        "operasi hitung",
+        "soal cerita penjumlahan",
+        "hitung campur"
+      ]
+    },
+    {
+      "id": "MAT-3-4-BIL-06",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 3 & 4",
+      "subject": "Matematika",
+      "chapter_title": "Bilangan",
+      "topic_title_id": "Perkalian dan pembagian bilangan cacah sampai 100",
+      "topic_title_cn": "一百以内整数的乘除法",
+      "learning_objective": "Siswa mampu melakukan operasi perkalian dan pembagian bilangan cacah hingga 100 menggunakan benda konkret, gambar, dan simbol, serta memahami hubungan antara perkalian sebagai penjumlahan berulang dan pembagian sebagai kebalikannya.",
+      "mapping_tags": [
+        "perkalian",
+        "pembagian",
+        "operasi hitung",
+        "penjumlahan berulang",
+        "hitung kali bagi"
+      ]
+    },
+    {
+      "id": "MAT-3-4-BIL-07",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 3 & 4",
+      "subject": "Matematika",
+      "chapter_title": "Bilangan",
+      "topic_title_id": "Pengenalan kelipatan dan faktor",
+      "topic_title_cn": "倍数和因数的认知",
+      "learning_objective": "Siswa mampu mengenali dan menentukan kelipatan dan faktor dari suatu bilangan sebagai kelanjutan dari konsep perkalian dan pembagian.",
+      "mapping_tags": [
+        "kelipatan",
+        "faktor",
+        "kelipatan bilangan",
+        "faktor bilangan",
+        "pembagi habis"
+      ]
+    },
+    {
+      "id": "MAT-3-4-BIL-08",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 3 & 4",
+      "subject": "Matematika",
+      "chapter_title": "Bilangan",
+      "topic_title_id": "Perbandingan, pengurutan, dan kesetaraan pecahan",
+      "topic_title_cn": "分数的比较、排序与等值",
+      "learning_objective": "Siswa mampu membandingkan dan mengurutkan pecahan unit (pembilang satu) dan pecahan dengan penyebut yang sama, serta mengenali dan menerapkan konsep pecahan senilai.",
+      "mapping_tags": [
+        "pecahan",
+        "membandingkan pecahan",
+        "pecahan senilai",
+        "mengurutkan pecahan",
+        "pecahan unit"
+      ]
+    },
+    {
+      "id": "MAT-3-4-BIL-09",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 3 & 4",
+      "subject": "Matematika",
+      "chapter_title": "Bilangan",
+      "topic_title_id": "Hubungan pecahan, desimal, dan persen",
+      "topic_title_cn": "分数、小数和百分数的关系",
+      "learning_objective": "Siswa mampu mengembangkan pemahaman intuitif tentang hubungan antara pecahan, desimal, dan persen sebagai representasi bagian dari keseluruhan, serta mampu mengubah bentuk pecahan menjadi desimal dan persen.",
+      "mapping_tags": [
+        "pecahan desimal",
+        "persen",
+        "mengubah pecahan",
+        "bentuk desimal",
+        "bentuk persen"
+      ]
+    },
+    {
+      "id": "MAT-3-4-ALJ-01",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 3 & 4",
+      "subject": "Matematika",
+      "chapter_title": "Aljabar",
+      "topic_title_id": "Penentuan nilai yang belum diketahui dalam kalimat matematika",
+      "topic_title_cn": "确定数学算式中的未知数",
+      "learning_objective": "Siswa mampu menentukan nilai yang belum diketahui (menggunakan simbol seperti kotak atau garis) dalam kalimat matematika sederhana yang melibatkan operasi penjumlahan dan pengurangan hingga 100.",
+      "mapping_tags": [
+        "kalimat matematika",
+        "nilai yang tidak diketahui",
+        "bilangan hilang",
+        "persamaan sederhana",
+        "aljabar awal"
+      ]
+    },
+    {
+      "id": "MAT-3-4-ALJ-02",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 3 & 4",
+      "subject": "Matematika",
+      "chapter_title": "Aljabar",
+      "topic_title_id": "Pola gambar, objek, dan bilangan",
+      "topic_title_cn": "图形、物体和数列规律",
+      "learning_objective": "Siswa mampu mengenali, menjelaskan, dan melanjutkan pola gambar, objek, atau bilangan yang membesar dan mengecil secara teratur menggunakan aturan penjumlahan atau pengurangan.",
+      "mapping_tags": [
+        "pola bilangan",
+        "pola gambar",
+        "barisan bilangan",
+        "aturan pola",
+        "memprediksi pola"
+      ]
+    },
+    {
+      "id": "MAT-3-4-PGN-01",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 3 & 4",
+      "subject": "Matematika",
+      "chapter_title": "Pengukuran",
+      "topic_title_id": "Pengukuran panjang dan berat (satuan baku)",
+      "topic_title_cn": "长度和重量的测量（标准单位）",
+      "learning_objective": "Siswa mampu melakukan pengukuran panjang dan berat menggunakan alat ukur dan satuan baku (seperti sentimeter, meter, gram, kilogram) secara tepat.",
+      "mapping_tags": [
+        "pengukuran panjang",
+        "pengukuran berat",
+        "satuan baku",
+        "meter sentimeter",
+        "gram kilogram"
+      ]
+    },
+    {
+      "id": "MAT-3-4-PGN-02",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 3 & 4",
+      "subject": "Matematika",
+      "chapter_title": "Pengukuran",
+      "topic_title_id": "Hubungan antar satuan",
+      "topic_title_cn": "单位间的关系",
+      "learning_objective": "Siswa mampu memahami dan menggunakan hubungan antar satuan baku panjang (cm dan m) dan berat (g dan kg) untuk melakukan konversi sederhana.",
+      "mapping_tags": [
+        "hubungan antar satuan",
+        "konversi satuan",
+        "satuan panjang",
+        "satuan berat",
+        "tangga satuan"
+      ]
+    },
+    {
+      "id": "MAT-3-4-PGN-03",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 3 & 4",
+      "subject": "Matematika",
+      "chapter_title": "Pengukuran",
+      "topic_title_id": "Pengukuran luas dan volume dengan satuan baku dan tak baku",
+      "topic_title_cn": "面积和体积的测量（标准与非标准单位）",
+      "learning_objective": "Siswa mampu mengukur dan memahami konsep luas dan volume menggunakan satuan tidak baku (misalnya ubin, kubus satuan) dan satuan baku (misalnya cm², cm³, liter).",
+      "mapping_tags": [
+        "pengukuran luas",
+        "pengukuran volume",
+        "satuan luas",
+        "satuan volume",
+        "kubus satuan"
+      ]
+    },
+    {
+      "id": "MAT-3-4-GEO-01",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 3 & 4",
+      "subject": "Matematika",
+      "chapter_title": "Geometri",
+      "topic_title_id": "Ciri-ciri bangun datar (segiempat, segitiga, segi banyak)",
+      "topic_title_cn": "平面图形的特征（四边形、三角形、多边形）",
+      "learning_objective": "Siswa mampu mendeskripsikan, membandingkan, dan mengklasifikasikan berbagai bentuk bangun datar (segiempat, segitiga, segi banyak) berdasarkan ciri-cirinya seperti jumlah sisi, panjang sisi, besar sudut, dan simetri.",
+      "mapping_tags": [
+        "bangun datar",
+        "ciri-ciri bangun datar",
+        "segiempat",
+        "segitiga",
+        "segi banyak"
+      ]
+    }
+  ],
+  "issues": [
+    "覆盖率问题: 数据严重缺失。Kelas 1 & 2 年级缺少了最核心的 'Bilangan' (数与运算) 章节的所有知识点。根据 Kurikulum Merdeka 课程标准，这是该学段的基础内容。同样，Kelas 3 & 4 年级缺少了 'Analisis Data dan Peluang' (数据分析与概率) 章节。",
+    "数据一致性问题: 在 ID 'MAT-1-2-ADP-01' 中，`topic_title_id` 字段 'Pengurutan, penyortiran, Pengelompokkan, Perbandingan, dan Penyajian Data' 存在大小写不一致的问题，影响规范性。",
+    "**覆盖率检查**: 严重缺失了 'Kelas 1 & 2' 年级的 'Bilangan' (数与运算) 章节。这是该学段最核心的数学内容，包括数数、比较大小、基础加减法等知识点，目前数据中完全没有体现。"
+  ]
+}

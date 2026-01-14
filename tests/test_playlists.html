@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>印尼 K12 数学视频播放列表搜索结果</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .header .subtitle {
+            font-size: 1em;
+            opacity: 0.9;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .stat-card {
+            background: rgba(255,255,255,0.2);
+            padding: 10px 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .stat-number {
+            font-size: 1.8em;
+            font-weight: bold;
+        }
+        
+        .stat-label {
+            font-size: 0.85em;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 30px;
+            overflow-x: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            font-size: 0.95em;
+        }
+        
+        thead {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        th {
+            padding: 15px 12px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.95em;
+            white-space: nowrap;
+        }
+        
+        th:first-child {
+            border-top-left-radius: 8px;
+        }
+        
+        th:last-child {
+            border-top-right-radius: 8px;
+        }
+        
+        tbody tr {
+            border-bottom: 1px solid #e0e0e0;
+            transition: background-color 0.2s;
+        }
+        
+        tbody tr:hover {
+            background-color: #f5f5f5;
+        }
+        
+        tbody tr:last-child {
+            border-bottom: none;
+        }
+        
+        td {
+            padding: 15px 12px;
+            vertical-align: top;
+        }
+        
+        .country {
+            font-weight: 600;
+            color: #333;
+            white-space: nowrap;
+        }
+        
+        .subject {
+            color: #555;
+            white-space: nowrap;
+        }
+        
+        .grade {
+            color: #666;
+            white-space: nowrap;
+        }
+        
+        .url {
+            max-width: 400px;
+            word-break: break-all;
+        }
+        
+        .url a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .url a:hover {
+            color: #764ba2;
+            text-decoration: underline;
+        }
+        
+        .attempt {
+            text-align: center;
+            white-space: nowrap;
+        }
+        
+        .attempt-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            font-weight: 600;
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .chapter {
+            color: #555;
+            white-space: nowrap;
+        }
+        
+        .resource-type {
+            text-align: center;
+            white-space: nowrap;
+        }
+        
+        .type-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+        
+        .type-badge.type-playlist {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .type-badge.type-channel {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+        
+        .type-badge.type-video {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .search-query {
+            max-width: 200px;
+            color: #666;
+            font-size: 0.85em;
+            word-break: break-all;
+        }
+        
+        .reason {
+            max-width: 300px;
+            color: #666;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+        
+        .empty-state-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .content {
+                padding: 15px;
+            }
+            
+            table {
+                font-size: 0.85em;
+            }
+            
+            th, td {
+                padding: 10px 8px;
+            }
+            
+            .url {
+                max-width: 200px;
+            }
+            
+            .reason {
+                max-width: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📚 印尼 K12 数学视频播放列表</h1>
+            <div class="subtitle">搜索结果展示</div>
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-number">5</div>
+                    <div class="stat-label">播放列表</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content">
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>国家</th>
+                        <th>学科</th>
+                        <th>年级</th>
+                        <th>章节</th>
+                        <th>资源类型</th>
+                        <th>URL 地址</th>
+                        <th>搜索次数</th>
+                        <th>搜索词</th>
+                        <th>理由</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td class="country">印尼</td>
+                        <td class="subject">Matematika</td>
+                        <td class="grade">Fase A (Kelas 1-2)</td>
+                        <td class="chapter">Bilangan</td>
+                        <td class="resource-type"><span class="type-badge type-playlist">播放列表</span></td>
+                        <td class="url"><a href="https://www.youtube.com/playlist?list=PLsBSm1ExDjn4L07Y-tvjGV3RcPT-0ZS" target="_blank">https://www.youtube.com/playlist?list=PLsBSm1ExDjn4L07Y-tvjGV3RcPT-0ZS</a></td>
+                        <td class="attempt"><span class="attempt-badge">第 1 次</span></td>
+                        <td class="search-query">site:youtube.com playlist matematika kelas 1 bilan...</td>
+                        <td class="reason">匹配章节: Bilangan | 找到了高质量资源：1个 YouTube 播放列表和2个教育平台页面，都包含适合小学1-2年级的数学教学内容。 | 类型: Playlist/Channel</td>
+                    </tr>
+
+                    <tr>
+                        <td class="country">印尼</td>
+                        <td class="subject">Matematika</td>
+                        <td class="grade">Fase A (Kelas 1-2)</td>
+                        <td class="chapter">Bilangan</td>
+                        <td class="resource-type"><span class="type-badge type-video">单集视频（系列）</span></td>
+                        <td class="url"><a href="https://www.youtube.com/watch?v=Mex_17U669s" target="_blank">https://www.youtube.com/watch?v=Mex_17U669s</a></td>
+                        <td class="attempt"><span class="attempt-badge">第 1 次</span></td>
+                        <td class="search-query">site:youtube.com playlist matematika kelas 1 bilan...</td>
+                        <td class="reason">匹配章节: Bilangan | 找到了高质量资源：1个 YouTube 播放列表和2个教育平台页面，都包含适合小学1-2年级的数学教学内容。 | 类型: Video Source</td>
+                    </tr>
+
+                    <tr>
+                        <td class="country">印尼</td>
+                        <td class="subject">Matematika</td>
+                        <td class="grade">Fase A (Kelas 1-2)</td>
+                        <td class="chapter">Bilangan</td>
+                        <td class="resource-type"><span class="type-badge type-playlist">播放列表</span></td>
+                        <td class="url"><a href="https://www.youtube.com/playlist?list=PLUEbIcvgW-_qIZwBhIP352CIzVMq8Kk" target="_blank">https://www.youtube.com/playlist?list=PLUEbIcvgW-_qIZwBhIP352CIzVMq8Kk</a></td>
+                        <td class="attempt"><span class="attempt-badge">第 2 次</span></td>
+                        <td class="search-query">site:youtube.com playlist matematika kelas 1 full ...</td>
+                        <td class="reason">匹配章节: Bilangan | 找到了学期级别的完整课程合集 | 类型: Playlist/Channel</td>
+                    </tr>
+
+                    <tr>
+                        <td class="country">印尼</td>
+                        <td class="subject">Matematika</td>
+                        <td class="grade">Fase A (Kelas 1-2)</td>
+                        <td class="chapter">Geometri</td>
+                        <td class="resource-type"><span class="type-badge type-video">单集视频（系列）</span></td>
+                        <td class="url"><a href="https://www.youtube.com/watch?v=abc123" target="_blank">https://www.youtube.com/watch?v=abc123</a></td>
+                        <td class="attempt"><span class="attempt-badge">第 3 次</span></td>
+                        <td class="search-query">rekomendasi channel youtube belajar matematika kel...</td>
+                        <td class="reason">匹配章节: Geometri | 找到了教育频道推荐 | 类型: Video Source</td>
+                    </tr>
+
+                    <tr>
+                        <td class="country">印尼</td>
+                        <td class="subject">Matematika</td>
+                        <td class="grade">Fase A (Kelas 1-2)</td>
+                        <td class="chapter">Geometri</td>
+                        <td class="resource-type"><span class="type-badge type-playlist">播放列表</span></td>
+                        <td class="url"><a href="https://www.youtube.com/playlist?list=PLxyz456" target="_blank">https://www.youtube.com/playlist?list=PLxyz456</a></td>
+                        <td class="attempt"><span class="attempt-badge">第 4 次</span></td>
+                        <td class="search-query">playlist lengkap matematika kelas 1 semester 2...</td>
+                        <td class="reason">匹配章节: Geometri | 找到了几何主题的完整播放列表 | 类型: Playlist/Channel</td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</body>
+</html>

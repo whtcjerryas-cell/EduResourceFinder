@@ -1,0 +1,346 @@
+{% extends "base_new.html" %}
+
+{% block title %}评估报告 - K12教育资源搜索系统{% endblock %}
+
+{% block page_css %}
+<style>
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: var(--spacing-lg);
+        margin-bottom: var(--spacing-lg);
+    }
+
+    .stat-card {
+        background: var(--bg-card);
+        padding: var(--spacing-lg);
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow-md);
+        text-align: center;
+    }
+
+    .stat-card h3 {
+        color: var(--text-secondary);
+        font-size: var(--font-sm);
+        margin-bottom: var(--spacing-sm);
+        font-weight: 500;
+    }
+
+    .stat-card .number {
+        font-size: var(--font-3xl);
+        font-weight: bold;
+        color: var(--primary-color);
+    }
+
+    .filter-bar {
+        display: flex;
+        gap: var(--spacing-md);
+        margin-bottom: var(--spacing-lg);
+        flex-wrap: wrap;
+    }
+
+    .filter-select {
+        padding: 10px 15px;
+        border: 2px solid var(--border-color);
+        border-radius: var(--border-radius);
+        font-size: var(--font-base);
+        min-width: 150px;
+        background: var(--bg-secondary);
+        color: var(--text-primary);
+        transition: all var(--transition-fast);
+    }
+
+    .filter-select:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .report-item {
+        border: 2px solid var(--border-color);
+        border-radius: var(--border-radius);
+        padding: var(--spacing-lg);
+        margin-bottom: var(--spacing-md);
+        transition: all var(--transition-base);
+        background: var(--bg-card);
+    }
+
+    .report-item:hover {
+        box-shadow: var(--shadow-lg);
+        transform: translateY(-2px);
+    }
+
+    .report-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        margin-bottom: var(--spacing-md);
+        gap: var(--spacing-md);
+    }
+
+    .report-title {
+        font-size: var(--font-lg);
+        font-weight: bold;
+        color: var(--text-primary);
+        margin-bottom: var(--spacing-xs);
+    }
+
+    .report-url {
+        font-size: var(--font-xs);
+        color: var(--text-secondary);
+        word-break: break-all;
+    }
+
+    .report-score {
+        text-align: center;
+        min-width: 100px;
+    }
+
+    .score-circle {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: var(--font-2xl);
+        font-weight: bold;
+        color: white;
+        margin: 0 auto var(--spacing-sm);
+    }
+
+    .score-high { background: var(--primary-gradient); }
+    .score-medium { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+    .score-low { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+
+    .report-details {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: var(--spacing-md);
+        margin-bottom: var(--spacing-md);
+    }
+
+    .detail-item {
+        background: var(--bg-primary);
+        padding: var(--spacing-sm) var(--spacing-md);
+        border-radius: var(--border-radius);
+    }
+
+    .detail-label {
+        font-size: var(--font-xs);
+        color: var(--text-secondary);
+        margin-bottom: var(--spacing-xs);
+    }
+
+    .detail-value {
+        font-size: var(--font-sm);
+        font-weight: 500;
+        color: var(--text-primary);
+    }
+
+    .report-analysis {
+        background: #e3f2fd;
+        padding: var(--spacing-md);
+        border-radius: var(--border-radius);
+        border-left: 4px solid var(--primary-color);
+        margin-top: var(--spacing-md);
+    }
+
+    .report-analysis h4 {
+        color: var(--primary-color);
+        font-size: var(--font-base);
+        margin-bottom: var(--spacing-sm);
+    }
+
+    .report-analysis p {
+        color: var(--text-primary);
+        font-size: var(--font-base);
+        line-height: 1.6;
+    }
+
+    .loading {
+        text-align: center;
+        padding: 60px;
+        color: var(--text-secondary);
+    }
+
+    .empty {
+        text-align: center;
+        padding: 60px;
+        color: var(--text-secondary);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="header">
+        <h1>📊 视频评估报告</h1>
+        <p>查看所有已评估视频的详细分析报告</p>
+    </div>
+
+    <div class="stats-grid" id="stats">
+        <div class="stat-card">
+            <h3>总评估数</h3>
+            <div class="number" id="totalCount">-</div>
+        </div>
+        <div class="stat-card">
+            <h3>平均分</h3>
+            <div class="number" id="avgScore">-</div>
+        </div>
+        <div class="stat-card">
+            <h3>高分视频 (≥8)</h3>
+            <div class="number" id="highScoreCount">-</div>
+        </div>
+        <div class="stat-card">
+            <h3>待评估</h3>
+            <div class="number" id="pendingCount">-</div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="filter-bar">
+            <select class="filter-select" id="countryFilter" onchange="filterReports()">
+                <option value="">所有国家</option>
+            </select>
+            <select class="filter-select" id="scoreFilter" onchange="filterReports()">
+                <option value="">所有评分</option>
+                <option value="high">高分 (≥8)</option>
+                <option value="medium">中等 (6-7.9)</option>
+                <option value="low">低分 (<6)</option>
+            </select>
+        </select>
+    </div>
+
+        <div id="reportsContent">
+            <div class="loading">
+                <div class="spinner"></div>
+                <p>加载评估报告...</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block page_scripts %}
+<script>
+    let allReports = [];
+
+    async function loadReports() {
+        try {
+            const response = await fetch('/api/evaluation_reports');
+            const data = await response.json();
+
+            if (data.success) {
+                allReports = data.reports || [];
+                displayReports(allReports);
+                updateStats(data);
+            } else {
+                throw new Error(data.message || '加载失败');
+            }
+        } catch (error) {
+            console.error('加载报告失败:', error);
+            document.getElementById('reportsContent').innerHTML =
+                `<div class="empty">加载失败: ${error.message}</div>`;
+            toast.error('加载失败', error.message);
+        }
+    }
+
+    function displayReports(reports) {
+        const container = document.getElementById('reportsContent');
+
+        if (reports.length === 0) {
+            container.innerHTML = '<div class="empty">暂无评估报告</div>';
+            return;
+        }
+
+        container.innerHTML = reports.map((report, index) => {
+            const scoreClass = report.total_score >= 8 ? 'score-high' :
+                              report.total_score >= 6 ? 'score-medium' : 'score-low';
+
+            return `
+                <div class="report-item">
+                    <div class="report-header">
+                        <div style="flex: 1;">
+                            <div class="report-title">${report.video_title || '未知标题'}</div>
+                            <div class="report-url">${report.video_url || '无URL'}</div>
+                        </div>
+                        <div class="report-score">
+                            <div class="score-circle ${scoreClass}">
+                                ${report.total_score || '-'}
+                            </div>
+                            <div style="font-size: 12px; color: var(--text-secondary);">总分</div>
+                        </div>
+                    </div>
+
+                    <div class="report-details">
+                        <div class="detail-item">
+                            <div class="detail-label">国家</div>
+                            <div class="detail-value">${report.country || '-'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">年级</div>
+                            <div class="detail-value">${report.grade || '-'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">学科</div>
+                            <div class="detail-value">${report.subject || '-'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">评估时间</div>
+                            <div class="detail-value">${report.evaluation_time ? new Date(report.evaluation_time).toLocaleString('zh-CN') : '-'}</div>
+                        </div>
+                    </div>
+
+                    ${report.ai_analysis ? `
+                        <div class="report-analysis">
+                            <h4>🤖 AI 分析</h4>
+                            <p>${report.ai_analysis}</p>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+        }).join('');
+
+        // 更新国家筛选选项
+        const countries = [...new Set(reports.map(r => r.country).filter(Boolean))];
+        const countryFilter = document.getElementById('countryFilter');
+        countryFilter.innerHTML = '<option value="">所有国家</option>' +
+            countries.map(c => `<option value="${c}">${c}</option>`).join('');
+    }
+
+    function updateStats(data) {
+        document.getElementById('totalCount').textContent = data.total_count || 0;
+        document.getElementById('avgScore').textContent =
+            data.average_score ? data.average_score.toFixed(1) : '-';
+        document.getElementById('highScoreCount').textContent =
+            data.high_score_count || 0;
+        document.getElementById('pendingCount').textContent =
+            data.pending_count || 0;
+    }
+
+    function filterReports() {
+        const countryFilter = document.getElementById('countryFilter').value;
+        const scoreFilter = document.getElementById('scoreFilter').value;
+
+        let filtered = [...allReports];
+
+        if (countryFilter) {
+            filtered = filtered.filter(r => r.country === countryFilter);
+        }
+
+        if (scoreFilter === 'high') {
+            filtered = filtered.filter(r => r.total_score >= 8);
+        } else if (scoreFilter === 'medium') {
+            filtered = filtered.filter(r => r.total_score >= 6 && r.total_score < 8);
+        } else if (scoreFilter === 'low') {
+            filtered = filtered.filter(r => r.total_score < 6);
+        }
+
+        displayReports(filtered);
+    }
+
+    // 页面加载时获取报告
+    loadReports();
+</script>
+{% endblock %}

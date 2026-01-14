@@ -1,0 +1,187 @@
+# ============================================
+# 搜索引擎配置
+# ============================================
+# 用途：配置所有搜索引擎相关参数
+# 修改后：重启服务生效
+# ============================================
+
+search:
+  # ----------------------------------------
+  # 搜索引擎配置
+  # ----------------------------------------
+  engines:
+    # Google Custom Search
+    google:
+      endpoint: "https://customsearch.googleapis.com/customsearch/v1"
+      api_key_env: "GOOGLE_API_KEY"           # 环境变量名
+      cx_env: "GOOGLE_CX"                     # 自定义搜索引擎ID
+      max_results_per_page: 10
+      timeout: 30
+      default_region: "id"                    # 印尼
+      enabled: true
+
+    # Baidu Search
+    baidu:
+      base_url: "https://qianfan.baidubce.com/v2/ai_search"
+      token_url: "https://aip.baidubce.com/oauth/2.0/token"
+      api_key_env: "BAIDU_API_KEY"
+      secret_key_env: "BAIDU_SECRET_KEY"
+      default_model: "ernie-3.5-8k"
+      max_results: 20
+      timeout: 60
+      enabled: true
+
+      # 智能搜索模式
+      smart_search:
+        model: "ernie-3.5-8k"
+        max_results: 20
+
+      # 高性能模式
+      high_performance:
+        model: "ernie-4.5-turbo-32k"
+        max_results: 20
+        timeout: 60
+
+    # Tavily Search
+    tavily:
+      endpoint: "https://api.tavily.com/search"
+      api_key_env: "TAVILY_API_KEY"
+      max_results: 20
+      max_domains: 5                         # 最多包含的域名数
+      timeout: 30
+      enabled: true
+
+    # DuckDuckGo Search
+    duckduckgo:
+      region: "id"                            # 印尼
+      safesearch: "moderate"                 # 安全搜索级别
+      max_results: 30
+      timeout: 30
+      enabled: true
+
+  # ----------------------------------------
+  # 搜索策略
+  # ----------------------------------------
+  strategy:
+    # 每个章节最大搜索尝试次数
+    max_attempts_per_chapter: 5
+
+    # 重试延迟（秒）
+    retry_delay_seconds: 1
+
+    # 章节间延迟（秒）
+    inter_chapter_delay_seconds: 1
+
+    # 是否启用智能搜索（AI生成查询）
+    enable_smart_search: true
+
+    # 是否启用多引擎并行搜索
+    enable_parallel_search: true
+
+    # 并行搜索最大引擎数
+    max_parallel_engines: 3
+
+  # ----------------------------------------
+  # 本地化关键词
+  # ----------------------------------------
+  # 不同语言的"教学视频"关键词
+  localization:
+    id: "Video pembelajaran"      # 印尼语
+    en: "Video lesson"             # 英语
+    zh: "教学视频"                 # 中文（简体）
+    zh-CN: "教学视频"              # 中文（简体）
+    ms: "Video pembelajaran"      # 马来语
+    ar: "فيديو تعليمي"            # 阿拉伯语
+    ru: "Видео урок онлайн"       # 俄语（增强：添加"在线"）
+    th: "วิดีโอการสอน"          # 泰语
+    vi: "Video bài giảng"         # 越南语
+
+  # 俄语教育关键词优化（提升俄罗斯搜索效果）
+  russian_keywords:
+    - "видео урок"               # 视频教程
+    - "онлайн урок"              # 在线课程
+    - "лекция"                   # 讲座
+    - "обучение"                 # 教学/培训
+    - "учебник"                  # 教科书
+    - "презентация"              # 演示文稿
+    - "видео лекция"             # 视频讲座
+    - "полный курс"              # 完整课程
+
+  # ----------------------------------------
+  # EdTech平台域名白名单
+  # ----------------------------------------
+  # 检测结果是否来自知名教育平台
+  edtech_domains:
+    - "youtube.com"
+    - "ruangguru.com"
+    - "zenius.net"
+    - "quipper.com"
+    - "brainly.co.id"
+    - "khanacademy.org"
+    - "coursera.org"
+    - "udemy.com"
+    - "edx.org"
+    # 俄罗斯教育平台
+    - "uchi.ru"
+    - "znaika.ru"
+    - "interneturok.ru"
+    - "infourok.ru"
+    - "videouroki.net"
+    - "reshuege.ru"
+    - "ruchihil.ru"
+
+  # ----------------------------------------
+  # 搜索结果过滤
+  # ----------------------------------------
+  filters:
+    # 最小相关度分数（低于此分数的结果会被过滤）
+    min_relevance_score: 3.0
+
+    # 最小视觉质量分数
+    min_visual_quality_score: 3.0
+
+    # 最小综合分数
+    min_overall_score: 4.0
+
+    # 是否过滤掉非视频资源
+    require_video: false
+
+    # 是否优先选择播放列表
+    prefer_playlist: true
+    playlist_boost: 1.5        # 播放列表的得分加成
+
+  # ----------------------------------------
+  # 搜索查询生成配置
+  # ----------------------------------------
+  query_generation:
+    # 每次生成的查询变体数量
+    num_variants: 5
+
+    # 查询模板
+    templates:
+      # 基础模板
+      basic: "{grade} {subject} {topic} video"
+
+      # 完整课程模板
+      full_course: "{grade} {subject} {topic} complete course"
+
+      # 播放列表模板
+      playlist: "{grade} {subject} {topic} playlist"
+
+      # 章节特定模板
+      chapter: "{grade} {subject} {chapter} {topic}"
+
+      # 本地语言模板（印尼语）
+      localized_id: "Video pembelajaran {subject} {topic} kelas {grade}"
+
+  # ----------------------------------------
+  # 学期检测关键词
+  # ----------------------------------------
+  # 用于检测查询是否关于特定学期
+  semester_detection:
+    semester2_keywords:
+      - "geometri"              # 几何
+      - "statistik"             # 统计
+      - "peluang"               # 概率
+      - "bangun ruang"          # 空间
+      - "transformasi"          # 变换

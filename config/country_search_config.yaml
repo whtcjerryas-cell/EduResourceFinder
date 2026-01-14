@@ -1,0 +1,55 @@
+# ============================================
+# 基于规则的多国教育资源搜索配置
+# ============================================
+#
+# 当前范围：仅支持印尼一年级数学
+# 扩展计划：添加其他国家需要10分钟配置
+#
+# ============================================
+
+# ============================================
+# 印度尼西亚配置 (Indonesia)
+# ============================================
+ID:
+  grade_1:
+    math:
+      # 本地化术语
+      localized_terms:
+        grade: "SD Kelas 1"  # Sekolah Dasar = 小学
+        subject: "Matematika"
+        curriculum: "Kurikulum Merdeka"  # 印尼2022年教育大纲
+
+      # 搜索查询模板（支持变量：{grade}, {subject}, {curriculum}）
+      queries:
+        - "{subject} {grade} {curriculum}"
+        - "{subject} {grade} SD"
+        - "belajar {subject} {grade}"
+        - "{subject} SD Kelas 1 playlist"
+        - "Ruangguru {subject} Kelas 1"
+
+      # 域名白名单评分（9.5=最高，5.0=默认）
+      trusted_domains:
+        "ruangguru.com": 9.5      # 印尼最大教育平台
+        "youtube.com": 7.5         # YouTube教育内容
+        "zenius.net": 8.5         # 印尼知名平台
+        "kemdikbud.go.id": 9.0    # 印尼教育部
+
+# ============================================
+# 默认配置（未配置的国家使用此配置）
+# ============================================
+DEFAULT:
+  grade_1:
+    math:
+      localized_terms:
+        grade: "Grade 1"
+        subject: "Mathematics"
+        curriculum: "National Curriculum"
+
+      queries:
+        - "Grade 1 {subject}"
+        - "first grade {subject}"
+        - "primary school grade 1 {subject}"
+
+      trusted_domains:
+        "youtube.com": 7.5
+        "khanacademy.org": 8.5

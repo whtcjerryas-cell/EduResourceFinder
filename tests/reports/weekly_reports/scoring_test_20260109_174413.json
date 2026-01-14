@@ -1,0 +1,2912 @@
+[
+  {
+    "model": "gemini-3-pro-thinking-high",
+    "test_results": [
+      {
+        "test_case_id": "IQ-001",
+        "target": {
+          "country": "IQ",
+          "country_code": "IQ",
+          "grade": "1年级",
+          "grade_variants": [
+            "الصف الأول",
+            "Grade 1",
+            "Kelas 1"
+          ],
+          "subject": "数学",
+          "subject_variants": [
+            "الرياضيات",
+            "数学",
+            "Mathematics"
+          ]
+        },
+        "model": "gemini-3-pro-thinking-high",
+        "results": [
+          {
+            "title": "الرياضيات للصف الأول الشامل",
+            "score": 9.0,
+            "reason": "标题明确提到年级为'الصف الأول'，与目标年级匹配；学科为'الرياضيات'，与目标学科匹配；描述表明是完整的数学课程，资源质量较高，但未提供具体来源信息，稍微扣分。",
+            "identified_info": {
+              "grade": "الصف الأول",
+              "subject": "الرياضيات"
+            },
+            "expected_score": 9.5,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 0.5,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "الرياضيات للصف الثاني المرحلة",
+            "score": 4.0,
+            "reason": "标题中的年级为“ الصف الثاني”，与目标年级“ الصف الأول”不符，导致年级匹配度较低。学科匹配度较高，但资源质量和来源权威性无法判断，综合评分较低。",
+            "identified_info": {
+              "grade": "الصف الثاني",
+              "subject": "الرياضيات"
+            },
+            "expected_score": 4.0,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 0.0,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "العلوم للصف الأول",
+            "score": 3.0,
+            "reason": "年级匹配，但学科不符（目标是数学）。资源描述为科学课程，与目标搜索不相关，因此评分较低。",
+            "identified_info": {
+              "grade": "الصف الأول",
+              "subject": "العلوم"
+            },
+            "expected_score": 4.0,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 1.0,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "Grade 1 Mathematics Complete Course",
+            "score": 9.0,
+            "reason": "标题明确提到'Grade 1 Mathematics'，年级和学科完全匹配，且描述表明是完整课程，资源质量较高，未提供来源信息但无明显问题。",
+            "identified_info": {
+              "grade": "Grade 1",
+              "subject": "Mathematics"
+            },
+            "expected_score": 8.0,
+            "evaluation": {
+              "score_match": false,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 1.0,
+              "all_match": false
+            },
+            "success": false
+          }
+        ],
+        "execution_time": 9.345502138137817
+      },
+      {
+        "test_case_id": "IQ-002",
+        "target": {
+          "country": "IQ",
+          "country_code": "IQ",
+          "grade": "1年级",
+          "grade_variants": [
+            "الصف الأول",
+            "Grade 1",
+            "Kelas 1"
+          ],
+          "subject": "科学",
+          "subject_variants": [
+            "العلوم",
+            "科学",
+            "Mathematics"
+          ]
+        },
+        "model": "gemini-3-pro-thinking-high",
+        "results": [
+          {
+            "title": "العلوم للصف الأول الشامل",
+            "score": 9.0,
+            "reason": "标题明确提到年级为 الصف الأول，与目标年级匹配（3分）；学科为 العلوم，与目标学科匹配（3分）；描述表明是完整的课程内容（2分）；来源可信度未明确，但无负面信息（1分）。",
+            "identified_info": {
+              "grade": "الصف الأول",
+              "subject": "العلوم"
+            },
+            "expected_score": 9.5,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 0.5,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "العلوم للصف الثاني المرحلة",
+            "score": 3.0,
+            "reason": "年级不匹配，目标为1年级，但结果为2年级；学科匹配，资源描述较简略，无法判断是否为完整课程，来源权威性未知。",
+            "identified_info": {
+              "grade": "الصف الثاني",
+              "subject": "العلوم"
+            },
+            "expected_score": 4.0,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 1.0,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "الرياضيات للصف الأول",
+            "score": 4.0,
+            "reason": "年级匹配，但学科为数学而非科学，学科不符大幅减分。描述提到科学，但标题与目标学科不一致，资源质量和来源权威性无法判断。",
+            "identified_info": {
+              "grade": "الصف الأول",
+              "subject": "الرياضيات"
+            },
+            "expected_score": 4.0,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 0.0,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "Grade 1 Science Complete Course",
+            "score": 9.0,
+            "reason": "标题明确提到年级为Grade 1，学科为Science，与目标年级和学科完全匹配。描述中提到是完整课程，资源质量较高，但未提供来源信息，稍微扣分。",
+            "identified_info": {
+              "grade": "Grade 1",
+              "subject": "Science"
+            },
+            "expected_score": 8.0,
+            "evaluation": {
+              "score_match": false,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 1.0,
+              "all_match": false
+            },
+            "success": false
+          }
+        ],
+        "execution_time": 9.24017882347107
+      },
+      {
+        "test_case_id": "IQ-003",
+        "target": {
+          "country": "IQ",
+          "country_code": "IQ",
+          "grade": "1年级",
+          "grade_variants": [
+            "الصف الأول",
+            "Grade 1",
+            "Kelas 1"
+          ],
+          "subject": "物理",
+          "subject_variants": [
+            "الفيزياء",
+            "物理",
+            "Mathematics"
+          ]
+        },
+        "model": "gemini-3-pro-thinking-high",
+        "results": [
+          {
+            "title": "الفيزياء للصف الأول الشامل",
+            "score": 8.0,
+            "reason": "标题中的年级和学科与目标年级和学科完全匹配，资源描述表明是完整的课程内容，但未提供来源信息，因此在来源权威性上扣分。",
+            "identified_info": {
+              "grade": "الصف الأول",
+              "subject": "الفيزياء"
+            },
+            "expected_score": 9.5,
+            "evaluation": {
+              "score_match": false,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 1.5,
+              "all_match": false
+            },
+            "success": false
+          },
+          {
+            "title": "الفيزياء للصف الثاني المرحلة",
+            "score": 3.0,
+            "reason": "年级不匹配，目标为1年级，结果为2年级；学科匹配，物理正确；资源描述过于简略，无法判断是否为完整课程或权威来源。",
+            "identified_info": {
+              "grade": "الصف الثاني",
+              "subject": "الفيزياء"
+            },
+            "expected_score": 4.0,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 1.0,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "العلوم للصف الأول",
+            "score": 4.0,
+            "reason": "标题中的年级匹配目标年级，但学科为'العلوم'（科学），与目标学科物理不符。此外，描述未明确是否为完整课程或权威来源，导致评分较低。",
+            "identified_info": {
+              "grade": "الصف الأول",
+              "subject": "العلوم"
+            },
+            "expected_score": 4.0,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 0.0,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "Grade 1 Physics Complete Course",
+            "score": 9.0,
+            "reason": "标题明确提到年级为Grade 1，学科为Physics，与目标年级和学科完全匹配，描述表明是完整课程，资源质量较高，但未提供具体来源信息，稍微扣分。",
+            "identified_info": {
+              "grade": "Grade 1",
+              "subject": "Physics"
+            },
+            "expected_score": 8.0,
+            "evaluation": {
+              "score_match": false,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 1.0,
+              "all_match": false
+            },
+            "success": false
+          }
+        ],
+        "execution_time": 10.097185134887695
+      },
+      {
+        "test_case_id": "IQ-004",
+        "target": {
+          "country": "IQ",
+          "country_code": "IQ",
+          "grade": "2年级",
+          "grade_variants": [
+            "الصف الثاني",
+            "Grade 2",
+            "Kelas 2"
+          ],
+          "subject": "数学",
+          "subject_variants": [
+            "الرياضيات",
+            "数学",
+            "Mathematics"
+          ]
+        },
+        "model": "gemini-3-pro-thinking-high",
+        "results": [
+          {
+            "title": "الرياضيات للصف الثاني الشامل",
+            "score": 9.0,
+            "reason": "标题明确提到“الصف الثاني”和“الرياضيات”，与目标年级和学科完全匹配。描述表明资源是完整的课程，且内容质量较高。来源可信度未明确，但未发现明显问题，因此评分较高。",
+            "identified_info": {
+              "grade": "الصف الثاني",
+              "subject": "الرياضيات"
+            },
+            "expected_score": 9.5,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 0.5,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "الرياضيات للصف الثالث المرحلة",
+            "score": 4.0,
+            "reason": "年级不匹配，目标为二年级，但结果为三年级（扣3分）。学科匹配，数学一致（加3分）。描述内容有限，无法判断是否为完整资源（扣1分）。来源权威性未知（扣2分）。",
+            "identified_info": {
+              "grade": "الصف الثالث",
+              "subject": "الرياضيات"
+            },
+            "expected_score": 4.0,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 0.0,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "العلوم للصف الثاني",
+            "score": 3.0,
+            "reason": "年级匹配，但学科不符（目标是数学，结果是科学）。此外，描述未明确是否为完整课程或权威来源，因此资源质量和权威性得分较低。",
+            "identified_info": {
+              "grade": " الصف الثاني",
+              "subject": "العلوم"
+            },
+            "expected_score": 4.0,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 1.0,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "Grade 2 Mathematics Complete Course",
+            "score": 9.0,
+            "reason": "标题明确标识了目标年级和学科，且描述表明是完整课程，资源质量较高。未提供来源信息，但整体匹配度高，评分为9分。",
+            "identified_info": {
+              "grade": "Grade 2",
+              "subject": "Mathematics"
+            },
+            "expected_score": 8.0,
+            "evaluation": {
+              "score_match": false,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 1.0,
+              "all_match": false
+            },
+            "success": false
+          }
+        ],
+        "execution_time": 9.8941068649292
+      },
+      {
+        "test_case_id": "IQ-005",
+        "target": {
+          "country": "IQ",
+          "country_code": "IQ",
+          "grade": "2年级",
+          "grade_variants": [
+            "الصف الثاني",
+            "Grade 2",
+            "Kelas 2"
+          ],
+          "subject": "科学",
+          "subject_variants": [
+            "العلوم",
+            "科学",
+            "Mathematics"
+          ]
+        },
+        "model": "gemini-3-pro-thinking-high",
+        "results": [
+          {
+            "title": "العلوم للصف الثاني الشامل",
+            "score": 9.0,
+            "reason": "标题明确提到“الصف الثاني”（二年级）和“العلوم”（科学），与目标年级和学科完全匹配。描述表明资源是完整课程，且内容详尽，来源可信。",
+            "identified_info": {
+              "grade": "الصف الثاني",
+              "subject": "العلوم"
+            },
+            "expected_score": 9.5,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 0.5,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "العلوم للصف الثالث المرحلة",
+            "score": 4.0,
+            "reason": "年级不匹配，目标是2年级，但结果是3年级；学科匹配为科学；资源描述不明确，无法判断质量；来源权威性未知。",
+            "identified_info": {
+              "grade": "الصف الثالث",
+              "subject": "العلوم"
+            },
+            "expected_score": 4.0,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 0.0,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "الرياضيات للصف الثاني",
+            "score": 4.0,
+            "reason": "年级匹配正确，但学科不符，目标是科学而非数学。描述提到科学，但标题和内容不一致，资源质量和来源可信度无法判断。",
+            "identified_info": {
+              "grade": "الصف الثاني",
+              "subject": "الرياضيات"
+            },
+            "expected_score": 4.0,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 0.0,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "Grade 2 Science Complete Course",
+            "score": 9.0,
+            "reason": "标题明确提到‘Grade 2’和‘Science’，与目标年级和学科完全匹配。描述表明是完整课程，资源质量较高，但未提供具体来源信息，略扣分。",
+            "identified_info": {
+              "grade": "Grade 2",
+              "subject": "Science"
+            },
+            "expected_score": 8.0,
+            "evaluation": {
+              "score_match": false,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 1.0,
+              "all_match": false
+            },
+            "success": false
+          }
+        ],
+        "execution_time": 8.024952173233032
+      }
+    ],
+    "statistics": {
+      "total_tests": 5,
+      "total_time": 46.60192513465881,
+      "average_time": 9.320385026931763
+    }
+  },
+  {
+    "model": "gemini-3-pro-thinking-medium",
+    "test_results": [
+      {
+        "test_case_id": "IQ-001",
+        "target": {
+          "country": "IQ",
+          "country_code": "IQ",
+          "grade": "1年级",
+          "grade_variants": [
+            "الصف الأول",
+            "Grade 1",
+            "Kelas 1"
+          ],
+          "subject": "数学",
+          "subject_variants": [
+            "الرياضيات",
+            "数学",
+            "Mathematics"
+          ]
+        },
+        "model": "gemini-3-pro-thinking-medium",
+        "results": [
+          {
+            "title": "الرياضيات للصف الأول الشامل",
+            "score": 9.0,
+            "reason": "标题明确提到年级为'الصف الأول'，与目标年级完全匹配；学科为'الرياضيات'，与目标学科完全匹配；描述表明是完整的数学课程，资源质量较高，来源可信度未明确，但未发现明显问题。",
+            "identified_info": {
+              "grade": "الصف الأول",
+              "subject": "الرياضيات"
+            },
+            "expected_score": 9.5,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 0.5,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "الرياضيات للصف الثاني المرحلة",
+            "score": 4.0,
+            "reason": "年级不符，标题显示为“ الصف الثاني”，与目标年级“ الصف الأول”不匹配。学科匹配度较高，但资源描述不明确，无法判断是否为完整课程或权威来源。",
+            "identified_info": {
+              "grade": "الصف الثاني",
+              "subject": "الرياضيات"
+            },
+            "expected_score": 4.0,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 0.0,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "العلوم للصف الأول",
+            "score": 2.0,
+            "reason": "年级匹配，但学科不符。标题中明确提到的学科是'العلوم'（科学），而非目标学科'数学'。资源质量和来源权威性无法判断。",
+            "identified_info": {
+              "grade": "الصف الأول",
+              "subject": "العلوم"
+            },
+            "expected_score": 4.0,
+            "evaluation": {
+              "score_match": false,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 2.0,
+              "all_match": false
+            },
+            "success": false
+          },
+          {
+            "title": "Grade 1 Mathematics Complete Course",
+            "score": 9.0,
+            "reason": "标题明确提到'Grade 1'和'Mathematics'，年级和学科完全匹配，且描述表明是完整课程，资源质量较高。未提供具体来源信息，稍微扣分。",
+            "identified_info": {
+              "grade": "Grade 1",
+              "subject": "Mathematics"
+            },
+            "expected_score": 8.0,
+            "evaluation": {
+              "score_match": false,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 1.0,
+              "all_match": false
+            },
+            "success": false
+          }
+        ],
+        "execution_time": 10.51583218574524
+      },
+      {
+        "test_case_id": "IQ-002",
+        "target": {
+          "country": "IQ",
+          "country_code": "IQ",
+          "grade": "1年级",
+          "grade_variants": [
+            "الصف الأول",
+            "Grade 1",
+            "Kelas 1"
+          ],
+          "subject": "科学",
+          "subject_variants": [
+            "العلوم",
+            "科学",
+            "Mathematics"
+          ]
+        },
+        "model": "gemini-3-pro-thinking-medium",
+        "results": [
+          {
+            "title": "العلوم للصف الأول الشامل",
+            "score": 9.0,
+            "reason": "标题明确提到'الصف الأول'和'العلوم'，年级和学科完全匹配。描述表明是完整的科学课程，资源质量较高，来源可信。",
+            "identified_info": {
+              "grade": "الصف الأول",
+              "subject": "العلوم"
+            },
+            "expected_score": 9.5,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 0.5,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "العلوم للصف الثاني المرحلة",
+            "score": 3.0,
+            "reason": "年级不匹配（目标为1年级，结果为2年级），学科匹配（科学）。资源质量和来源权威性无法判断，因此得分较低。",
+            "identified_info": {
+              "grade": "الصف الثاني",
+              "subject": "العلوم"
+            },
+            "expected_score": 4.0,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 1.0,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "الرياضيات للصف الأول",
+            "score": 4.0,
+            "reason": "标题中的年级匹配目标年级，但学科为数学，与目标学科科学不符。描述提到科学，但标题和内容不一致，降低了资源质量评分。",
+            "identified_info": {
+              "grade": "الصف الأول",
+              "subject": "الرياضيات"
+            },
+            "expected_score": 4.0,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 0.0,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "Grade 1 Science Complete Course",
+            "score": 9.0,
+            "reason": "标题明确提到'Grade 1'和'Science'，年级和学科完全匹配，且描述表明是完整课程，资源质量较高，但未提及具体来源，略微扣分。",
+            "identified_info": {
+              "grade": "Grade 1",
+              "subject": "Science"
+            },
+            "expected_score": 8.0,
+            "evaluation": {
+              "score_match": false,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 1.0,
+              "all_match": false
+            },
+            "success": false
+          }
+        ],
+        "execution_time": 8.597607851028442
+      },
+      {
+        "test_case_id": "IQ-003",
+        "target": {
+          "country": "IQ",
+          "country_code": "IQ",
+          "grade": "1年级",
+          "grade_variants": [
+            "الصف الأول",
+            "Grade 1",
+            "Kelas 1"
+          ],
+          "subject": "物理",
+          "subject_variants": [
+            "الفيزياء",
+            "物理",
+            "Mathematics"
+          ]
+        },
+        "model": "gemini-3-pro-thinking-medium",
+        "results": [
+          {
+            "title": "الفيزياء للصف الأول الشامل",
+            "score": 9.0,
+            "reason": "标题明确提到'الصف الأول'和'الفيزياء'，年级和学科完全匹配。描述表明是完整的课程资源，来源可信度未明确提及，但内容质量较高，整体评分为9分。",
+            "identified_info": {
+              "grade": "الصف الأول",
+              "subject": "الفيزياء"
+            },
+            "expected_score": 9.5,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 0.5,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "الفيزياء للصف الثاني المرحلة",
+            "score": 4.0,
+            "reason": "标题中的年级为 الصف الثاني，与目标 الصف الأول 不符，年级匹配度较低。学科 الفيزياء 匹配目标物理，学科匹配度较高。但资源描述较模糊，且来源权威性无法判断，整体评分较低。",
+            "identified_info": {
+              "grade": "الصف الثاني",
+              "subject": "الفيزياء"
+            },
+            "expected_score": 4.0,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 0.0,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "العلوم للصف الأول",
+            "score": 4.0,
+            "reason": "年级匹配度较高，但学科为'科学'而非'物理'，学科不符导致大幅减分。此外，描述信息不足，无法判断资源质量和来源权威性。",
+            "identified_info": {
+              "grade": "الصف الأول",
+              "subject": "العلوم"
+            },
+            "expected_score": 4.0,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 0.0,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "Grade 1 Physics Complete Course",
+            "score": 9.0,
+            "reason": "标题和描述明确提到'Grade 1'和'Physics'，年级和学科完全匹配，且描述表明是完整课程，资源质量较高，未提及来源，但未明显减分因素。",
+            "identified_info": {
+              "grade": "Grade 1",
+              "subject": "Physics"
+            },
+            "expected_score": 8.0,
+            "evaluation": {
+              "score_match": false,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 1.0,
+              "all_match": false
+            },
+            "success": false
+          }
+        ],
+        "execution_time": 14.896720170974731
+      },
+      {
+        "test_case_id": "IQ-004",
+        "target": {
+          "country": "IQ",
+          "country_code": "IQ",
+          "grade": "2年级",
+          "grade_variants": [
+            "الصف الثاني",
+            "Grade 2",
+            "Kelas 2"
+          ],
+          "subject": "数学",
+          "subject_variants": [
+            "الرياضيات",
+            "数学",
+            "Mathematics"
+          ]
+        },
+        "model": "gemini-3-pro-thinking-medium",
+        "results": [
+          {
+            "title": "الرياضيات للصف الثاني الشامل",
+            "score": 9.0,
+            "reason": "标题明确提到目标年级“الصف الثاني”和目标学科“الرياضيات”，资源描述为完整课程，匹配度高，且标题无明显问题，评分较高。",
+            "identified_info": {
+              "grade": "الصف الثاني",
+              "subject": "الرياضيات"
+            },
+            "expected_score": 9.5,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 0.5,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "الرياضيات للصف الثالث المرحلة",
+            "score": 4.0,
+            "reason": "年级不匹配，目标为2年级，结果为3年级（扣3分）。学科匹配，目标为数学（得3分）。资源质量和来源权威性无法判断，暂扣3分。",
+            "identified_info": {
+              "grade": "الصف الثالث",
+              "subject": "الرياضيات"
+            },
+            "expected_score": 4.0,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 0.0,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "العلوم للصف الثاني",
+            "score": 3.0,
+            "reason": "年级匹配，但学科不符，目标是数学而非科学。此外，描述未提及是否为完整课程或权威来源，资源质量和权威性无法评估。",
+            "identified_info": {
+              "grade": "الصف الثاني",
+              "subject": "العلوم"
+            },
+            "expected_score": 4.0,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 1.0,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "Grade 2 Mathematics Complete Course",
+            "score": 9.0,
+            "reason": "标题明确提到“Grade 2 Mathematics”，年级和学科完全匹配。描述表明是完整课程，资源质量较高，但未明确来源权威性，因此扣1分。",
+            "identified_info": {
+              "grade": "Grade 2",
+              "subject": "Mathematics"
+            },
+            "expected_score": 8.0,
+            "evaluation": {
+              "score_match": false,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 1.0,
+              "all_match": false
+            },
+            "success": false
+          }
+        ],
+        "execution_time": 9.325334072113037
+      },
+      {
+        "test_case_id": "IQ-005",
+        "target": {
+          "country": "IQ",
+          "country_code": "IQ",
+          "grade": "2年级",
+          "grade_variants": [
+            "الصف الثاني",
+            "Grade 2",
+            "Kelas 2"
+          ],
+          "subject": "科学",
+          "subject_variants": [
+            "العلوم",
+            "科学",
+            "Mathematics"
+          ]
+        },
+        "model": "gemini-3-pro-thinking-medium",
+        "results": [
+          {
+            "title": "العلوم للصف الثاني الشامل",
+            "score": 9.0,
+            "reason": "标题明确提到“الصف الثاني”和“العلوم”，与目标年级和学科完全匹配。描述表明内容为完整课程，资源质量较高，且来源可信。",
+            "identified_info": {
+              "grade": "الصف الثاني",
+              "subject": "العلوم"
+            },
+            "expected_score": 9.5,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 0.5,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "العلوم للصف الثالث المرحلة",
+            "score": 3.0,
+            "reason": "年级不匹配，目标为2年级，结果为3年级；学科匹配，结果为科学；资源描述不明确，无法判断是否为完整课程；来源权威性未知。",
+            "identified_info": {
+              "grade": "الصف الثالث",
+              "subject": "العلوم"
+            },
+            "expected_score": 4.0,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 1.0,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "الرياضيات للصف الثاني",
+            "score": 4.0,
+            "reason": "年级匹配正确，但学科不符，标题显示为数学而非科学。此外，描述与标题不一致，资源质量和来源权威性无法判断。",
+            "identified_info": {
+              "grade": "الصف الثاني",
+              "subject": "الرياضيات"
+            },
+            "expected_score": 4.0,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 0.0,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "Grade 2 Science Complete Course",
+            "score": 9.0,
+            "reason": "标题明确提到了年级（Grade 2）和学科（Science），与目标年级和学科完全匹配。描述中提到是完整课程，资源质量较高，但未提供具体来源信息，略微扣分。",
+            "identified_info": {
+              "grade": "Grade 2",
+              "subject": "Science"
+            },
+            "expected_score": 8.0,
+            "evaluation": {
+              "score_match": false,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 1.0,
+              "all_match": false
+            },
+            "success": false
+          }
+        ],
+        "execution_time": 8.587581157684326
+      }
+    ],
+    "statistics": {
+      "total_tests": 5,
+      "total_time": 51.923075437545776,
+      "average_time": 10.384615087509156
+    }
+  },
+  {
+    "model": "gpt-5.2-thinking-medium",
+    "test_results": [
+      {
+        "test_case_id": "IQ-001",
+        "target": {
+          "country": "IQ",
+          "country_code": "IQ",
+          "grade": "1年级",
+          "grade_variants": [
+            "الصف الأول",
+            "Grade 1",
+            "Kelas 1"
+          ],
+          "subject": "数学",
+          "subject_variants": [
+            "الرياضيات",
+            "数学",
+            "Mathematics"
+          ]
+        },
+        "model": "gpt-5.2-thinking-medium",
+        "results": [
+          {
+            "title": "الرياضيات للصف الأول الشامل",
+            "score": 9.0,
+            "reason": "标题明确提到'الصف الأول'和'الرياضيات'，与目标年级和学科完全匹配。描述中提到是完整的数学课程，资源质量较高，但未提供具体来源信息，稍微扣分。",
+            "identified_info": {
+              "grade": "الصف الأول",
+              "subject": "الرياضيات"
+            },
+            "expected_score": 9.5,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 0.5,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "الرياضيات للصف الثاني المرحلة",
+            "score": 3.0,
+            "reason": "年级不匹配（目标为1年级，结果为2年级），学科匹配（数学）。资源质量和来源权威性无法判断，评分大幅减分。",
+            "identified_info": {
+              "grade": "الصف الثاني",
+              "subject": "الرياضيات"
+            },
+            "expected_score": 4.0,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 1.0,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "العلوم للصف الأول",
+            "score": 2.0,
+            "reason": "标题中的年级匹配目标年级，但学科不符（科学而非数学），且资源描述未提及完整课程或权威来源，整体匹配度较低。",
+            "identified_info": {
+              "grade": "الصف الأول",
+              "subject": "العلوم"
+            },
+            "expected_score": 4.0,
+            "evaluation": {
+              "score_match": false,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 2.0,
+              "all_match": false
+            },
+            "success": false
+          },
+          {
+            "title": "Grade 1 Mathematics Complete Course",
+            "score": 9.0,
+            "reason": "标题明确提到“Grade 1 Mathematics Complete Course”，年级和学科均完全匹配，资源描述为完整课程，符合搜索目标。来源可信度未明确，但未减分。",
+            "identified_info": {
+              "grade": "Grade 1",
+              "subject": "Mathematics"
+            },
+            "expected_score": 8.0,
+            "evaluation": {
+              "score_match": false,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 1.0,
+              "all_match": false
+            },
+            "success": false
+          }
+        ],
+        "execution_time": 10.394547939300537
+      },
+      {
+        "test_case_id": "IQ-002",
+        "target": {
+          "country": "IQ",
+          "country_code": "IQ",
+          "grade": "1年级",
+          "grade_variants": [
+            "الصف الأول",
+            "Grade 1",
+            "Kelas 1"
+          ],
+          "subject": "科学",
+          "subject_variants": [
+            "العلوم",
+            "科学",
+            "Mathematics"
+          ]
+        },
+        "model": "gpt-5.2-thinking-medium",
+        "results": [
+          {
+            "title": "العلوم للصف الأول الشامل",
+            "score": 9.0,
+            "reason": "标题明确提到了目标年级 'الصف الأول' 和目标学科 'العلوم'，匹配度高。描述显示是完整的科学课程，因此资源质量较高，但未提供具体来源信息，略微扣分。",
+            "identified_info": {
+              "grade": "الصف الأول",
+              "subject": "العلوم"
+            },
+            "expected_score": 9.5,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 0.5,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "العلوم للصف الثاني المرحلة",
+            "score": 3.0,
+            "reason": "年级不匹配（目标为1年级，结果为2年级），学科匹配（科学）。资源描述较简略，无法判断是否为完整课程，来源权威性未知。",
+            "identified_info": {
+              "grade": "الصف الثاني",
+              "subject": "العلوم"
+            },
+            "expected_score": 4.0,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 1.0,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "الرياضيات للصف الأول",
+            "score": 4.0,
+            "reason": "年级匹配度较高，标题明确提到'الصف الأول'，但学科不符，标题提到的是'الرياضيات'而非目标学科'العلوم'，资源质量和来源信息不足，无法判断其完整性和权威性。",
+            "identified_info": {
+              "grade": "الصف الأول",
+              "subject": "الرياضيات"
+            },
+            "expected_score": 4.0,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 0.0,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "Grade 1 Science Complete Course",
+            "score": 9.0,
+            "reason": "标题中明确提到年级为Grade 1，学科为Science，完全匹配目标年级和学科。同时描述表明是完整课程，资源质量较高，但未提供来源信息，略有扣分。",
+            "identified_info": {
+              "grade": "Grade 1",
+              "subject": "Science"
+            },
+            "expected_score": 8.0,
+            "evaluation": {
+              "score_match": false,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 1.0,
+              "all_match": false
+            },
+            "success": false
+          }
+        ],
+        "execution_time": 10.661332130432129
+      },
+      {
+        "test_case_id": "IQ-003",
+        "target": {
+          "country": "IQ",
+          "country_code": "IQ",
+          "grade": "1年级",
+          "grade_variants": [
+            "الصف الأول",
+            "Grade 1",
+            "Kelas 1"
+          ],
+          "subject": "物理",
+          "subject_variants": [
+            "الفيزياء",
+            "物理",
+            "Mathematics"
+          ]
+        },
+        "model": "gpt-5.2-thinking-medium",
+        "results": [
+          {
+            "title": "الفيزياء للصف الأول الشامل",
+            "score": 8.5,
+            "reason": "标题明确提到“الصف الأول”（目标年级）和“الفيزياء”（目标学科），匹配度高。描述显示资源为完整课程，但未提供来源权威性信息，因此扣减部分分数。",
+            "identified_info": {
+              "grade": "الصف الأول",
+              "subject": "الفيزياء"
+            },
+            "expected_score": 9.5,
+            "evaluation": {
+              "score_match": false,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 1.0,
+              "all_match": false
+            },
+            "success": false
+          },
+          {
+            "title": "الفيزياء للصف الثاني المرحلة",
+            "score": 3.0,
+            "reason": "年级不匹配，目标是1年级，但结果为2年级。学科匹配正确为物理，但资源描述不清，无法判断是否为完整课程或权威来源。",
+            "identified_info": {
+              "grade": "الصف الثاني",
+              "subject": "الفيزياء"
+            },
+            "expected_score": 4.0,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 1.0,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "العلوم للصف الأول",
+            "score": 4.0,
+            "reason": "年级匹配度较高，但学科为'科学'而非'物理'，学科不符导致大幅减分。此外，描述内容较模糊，无法判断资源是否完整或来源是否权威。",
+            "identified_info": {
+              "grade": "الصف الأول",
+              "subject": "العلوم"
+            },
+            "expected_score": 4.0,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 0.0,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "Grade 1 Physics Complete Course",
+            "score": 9.0,
+            "reason": "标题明确提到'Grade 1'和'Physics'，年级和学科完全匹配。描述表明是完整课程，资源质量较高，但未提及具体来源，略微扣分。",
+            "identified_info": {
+              "grade": "Grade 1",
+              "subject": "Physics"
+            },
+            "expected_score": 8.0,
+            "evaluation": {
+              "score_match": false,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 1.0,
+              "all_match": false
+            },
+            "success": false
+          }
+        ],
+        "execution_time": 8.248409986495972
+      },
+      {
+        "test_case_id": "IQ-004",
+        "target": {
+          "country": "IQ",
+          "country_code": "IQ",
+          "grade": "2年级",
+          "grade_variants": [
+            "الصف الثاني",
+            "Grade 2",
+            "Kelas 2"
+          ],
+          "subject": "数学",
+          "subject_variants": [
+            "الرياضيات",
+            "数学",
+            "Mathematics"
+          ]
+        },
+        "model": "gpt-5.2-thinking-medium",
+        "results": [
+          {
+            "title": "الرياضيات للصف الثاني الشامل",
+            "score": 9.0,
+            "reason": "标题明确提到目标年级和学科，且描述表明是完整的数学课程资源。来源可信度无法完全确认，但内容质量较高，符合搜索目标。",
+            "identified_info": {
+              "grade": "الصف الثاني",
+              "subject": "الرياضيات"
+            },
+            "expected_score": 9.5,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 0.5,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "الرياضيات للصف الثالث المرحلة",
+            "score": 3.0,
+            "reason": "年级不匹配（目标为二年级，结果为三年级），学科匹配（数学）。资源描述不明确，无法判断质量和来源权威性。",
+            "identified_info": {
+              "grade": "الصف الثالث",
+              "subject": "الرياضيات"
+            },
+            "expected_score": 4.0,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 1.0,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "العلوم للصف الثاني",
+            "score": 2.0,
+            "reason": "年级匹配度较高，但学科不符，目标是数学而非科学。此外，描述未提及是否为完整课程或权威来源，因此评分较低。",
+            "identified_info": {
+              "grade": "الصف الثاني",
+              "subject": "العلوم"
+            },
+            "expected_score": 4.0,
+            "evaluation": {
+              "score_match": false,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 2.0,
+              "all_match": false
+            },
+            "success": false
+          },
+          {
+            "title": "Grade 2 Mathematics Complete Course",
+            "score": 9.0,
+            "reason": "标题明确提到“Grade 2 Mathematics”，与目标年级和学科完全匹配，且描述表明是完整课程，资源质量较高。未提供来源信息，稍微扣分。",
+            "identified_info": {
+              "grade": "Grade 2",
+              "subject": "Mathematics"
+            },
+            "expected_score": 8.0,
+            "evaluation": {
+              "score_match": false,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 1.0,
+              "all_match": false
+            },
+            "success": false
+          }
+        ],
+        "execution_time": 9.902265071868896
+      },
+      {
+        "test_case_id": "IQ-005",
+        "target": {
+          "country": "IQ",
+          "country_code": "IQ",
+          "grade": "2年级",
+          "grade_variants": [
+            "الصف الثاني",
+            "Grade 2",
+            "Kelas 2"
+          ],
+          "subject": "科学",
+          "subject_variants": [
+            "العلوم",
+            "科学",
+            "Mathematics"
+          ]
+        },
+        "model": "gpt-5.2-thinking-medium",
+        "results": [
+          {
+            "title": "العلوم للصف الثاني الشامل",
+            "score": 9.0,
+            "reason": "标题明确指出资源适用于“الصف الثاني”（二年级）和“العلوم”（科学），匹配目标年级和学科。描述表明资源是完整课程，来源可信，评分较高。",
+            "identified_info": {
+              "grade": "الصف الثاني",
+              "subject": "العلوم"
+            },
+            "expected_score": 9.5,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 0.5,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "العلوم للصف الثالث المرحلة",
+            "score": 4.0,
+            "reason": "年级不匹配，标题中提到的是三年级，而目标是二年级；学科匹配，标题中明确提到科学；资源质量和来源信息不足，无法判断其完整性和权威性。",
+            "identified_info": {
+              "grade": "الصف الثالث",
+              "subject": "العلوم"
+            },
+            "expected_score": 4.0,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 0.0,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "الرياضيات للصف الثاني",
+            "score": 4.0,
+            "reason": "年级匹配正确（الصف الثاني），但学科不符（目标是科学，结果是数学）。描述提到科学，但标题和内容不一致，资源质量和来源权威性无法判断，导致评分较低。",
+            "identified_info": {
+              "grade": "الصف الثاني",
+              "subject": "الرياضيات"
+            },
+            "expected_score": 4.0,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 0.0,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "Grade 2 Science Complete Course",
+            "score": 9.0,
+            "reason": "标题明确标识了年级为Grade 2，学科为Science，与目标年级和学科完全匹配。同时描述表明是完整课程，资源质量较高，但未提供具体来源信息，稍微扣分。",
+            "identified_info": {
+              "grade": "Grade 2",
+              "subject": "Science"
+            },
+            "expected_score": 8.0,
+            "evaluation": {
+              "score_match": false,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 1.0,
+              "all_match": false
+            },
+            "success": false
+          }
+        ],
+        "execution_time": 9.85955286026001
+      }
+    ],
+    "statistics": {
+      "total_tests": 5,
+      "total_time": 49.066107988357544,
+      "average_time": 9.81322159767151
+    }
+  },
+  {
+    "model": "claude-3-7-sonnet",
+    "test_results": [
+      {
+        "test_case_id": "IQ-001",
+        "target": {
+          "country": "IQ",
+          "country_code": "IQ",
+          "grade": "1年级",
+          "grade_variants": [
+            "الصف الأول",
+            "Grade 1",
+            "Kelas 1"
+          ],
+          "subject": "数学",
+          "subject_variants": [
+            "الرياضيات",
+            "数学",
+            "Mathematics"
+          ]
+        },
+        "model": "claude-3-7-sonnet",
+        "results": [
+          {
+            "title": "الرياضيات للصف الأول الشامل",
+            "score": 9.0,
+            "reason": "标题明确提到年级为'الصف الأول'，与目标年级匹配，学科为'الرياضيات'，与目标学科匹配。描述显示是完整的数学课程，且标题无明显问题，资源质量和来源可信。",
+            "identified_info": {
+              "grade": "الصف الأول",
+              "subject": "الرياضيات"
+            },
+            "expected_score": 9.5,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 0.5,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "الرياضيات للصف الثاني المرحلة",
+            "score": 4.0,
+            "reason": "标题中的年级为“الصف الثاني”，与目标年级不匹配；学科为“الرياضيات”，与目标学科匹配。资源质量和来源权威性无法判断，整体评分较低。",
+            "identified_info": {
+              "grade": "الصف الثاني",
+              "subject": "الرياضيات"
+            },
+            "expected_score": 4.0,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 0.0,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "العلوم للصف الأول",
+            "score": 3.0,
+            "reason": "年级匹配，但学科不符，目标为数学而结果为科学。资源质量和来源权威性无法判断，整体评分较低。",
+            "identified_info": {
+              "grade": "الصف الأول",
+              "subject": "العلوم"
+            },
+            "expected_score": 4.0,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 1.0,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "Grade 1 Mathematics Complete Course",
+            "score": 9.0,
+            "reason": "标题明确提到年级为Grade 1，学科为Mathematics，与目标完全匹配，且描述表明是完整课程，资源质量较高。来源权威性未明确，但整体匹配度高。",
+            "identified_info": {
+              "grade": "Grade 1",
+              "subject": "Mathematics"
+            },
+            "expected_score": 8.0,
+            "evaluation": {
+              "score_match": false,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 1.0,
+              "all_match": false
+            },
+            "success": false
+          }
+        ],
+        "execution_time": 8.534668922424316
+      },
+      {
+        "test_case_id": "IQ-002",
+        "target": {
+          "country": "IQ",
+          "country_code": "IQ",
+          "grade": "1年级",
+          "grade_variants": [
+            "الصف الأول",
+            "Grade 1",
+            "Kelas 1"
+          ],
+          "subject": "科学",
+          "subject_variants": [
+            "العلوم",
+            "科学",
+            "Mathematics"
+          ]
+        },
+        "model": "claude-3-7-sonnet",
+        "results": [
+          {
+            "title": "العلوم للصف الأول الشامل",
+            "score": 9.0,
+            "reason": "标题明确提到 'الصف الأول' 和 'العلوم'，与目标年级和学科完全匹配。描述表明是完整的课程资源，但未提供具体来源信息，稍微扣分。",
+            "identified_info": {
+              "grade": "الصف الأول",
+              "subject": "العلوم"
+            },
+            "expected_score": 9.5,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 0.5,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "العلوم للصف الثاني المرحلة",
+            "score": 3.0,
+            "reason": "年级不匹配，目标为1年级，结果为2年级；学科匹配，结果为科学；资源质量和来源权威性无法判断，整体评分较低。",
+            "identified_info": {
+              "grade": "الصف الثاني",
+              "subject": "العلوم"
+            },
+            "expected_score": 4.0,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 1.0,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "الرياضيات للصف الأول",
+            "score": 3.0,
+            "reason": "年级匹配度较高，但学科不符（数学而非科学），描述内容也与标题不一致，资源质量和来源权威性无法判断，整体评分较低。",
+            "identified_info": {
+              "grade": "الصف الأول",
+              "subject": "الرياضيات"
+            },
+            "expected_score": 4.0,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 1.0,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "Grade 1 Science Complete Course",
+            "score": 9.0,
+            "reason": "标题明确提到'Grade 1'和'Science'，与目标年级和学科完全匹配，且描述中提到是完整课程，资源质量较高，但未提供来源信息，稍作扣分。",
+            "identified_info": {
+              "grade": "Grade 1",
+              "subject": "Science"
+            },
+            "expected_score": 8.0,
+            "evaluation": {
+              "score_match": false,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 1.0,
+              "all_match": false
+            },
+            "success": false
+          }
+        ],
+        "execution_time": 9.979017972946167
+      },
+      {
+        "test_case_id": "IQ-003",
+        "target": {
+          "country": "IQ",
+          "country_code": "IQ",
+          "grade": "1年级",
+          "grade_variants": [
+            "الصف الأول",
+            "Grade 1",
+            "Kelas 1"
+          ],
+          "subject": "物理",
+          "subject_variants": [
+            "الفيزياء",
+            "物理",
+            "Mathematics"
+          ]
+        },
+        "model": "claude-3-7-sonnet",
+        "results": [
+          {
+            "title": "الفيزياء للصف الأول الشامل",
+            "score": 9.0,
+            "reason": "标题明确提到'الصف الأول'，与目标年级匹配；学科为'الفيزياء'，与目标学科一致；描述表明是完整的课程内容，但未提及来源权威性，略扣分。",
+            "identified_info": {
+              "grade": "الصف الأول",
+              "subject": "الفيزياء"
+            },
+            "expected_score": 9.5,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 0.5,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "الفيزياء للصف الثاني المرحلة",
+            "score": 3.0,
+            "reason": "年级不匹配，目标是1年级，但结果是2年级；学科匹配，物理一致；资源描述不完整，无法判断是否为完整课程；来源可信度未知，整体评分较低。",
+            "identified_info": {
+              "grade": " الصف الثاني",
+              "subject": " الفيزياء"
+            },
+            "expected_score": 4.0,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 1.0,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "العلوم للصف الأول",
+            "score": 4.0,
+            "reason": "标题中的年级匹配目标年级，但学科为“科学”而非“物理”，学科不符导致大幅减分。此外，描述未明确资源质量和来源权威性，评分较低。",
+            "identified_info": {
+              "grade": "الصف الأول",
+              "subject": "العلوم"
+            },
+            "expected_score": 4.0,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 0.0,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "Grade 1 Physics Complete Course",
+            "score": 9.0,
+            "reason": "标题明确提到'Grade 1'和'Physics'，年级和学科完全匹配，且描述表明是完整课程。来源可信度未明确，但未发现明显问题，综合评分较高。",
+            "identified_info": {
+              "grade": "Grade 1",
+              "subject": "Physics"
+            },
+            "expected_score": 8.0,
+            "evaluation": {
+              "score_match": false,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 1.0,
+              "all_match": false
+            },
+            "success": false
+          }
+        ],
+        "execution_time": 10.543352127075195
+      },
+      {
+        "test_case_id": "IQ-004",
+        "target": {
+          "country": "IQ",
+          "country_code": "IQ",
+          "grade": "2年级",
+          "grade_variants": [
+            "الصف الثاني",
+            "Grade 2",
+            "Kelas 2"
+          ],
+          "subject": "数学",
+          "subject_variants": [
+            "الرياضيات",
+            "数学",
+            "Mathematics"
+          ]
+        },
+        "model": "claude-3-7-sonnet",
+        "results": [
+          {
+            "title": "الرياضيات للصف الثاني الشامل",
+            "score": 9.0,
+            "reason": "标题明确提到“الصف الثاني”和“الرياضيات”，年级和学科完全匹配。描述表明资源是完整的课程内容，且来源可信，评分较高。",
+            "identified_info": {
+              "grade": "الصف الثاني",
+              "subject": "الرياضيات"
+            },
+            "expected_score": 9.5,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 0.5,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "الرياضيات للصف الثالث المرحلة",
+            "score": 4.0,
+            "reason": "年级不匹配，目标为2年级，结果为3年级。学科匹配，资源描述不明确，无法判断是否为完整课程或权威来源。",
+            "identified_info": {
+              "grade": "الصف الثالث",
+              "subject": "الرياضيات"
+            },
+            "expected_score": 4.0,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 0.0,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "العلوم للصف الثاني",
+            "score": 2.0,
+            "reason": "年级匹配正确，但学科不符，目标为数学而非科学。此外，描述中未提及是否为完整课程或权威来源，因此资源质量和来源权威性得分较低。",
+            "identified_info": {
+              "grade": "الصف الثاني",
+              "subject": "العلوم"
+            },
+            "expected_score": 4.0,
+            "evaluation": {
+              "score_match": false,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 2.0,
+              "all_match": false
+            },
+            "success": false
+          },
+          {
+            "title": "Grade 2 Mathematics Complete Course",
+            "score": 9.0,
+            "reason": "标题明确标识了年级为Grade 2，学科为Mathematics，完全符合目标年级和学科要求。描述中提到是完整课程，资源质量较高，但未明确来源权威性，因此扣1分。",
+            "identified_info": {
+              "grade": "Grade 2",
+              "subject": "Mathematics"
+            },
+            "expected_score": 8.0,
+            "evaluation": {
+              "score_match": false,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 1.0,
+              "all_match": false
+            },
+            "success": false
+          }
+        ],
+        "execution_time": 10.765499114990234
+      },
+      {
+        "test_case_id": "IQ-005",
+        "target": {
+          "country": "IQ",
+          "country_code": "IQ",
+          "grade": "2年级",
+          "grade_variants": [
+            "الصف الثاني",
+            "Grade 2",
+            "Kelas 2"
+          ],
+          "subject": "科学",
+          "subject_variants": [
+            "العلوم",
+            "科学",
+            "Mathematics"
+          ]
+        },
+        "model": "claude-3-7-sonnet",
+        "results": [
+          {
+            "title": "العلوم للصف الثاني الشامل",
+            "score": 9.0,
+            "reason": "标题明确表示资源适用于“الصف الثاني”（2年级）和“العلوم”（科学），匹配度高。描述表明内容是完整课程，来源可信度较高，因此评分为9分。",
+            "identified_info": {
+              "grade": "الصف الثاني",
+              "subject": "العلوم"
+            },
+            "expected_score": 9.5,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 0.5,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "العلوم للصف الثالث المرحلة",
+            "score": 3.0,
+            "reason": "年级不匹配（目标为2年级，结果为3年级），学科匹配（科学）。资源描述简单，无法判断其完整性或权威性，因此整体评分较低。",
+            "identified_info": {
+              "grade": "الصف الثالث",
+              "subject": "العلوم"
+            },
+            "expected_score": 4.0,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 1.0,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "الرياضيات للصف الثاني",
+            "score": 3.0,
+            "reason": "年级匹配度高，但学科不符（数学与科学不一致），描述中提到科学，但标题与目标学科不匹配，且资源质量和来源权威性无法判断。",
+            "identified_info": {
+              "grade": "الصف الثاني",
+              "subject": "الرياضيات"
+            },
+            "expected_score": 4.0,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 1.0,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "Grade 2 Science Complete Course",
+            "score": 9.0,
+            "reason": "标题明确提到年级为Grade 2，学科为Science，与目标匹配度高。描述中提到是完整课程，资源质量较高，但未提供具体来源信息，略微扣分。",
+            "identified_info": {
+              "grade": "Grade 2",
+              "subject": "Science"
+            },
+            "expected_score": 8.0,
+            "evaluation": {
+              "score_match": false,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 1.0,
+              "all_match": false
+            },
+            "success": false
+          }
+        ],
+        "execution_time": 8.830173015594482
+      }
+    ],
+    "statistics": {
+      "total_tests": 5,
+      "total_time": 48.652711153030396,
+      "average_time": 9.73054223060608
+    }
+  },
+  {
+    "model": "gemini-2.5-pro",
+    "test_results": [
+      {
+        "test_case_id": "IQ-001",
+        "target": {
+          "country": "IQ",
+          "country_code": "IQ",
+          "grade": "1年级",
+          "grade_variants": [
+            "الصف الأول",
+            "Grade 1",
+            "Kelas 1"
+          ],
+          "subject": "数学",
+          "subject_variants": [
+            "الرياضيات",
+            "数学",
+            "Mathematics"
+          ]
+        },
+        "model": "gemini-2.5-pro",
+        "results": [
+          {
+            "title": "الرياضيات للصف الأول الشامل",
+            "score": 9.0,
+            "reason": "标题明确提到目标年级“الصف الأول”和目标学科“الرياضيات”，资源描述为完整课程，匹配度高，来源可信度未明确，但整体符合搜索目标。",
+            "identified_info": {
+              "grade": "الصف الأول",
+              "subject": "الرياضيات"
+            },
+            "expected_score": 9.5,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 0.5,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "الرياضيات للصف الثاني المرحلة",
+            "score": 4.0,
+            "reason": "标题中的年级为“ الصف الثاني”，与目标年级“ الصف الأول”不符；学科匹配为“ الرياضيات”，符合目标学科；资源质量和来源权威性无法判断，整体评分较低。",
+            "identified_info": {
+              "grade": "الصف الثاني",
+              "subject": "الرياضيات"
+            },
+            "expected_score": 4.0,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 0.0,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "العلوم للصف الأول",
+            "score": 3.0,
+            "reason": "年级匹配，但学科不符（目标为数学，结果为科学），且资源质量和来源权威性无法判断，导致评分较低。",
+            "identified_info": {
+              "grade": "الصف الأول",
+              "subject": "العلوم"
+            },
+            "expected_score": 4.0,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 1.0,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "Grade 1 Mathematics Complete Course",
+            "score": 9.0,
+            "reason": "标题明确提到年级为Grade 1，学科为Mathematics，且描述表明这是完整课程，资源质量较高，但未提供来源信息，稍微扣分。",
+            "identified_info": {
+              "grade": "Grade 1",
+              "subject": "Mathematics"
+            },
+            "expected_score": 8.0,
+            "evaluation": {
+              "score_match": false,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 1.0,
+              "all_match": false
+            },
+            "success": false
+          }
+        ],
+        "execution_time": 8.887192249298096
+      },
+      {
+        "test_case_id": "IQ-002",
+        "target": {
+          "country": "IQ",
+          "country_code": "IQ",
+          "grade": "1年级",
+          "grade_variants": [
+            "الصف الأول",
+            "Grade 1",
+            "Kelas 1"
+          ],
+          "subject": "科学",
+          "subject_variants": [
+            "العلوم",
+            "科学",
+            "Mathematics"
+          ]
+        },
+        "model": "gemini-2.5-pro",
+        "results": [
+          {
+            "title": "العلوم للصف الأول الشامل",
+            "score": 9.0,
+            "reason": "标题明确提到年级为 الصف الأول，完全匹配目标年级；学科为 العلوم，与目标学科科学匹配；描述表明是完整的课程资源，来源可信，整体符合搜索目标。",
+            "identified_info": {
+              "grade": "الصف الأول",
+              "subject": "العلوم"
+            },
+            "expected_score": 9.5,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 0.5,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "العلوم للصف الثاني المرحلة",
+            "score": 3.0,
+            "reason": "标题中的年级为 الصف الثاني，与目标 الصف الأول 不符，年级匹配度为0分。学科为 العلوم，与目标学科 科学 匹配，学科匹配度为3分。资源质量和来源权威性未明确，未加分。",
+            "identified_info": {
+              "grade": "الصف الثاني",
+              "subject": "العلوم"
+            },
+            "expected_score": 4.0,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 1.0,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "الرياضيات للصف الأول",
+            "score": 4.0,
+            "reason": "年级匹配度较高，标题中明确提到 'الصف الأول'，但学科不符，标题提到的是 'الرياضيات' 而非 'العلوم'。描述提到 'شرح منهج العلوم'，但标题和描述不一致，且未明确资源质量和来源权威性。",
+            "identified_info": {
+              "grade": "الصف الأول",
+              "subject": "الرياضيات"
+            },
+            "expected_score": 4.0,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 0.0,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "Grade 1 Science Complete Course",
+            "score": 9.0,
+            "reason": "标题明确提到年级为Grade 1，学科为Science，与目标年级和学科完全匹配。描述中提到是完整课程，资源质量较高，但未提供具体来源信息，略微扣分。",
+            "identified_info": {
+              "grade": "Grade 1",
+              "subject": "Science"
+            },
+            "expected_score": 8.0,
+            "evaluation": {
+              "score_match": false,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 1.0,
+              "all_match": false
+            },
+            "success": false
+          }
+        ],
+        "execution_time": 8.704907178878784
+      },
+      {
+        "test_case_id": "IQ-003",
+        "target": {
+          "country": "IQ",
+          "country_code": "IQ",
+          "grade": "1年级",
+          "grade_variants": [
+            "الصف الأول",
+            "Grade 1",
+            "Kelas 1"
+          ],
+          "subject": "物理",
+          "subject_variants": [
+            "الفيزياء",
+            "物理",
+            "Mathematics"
+          ]
+        },
+        "model": "gemini-2.5-pro",
+        "results": [
+          {
+            "title": "الفيزياء للصف الأول الشامل",
+            "score": 8.0,
+            "reason": "标题中的年级与目标年级匹配，学科也完全匹配。描述表明资源是完整的课程，但未提及具体来源的权威性，因此扣除2分。",
+            "identified_info": {
+              "grade": "الصف الأول",
+              "subject": "الفيزياء"
+            },
+            "expected_score": 9.5,
+            "evaluation": {
+              "score_match": false,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 1.5,
+              "all_match": false
+            },
+            "success": false
+          },
+          {
+            "title": "الفيزياء للصف الثاني المرحلة",
+            "score": 2.0,
+            "reason": "年级不匹配，目标为一年级，结果为二年级；学科匹配正确；资源描述不明确，无法判断其完整性；来源权威性未知。",
+            "identified_info": {
+              "grade": "الصف الثاني",
+              "subject": "الفيزياء"
+            },
+            "expected_score": 4.0,
+            "evaluation": {
+              "score_match": false,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 2.0,
+              "all_match": false
+            },
+            "success": false
+          },
+          {
+            "title": "العلوم للصف الأول",
+            "score": 4.0,
+            "reason": "年级匹配度较高（الصف الأول），但学科不匹配（العلوم与物理不同）。资源描述模糊，无法判断是否为完整课程或权威来源，因此评分较低。",
+            "identified_info": {
+              "grade": "الصف الأول",
+              "subject": "العلوم"
+            },
+            "expected_score": 4.0,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 0.0,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "Grade 1 Physics Complete Course",
+            "score": 9.0,
+            "reason": "标题明确提到年级为Grade 1，学科为Physics，与目标年级和学科完全匹配。描述表明是完整课程，资源质量较高，但未提供具体来源，略微扣分。",
+            "identified_info": {
+              "grade": "Grade 1",
+              "subject": "Physics"
+            },
+            "expected_score": 8.0,
+            "evaluation": {
+              "score_match": false,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 1.0,
+              "all_match": false
+            },
+            "success": false
+          }
+        ],
+        "execution_time": 7.460808992385864
+      },
+      {
+        "test_case_id": "IQ-004",
+        "target": {
+          "country": "IQ",
+          "country_code": "IQ",
+          "grade": "2年级",
+          "grade_variants": [
+            "الصف الثاني",
+            "Grade 2",
+            "Kelas 2"
+          ],
+          "subject": "数学",
+          "subject_variants": [
+            "الرياضيات",
+            "数学",
+            "Mathematics"
+          ]
+        },
+        "model": "gemini-2.5-pro",
+        "results": [
+          {
+            "title": "الرياضيات للصف الثاني الشامل",
+            "score": 9.0,
+            "reason": "标题明确提到年级为‘الصف الثاني’（2年级）和学科为‘الرياضيات’（数学），完全匹配目标搜索。描述表明是完整课程，来源看似可信，但未提供具体来源信息，略扣分。",
+            "identified_info": {
+              "grade": "الصف الثاني",
+              "subject": "الرياضيات"
+            },
+            "expected_score": 9.5,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 0.5,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "الرياضيات للصف الثالث المرحلة",
+            "score": 3.0,
+            "reason": "年级不匹配，目标为二年级，但结果为三年级；学科匹配为数学；资源质量和来源权威性无法判断，整体评分较低。",
+            "identified_info": {
+              "grade": "الصف الثالث",
+              "subject": "الرياضيات"
+            },
+            "expected_score": 4.0,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 1.0,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "العلوم للصف الثاني",
+            "score": 3.0,
+            "reason": "年级匹配正确，但学科为'科学'而非'数学'，学科不符导致大幅减分。此外，描述未提及是否为完整课程或权威来源。",
+            "identified_info": {
+              "grade": "الصف الثاني",
+              "subject": "العلوم"
+            },
+            "expected_score": 4.0,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 1.0,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "Grade 2 Mathematics Complete Course",
+            "score": 9.0,
+            "reason": "标题明确标识了目标年级和学科，且描述表明是完整课程，资源质量较高。未提供来源信息，但标题和内容匹配度极高，因此评分较高。",
+            "identified_info": {
+              "grade": "Grade 2",
+              "subject": "Mathematics"
+            },
+            "expected_score": 8.0,
+            "evaluation": {
+              "score_match": false,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 1.0,
+              "all_match": false
+            },
+            "success": false
+          }
+        ],
+        "execution_time": 8.19766616821289
+      },
+      {
+        "test_case_id": "IQ-005",
+        "target": {
+          "country": "IQ",
+          "country_code": "IQ",
+          "grade": "2年级",
+          "grade_variants": [
+            "الصف الثاني",
+            "Grade 2",
+            "Kelas 2"
+          ],
+          "subject": "科学",
+          "subject_variants": [
+            "العلوم",
+            "科学",
+            "Mathematics"
+          ]
+        },
+        "model": "gemini-2.5-pro",
+        "results": [
+          {
+            "title": "العلوم للصف الثاني الشامل",
+            "score": 9.0,
+            "reason": "标题明确标识了目标年级（الصف الثاني）和目标学科（العلوم），资源描述为完整课程，且内容看起来权威可信，符合搜索目标要求。",
+            "identified_info": {
+              "grade": "الصف الثاني",
+              "subject": "العلوم"
+            },
+            "expected_score": 9.5,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 0.5,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "العلوم للصف الثالث المرحلة",
+            "score": 4.0,
+            "reason": "年级不匹配，目标是2年级，但结果是3年级；学科匹配正确；描述不清楚是否为完整课程；来源可信度无法判断。",
+            "identified_info": {
+              "grade": "الصف الثالث",
+              "subject": "العلوم"
+            },
+            "expected_score": 4.0,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 0.0,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "الرياضيات للصف الثاني",
+            "score": 4.0,
+            "reason": "年级匹配正确，但学科不符。标题中的学科为数学，而目标学科是科学。此外，描述内容与标题不一致，资源质量和来源权威性难以判断。",
+            "identified_info": {
+              "grade": "الصف الثاني",
+              "subject": "الرياضيات"
+            },
+            "expected_score": 4.0,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 0.0,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "Grade 2 Science Complete Course",
+            "score": 9.0,
+            "reason": "标题明确提到'Grade 2'和'Science'，与目标年级和学科完全匹配。描述中提到是完整课程，资源质量较高，但未提供具体来源信息，略微扣分。",
+            "identified_info": {
+              "grade": "Grade 2",
+              "subject": "Science"
+            },
+            "expected_score": 8.0,
+            "evaluation": {
+              "score_match": false,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 1.0,
+              "all_match": false
+            },
+            "success": false
+          }
+        ],
+        "execution_time": 8.237230062484741
+      }
+    ],
+    "statistics": {
+      "total_tests": 5,
+      "total_time": 41.487804651260376,
+      "average_time": 8.297560930252075
+    }
+  },
+  {
+    "model": "gemini-2.5-flash",
+    "test_results": [
+      {
+        "test_case_id": "IQ-001",
+        "target": {
+          "country": "IQ",
+          "country_code": "IQ",
+          "grade": "1年级",
+          "grade_variants": [
+            "الصف الأول",
+            "Grade 1",
+            "Kelas 1"
+          ],
+          "subject": "数学",
+          "subject_variants": [
+            "الرياضيات",
+            "数学",
+            "Mathematics"
+          ]
+        },
+        "model": "gemini-2.5-flash",
+        "results": [
+          {
+            "title": "الرياضيات للصف الأول الشامل",
+            "score": 9.0,
+            "reason": "标题明确提到“الصف الأول”和“الرياضيات”，与目标年级和学科完全匹配。描述表明资源是完整课程，来源可信，评分高。",
+            "identified_info": {
+              "grade": "الصف الأول",
+              "subject": "الرياضيات"
+            },
+            "expected_score": 9.5,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 0.5,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "الرياضيات للصف الثاني المرحلة",
+            "score": 4.0,
+            "reason": "年级不匹配，目标为1年级但结果为2年级；学科匹配，资源描述为数学课程，但未明确是否为完整课程或权威来源。",
+            "identified_info": {
+              "grade": "الصف الثاني",
+              "subject": "الرياضيات"
+            },
+            "expected_score": 4.0,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 0.0,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "العلوم للصف الأول",
+            "score": 3.0,
+            "reason": "标题中的年级匹配目标年级，但学科为“科学”而非“数学”，与目标学科不符，资源质量和来源权威性无法判断，因此评分较低。",
+            "identified_info": {
+              "grade": "الصف الأول",
+              "subject": "العلوم"
+            },
+            "expected_score": 4.0,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 1.0,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "Grade 1 Mathematics Complete Course",
+            "score": 9.0,
+            "reason": "标题明确提到'Grade 1'和'Mathematics'，与目标年级和学科完全匹配。描述表明是完整课程，资源质量较高，但未提供具体来源信息，因此扣1分。",
+            "identified_info": {
+              "grade": "Grade 1",
+              "subject": "Mathematics"
+            },
+            "expected_score": 8.0,
+            "evaluation": {
+              "score_match": false,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 1.0,
+              "all_match": false
+            },
+            "success": false
+          }
+        ],
+        "execution_time": 7.923555850982666
+      },
+      {
+        "test_case_id": "IQ-002",
+        "target": {
+          "country": "IQ",
+          "country_code": "IQ",
+          "grade": "1年级",
+          "grade_variants": [
+            "الصف الأول",
+            "Grade 1",
+            "Kelas 1"
+          ],
+          "subject": "科学",
+          "subject_variants": [
+            "العلوم",
+            "科学",
+            "Mathematics"
+          ]
+        },
+        "model": "gemini-2.5-flash",
+        "results": [
+          {
+            "title": "العلوم للصف الأول الشامل",
+            "score": 9.0,
+            "reason": "标题明确提到年级为 الصف الأول（1年级）和学科为 العلوم（科学），资源描述为完整课程，且标题看起来可信，匹配度高。",
+            "identified_info": {
+              "grade": "الصف الأول",
+              "subject": "العلوم"
+            },
+            "expected_score": 9.5,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 0.5,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "العلوم للصف الثاني المرحلة",
+            "score": 3.0,
+            "reason": "年级不匹配（目标是1年级，结果是2年级），学科匹配（科学）。资源质量和来源权威性无法判断，整体评分较低。",
+            "identified_info": {
+              "grade": "الصف الثاني",
+              "subject": "العلوم"
+            },
+            "expected_score": 4.0,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 1.0,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "الرياضيات للصف الأول",
+            "score": 3.0,
+            "reason": "年级匹配度较高（الصف الأول与目标年级匹配），但学科不符（标题为数学，而目标为科学）。描述内容与标题不一致，资源质量和来源权威性无法判断。",
+            "identified_info": {
+              "grade": "الصف الأول",
+              "subject": "الرياضيات"
+            },
+            "expected_score": 4.0,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 1.0,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "Grade 1 Science Complete Course",
+            "score": 9.0,
+            "reason": "标题明确提到年级为Grade 1，学科为Science，与目标完全匹配。描述中提到是完整课程，资源质量较高，但未提供具体来源信息，略微扣分。",
+            "identified_info": {
+              "grade": "Grade 1",
+              "subject": "Science"
+            },
+            "expected_score": 8.0,
+            "evaluation": {
+              "score_match": false,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 1.0,
+              "all_match": false
+            },
+            "success": false
+          }
+        ],
+        "execution_time": 8.234396934509277
+      },
+      {
+        "test_case_id": "IQ-003",
+        "target": {
+          "country": "IQ",
+          "country_code": "IQ",
+          "grade": "1年级",
+          "grade_variants": [
+            "الصف الأول",
+            "Grade 1",
+            "Kelas 1"
+          ],
+          "subject": "物理",
+          "subject_variants": [
+            "الفيزياء",
+            "物理",
+            "Mathematics"
+          ]
+        },
+        "model": "gemini-2.5-flash",
+        "results": [
+          {
+            "title": "الفيزياء للصف الأول الشامل",
+            "score": 8.0,
+            "reason": "标题中的年级 'الصف الأول' 与目标年级匹配，学科 'الفيزياء' 也与目标学科匹配。描述表明这是完整的课程资源，但未提供具体来源信息，导致权威性评分略低。",
+            "identified_info": {
+              "grade": "الصف الأول",
+              "subject": "الفيزياء"
+            },
+            "expected_score": 9.5,
+            "evaluation": {
+              "score_match": false,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 1.5,
+              "all_match": false
+            },
+            "success": false
+          },
+          {
+            "title": "الفيزياء للصف الثاني المرحلة",
+            "score": 3.0,
+            "reason": "年级不匹配，目标是1年级，但结果为2年级；学科匹配为物理；资源质量和来源权威性无法判断，整体评分较低。",
+            "identified_info": {
+              "grade": "الصف الثاني",
+              "subject": "الفيزياء"
+            },
+            "expected_score": 4.0,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 1.0,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "العلوم للصف الأول",
+            "score": 4.0,
+            "reason": "年级匹配，但学科为'科学'而非'物理'，学科不符严重减分。此外，描述内容不明确，无法判断资源质量和来源权威性。",
+            "identified_info": {
+              "grade": "الصف الأول",
+              "subject": "العلوم"
+            },
+            "expected_score": 4.0,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 0.0,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "Grade 1 Physics Complete Course",
+            "score": 9.0,
+            "reason": "标题和描述明确表明资源是针对1年级的完整物理课程，年级和学科完全匹配，且资源质量高。来源权威性未明确，但未发现明显问题。",
+            "identified_info": {
+              "grade": "Grade 1",
+              "subject": "Physics"
+            },
+            "expected_score": 8.0,
+            "evaluation": {
+              "score_match": false,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 1.0,
+              "all_match": false
+            },
+            "success": false
+          }
+        ],
+        "execution_time": 9.592669010162354
+      },
+      {
+        "test_case_id": "IQ-004",
+        "target": {
+          "country": "IQ",
+          "country_code": "IQ",
+          "grade": "2年级",
+          "grade_variants": [
+            "الصف الثاني",
+            "Grade 2",
+            "Kelas 2"
+          ],
+          "subject": "数学",
+          "subject_variants": [
+            "الرياضيات",
+            "数学",
+            "Mathematics"
+          ]
+        },
+        "model": "gemini-2.5-flash",
+        "results": [
+          {
+            "title": "الرياضيات للصف الثاني الشامل",
+            "score": 9.0,
+            "reason": "标题明确匹配目标年级和学科，资源描述为完整课程，且内容看起来权威可信，评分接近满分。",
+            "identified_info": {
+              "grade": "الصف الثاني",
+              "subject": "الرياضيات"
+            },
+            "expected_score": 9.5,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 0.5,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "الرياضيات للصف الثالث المرحلة",
+            "score": 3.0,
+            "reason": "年级不匹配（目标是2年级，结果为3年级），学科匹配（数学）。资源描述不明确，无法判断其质量和来源权威性，因此大幅减分。",
+            "identified_info": {
+              "grade": "الصف الثالث",
+              "subject": "الرياضيات"
+            },
+            "expected_score": 4.0,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 1.0,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "العلوم للصف الثاني",
+            "score": 2.0,
+            "reason": "年级匹配，但学科不符，目标是数学而非科学。资源内容不符合搜索目标，因此大幅减分。",
+            "identified_info": {
+              "grade": "الصف الثاني",
+              "subject": "العلوم"
+            },
+            "expected_score": 4.0,
+            "evaluation": {
+              "score_match": false,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 2.0,
+              "all_match": false
+            },
+            "success": false
+          },
+          {
+            "title": "Grade 2 Mathematics Complete Course",
+            "score": 9.0,
+            "reason": "标题明确提到年级为Grade 2，与目标年级完全匹配；学科为Mathematics，与目标学科完全匹配；描述表明是完整课程，资源质量较高，但未明确来源权威性，因此扣1分。",
+            "identified_info": {
+              "grade": "Grade 2",
+              "subject": "Mathematics"
+            },
+            "expected_score": 8.0,
+            "evaluation": {
+              "score_match": false,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 1.0,
+              "all_match": false
+            },
+            "success": false
+          }
+        ],
+        "execution_time": 8.675910949707031
+      },
+      {
+        "test_case_id": "IQ-005",
+        "target": {
+          "country": "IQ",
+          "country_code": "IQ",
+          "grade": "2年级",
+          "grade_variants": [
+            "الصف الثاني",
+            "Grade 2",
+            "Kelas 2"
+          ],
+          "subject": "科学",
+          "subject_variants": [
+            "العلوم",
+            "科学",
+            "Mathematics"
+          ]
+        },
+        "model": "gemini-2.5-flash",
+        "results": [
+          {
+            "title": "العلوم للصف الثاني الشامل",
+            "score": 9.0,
+            "reason": "标题明确提到“الصف الثاني”和“العلوم”，与目标年级和学科完全匹配。描述表明内容为完整课程，资源质量高，来源可信。",
+            "identified_info": {
+              "grade": "الصف الثاني",
+              "subject": "العلوم"
+            },
+            "expected_score": 9.5,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 0.5,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "العلوم للصف الثالث المرحلة",
+            "score": 4.0,
+            "reason": "年级不匹配（目标是二年级，但结果是三年级），学科匹配（科学）。资源质量和来源权威性无法判断，因而未给高分。",
+            "identified_info": {
+              "grade": "الصف الثالث",
+              "subject": "العلوم"
+            },
+            "expected_score": 4.0,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 0.0,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "الرياضيات للصف الثاني",
+            "score": 4.0,
+            "reason": "年级匹配正确，但学科不符。标题显示为数学（الرياضيات），而目标学科为科学（العلوم）。描述提到科学，但标题不一致，且资源质量和来源信息不足。",
+            "identified_info": {
+              "grade": "الصف الثاني",
+              "subject": "الرياضيات"
+            },
+            "expected_score": 4.0,
+            "evaluation": {
+              "score_match": true,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 0.0,
+              "all_match": true
+            },
+            "success": true
+          },
+          {
+            "title": "Grade 2 Science Complete Course",
+            "score": 9.0,
+            "reason": "标题明确提到年级为Grade 2，学科为Science，与目标年级和学科完全匹配。同时描述表明是完整课程，资源质量较高，但未提供来源信息，略微扣分。",
+            "identified_info": {
+              "grade": "Grade 2",
+              "subject": "Science"
+            },
+            "expected_score": 8.0,
+            "evaluation": {
+              "score_match": false,
+              "grade_match": true,
+              "subject_match": true,
+              "score_deviation": 1.0,
+              "all_match": false
+            },
+            "success": false
+          }
+        ],
+        "execution_time": 8.599563837051392
+      }
+    ],
+    "statistics": {
+      "total_tests": 5,
+      "total_time": 43.02609658241272,
+      "average_time": 8.605219316482543
+    }
+  }
+]

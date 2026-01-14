@@ -1,0 +1,374 @@
+{
+  "metadata": {
+    "source_file": "/Users/shmiwanghao8/Desktop/education/Indonesia/syllabus/5. Final Panduan Mata Pelajaran Matematika_12_09_2025_Revisi 3_131-182.pdf",
+    "total_pages": 52,
+    "total_knowledge_points": 21,
+    "check_iterations": 2,
+    "has_remaining_issues": true
+  },
+  "knowledge_points": [
+    {
+      "id": "MAT-7-01-01",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 7",
+      "subject": "Matematika",
+      "chapter_title": "Bilangan",
+      "topic_title_id": "Operasi Hitung Bilangan Bulat dan Literasi Finansial",
+      "topic_title_cn": "整数运算与金融素养",
+      "learning_objective": "学生能够理解整数的概念、运算（加、减、乘、除）及其性质，并能将其应用于解决实际问题，特别是在金融素养方面，如计算收入、支出、储蓄和预算。",
+      "mapping_tags": [
+        "Bilangan Bulat",
+        "Operasi Hitung",
+        "Literasi Finansial",
+        "Faktor Prima",
+        "Kelipatan"
+      ]
+    },
+    {
+      "id": "MAT-7-01-02",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 7",
+      "subject": "Matematika",
+      "chapter_title": "Bilangan",
+      "topic_title_id": "Operasi Hitung Bilangan Rasional",
+      "topic_title_cn": "有理数运算",
+      "learning_objective": "学生能够理解有理数的概念（包括小数、分数、百分比），进行有理数的比较和四则运算，并将其应用于实际生活情境，如计算折扣、分期付款等金融问题。",
+      "mapping_tags": [
+        "Bilangan Rasional",
+        "Pecahan",
+        "Desimal",
+        "Persen",
+        "Operasi Hitung"
+      ]
+    },
+    {
+      "id": "MAT-9-01-01",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 9",
+      "subject": "Matematika",
+      "chapter_title": "Bilangan",
+      "topic_title_id": "Bilangan Berpangkat, Bentuk Akar, dan Notasi Ilmiah",
+      "topic_title_cn": "幂、根式与科学记数法",
+      "learning_objective": "学生能够理解整数次幂、根式的概念及其性质，并能运用科学记数法表示极大或极小的数，以解决在科学技术情境中的相关问题。",
+      "mapping_tags": [
+        "Bilangan Berpangkat",
+        "Eksponen",
+        "Bentuk Akar",
+        "Akar Kuadrat",
+        "Notasi Ilmiah"
+      ]
+    },
+    {
+      "id": "MAT-7-01-03",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 7",
+      "subject": "Matematika",
+      "chapter_title": "Bilangan",
+      "topic_title_id": "Rasio (Skala, Proporsi, dan Laju Perubahan)",
+      "topic_title_cn": "比（比例尺、正比与变化率）",
+      "learning_objective": "学生能够理解比、比例尺、正比和变化率的概念，并能运用这些概念解决涉及比较两个量或不同单位的量的实际问题，如地图缩放、配方比例和速度计算。",
+      "mapping_tags": [
+        "Rasio",
+        "Perbandingan",
+        "Skala",
+        "Proporsi",
+        "Laju Perubahan"
+      ]
+    },
+    {
+      "id": "MAT-7-02-01",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 7",
+      "subject": "Matematika",
+      "chapter_title": "Aljabar",
+      "topic_title_id": "Pola Bilangan dan Generalisasi Pola",
+      "topic_title_cn": "数列规律与归纳",
+      "learning_objective": "学生能够通过观察物体排列或数列，识别其规律，并用语言、表格和代数式进行归纳（通项公式），以预测数列中的后续项。",
+      "mapping_tags": [
+        "Pola Bilangan",
+        "Barisan Bilangan",
+        "Generalisasi Pola",
+        "Suku ke-n",
+        "Rumus Pola"
+      ]
+    },
+    {
+      "id": "MAT-7-02-02",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 7",
+      "subject": "Matematika",
+      "chapter_title": "Aljabar",
+      "topic_title_id": "Bentuk Aljabar dan Operasinya",
+      "topic_title_cn": "代数式及其运算",
+      "learning_objective": "学生能够识别代数式的组成元素（变量、系数、常数、项），理解代数运算的性质（交换律、结合律、分配律），并能进行代数式的加减运算及化简。",
+      "mapping_tags": [
+        "Bentuk Aljabar",
+        "Variabel",
+        "Koefisien",
+        "Operasi Aljabar",
+        "Suku Aljabar"
+      ]
+    },
+    {
+      "id": "MAT-8-02-01",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 8",
+      "subject": "Matematika",
+      "chapter_title": "Aljabar",
+      "topic_title_id": "Relasi dan Fungsi",
+      "topic_title_cn": "关系与函数",
+      "learning_objective": "学生能够理解关系和函数的概念，区分关系与函数，并能用有序数对、箭头图和表格等方式表示关系和函数，同时理解定义域、陪域和值域。",
+      "mapping_tags": [
+        "Relasi",
+        "Fungsi",
+        "Domain",
+        "Kodomain",
+        "Range"
+      ]
+    },
+    {
+      "id": "MAT-8-02-02",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 8",
+      "subject": "Matematika",
+      "chapter_title": "Aljabar",
+      "topic_title_id": "Grafik Fungsi Linear dan Non-linear",
+      "topic_title_cn": "线性函数与非线性函数图像",
+      "learning_objective": "学生能够理解线性函数和非线性函数的概念，区分它们的图像（直线与曲线），并能在笛卡尔坐标系中根据表格数据绘制给定函数的图像。",
+      "mapping_tags": [
+        "Fungsi Linear",
+        "Fungsi Non-linear",
+        "Grafik Fungsi",
+        "Persamaan Garis Lurus",
+        "Diagram Kartesius"
+      ]
+    },
+    {
+      "id": "MAT-7-02-03",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 7",
+      "subject": "Matematika",
+      "chapter_title": "Aljabar",
+      "topic_title_id": "Persamaan dan Pertidaksamaan Linear Satu Variabel",
+      "topic_title_cn": "一元一次方程与不等式",
+      "learning_objective": "学生能够理解一元一次方程和不等式的概念，并能运用等价变形求解一元一次方程和不等式，解决相关的实际应用问题。",
+      "mapping_tags": [
+        "PLSV",
+        "PTLSV",
+        "Persamaan Linear",
+        "Pertidaksamaan Linear",
+        "Satu Variabel"
+      ]
+    },
+    {
+      "id": "MAT-8-02-03",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 8",
+      "subject": "Matematika",
+      "chapter_title": "Aljabar",
+      "topic_title_id": "Sistem Persamaan Linear Dua Variabel (SPLDV)",
+      "topic_title_cn": "二元一次方程组",
+      "learning_objective": "学生能够理解二元一次方程组的概念，并能运用代入消元法、加减消元法和图像法求解二元一次方程组，解决相关的实际应用问题。",
+      "mapping_tags": [
+        "SPLDV",
+        "Sistem Persamaan Linear",
+        "Metode Eliminasi",
+        "Metode Substitusi",
+        "Metode Grafik"
+      ]
+    },
+    {
+      "id": "MAT-8-03-01",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 8",
+      "subject": "Matematika",
+      "chapter_title": "Pengukuran",
+      "topic_title_id": "Unsur-unsur Lingkaran (Keliling, Luas, Busur, Juring)",
+      "topic_title_cn": "圆的元素（周长、面积、弧、扇形）",
+      "learning_objective": "学生能够识别圆心、半径、直径、弦、弧、圆心角等圆的基本元素，并能运用公式计算圆的周长、面积、弧长和扇形面积。",
+      "mapping_tags": [
+        "Lingkaran",
+        "Keliling Lingkaran",
+        "Luas Lingkaran",
+        "Panjang Busur",
+        "Luas Juring"
+      ]
+    },
+    {
+      "id": "MAT-8-03-02",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 8",
+      "subject": "Matematika",
+      "chapter_title": "Pengukuran",
+      "topic_title_id": "Luas Permukaan dan Volume Bangun Ruang Sisi Datar (Prisma dan Limas)",
+      "topic_title_cn": "直棱柱与棱锥的表面积和体积",
+      "learning_objective": "学生能够识别棱柱和棱锥的性质，计算它们的表面积和体积，并能分析尺寸按比例变化对表面积和体积的影响。",
+      "mapping_tags": [
+        "Bangun Ruang Sisi Datar",
+        "Prisma",
+        "Limas",
+        "Luas Permukaan",
+        "Volume"
+      ]
+    },
+    {
+      "id": "MAT-9-03-01",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 9",
+      "subject": "Matematika",
+      "chapter_title": "Pengukuran",
+      "topic_title_id": "Luas Permukaan dan Volume Bangun Ruang Sisi Lengkung (Tabung, Kerucut, dan Bola)",
+      "topic_title_cn": "曲面立体的表面积和体积（圆柱、圆锥、球）",
+      "learning_objective": "学生能够识别圆柱、圆锥和球的性质，并能运用公式计算它们的表面积和体积，解决相关的实际应用问题。",
+      "mapping_tags": [
+        "Bangun Ruang Sisi Lengkung",
+        "Tabung",
+        "Kerucut",
+        "Bola",
+        "Volume"
+      ]
+    },
+    {
+      "id": "MAT-8-04-01",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 8",
+      "subject": "Matematika",
+      "chapter_title": "Geometri",
+      "topic_title_id": "Jaring-jaring Bangun Ruang",
+      "topic_title_cn": "立体图形的展开图",
+      "learning_objective": "学生能够识别并绘制棱柱、圆柱、棱锥和圆锥的展开图，并理解展开图与立体图形表面积之间的关系。",
+      "mapping_tags": [
+        "Jaring-jaring",
+        "Prisma",
+        "Limas",
+        "Tabung",
+        "Kerucut"
+      ]
+    },
+    {
+      "id": "MAT-7-04-01",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 7",
+      "subject": "Matematika",
+      "chapter_title": "Geometri",
+      "topic_title_id": "Hubungan Antar Sudut (Garis dan Sudut)",
+      "topic_title_cn": "角的关系（直线与角）",
+      "learning_objective": "学生能够识别并理解两条相交线或两条平行线被第三条直线所截形成的各种角（对顶角、同位角、内错角、同旁内角）的关系，并能运用这些关系进行计算。",
+      "mapping_tags": [
+        "Garis dan Sudut",
+        "Sudut Berpelurus",
+        "Sudut Bertolak Belakang",
+        "Sudut Sehadap",
+        "Garis Sejajar"
+      ]
+    },
+    {
+      "id": "MAT-7-04-02",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 7",
+      "subject": "Matematika",
+      "chapter_title": "Geometri",
+      "topic_title_id": "Segitiga dan Segiempat (Sifat, Keliling, dan Luas)",
+      "topic_title_cn": "三角形与四边形（性质、周长与面积）",
+      "learning_objective": "学生能够识别各种三角形和四边形的性质，并能运用公式计算它们的周长和面积，解决相关的实际问题。",
+      "mapping_tags": [
+        "Segitiga",
+        "Segiempat",
+        "Sifat Bangun Datar",
+        "Keliling",
+        "Luas"
+      ]
+    },
+    {
+      "id": "MAT-9-04-01",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 9",
+      "subject": "Matematika",
+      "chapter_title": "Geometri",
+      "topic_title_id": "Kekongruenan dan Kesebangunan",
+      "topic_title_cn": "全等与相似",
+      "learning_objective": "学生能够理解全等和相似图形的概念，识别并证明三角形和四边形的全等或相似，并运用其性质解决问题。",
+      "mapping_tags": [
+        "Kekongruenan",
+        "Kesebangunan",
+        "Segitiga Kongruen",
+        "Segitiga Sebangun",
+        "Syarat Kesebangunan"
+      ]
+    },
+    {
+      "id": "MAT-8-04-02",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 8",
+      "subject": "Matematika",
+      "chapter_title": "Geometri",
+      "topic_title_id": "Teorema Pythagoras",
+      "topic_title_cn": "勾股定理",
+      "learning_objective": "学生能够理解并证明勾股定理，并能运用勾股定理及其逆定理解决与直角三角形相关的计算和实际问题。",
+      "mapping_tags": [
+        "Teorema Pythagoras",
+        "Segitiga Siku-siku",
+        "Hipotenusa",
+        "Tripel Pythagoras",
+        "Sisi Miring"
+      ]
+    },
+    {
+      "id": "MAT-9-04-02",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 9",
+      "subject": "Matematika",
+      "chapter_title": "Geometri",
+      "topic_title_id": "Transformasi Geometri (Translasi, Refleksi, Rotasi, Dilatasi)",
+      "topic_title_cn": "几何变换（平移、反射、旋转、缩放）",
+      "learning_objective": "学生能够理解平移、反射、旋转和缩放的概念，并能在坐标系中确定图形经过这些变换后的位置和坐标。",
+      "mapping_tags": [
+        "Transformasi Geometri",
+        "Translasi",
+        "Refleksi",
+        "Rotasi",
+        "Dilatasi"
+      ]
+    },
+    {
+      "id": "MAT-7-05-01",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 7",
+      "subject": "Matematika",
+      "chapter_title": "Analisis Data dan Peluang",
+      "topic_title_id": "Penyajian Data (Diagram Batang dan Diagram Lingkaran)",
+      "topic_title_cn": "数据表示（条形图和饼图）",
+      "learning_objective": "学生能够从表格中收集和整理数据，并能用条形图和饼图表示数据，同时能够解读这些图表以得出结论或做出预测。",
+      "mapping_tags": [
+        "Penyajian Data",
+        "Statistika",
+        "Diagram Batang",
+        "Diagram Lingkaran",
+        "Tabel Frekuensi"
+      ]
+    },
+    {
+      "id": "MAT-7-05-02",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 7",
+      "subject": "Matematika",
+      "chapter_title": "Analisis Data dan Peluang",
+      "topic_title_id": "Sampel dan Populasi",
+      "topic_title_cn": "样本与总体",
+      "learning_objective": "学生能够理解总体和样本的概念，并能区分在给定的数据收集中哪个是总体，哪个是样本，同时理解代表性样本的重要性。",
+      "mapping_tags": [
+        "Sampel",
+        "Populasi",
+        "Statistika",
+        "Survei",
+        "Pengumpulan Data"
+      ]
+    }
+  ],
+  "issues": [
+    "覆盖率不足：数据似乎遗漏了印尼初中数学课程中的一些核心知识点，例如七年级的‘三角形和四边形’(Segitiga dan Segiempat)以及‘数据的集中趋势（平均数、中位数、众数）’(Ukuran Pemusatan Data)。",
+    "mapping_tags 质量问题：部分知识点的 mapping_tags 存在数量超限、关键词冗余、过于具体或遗漏核心概念的问题。",
+    "课程覆盖率可能存在缺失：7年级几何章节缺少关于'三角形与四边形'（Segitiga dan Segiempat）的基础知识点，该知识点通常是学习几何的基础。",
+    "mapping_tags 质量有待提升：知识点 'MAT-8-04-02' (勾股定理) 的 mapping_tags 只有4个，可以增加同义词以提升关键词覆盖率。"
+  ]
+}

@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}教育视频搜索系统{% endblock %}</title>
+
+    <!-- 页面特定的CSS -->
+    {% block page_css %}{% endblock %}
+
+    <!-- 引入统一样式系统（包含CSS变量、Toast、基础样式） -->
+    <link rel="stylesheet" href="/static/css/unified_page_styles.css">
+
+    <!-- 引入侧边栏样式 -->
+    <link rel="stylesheet" href="/static/css/sidebar_styles.css">
+
+    <!-- 引入Skeleton加载器 -->
+    <script src="/static/js/skeleton-loader.js" defer></script>
+
+    <style>
+        /* ========== 基础布局样式（模板系统必需）========== */
+        body {
+            display: flex; /* Flex布局确保侧边栏和内容正确排列 */
+        }
+
+        /* 主内容区 */
+        .main-content {
+            flex: 1;
+            margin-left: 180px; /* 为侧边栏留出空间 */
+            padding: 30px;
+            transition: margin-left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            min-height: 100vh;
+        }
+
+        .main-content.expanded {
+            margin-left: 70px; /* 侧边栏折叠时的宽度 */
+        }
+
+        /* ========== Skip Navigation Links (可访问性) ========== */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: var(--accent-color, #667eea);
+            color: white;
+            padding: 8px 16px;
+            text-decoration: none;
+            z-index: 10000;
+            border-radius: 0 0 4px 0;
+            transition: top 0.3s ease;
+        }
+
+        .skip-link:focus {
+            top: 0;
+        }
+
+        /* ========== 移动端菜单按钮 ========== */
+        .mobile-menu-button {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 10001;
+            background: var(--accent-color, #667eea);
+            border: none;
+            border-radius: 8px;
+            padding: 12px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .mobile-menu-button.active {
+            background: var(--danger-color, #f56565);
+        }
+
+        .hamburger {
+            width: 24px;
+            height: 18px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .hamburger span {
+            display: block;
+            height: 2px;
+            width: 100%;
+            background: white;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu-button.active .hamburger span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .mobile-menu-button.active .hamburger span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .mobile-menu-button.active .hamburger span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -6px);
+        }
+
+        /* ========== 移动端遮罩层 ========== */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 9998;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar-overlay.active {
+            display: block;
+            opacity: 1;
+        }
+
+        /* ========== Toast通知容器 ========== */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10002;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            pointer-events: none;
+        }
+
+        .toast {
+            background: white;
+            padding: 16px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            min-width: 300px;
+            max-width: 400px;
+            display: flex;
+            gap: 12px;
+            pointer-events: auto;
+            animation: slideInRight 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .toast.hiding {
+            animation: slideOutRight 0.3s ease forwards;
+        }
+
+        .toast.success {
+            background: var(--success-color);
+            color: white;
+        }
+
+        .toast.error {
+            background: var(--danger-color);
+            color: white;
+        }
+
+        .toast.warning {
+            background: var(--warning-color);
+            color: white;
+        }
+
+        .toast.info {
+            background: var(--info-color);
+            color: white;
+        }
+
+        .toast-icon {
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .toast-content {
+            flex: 1;
+        }
+
+        .toast-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .toast-message {
+            font-size: 14px;
+            opacity: 0.95;
+        }
+
+        /* Toast进度条 */
+        .toast-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.3);
+            animation: toastProgress linear forwards;
+        }
+
+        /* ========== 页面特定的基础样式 ========== */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 25px 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px var(--shadow-color);
+        }
+
+        .header h1 {
+            font-size: 28px;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        /* ========== 关键帧动画 ========== */
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOutRight {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+
+        @keyframes toastProgress {
+            from {
+                width: 100%;
+            }
+            to {
+                width: 0%;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -1000px 0;
+            }
+            100% {
+                background-position: 1000px 0;
+            }
+        }
+
+        /* ========== 响应式设计 ========== */
+        @media (max-width: 768px) {
+            .main-content {
+                margin-left: 0;
+                padding: 15px;
+            }
+
+            .mobile-menu-button {
+                display: block;
+            }
+
+            .toast-container {
+                left: 10px;
+                right: 10px;
+                top: 10px;
+            }
+
+            .toast {
+                min-width: auto;
+            }
+
+            .sidebar-overlay.active {
+                display: block;
+            }
+        }
+
+        /* ========== 性能优化：GPU加速 ========== */
+        .toast,
+        .mobile-menu-button,
+        .main-content {
+            will-change: transform;
+            transform: translateZ(0);
+            backface-visibility: hidden;
+        }
+
+        /* ========== 减少动画（可访问性） ========== */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* ========== 内容可见性优化 ========== */
+        .result-card {
+            content-visibility: auto;
+            contain-intrinsic-size: 0 200px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Skip Navigation Links (可访问性) -->
+    <a href="#mainContent" class="skip-link" id="skipToContent">跳转到主内容</a>
+    <a href="#sidebar" class="skip-link" id="skipToMenu">跳转到导航菜单</a>
+
+    <!-- Toast通知容器 -->
+    <div class="toast-container" id="toastContainer" role="alert" aria-live="polite" aria-atomic="true"></div>
+
+    <!-- 移动端遮罩层 -->
+    <div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
+
+    <!-- 移动端汉堡菜单按钮 -->
+    <button class="mobile-menu-button" id="mobileMenuButton" aria-label="打开菜单" aria-expanded="false" aria-controls="sidebar">
+        <div class="hamburger" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </button>
+
+    <!-- 侧边栏导航（统一组件） -->
+    {% include 'sidebar_component.html' %}
+
+    <!-- 主内容区 -->
+    <main class="main-content" id="mainContent" role="main" tabindex="-1">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- 统一的JavaScript -->
+    <script>
+        // ========== 全局状态管理 ==========
+        let sidebarCollapsed = false;
+        let mobileMenuOpen = false;
+
+        // ========== 侧边栏切换函数 ==========
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            const isMobile = window.innerWidth <= 768;
+
+            if (isMobile) {
+                toggleMobileMenu();
+            } else {
+                sidebarCollapsed = !sidebarCollapsed;
+
+                if (sidebarCollapsed) {
+                    sidebar.classList.add('collapsed');
+                    mainContent.classList.add('expanded');
+                } else {
+                    sidebar.classList.remove('collapsed');
+                    mainContent.classList.remove('expanded');
+                }
+
+                localStorage.setItem('sidebarCollapsed', sidebarCollapsed);
+            }
+        }
+
+        // ========== 移动端菜单切换 ==========
+        function toggleMobileMenu() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            const menuButton = document.getElementById('mobileMenuButton');
+
+            mobileMenuOpen = !mobileMenuOpen;
+
+            if (mobileMenuOpen) {
+                sidebar.classList.add('mobile-open');
+                overlay.classList.add('active');
+                menuButton.classList.add('active');
+                menuButton.setAttribute('aria-label', '关闭菜单');
+                menuButton.setAttribute('aria-expanded', 'true');
+                document.body.style.overflow = 'hidden';
+            } else {
+                sidebar.classList.remove('mobile-open');
+                overlay.classList.remove('active');
+                menuButton.classList.remove('active');
+                menuButton.setAttribute('aria-label', '打开菜单');
+                menuButton.setAttribute('aria-expanded', 'false');
+                document.body.style.overflow = '';
+            }
+        }
+
+        // ========== Toast通知系统 ==========
+        function showToast(type, title, message, duration = 3000) {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.setAttribute('role', 'alert');
+
+            const icons = {
+                success: '✅',
+                error: '❌',
+                warning: '⚠️',
+                info: 'ℹ️'
+            };
+
+            toast.innerHTML = `
+                <div class="toast-icon">${icons[type] || 'ℹ️'}</div>
+                <div class="toast-content">
+                    <div class="toast-title">${title}</div>
+                    <div class="toast-message">${message}</div>
+                </div>
+                <div class="toast-progress" style="animation-duration: ${duration}ms"></div>
+            `;
+
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.add('hiding');
+                setTimeout(() => {
+                    if (container.contains(toast)) {
+                        container.removeChild(toast);
+                    }
+                }, 300);
+            }, duration);
+        }
+
+        // ========== ToastManager类 ==========
+        class ToastManager {
+            constructor() {
+                this.container = document.getElementById('toastContainer');
+            }
+
+            show(options) {
+                const {
+                    type = 'info',
+                    title = '',
+                    message = '',
+                    duration = 3000,
+                    position = 'top-right'
+                } = options;
+
+                showToast(type, title, message, duration);
+            }
+
+            success(title, message, duration) {
+                this.show({ type: 'success', title, message, duration });
+            }
+
+            error(title, message, duration) {
+                this.show({ type: 'error', title, message, duration });
+            }
+
+            warning(title, message, duration) {
+                this.show({ type: 'warning', title, message, duration });
+            }
+
+            info(title, message, duration) {
+                this.show({ type: 'info', title, message, duration });
+            }
+        }
+
+        const toast = new ToastManager();
+
+        // ========== 性能监控器类 ==========
+        class PerformanceMonitor {
+            constructor() {
+                this.metrics = {};
+                this.observer = null;
+                this.init();
+            }
+
+            init() {
+                // 收集导航指标
+                if ('PerformanceObserver' in window) {
+                    try {
+                        this.observer = new PerformanceObserver((list) => {
+                            for (const entry of list.getEntries()) {
+                                this.metrics[entry.name] = entry.value;
+                            }
+                        });
+
+                        this.observer.observe({
+                            entryTypes: ['largest-contentful-paint', 'first-input', 'layout-shift']
+                        });
+                    } catch (e) {
+                        console.warn('PerformanceObserver not supported:', e);
+                    }
+                }
+
+                // 页面加载完成后收集指标
+                window.addEventListener('load', () => this.collectMetrics());
+            }
+
+            collectMetrics() {
+                const perfData = performance.getEntriesByType('navigation')[0];
+                if (perfData) {
+                    this.metrics.pageLoadTime = perfData.loadEventEnd - perfData.fetchStart;
+                    this.metrics.domContentLoaded = perfData.domContentLoadedEventEnd - perfData.fetchStart;
+                    this.metrics.firstPaint = this.getMetric('first-paint');
+                    this.metrics.firstContentfulPaint = this.getMetric('first-contentful-paint');
+                }
+            }
+
+            getMetric(name) {
+                const entries = performance.getEntriesByName(name);
+                return entries.length > 0 ? entries[0].startTime : 0;
+            }
+
+            getScore() {
+                // 基于100分制计算性能分数
+                let score = 100;
+
+                if (this.metrics.pageLoadTime > 3000) score -= 20;
+                else if (this.metrics.pageLoadTime > 2000) score -= 10;
+
+                if (this.metrics.firstContentfulPaint > 2000) score -= 15;
+                else if (this.metrics.firstContentfulPaint > 1000) score -= 5;
+
+                return Math.max(0, score);
+            }
+
+            getReport() {
+                return {
+                    metrics: this.metrics,
+                    score: this.getScore(),
+                    timestamp: new Date().toISOString()
+                };
+            }
+        }
+
+        // ========== 懒加载器类 ==========
+        class LazyLoader {
+            constructor(options = {}) {
+                this.options = {
+                    rootMargin: options.rootMargin || '50px',
+                    threshold: options.threshold || 0.01,
+                    ...options
+                };
+
+                this.observer = null;
+                this.init();
+            }
+
+            init() {
+                if ('IntersectionObserver' in window) {
+                    this.observer = new IntersectionObserver(
+                        (entries) => this.handleIntersect(entries),
+                        {
+                            rootMargin: this.options.rootMargin,
+                            threshold: this.options.threshold
+                        }
+                    );
+
+                    this.observeImages();
+                }
+            }
+
+            observeImages() {
+                const images = document.querySelectorAll('img[data-src]');
+                images.forEach(img => this.observer.observe(img));
+            }
+
+            handleIntersect(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        this.loadImage(entry.target);
+                        this.observer.unobserve(entry.target);
+                    }
+                });
+            }
+
+            loadImage(img) {
+                const src = img.getAttribute('data-src');
+                if (src) {
+                    img.src = src;
+                    img.classList.add('loaded');
+                    img.removeAttribute('data-src');
+                }
+            }
+        }
+
+        // ========== 资源预加载器类 ==========
+        class ResourcePrefetcher {
+            constructor() {
+                this.prefetched = new Set();
+            }
+
+            preload(urls) {
+                urls.forEach(url => {
+                    if (!this.prefetched.has(url)) {
+                        const link = document.createElement('link');
+                        link.rel = 'preload';
+                        link.href = url;
+                        link.as = this.getResourceType(url);
+                        document.head.appendChild(link);
+                        this.prefetched.add(url);
+                    }
+                });
+            }
+
+            prefetch(urls) {
+                urls.forEach(url => {
+                    if (!this.prefetched.has(url)) {
+                        const link = document.createElement('link');
+                        link.rel = 'prefetch';
+                        link.href = url;
+                        document.head.appendChild(link);
+                        this.prefetched.add(url);
+                    }
+                });
+            }
+
+            getResourceType(url) {
+                const extension = url.split('.').pop().toLowerCase();
+                const types = {
+                    'js': 'script',
+                    'css': 'style',
+                    'woff': 'font',
+                    'woff2': 'font',
+                    'png': 'image',
+                    'jpg': 'image',
+                    'jpeg': 'image',
+                    'gif': 'image',
+                    'svg': 'image'
+                };
+                return types[extension] || 'fetch';
+            }
+        }
+
+        // ========== 代码分割器类 ==========
+        class CodeSplitter {
+            constructor() {
+                this.loadedModules = new Map();
+            }
+
+            async loadModule(name, loader) {
+                if (this.loadedModules.has(name)) {
+                    return this.loadedModules.get(name);
+                }
+
+                try {
+                    const module = await loader();
+                    this.loadedModules.set(name, module);
+                    return module;
+                } catch (error) {
+                    console.error(`Failed to load module ${name}:`, error);
+                    throw error;
+                }
+            }
+
+            loadScript(src) {
+                return new Promise((resolve, reject) => {
+                    if (document.querySelector(`script[src="${src}"]`)) {
+                        resolve();
+                        return;
+                    }
+
+                    const script = document.createElement('script');
+                    script.src = src;
+                    script.onload = resolve;
+                    script.onerror = reject;
+                    document.head.appendChild(script);
+                });
+            }
+
+            loadStyle(href) {
+                return new Promise((resolve, reject) => {
+                    if (document.querySelector(`link[href="${href}"]`)) {
+                        resolve();
+                        return;
+                    }
+
+                    const link = document.createElement('link');
+                    link.rel = 'stylesheet';
+                    link.href = href;
+                    link.onload = resolve;
+                    link.onerror = reject;
+                    document.head.appendChild(link);
+                });
+            }
+        }
+
+        // ========== 页面初始化 ==========
+        let perfMonitor;
+        let lazyLoader;
+        let resourcePrefetcher;
+        let codeSplitter;
+
+        window.addEventListener('DOMContentLoaded', function() {
+            console.log('🔧 初始化系统组件...');
+
+            // 恢复侧边栏状态
+            const savedSidebarState = localStorage.getItem('sidebarCollapsed');
+            if (savedSidebarState === 'true') {
+                sidebarCollapsed = false;
+                toggleSidebar();
+            }
+
+            // 恢复主题
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            if (savedTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+
+            // 初始化性能监控
+            perfMonitor = new PerformanceMonitor();
+            console.log('✅ 性能监控器已启动');
+
+            // 初始化懒加载
+            lazyLoader = new LazyLoader();
+            console.log('✅ 懒加载器已启动');
+
+            // 初始化资源预加载
+            resourcePrefetcher = new ResourcePrefetcher();
+            console.log('✅ 资源预加载器已启动');
+
+            // 初始化代码分割器
+            codeSplitter = new CodeSplitter();
+            console.log('✅ 代码分割器已启动');
+
+            // 绑定侧边栏切换按钮
+            const toggleBtn = document.getElementById('sidebarToggle');
+            if (toggleBtn) {
+                toggleBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    toggleSidebar();
+                });
+            }
+
+            // 绑定移动端菜单按钮
+            const mobileMenuBtn = document.getElementById('mobileMenuButton');
+            if (mobileMenuBtn) {
+                mobileMenuBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    toggleMobileMenu();
+                });
+            }
+
+            // 绑定遮罩层点击
+            const overlay = document.getElementById('sidebarOverlay');
+            if (overlay) {
+                overlay.addEventListener('click', function() {
+                    if (mobileMenuOpen) {
+                        toggleMobileMenu();
+                    }
+                });
+            }
+
+            // 修复导航链接点击（移动端自动关闭菜单）
+            const navLinks = document.querySelectorAll('.sidebar-nav-item');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    const isMobile = window.innerWidth <= 768;
+                    if (isMobile && mobileMenuOpen) {
+                        e.preventDefault();
+                        toggleMobileMenu();
+                        setTimeout(() => {
+                            window.location.href = this.href;
+                        }, 300);
+                    }
+                });
+            });
+
+            // 键盘快捷键
+            document.addEventListener('keydown', function(event) {
+                // Ctrl+B 或 Cmd+B 切换侧边栏
+                if ((event.ctrlKey || event.metaKey) && event.key === 'b') {
+                    event.preventDefault();
+                    toggleSidebar();
+                }
+
+                // Escape 键关闭移动菜单
+                if (event.key === 'Escape' && mobileMenuOpen) {
+                    toggleMobileMenu();
+                }
+            });
+
+            // 窗口大小变化时重置移动菜单状态
+            let resizeTimer;
+            window.addEventListener('resize', function() {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(function() {
+                    const width = window.innerWidth;
+                    if (width > 768 && mobileMenuOpen) {
+                        mobileMenuOpen = false;
+                        const sidebar = document.getElementById('sidebar');
+                        const overlay = document.getElementById('sidebarOverlay');
+                        const menuButton = document.getElementById('mobileMenuButton');
+
+                        if (sidebar) sidebar.classList.remove('mobile-open');
+                        if (overlay) overlay.classList.remove('active');
+                        if (menuButton) {
+                            menuButton.classList.remove('active');
+                            menuButton.setAttribute('aria-label', '打开菜单');
+                            menuButton.setAttribute('aria-expanded', 'false');
+                        }
+                        document.body.style.overflow = '';
+                    }
+                }, 250);
+            });
+
+            console.log('✅ 所有系统组件初始化完成');
+        });
+
+        // ========== 调试函数 ==========
+        window.debugSystem = function() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+
+            console.group('🔍 系统调试信息');
+            console.log('全局变量:');
+            console.log(`  sidebarCollapsed: ${sidebarCollapsed}`);
+            console.log(`  mobileMenuOpen: ${mobileMenuOpen}`);
+            console.log('DOM元素:');
+            console.log(`  侧边栏: ${sidebar ? '存在' : '不存在'}`);
+            console.log(`  主内容: ${mainContent ? '存在' : '不存在'}`);
+            if (sidebar) {
+                console.log(`  sidebar classes: ${sidebar.className}`);
+            }
+            if (mainContent) {
+                console.log(`  mainContent classes: ${mainContent.className}`);
+            }
+            console.log(`  窗口宽度: ${window.innerWidth}px`);
+            console.log(`  是否移动端: ${window.innerWidth <= 768}`);
+
+            if (perfMonitor) {
+                console.log('性能指标:');
+                console.log(perfMonitor.getReport());
+            }
+
+            console.groupEnd();
+        };
+
+        console.log('💡 提示: 在控制台输入 debugSystem() 查看系统状态');
+    </script>
+
+    <!-- 页面特定的JavaScript -->
+    {% block page_scripts %}{% endblock %}
+</body>
+</html>

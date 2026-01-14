@@ -1,0 +1,26 @@
+{
+  "60a32373": {
+    "review_id": "60a32373",
+    "country_code": "ID",
+    "country_name": "Indonesia",
+    "submitter": "system",
+    "submitted_at": "2026-01-06T09:21:31.897458",
+    "status": "approved",
+    "changes": {
+      "grade_subject_mappings": {
+        "Kelas 1": {
+          "available_subjects": [
+            {
+              "local_name": "Matematika",
+              "is_core": true
+            }
+          ]
+        }
+      }
+    },
+    "reason": "自动生成的年级-学科配对数据",
+    "reviewer": "admin",
+    "reviewed_at": "2026-01-06T09:21:31.898783",
+    "review_comments": "数据准确，审核通过"
+  }
+}

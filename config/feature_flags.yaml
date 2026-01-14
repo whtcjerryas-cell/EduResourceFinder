@@ -1,0 +1,66 @@
+# Self-Improving System 功能开关配置
+
+# 环境配置: development, staging, production
+environment: development
+
+# 功能开关
+feature_flags:
+  # 用户反馈收集
+  user_feedback_collection:
+    enabled: true
+    rollout_percentage: 100  # 测试环境100%启用
+    description: "收集用户对搜索结果的反馈（评分、相关性、文字反馈）"
+
+  # 搜索质量评估
+  quality_evaluation:
+    enabled: true
+    mode: "asynchronous"  # synchronous: 同步执行, asynchronous: 异步执行
+    auto_save_results: true
+    description: "自动评估每次搜索的质量（0-100分）"
+
+  # A/B测试
+  ab_testing:
+    enabled: true
+    active_tests: []  # 活跃的测试ID列表
+    description: "支持A/B测试不同策略效果"
+
+  # 自动优化
+  automatic_optimization:
+    enabled: false  # 初始关闭，需要手动启动
+    auto_apply: false  # 是否自动应用优化（建议先false，经过A/B测试后改为true）
+    dry_run: true  # dry-run模式（仅分析不应用）
+    evaluation_interval_days: 1  # 评估间隔
+    min_samples_for_optimization: 100  # 最小样本量
+    quality_threshold: 6.5  # 质量阈值
+    description: "自动运行优化循环，持续改进系统"
+
+  # 监控和报警
+  monitoring_alerts:
+    enabled: true
+    email_alerts: false  # 初始不发送邮件
+    alert_check_interval_minutes: 5  # 报警检查间隔
+    description: "实时监控系统指标并触发报警"
+
+# 各环境的特定配置
+environments:
+  development:
+    port: 5005
+    automatic_optimization:
+      enabled: true
+      auto_apply: true
+      dry_run: false
+
+  staging:
+    port: 5004
+    automatic_optimization:
+      enabled: true
+      auto_apply: false  # 测试环境先手动审核
+      dry_run: false
+
+  production:
+    port: 5003
+    use_optimization_system: false  # 生产环境初始不使用新系统
+    automatic_optimization:
+      enabled: false
+      auto_apply: false
+      dry_run: true

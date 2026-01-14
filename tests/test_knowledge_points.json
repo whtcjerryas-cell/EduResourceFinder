@@ -1,0 +1,39 @@
+{
+  "knowledge_points": [
+    {
+      "grade_level": "Fase A (Kelas 1-2)",
+      "subject": "Matematika",
+      "chapter_title": "Bilangan",
+      "topic_title": "Mengenal Bilangan 1-10",
+      "description": "Mengenal dan menulis bilangan 1 sampai 10"
+    },
+    {
+      "grade_level": "Fase A (Kelas 1-2)",
+      "subject": "Matematika",
+      "chapter_title": "Bilangan",
+      "topic_title": "Mengenal Bilangan 11-20",
+      "description": "Mengenal dan menulis bilangan 11 sampai 20"
+    },
+    {
+      "grade_level": "Fase A (Kelas 1-2)",
+      "subject": "Matematika",
+      "chapter_title": "Bilangan",
+      "topic_title": "Penjumlahan Bilangan",
+      "description": "Melakukan penjumlahan bilangan sederhana"
+    },
+    {
+      "grade_level": "Fase A (Kelas 1-2)",
+      "subject": "Matematika",
+      "chapter_title": "Geometri",
+      "topic_title": "Mengenal Bangun Datar",
+      "description": "Mengenal bentuk-bentuk bangun datar sederhana"
+    },
+    {
+      "grade_level": "Fase A (Kelas 1-2)",
+      "subject": "Matematika",
+      "chapter_title": "Geometri",
+      "topic_title": "Mengenal Bangun Ruang",
+      "description": "Mengenal bentuk-bentuk bangun ruang sederhana"
+    }
+  ]
+}

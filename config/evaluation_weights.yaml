@@ -1,0 +1,168 @@
+# ============================================
+# 评估权重配置
+# ============================================
+# 用途：控制视频评估的权重和阈值
+# 修改后：重启服务或等待5秒自动重载
+# ============================================
+
+evaluation:
+  # ----------------------------------------
+  # 综合评分权重（总计 = 1.0）
+  # ----------------------------------------
+  overall_weights:
+    visual_quality: 0.2      # 视觉质量权重（20%）
+    relevance: 0.4           # 内容相关度权重（40%）- 最重要
+    pedagogy: 0.3            # 教学质量权重（30%）
+    metadata: 0.1            # 热度/元数据权重（10%）
+
+  # ----------------------------------------
+  # 视觉质量细分权重
+  # ----------------------------------------
+  visual_quality:
+    tech: 0.6                # 硬指标权重（分辨率等）
+    design: 0.4              # 软指标权重（画面设计、字幕等）
+
+  # ----------------------------------------
+  # 视频质量阈值
+  # ----------------------------------------
+  video_quality:
+    resolution:
+      excellent: 1080        # ≥1080p → 10分
+      good: 720             # ≥720p → 8分
+      fair: 480             # ≥480p → 5分
+      poor: 0               # <480p → 2分
+
+  # ----------------------------------------
+  # 热度/元数据评分
+  # ----------------------------------------
+  metadata:
+    # 观看次数评分
+    view_count:
+      - threshold: 1000000   # 100万次
+        score: 5.0
+      - threshold: 500000    # 50万次
+        score: 4.0
+      - threshold: 100000    # 10万次
+        score: 3.0
+      - threshold: 10000     # 1万次
+        score: 2.0
+      - threshold: 1000      # 1000次
+        score: 1.0
+      - threshold: 0         # 默认
+        score: 0.5
+
+    # 点赞率评分（点赞数/观看数）
+    like_ratio:
+      - threshold: 0.05      # ≥5%
+        score: 5.0
+      - threshold: 0.03      # ≥3%
+        score: 4.0
+      - threshold: 0.02      # ≥2%
+        score: 3.0
+      - threshold: 0.01      # ≥1%
+        score: 2.0
+      - threshold: 0.0       # 默认
+        score: 1.0
+
+    # 观看次数和点赞率的权重
+    view_weight: 0.6         # 观看次数权重
+    like_weight: 0.4         # 点赞率权重
+
+  # ----------------------------------------
+  # 资源类型分类关键词
+  # ----------------------------------------
+  resource_type_keywords:
+    video:
+      - "video"
+      - "youtube"
+      - "watch"
+      - "播放"
+      - "视频"
+
+    exercise:
+      - "exercise"
+      - "quiz"
+      - "test"
+      - "latihan"
+      - "soal"
+      - "练习"
+      - "习题"
+
+    textbook:
+      - "textbook"
+      - "buku"
+      - "modul"
+      - "module"
+      - "教材"
+      - "课本"
+      - "模块"
+
+    supplement:
+      - "supplement"
+      - "handout"
+      - "material"
+      - "bahan ajar"
+      - "讲义"
+      - "资料"
+
+    learning:
+      - "learning"
+      - "course"
+      - "tutorial"
+      - "pembelajaran"
+      - "kursus"
+      - "教程"
+      - "课程"
+
+  # ----------------------------------------
+  # 视频检测规则
+  # ----------------------------------------
+  video_detection:
+    # 系列视频检测关键词
+    series_keywords:
+      - "part 1"
+      - "part 2"
+      - "part 3"
+      - "bagian 1"
+      - "bagian 2"
+      - "episode 1"
+      - "episode 2"
+      - "第1集"
+      - "第2集"
+
+    # 关键词最小长度
+    min_keyword_length: 3
+
+  # ----------------------------------------
+  # 评估提示词配置
+  # ----------------------------------------
+  prompts:
+    # 知识点匹配提示词
+    knowledge_point_matching:
+      temperature: 0.3
+      max_tokens: 2000
+
+    # 视觉质量评估提示词
+    visual_quality:
+      temperature: 0.0
+      max_tokens: 500
+
+    # 相关性评估提示词
+    relevance:
+      temperature: 0.3
+      max_tokens: 2000
+
+    # 教学法评估提示词
+    pedagogy:
+      temperature: 0.3
+      max_tokens: 2000
+
+  # ----------------------------------------
+  # 文本长度限制
+  # ----------------------------------------
+  text_limits:
+    learning_objective_preview: 200    # 学习目标预览长度
+    video_description_preview: 300     # 视频描述预览长度
+    transcript_preview: 500            # 转录文本预览长度
+    relevance_transcript: 2000         # 相关性评估转录长度
+    pedagogy_transcript: 2000           # 教学法评估转录长度

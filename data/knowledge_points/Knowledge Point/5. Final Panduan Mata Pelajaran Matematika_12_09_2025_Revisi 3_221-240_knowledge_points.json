@@ -1,0 +1,204 @@
+{
+  "metadata": {
+    "source_file": "/Users/shmiwanghao8/Desktop/education/Indonesia/syllabus/5. Final Panduan Mata Pelajaran Matematika_12_09_2025_Revisi 3_221-240.pdf",
+    "total_pages": 20,
+    "total_knowledge_points": 11,
+    "check_iterations": 2,
+    "has_remaining_issues": true
+  },
+  "knowledge_points": [
+    {
+      "id": "MAT-11-12-01-01",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 11-12 (Fase F)",
+      "subject": "Matematika",
+      "chapter_title": "Analisis Data dan Peluang",
+      "topic_title_id": "Asosiasi Antara Dua Variabel dan Garis Paling Sesuai (Best-Fit Line)",
+      "topic_title_cn": "双变量关联与最佳拟合线",
+      "learning_objective": "Siswa dapat melakukan penyelidikan statistika untuk mengidentifikasi dan menjelaskan asosiasi antara dua variabel (kualitatif dan kuantitatif), membedakan hubungan asosiasi dan sebab-akibat, serta memodelkan data menggunakan garis paling sesuai (best-fit line) pada diagram pencar.",
+      "mapping_tags": [
+        "Asosiasi Data",
+        "Korelasi",
+        "Kausalitas",
+        "Garis Regresi",
+        "Diagram Pencar"
+      ]
+    },
+    {
+      "id": "MAT-11-12-01-02",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 11-12 (Fase F)",
+      "subject": "Matematika",
+      "chapter_title": "Analisis Data dan Peluang",
+      "topic_title_id": "Frekuensi Harapan dan Peluang Majemuk",
+      "topic_title_cn": "期望频率与复合概率",
+      "learning_objective": "Siswa dapat menentukan frekuensi harapan dan menyelesaikan masalah peluang majemuk (kejadian saling bebas dan saling lepas) dengan menggunakan konsep permutasi dan kombinasi.",
+      "mapping_tags": [
+        "Frekuensi Harapan",
+        "Peluang Majemuk",
+        "Permutasi",
+        "Kombinasi",
+        "Kejadian Saling Bebas"
+      ]
+    },
+    {
+      "id": "MAT-11-12-02-01",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 11-12 (Tingkat Lanjut)",
+      "subject": "Matematika",
+      "chapter_title": "Aljabar",
+      "topic_title_id": "Polinomial (Operasi, Faktor, dan Identitas)",
+      "topic_title_cn": "多项式（运算、因式和恒等式）",
+      "learning_objective": "Siswa dapat melakukan operasi aritmetika (penjumlahan, pengurangan, perkalian) pada polinomial, memahami dan menerapkan Teorema Sisa dan Teorema Faktor untuk menemukan akar dan memfaktorkan polinomial, serta menggunakan identitas polinomial untuk menyelesaikan masalah.",
+      "mapping_tags": [
+        "Polinomial",
+        "Suku Banyak",
+        "Teorema Sisa",
+        "Teorema Faktor",
+        "Identitas Polinomial"
+      ]
+    },
+    {
+      "id": "MAT-11-12-02-02",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 11-12 (Tingkat Lanjut)",
+      "subject": "Matematika",
+      "chapter_title": "Aljabar",
+      "topic_title_id": "Matriks dan Transformasi Geometri",
+      "topic_title_cn": "矩阵与几何变换",
+      "learning_objective": "Siswa dapat melakukan operasi aljabar pada matriks (perkalian skalar, penjumlahan, pengurangan, perkalian), memahami sifat-sifat matriks, menentukan determinan dan invers matriks persegi, serta mengaplikasikan matriks 2x2 sebagai transformasi geometri pada bidang.",
+      "mapping_tags": [
+        "Matriks",
+        "Transformasi Geometri",
+        "Determinan",
+        "Invers Matriks",
+        "Operasi Matriks"
+      ]
+    },
+    {
+      "id": "MAT-11-12-02-03",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 11-12 (Tingkat Lanjut)",
+      "subject": "Matematika",
+      "chapter_title": "Aljabar",
+      "topic_title_id": "Trigonometri (Fungsi, Identitas, Aturan Sinus dan Cosinus)",
+      "topic_title_cn": "三角学（函数、恒等式、正弦和余弦定理）",
+      "learning_objective": "Siswa dapat memodelkan fenomena periodik menggunakan fungsi trigonometri, membuktikan dan menerapkan identitas trigonometri, serta menerapkan Aturan Sinus dan Aturan Cosinus untuk menyelesaikan masalah yang melibatkan segitiga umum dengan memperluas domain menggunakan lingkaran satuan.",
+      "mapping_tags": [
+        "Trigonometri",
+        "Fungsi Periodik",
+        "Identitas Trigonometri",
+        "Aturan Sinus",
+        "Aturan Cosinus"
+      ]
+    },
+    {
+      "id": "MAT-11-12-02-04",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 11-12 (Tingkat Lanjut)",
+      "subject": "Matematika",
+      "chapter_title": "Aljabar",
+      "topic_title_id": "Jenis-jenis Fungsi dan Sifatnya",
+      "topic_title_cn": "函数类型及其性质",
+      "learning_objective": "Siswa dapat memahami, menganalisis, dan membangun berbagai jenis fungsi selain fungsi linear dan kuadrat, termasuk fungsi rasional, fungsi akar, fungsi eksponensial, fungsi logaritma, fungsi nilai mutlak, fungsi tangga, dan fungsi piecewise untuk memodelkan hubungan antara dua besaran.",
+      "mapping_tags": [
+        "Fungsi Rasional",
+        "Fungsi Akar",
+        "Fungsi Eksponensial",
+        "Fungsi Logaritma",
+        "Fungsi Piecewise"
+      ]
+    },
+    {
+      "id": "MAT-11-12-03-01",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 11-12 (Tingkat Lanjut)",
+      "subject": "Matematika",
+      "chapter_title": "Geometri",
+      "topic_title_id": "Vektor pada Bidang Datar",
+      "topic_title_cn": "平面向量",
+      "learning_objective": "Siswa dapat merepresentasikan dan memodelkan besaran menggunakan vektor pada bidang dua dimensi, memahami dan menggunakan notasi vektor, serta melakukan operasi aljabar pada vektor (penjumlahan, pengurangan, perkalian skalar) dan menerapkannya dalam pembuktian geometris.",
+      "mapping_tags": [
+        "Vektor",
+        "Vektor Bidang",
+        "Operasi Vektor",
+        "Notasi Vektor",
+        "Resultan Vektor"
+      ]
+    },
+    {
+      "id": "MAT-11-12-03-02",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 11-12 (Tingkat Lanjut)",
+      "subject": "Matematika",
+      "chapter_title": "Geometri",
+      "topic_title_id": "Lingkaran Analitik",
+      "topic_title_cn": "解析圆",
+      "learning_objective": "Siswa dapat memahami dan menggunakan persamaan lingkaran (pusat di (0,0) dan (a,b)) serta menentukan persamaan garis singgung pada lingkaran untuk menyelesaikan masalah geometri.",
+      "mapping_tags": [
+        "Lingkaran",
+        "Persamaan Lingkaran",
+        "Garis Singgung Lingkaran",
+        "Geometri Analitik",
+        "Kedudukan Titik"
+      ]
+    },
+    {
+      "id": "MAT-11-12-04-01",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 11-12 (Tingkat Lanjut)",
+      "subject": "Matematika",
+      "chapter_title": "Kalkulus",
+      "topic_title_id": "Limit Fungsi Aljabar",
+      "topic_title_cn": "代数函数极限",
+      "learning_objective": "Siswa dapat memahami konsep limit fungsi secara intuitif dan menggunakan sifat-sifat limit untuk menentukan nilai limit fungsi aljabar di suatu titik dan di tak hingga.",
+      "mapping_tags": [
+        "Limit Fungsi",
+        "Limit Tak Hingga",
+        "Sifat Limit",
+        "Bentuk Tak Tentu",
+        "Limit Aljabar"
+      ]
+    },
+    {
+      "id": "MAT-11-12-04-02",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 11-12 (Tingkat Lanjut)",
+      "subject": "Matematika",
+      "chapter_title": "Kalkulus",
+      "topic_title_id": "Turunan Fungsi Aljabar dan Aplikasinya",
+      "topic_title_cn": "代数函数导数及其应用",
+      "learning_objective": "Siswa dapat memahami konsep turunan sebagai laju perubahan sesaat dan gradien garis singgung, menggunakan aturan turunan untuk fungsi aljabar, serta mengaplikasikannya untuk menentukan interval kemonotonan, titik stasioner, dan menyelesaikan masalah optimisasi.",
+      "mapping_tags": [
+        "Turunan",
+        "Derivatif",
+        "Gradien Garis Singgung",
+        "Fungsi Naik Turun",
+        "Nilai Maksimum Minimum"
+      ]
+    },
+    {
+      "id": "MAT-11-12-04-03",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 11-12 (Tingkat Lanjut)",
+      "subject": "Matematika",
+      "chapter_title": "Kalkulus",
+      "topic_title_id": "Integral Tak Tentu dan Tentu Fungsi Aljabar",
+      "topic_title_cn": "代数函数的不定积分与定积分",
+      "learning_objective": "Siswa dapat memahami konsep integral sebagai antiturunan dan luas daerah di bawah kurva, serta menentukan integral tak tentu dan integral tentu dari fungsi aljabar menggunakan sifat-sifat dan rumus dasar integral.",
+      "mapping_tags": [
+        "Integral",
+        "Antiturunan",
+        "Integral Tentu",
+        "Integral Tak Tentu",
+        "Luas Daerah"
+      ]
+    }
+  ],
+  "issues": [
+    "Cakupan Kurikulum Tidak Lengkap: Data tidak mencakup domain 'Kalkulus' yang merupakan bagian penting dari Kurikulum Merdeka Fase F (Tingkat Lanjut). Topik-topik esensial seperti Limit, Turunan (Derivatif), dan Integral tidak ada.",
+    "1. **覆盖率检查**: Kurikulum Merdeka Fase F (Kelas 11-12) 的数学必修内容覆盖不全。数据仅包含'数据分析与概率'章节，缺少了'代数与函数'、'几何'等必修章节的核心知识点（例如：函数复合与逆函数、数列、空间几何等）。",
+    "2. **覆盖率检查**: 对于数学高阶课程 (Tingkat Lanjut)，'几何'章节遗漏了课程标准中的一个重要子主题：'Lingkaran Analitik' (解析圆)。",
+    "3. **mapping_tags 质量**: ID 'MAT-11-12-01-01' 的 mapping_tags 存在质量问题。其中包含了英文术语 'Best-fit line'，且 'Sebab-akibat' (因果) 可以用更专业的统计学词汇 'Korelasi dan Kausalitas' (相关与因果) 来优化，以提高检索准确性。"
+  ]
+}

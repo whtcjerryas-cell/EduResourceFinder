@@ -1,0 +1,81 @@
+{
+  "request_id": "2bc385a1",
+  "timestamp": "2025-12-30T05:10:27.426194+00:00",
+  "video_url": "https://www.youtube.com/playlist?list=PL6SbvJwl058O_JeMLuNe6LEl1bffR5-Z-",
+  "video_metadata": {
+    "title": "Arsirlah gambar Nilai pecahan :  2/5 | Terampil Berhitung Matematika Untuk SD/MI IV | Pecahan | 1",
+    "description": "✅ Dalam video ini kita akan membahas:\nArsirlah gambar di bawah ini sesuai dengan nilai pecahannya !\nNilai pecahan :  2/5\n\nTopik: Pecahan\nKelas: 4\nMata Pelajaran: Matematika \nBab: 1\nBuku: Terampil Berhitung Matematika Untuk SD/MI Kelas IV\n\nDapatkan solusi tertulis dari para ahli secara terperinci di sini  👉\nhttps://brainly.co.id/jawaban-buku/q-arsirlah-gambar-bawah-sesuai-nilai-pecahannya-nilai?utm_source=Youtube&utm_medium=description&utm_campaign=app+download&utm_id=YT\n=========================",
+    "duration": 117,
+    "upload_date": "20220524",
+    "view_count": 557,
+    "like_count": 3,
+    "channel": "Brainly Indonesia",
+    "channel_id": "UCfkUfdhXxvdh_8-RGXNj2Uw",
+    "resolution": "360x640",
+    "max_resolution_height": 640,
+    "fps": 30,
+    "format": "18 - 360x640 (360p)",
+    "ext": "mp4",
+    "url": "https://www.youtube.com/watch?v=buFFi45yYCE",
+    "tags": [
+      "pr",
+      "pekerjaanrumah",
+      "jawabanpr",
+      "solusibukusekolah",
+      "brainly"
+    ],
+    "categories": [
+      "Education"
+    ],
+    "thumbnail": "https://i.ytimg.com/vi/buFFi45yYCE/maxresdefault.jpg"
+  },
+  "evaluation": {
+    "overall_score": 5.26,
+    "visual_quality": {
+      "tech_score": 5.0,
+      "design_score": 8.0,
+      "combined_score": 6.2,
+      "details": "硬指标: 支持480p (640p); 软指标: 板书和文字清晰，字体大小适中，适合移动端阅读。使用了简洁的示意图来帮助理解分数概念，色彩对比度良好。整体信息组织有序，但使用的颜色较少，视觉效果稍显单调。"
+    },
+    "relevance": {
+      "score": 5.0,
+      "details": "无知识点信息，使用默认分数"
+    },
+    "pedagogy": {
+      "score": 6.5,
+      "details": {
+        "讲解逻辑": "视频有基本的教学结构：引入问题->解释概念->演示操作->总结。从转录看，教师先提出问题（\"Buatlah gambar arsiran yang menyatakan pecahan tersebut\"），然后解释如何表示分数（\"arsiran menyatakan pembilang, bagian menyatakan penyebut\"），最后演示如何将图形分成5部分并涂色2部分。但结构相对简单，缺乏深入的引入和总结环节。",
+        "语速": "从转录文本看，语速适中，适合小学四年级学生。使用了重复和强调（\"Oke\"、\"Hai\"等语气词），有助于学生跟上节奏。但部分转录文本显示可能有语速稍快的情况。",
+        "引导性提问": "视频中缺乏明显的引导性提问。主要是直接讲解和演示，没有通过提问来激发学生思考或检查理解。教学方式偏向单向传授而非互动式教学。",
+        "重点强调": "重点强调做得较好。教师明确指出了关键概念：\"arsiran menyatakan pembilang\"（涂色部分表示分子）、\"bagian menyatakan penyebut\"（总部分表示分母）。通过重复和具体演示（\"kita bagi menjadi 5 bagian sama besar\"、\"kita arsir dua bagian\"）来强化重点。",
+        "互动性": "互动性较弱。视频主要是教师讲解和演示，缺乏学生参与环节、思考时间或互动元素。没有设置暂停让学生思考或练习的机会。",
+        "总体评价": "这是一个基础的教学视频，针对小学四年级分数概念的教学。讲解清晰易懂，重点突出，适合目标学生群体。主要不足在于缺乏引导性提问和互动元素，教学方式较为传统。适合作为补充学习材料，但需要配合其他互动教学活动才能达到更好的教学效果。"
+      }
+    },
+    "metadata": {
+      "score": 0.7,
+      "details": "观看次数: 557 (得分0.5), 点赞率: 0.54% (得分1.0)"
+    },
+    "breakdown": {
+      "visual_weight": 0.2,
+      "relevance_weight": 0.4,
+      "pedagogy_weight": 0.3,
+      "metadata_weight": 0.1
+    },
+    "matched_knowledge_point": null
+  },
+  "matched_knowledge_point": null,
+  "search_params": {},
+  "files": {
+    "video_path": "data/videos/analyzed/Arsirlah gambar Nilai pecahan  25  Terampil Berhitung Matematika Untuk SDMI IV  Pecahan  1.mp4",
+    "audio_path": "data/videos/analyzed/Arsirlah gambar Nilai pecahan  25  Terampil Berhitung Matematika Untuk SDMI IV  Pecahan  1.mp3",
+    "frames_paths": [
+      "data/videos/analyzed/Arsirlah gambar Nilai pecahan  25  Terampil Berhitung Matematika Untuk SDMI IV  Pecahan  1_frame_01.jpg",
+      "data/videos/analyzed/Arsirlah gambar Nilai pecahan  25  Terampil Berhitung Matematika Untuk SDMI IV  Pecahan  1_frame_02.jpg",
+      "data/videos/analyzed/Arsirlah gambar Nilai pecahan  25  Terampil Berhitung Matematika Untuk SDMI IV  Pecahan  1_frame_03.jpg",
+      "data/videos/analyzed/Arsirlah gambar Nilai pecahan  25  Terampil Berhitung Matematika Untuk SDMI IV  Pecahan  1_frame_04.jpg",
+      "data/videos/analyzed/Arsirlah gambar Nilai pecahan  25  Terampil Berhitung Matematika Untuk SDMI IV  Pecahan  1_frame_05.jpg",
+      "data/videos/analyzed/Arsirlah gambar Nilai pecahan  25  Terampil Berhitung Matematika Untuk SDMI IV  Pecahan  1_frame_06.jpg"
+    ]
+  }
+}

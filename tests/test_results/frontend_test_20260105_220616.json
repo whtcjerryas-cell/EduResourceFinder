@@ -1,0 +1,81 @@
+{
+  "timestamp": "2026-01-05T22:06:16.151871",
+  "total": 12,
+  "passed": 3,
+  "failed": 9,
+  "pass_rate": 25.0,
+  "results": [
+    {
+      "test": "加载主页",
+      "success": true,
+      "message": "加载时间: 0.68s",
+      "timestamp": "2026-01-05T22:04:07.646643"
+    },
+    {
+      "test": "国家选择",
+      "success": true,
+      "message": "11个选项",
+      "timestamp": "2026-01-05T22:04:08.462952"
+    },
+    {
+      "test": "年级选择",
+      "success": false,
+      "message": "Locator.select_option: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"#grade\")\n    - locator resolved to <select id=\"grade\" required=\"\" name=\"grade\">…</select>\n  - attempting select option action\n    2 × waiting for element to be visible and enabled\n      - did not find some options\n    - retrying select option action\n    - waiting 20ms\n    2 × waiting for element to be visible and enabled\n      - did not find some options\n    - retrying select option action\n      - waiting 100ms\n    60 × waiting for element to be visible and enabled\n       - did not find some options\n     - retrying select option action\n       - waiting 500ms\n",
+      "timestamp": "2026-01-05T22:04:39.009817"
+    },
+    {
+      "test": "学科选择",
+      "success": false,
+      "message": "Locator.select_option: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"#subject\")\n    - locator resolved to <select required=\"\" id=\"subject\" name=\"subject\">…</select>\n  - attempting select option action\n    2 × waiting for element to be visible and enabled\n      - did not find some options\n    - retrying select option action\n    - waiting 20ms\n    2 × waiting for element to be visible and enabled\n      - did not find some options\n    - retrying select option action\n      - waiting 100ms\n    59 × waiting for element to be visible and enabled\n       - did not find some options\n     - retrying select option action\n       - waiting 500ms\n",
+      "timestamp": "2026-01-05T22:05:09.646656"
+    },
+    {
+      "test": "搜索按钮",
+      "success": false,
+      "message": "Page.select_option: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"#country\")\n    - locator resolved to <select required=\"\" id=\"country\" class=\"error\" name=\"country\">…</select>\n  - attempting select option action\n    2 × waiting for element to be visible and enabled\n      - did not find some options\n    - retrying select option action\n    - waiting 20ms\n    2 × waiting for element to be visible and enabled\n      - did not find some options\n    - retrying select option action\n      - waiting 100ms\n    60 × waiting for element to be visible and enabled\n       - did not find some options\n     - retrying select option action\n       - waiting 500ms\n",
+      "timestamp": "2026-01-05T22:05:39.839767"
+    },
+    {
+      "test": "历史记录按钮",
+      "success": false,
+      "message": "Locator.wait_for: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"button:has-text(\\\"📜 历史记录\\\")\") to be visible\n",
+      "timestamp": "2026-01-05T22:05:44.842833"
+    },
+    {
+      "test": "Debug日志按钮",
+      "success": true,
+      "message": "按钮可点击",
+      "timestamp": "2026-01-05T22:05:46.122823"
+    },
+    {
+      "test": "添加国家按钮",
+      "success": false,
+      "message": "Locator.wait_for: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"button:has-text(\\\"🌍 添加国家\\\")\") to be visible\n",
+      "timestamp": "2026-01-05T22:05:51.126846"
+    },
+    {
+      "test": "知识点概览按钮",
+      "success": false,
+      "message": "Locator.wait_for: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"a:has-text(\\\"📚 知识点概览\\\")\") to be visible\n",
+      "timestamp": "2026-01-05T22:05:56.133752"
+    },
+    {
+      "test": "刷新配置按钮",
+      "success": false,
+      "message": "Locator.wait_for: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\"button:has-text(\\\"🔄 刷新配置\\\")\") to be visible\n",
+      "timestamp": "2026-01-05T22:06:01.138829"
+    },
+    {
+      "test": "搜索结果卡片",
+      "success": false,
+      "message": "Locator.wait_for: Timeout 10000ms exceeded.\nCall log:\n  - waiting for locator(\".results-card\") to be visible\n",
+      "timestamp": "2026-01-05T22:06:11.145000"
+    },
+    {
+      "test": "结果项交互",
+      "success": false,
+      "message": "Locator.wait_for: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator(\".result-item\").first to be visible\n",
+      "timestamp": "2026-01-05T22:06:16.149976"
+    }
+  ]
+}

@@ -1,0 +1,268 @@
+{
+  "metadata": {
+    "source_file": "/Users/shmiwanghao8/Desktop/education/Indonesia/syllabus/5. Final Panduan Mata Pelajaran Matematika_12_09_2025_Revisi 3_30-58.pdf",
+    "total_pages": 29,
+    "total_knowledge_points": 15,
+    "check_iterations": 2,
+    "has_remaining_issues": true
+  },
+  "knowledge_points": [
+    {
+      "id": "MAT-1-01-01",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Fase A (Kelas 1-2)",
+      "subject": "Matematika",
+      "chapter_title": "Bilangan",
+      "topic_title_id": "Pemahaman Intuisi bilangan cacah sampai 100",
+      "topic_title_cn": "100以内自然数的数感",
+      "learning_objective": "学生能够灵活地理解数字，对数量有直观的感受，能够进行心算、估算和对计算结果进行合理预测，并将数字符号与具体数量和顺序联系起来。",
+      "mapping_tags": [
+        "Intuisi Bilangan",
+        "Bilangan Cacah",
+        "Number Sense",
+        "Estimasi Bilangan",
+        "Membilang"
+      ]
+    },
+    {
+      "id": "MAT-1-01-02",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Fase A (Kelas 1-2)",
+      "subject": "Matematika",
+      "chapter_title": "Bilangan",
+      "topic_title_id": "Membaca, menulis bilangan cacah sampai 100",
+      "topic_title_cn": "读写100以内的自然数",
+      "learning_objective": "学生能够识别和读出数字符号（例如，“24”读作“二十四”），并能用数字符号或文字来书写数字，理解数字在日常生活中的应用。",
+      "mapping_tags": [
+        "Membaca Bilangan",
+        "Menulis Angka",
+        "Simbol Angka",
+        "Lambang Bilangan"
+      ]
+    },
+    {
+      "id": "MAT-1-01-03",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Fase A (Kelas 1-2)",
+      "subject": "Matematika",
+      "chapter_title": "Bilangan",
+      "topic_title_id": "Menentukan nilai tempat bilangan sampai 100",
+      "topic_title_cn": "确定100以内数字的位值",
+      "learning_objective": "学生能够理解数字在数位（个位、十位）上的位置决定其值的概念，并能用具体物体和位值表来表示两位数。",
+      "mapping_tags": [
+        "Nilai Tempat",
+        "Puluhan",
+        "Satuan",
+        "Place Value",
+        "Posisi Angka"
+      ]
+    },
+    {
+      "id": "MAT-1-01-04",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Fase A (Kelas 1-2)",
+      "subject": "Matematika",
+      "chapter_title": "Bilangan",
+      "topic_title_id": "Membandingkan dan mengurutkan bilangan sampai 100",
+      "topic_title_cn": "比较和排序100以内的数字",
+      "learning_objective": "学生能够理解每个数字都有特定的值和位置，并能比较两个或多个数字的大小（大于、小于、等于），以及按升序或降序排列数字。",
+      "mapping_tags": [
+        "Membandingkan Bilangan",
+        "Mengurutkan Angka",
+        "Lebih Besar",
+        "Lebih Kecil",
+        "Urutan Bilangan"
+      ]
+    },
+    {
+      "id": "MAT-1-01-05",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Fase A (Kelas 1-2)",
+      "subject": "Matematika",
+      "chapter_title": "Bilangan",
+      "topic_title_id": "Komposisi dan Dekomposisi Bilangan Sampai 100",
+      "topic_title_cn": "100以内数的组合与分解",
+      "learning_objective": "学生能够理解一个数可以由两个或多个较小的数组合而成（组合），也可以被分解成几个较小的数（分解），为加减法运算和心算打下基础。",
+      "mapping_tags": [
+        "Komposisi Bilangan",
+        "Dekomposisi Bilangan",
+        "Gabung Urai Bilangan",
+        "Memecah Bilangan",
+        "Fakta Bilangan"
+      ]
+    },
+    {
+      "id": "MAT-1-01-06",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Fase A (Kelas 1-2)",
+      "subject": "Matematika",
+      "chapter_title": "Bilangan",
+      "topic_title_id": "Melakukan operasi penjumlahan dan pengurangan bilangan cacah sampai 20 menggunakan benda konkret",
+      "topic_title_cn": "使用具体物体进行20以内自然数的加减运算",
+      "learning_objective": "学生能够使用具体物体来模拟合并（加法）和分离（减法）的过程，理解加减法作为数量变化的含义，并解决相关的日常问题。",
+      "mapping_tags": [
+        "Penjumlahan",
+        "Pengurangan",
+        "Operasi Hitung",
+        "Tambah Kurang",
+        "Benda Konkret"
+      ]
+    },
+    {
+      "id": "MAT-1-01-07",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Fase A (Kelas 1-2)",
+      "subject": "Matematika",
+      "chapter_title": "Bilangan",
+      "topic_title_id": "Memahami pecahan sebagai bagian dari keseluruhan dengan konteks pembagian sama banyak",
+      "topic_title_cn": "在均分背景下理解分数作为整体的一部分",
+      "learning_objective": "学生能够通过将一个整体（如纸、食物）分成两个或四个相等的部分，来理解分数（二分之一和四分之一）是整体中相等的一部分的概念。",
+      "mapping_tags": [
+        "Pecahan",
+        "Setengah",
+        "Seperempat",
+        "Bagian dari Keseluruhan",
+        "Pembagian Sama"
+      ]
+    },
+    {
+      "id": "MAT-1-02-01",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Fase A (Kelas 1-2)",
+      "subject": "Matematika",
+      "chapter_title": "Aljabar",
+      "topic_title_id": "Pemahaman makna simbol matematika “=” sebagai penunjuk kesamaan nilai",
+      "topic_title_cn": "理解数学符号“=”作为等价关系的含义",
+      "learning_objective": "学生能够理解等号“=”表示两边的值相等或平衡，而不仅仅是计算结果的指令，并能解决如 3 + 4 = ... + 2 这样的平衡问题。",
+      "mapping_tags": [
+        "Sama Dengan",
+        "Simbol =",
+        "Kesetaraan Nilai",
+        "Relasi Kesetaraan",
+        "Keseimbangan"
+      ]
+    },
+    {
+      "id": "MAT-1-02-02",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Fase A (Kelas 1-2)",
+      "subject": "Matematika",
+      "chapter_title": "Aljabar",
+      "topic_title_id": "Mengenali, meniru pola, dan melanjutkan pola bukan bilangan (gambar, suara, warna)",
+      "topic_title_cn": "识别、模仿和延续非数字模式（图形、声音、颜色）",
+      "learning_objective": "学生能够识别、复制和扩展由形状、颜色或声音组成的重复模式，并能描述模式的规则，为代数思维打下基础。",
+      "mapping_tags": [
+        "Pola Gambar",
+        "Pola Berulang",
+        "Pola Suara",
+        "Melanjutkan Pola",
+        "Aturan Pola"
+      ]
+    },
+    {
+      "id": "MAT-1-03-01",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Fase A (Kelas 1-2)",
+      "subject": "Matematika",
+      "chapter_title": "Pengukuran",
+      "topic_title_id": "Pengukuran panjang, berat, dan waktu (satuan tak baku)",
+      "topic_title_cn": "长度、重量和时间的测量（非标准单位）",
+      "learning_objective": "学生能够使用非标准单位（如手掌、脚步、积木）来比较和测量物体的长度、重量和持续时间，并使用“更长”、“更重”、“更久”等词汇进行描述。",
+      "mapping_tags": [
+        "Satuan Tak Baku",
+        "Mengukur Panjang",
+        "Mengukur Berat",
+        "Jengkal",
+        "Durasi"
+      ]
+    },
+    {
+      "id": "MAT-1-04-01",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Fase A (Kelas 1-2)",
+      "subject": "Matematika",
+      "chapter_title": "Geometri",
+      "topic_title_id": "Pengenalan bentuk bangun datar dan bangun ruang",
+      "topic_title_cn": "认识平面图形和立体图形",
+      "learning_objective": "学生能够识别常见的平面图形（如圆形、正方形、三角形）和立体图形（如球体、立方体），并能说出它们的名称和基本特征（如边的数量、角）。",
+      "mapping_tags": [
+        "Bangun Datar",
+        "Bangun Ruang",
+        "Bentuk Geometri",
+        "Sisi Sudut",
+        "Ciri-ciri Bangun"
+      ]
+    },
+    {
+      "id": "MAT-1-04-02",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Fase A (Kelas 1-2)",
+      "subject": "Matematika",
+      "chapter_title": "Geometri",
+      "topic_title_id": "Komposisi dan dekomposisi bangun datar",
+      "topic_title_cn": "平面图形的组合与分解",
+      "learning_objective": "学生能够通过组合简单的平面图形来创造更复杂的形状，或者将一个复杂的形状分解成简单的图形，以发展空间感知能力。",
+      "mapping_tags": [
+        "Komposisi Bangun",
+        "Dekomposisi Bangun",
+        "Menyusun Bentuk",
+        "Mengurai Bentuk",
+        "Spasial"
+      ]
+    },
+    {
+      "id": "MAT-1-04-03",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Fase A (Kelas 1-2)",
+      "subject": "Matematika",
+      "chapter_title": "Geometri",
+      "topic_title_id": "Relasi posisi dan arah",
+      "topic_title_cn": "位置关系与方向",
+      "learning_objective": "学生能够理解和使用表示位置和方向的词汇，如左、右、上、下、里面和外面，来描述物体之间的相对位置。",
+      "mapping_tags": [
+        "Posisi",
+        "Arah",
+        "Kiri Kanan",
+        "Atas Bawah",
+        "Dalam Luar"
+      ]
+    },
+    {
+      "id": "MAT-1-05-01",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Fase A (Kelas 1-2)",
+      "subject": "Matematika",
+      "chapter_title": "Analisis Data dan Peluang",
+      "topic_title_id": "Mengurutkan dan mengelompokkan data berdasarkan atribut",
+      "topic_title_cn": "根据属性对数据进行排序和分组",
+      "learning_objective": "学生能够根据一个或多个属性（如颜色、形状、大小）对物体或数据进行分类和排序，并解释其分类规则。",
+      "mapping_tags": [
+        "Mengelompokkan Data",
+        "Sortir Data",
+        "Klasifikasi",
+        "Atribut Benda",
+        "Memilah"
+      ]
+    },
+    {
+      "id": "MAT-1-05-02",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Fase A (Kelas 1-2)",
+      "subject": "Matematika",
+      "chapter_title": "Analisis Data dan Peluang",
+      "topic_title_id": "Membaca dan menyajikan data dalam turus dan piktogram",
+      "topic_title_cn": "读取和呈现划记图和象形图中的数据",
+      "learning_objective": "学生能够使用划记符号（turus）来记录数据，并能读取和创建简单的象形图（piktogram）来表示和比较不同类别的数据量。",
+      "mapping_tags": [
+        "Piktogram",
+        "Diagram Gambar",
+        "Turus",
+        "Tally Chart",
+        "Menyajikan Data"
+      ]
+    }
+  ],
+  "issues": [
+    "覆盖率检查：数据遗漏了 Kurikulum Merdeka Fase A 数学中的一个核心领域：'Analisis Data dan Peluang' (数据分析与概率)。根据课程标准，学生在此阶段需要学习如何根据属性对数据进行分类、排序，并使用象形图（piktogram）和划记图（turus）来呈现数据。"
+  ]
+}

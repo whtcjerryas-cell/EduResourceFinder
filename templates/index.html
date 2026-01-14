@@ -1,0 +1,2493 @@
+{% extends "base_new.html" %}
+
+{% block title %}K12教育资源搜索系统{% endblock %}
+
+{% block page_css %}
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<style>
+    /* 搜索栏样式 */
+    .search-bar {
+        background: var(--bg-card);
+        padding: var(--spacing-lg);
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow-md);
+        margin-bottom: var(--spacing-lg);
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: var(--spacing-md);
+        align-items: end;
+    }
+
+    .search-field {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .search-field label {
+        font-weight: 600;
+        margin-bottom: var(--spacing-sm);
+        color: var(--text-primary);
+        font-size: var(--font-sm);
+    }
+
+    .search-field input,
+    .search-field select {
+        padding: 10px 12px;
+        border: 2px solid var(--border-color);
+        border-radius: var(--border-radius);
+        font-size: var(--font-base);
+        transition: all var(--transition-fast);
+    }
+
+    .search-field input:focus,
+    .search-field select:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .country-controls {
+        display: flex;
+        gap: 8px;
+    }
+
+    .country-controls select {
+        flex: 1;
+    }
+
+    .btn-icon {
+        background: var(--bg-primary);
+        border: 2px solid var(--border-color);
+        padding: 10px 14px;
+        border-radius: var(--border-radius);
+        cursor: pointer;
+        font-weight: bold;
+        transition: all var(--transition-base);
+    }
+
+    .btn-icon:hover {
+        background: var(--primary-color);
+        color: white;
+        border-color: var(--primary-color);
+    }
+
+    .btn-search {
+        background: var(--primary-gradient);
+        color: white;
+        border: none;
+        padding: 10px 30px;
+        border-radius: var(--border-radius);
+        font-size: var(--font-lg);
+        font-weight: 600;
+        cursor: pointer;
+        transition: all var(--transition-base);
+        box-shadow: var(--shadow-md);
+    }
+
+    .btn-search:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-lg);
+    }
+
+    .btn-search:active {
+        transform: translateY(0);
+    }
+
+    .btn-search:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+    }
+
+    /* 多选下拉框样式 */
+    .multi-select-dropdown {
+        position: relative;
+    }
+
+    .multi-select-trigger {
+        padding: 10px 12px;
+        border: 2px solid var(--border-color);
+        border-radius: var(--border-radius);
+        background: var(--bg-secondary);
+        cursor: pointer;
+        min-height: 42px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        transition: all var(--transition-fast);
+    }
+
+    .multi-select-trigger:hover {
+        border-color: var(--primary-color);
+    }
+
+    .multi-select-options {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        max-height: 300px;
+        overflow-y: auto;
+        background: var(--bg-card);
+        border: 2px solid var(--border-color);
+        border-radius: var(--border-radius);
+        margin-top: 4px;
+        z-index: 1000;
+        box-shadow: var(--shadow-lg);
+    }
+
+    .multi-select-options.show {
+        display: block;
+    }
+
+    .multi-select-options-header {
+        padding: var(--spacing-sm);
+        border-bottom: 2px solid var(--border-color);
+        background: var(--bg-primary);
+        display: flex;
+        gap: var(--spacing-sm);
+    }
+
+    .multi-select-btn-small {
+        padding: 4px 12px;
+        font-size: var(--font-xs);
+        cursor: pointer;
+        background: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: 4px;
+        transition: all var(--transition-fast);
+    }
+
+    .multi-select-btn-small:hover {
+        background: var(--primary-dark);
+    }
+
+    .multi-select-option {
+        padding: var(--spacing-sm) var(--spacing-md);
+        cursor: pointer;
+        transition: all var(--transition-fast);
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-sm);
+    }
+
+    .multi-select-option:hover {
+        background: var(--bg-primary);
+    }
+
+    .multi-select-option input[type="checkbox"] {
+        width: auto;
+        margin: 0;
+    }
+
+    /* 结果面板样式 */
+    .results-panel {
+        background: var(--bg-card);
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow-md);
+        display: flex;
+        flex-direction: column;
+        min-height: 500px;
+    }
+
+    .results-header {
+        padding: var(--spacing-md) var(--spacing-lg);
+        border-bottom: 2px solid var(--border-color);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: var(--bg-primary);
+        flex-wrap: wrap;
+        gap: var(--spacing-md);
+    }
+
+    .results-header h3 {
+        font-size: var(--font-lg);
+        color: var(--text-primary);
+        font-weight: 600;
+    }
+
+    .results-controls {
+        display: flex;
+        gap: var(--spacing-sm);
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .results-stats {
+        display: flex;
+        gap: var(--spacing-md);
+    }
+
+    .stat-badge {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        background: var(--bg-card);
+        border-radius: 20px;
+        font-size: var(--font-sm);
+        box-shadow: var(--shadow-sm);
+    }
+
+    .stat-badge .value {
+        font-weight: 600;
+        color: var(--primary-color);
+    }
+
+    .results-content {
+        flex: 1;
+        overflow-y: auto;
+        padding: var(--spacing-lg);
+    }
+
+    .result-item {
+        background: var(--bg-primary);
+        border-left: 4px solid var(--primary-color);
+        padding: var(--spacing-lg);
+        margin-bottom: var(--spacing-md);
+        border-radius: var(--border-radius);
+        transition: all var(--transition-base);
+        cursor: pointer;
+    }
+
+    .result-item:hover {
+        transform: translateX(8px) translateY(-2px);
+        box-shadow: var(--shadow-md);
+        border-left-color: var(--primary-dark);
+    }
+
+    .result-item h3 {
+        color: var(--primary-color);
+        margin-bottom: var(--spacing-sm);
+        font-size: var(--font-lg);
+        transition: color var(--transition-fast);
+    }
+
+    .result-item:hover h3 {
+        color: var(--primary-dark);
+    }
+
+    .result-item a {
+        color: var(--primary-color);
+        text-decoration: none;
+        word-break: break-all;
+        display: block;
+        margin-bottom: var(--spacing-sm);
+        transition: color var(--transition-fast);
+    }
+
+    .result-item a:hover {
+        text-decoration: underline;
+        color: var(--primary-dark);
+    }
+
+    .result-item .snippet {
+        color: var(--text-secondary);
+        font-size: var(--font-sm);
+        margin-bottom: var(--spacing-sm);
+        line-height: 1.6;
+    }
+
+    .result-item .meta {
+        display: flex;
+        gap: var(--spacing-sm);
+        flex-wrap: wrap;
+    }
+
+    .result-item .badge {
+        background: var(--primary-gradient);
+        color: white;
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: var(--font-xs);
+    }
+
+    .result-item .quality-score {
+        background: var(--success-color);
+        color: white;
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: var(--font-xs);
+    }
+
+    .result-item .search-engine {
+        background: var(--info-color);
+        color: white;
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: var(--font-xs);
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: var(--text-secondary);
+    }
+
+    .empty-state .icon {
+        font-size: 5em;
+        margin-bottom: var(--spacing-lg);
+    }
+
+    .empty-state h3 {
+        color: var(--text-primary);
+        margin-bottom: var(--spacing-md);
+    }
+
+    .btn-export {
+        padding: 6px 12px;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: var(--font-sm);
+        cursor: pointer;
+        transition: all var(--transition-base);
+    }
+
+    .btn-export:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
+    }
+
+    .btn-export-csv {
+        background: var(--success-color);
+    }
+
+    .btn-export-excel {
+        background: var(--warning-color);
+    }
+
+    .btn-export-json {
+        background: var(--primary-color);
+    }
+
+    .btn-export-log {
+        background: #7c3aed; /* 紫色，表示详细日志 */
+    }
+
+    .btn-export-log:disabled {
+        background: #9ca3af;
+        cursor: not-allowed;
+        opacity: 0.6;
+    }
+
+    .select-sort {
+        padding: 6px 12px;
+        border: 2px solid var(--border-color);
+        border-radius: 6px;
+        background: var(--bg-secondary);
+        color: var(--text-primary);
+        font-size: var(--font-sm);
+        cursor: pointer;
+    }
+
+    /* 推荐理由样式 */
+    .recommendation {
+        background: #f0f9ff;
+        border-left: 4px solid #0ea5e9;
+        padding: var(--spacing-sm) var(--spacing-md);
+        margin-top: var(--spacing-sm);
+        border-radius: 4px;
+        font-size: var(--font-sm);
+        color: var(--text-primary);
+        line-height: 1.5;
+    }
+
+    /* 骨架屏加载动画 */
+    @keyframes skeleton-loading {
+        0% { background-position: -200px 0; }
+        100% { background-position: calc(100% + 200px) 0; }
+    }
+
+    .skeleton {
+        background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+        background-size: 200px 100%;
+        animation: skeleton-loading 1.5s infinite;
+    }
+
+    .skeleton-card {
+        background: var(--bg-primary);
+        border-radius: var(--border-radius);
+        padding: var(--spacing-lg);
+        margin-bottom: var(--spacing-md);
+        border-left: 4px solid var(--border-color);
+    }
+
+    .skeleton-title {
+        height: 24px;
+        width: 70%;
+        margin-bottom: var(--spacing-sm);
+    }
+
+    .skeleton-text {
+        height: 16px;
+        width: 100%;
+        margin-bottom: var(--spacing-sm);
+    }
+
+    .skeleton-text-short {
+        height: 16px;
+        width: 60%;
+    }
+
+    .skeleton-meta {
+        display: flex;
+        gap: var(--spacing-sm);
+        margin-top: var(--spacing-md);
+    }
+
+    .skeleton-badge {
+        height: 24px;
+        width: 80px;
+        border-radius: 12px;
+    }
+
+    /* 进度条样式 */
+    .progress-container {
+        background: var(--bg-card);
+        border-radius: var(--border-radius);
+        padding: var(--spacing-lg);
+        margin-bottom: var(--spacing-lg);
+        box-shadow: var(--shadow-md);
+    }
+
+    .progress-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: var(--spacing-md);
+    }
+
+    .progress-header h4 {
+        margin: 0;
+        color: var(--text-primary);
+    }
+
+    .progress-status {
+        font-size: var(--font-sm);
+        color: var(--text-secondary);
+    }
+
+    .progress-bar-bg {
+        background: var(--border-color);
+        border-radius: 20px;
+        height: 30px;
+        overflow: hidden;
+    }
+
+    .progress-bar-fill {
+        height: 100%;
+        background: var(--primary-gradient);
+        transition: width 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 600;
+    }
+
+    .progress-details {
+        margin-top: var(--spacing-sm);
+        display: flex;
+        gap: var(--spacing-md);
+        font-size: var(--font-sm);
+        color: var(--text-secondary);
+    }
+
+    .batch-evaluate-btn {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 6px;
+        font-size: var(--font-sm);
+        cursor: pointer;
+        transition: all var(--transition-base);
+    }
+
+    .batch-evaluate-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
+    }
+
+    .batch-evaluate-btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+    }
+
+    /* 滑下动画 */
+    @keyframes slideDown {
+        from {
+            transform: translateY(-50px);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container" style="padding: var(--spacing-xl) 20px;">
+    <!-- 搜索条件栏 -->
+    <div class="search-bar">
+        <div class="search-field">
+            <label>🌍 国家</label>
+            <div class="country-controls">
+                <select id="country" name="country">
+                    <option value="">加载中...</option>
+                </select>
+                <button type="button" class="btn-icon" id="addCountryBtn" title="添加新国家">+</button>
+                <button type="button" class="btn-icon" id="refreshCountryBtn" title="刷新配置">⟳</button>
+            </div>
+        </div>
+
+        <div class="search-field">
+            <label>📖 年级（多选）</label>
+            <div class="multi-select-dropdown">
+                <div class="multi-select-trigger" id="gradeSelectTrigger" onclick="toggleMultiSelectDropdown('grade')">
+                    <span id="gradeSelectText" style="color: var(--text-secondary);">请先选择国家</span>
+                    <span style="font-size: 12px;">▼</span>
+                </div>
+                <div id="gradeDropdown" class="multi-select-options">
+                    <div class="multi-select-options-header">
+                        <button type="button" class="multi-select-btn-small" onclick="selectAllGrades()">全选</button>
+                        <button type="button" class="multi-select-btn-small" onclick="deselectAllGrades()">清空</button>
+                    </div>
+                    <div id="gradeOptions"></div>
+                </div>
+                <select id="grade" name="grade" multiple style="display: none;"></select>
+            </div>
+        </div>
+
+        <div class="search-field">
+            <label>📅 学期（可选）</label>
+            <input type="text" id="semester" name="semester" placeholder="如: 1, Semester 1">
+        </div>
+
+        <div class="search-field">
+            <label>📚 学科（多选）</label>
+            <div class="multi-select-dropdown">
+                <div class="multi-select-trigger" id="subjectSelectTrigger" onclick="toggleMultiSelectDropdown('subject')">
+                    <span id="subjectSelectText" style="color: var(--text-secondary);">请先选择国家</span>
+                    <span style="font-size: 12px;">▼</span>
+                </div>
+                <div id="subjectDropdown" class="multi-select-options">
+                    <div class="multi-select-options-header">
+                        <button type="button" class="multi-select-btn-small" onclick="selectAllSubjects()">全选</button>
+                        <button type="button" class="multi-select-btn-small" onclick="deselectAllSubjects()">清空</button>
+                    </div>
+                    <div id="subjectOptions"></div>
+                </div>
+                <select id="subject" name="subject" multiple style="display: none;"></select>
+            </div>
+        </div>
+
+        <div class="search-field">
+            <label>🎬 资源类型</label>
+            <select id="resourceType" name="resourceType">
+                <option value="all">全部资源</option>
+                <option value="video" selected>🎬 仅视频</option>
+                <option value="textbook">📚 仅教材</option>
+                <option value="supplement">📖 仅教辅</option>
+                <option value="exercise">✏️ 仅练习题</option>
+            </select>
+        </div>
+
+        <button type="button" class="btn-search" id="searchBtn">🚀 开始搜索</button>
+    </div>
+
+    <!-- 搜索结果面板 -->
+    <div class="results-panel" id="resultsPanel">
+        <div class="results-header">
+            <h3>📊 搜索结果</h3>
+            <div class="results-controls">
+                <select id="sortSelect" class="select-sort" onchange="sortResults(this.value)">
+                    <option value="default">默认排序</option>
+                    <option value="quality">质量分数</option>
+                    <option value="title">标题</option>
+                </select>
+                <button onclick="exportResults('csv')" class="btn-export btn-export-csv">📄 CSV</button>
+                <button onclick="exportResultsToExcel()" class="btn-export btn-export-excel">📊 Excel</button>
+                <button onclick="exportResults('json')" class="btn-export btn-export-json">📋 JSON</button>
+                <button onclick="exportSearchLog()" class="btn-export btn-export-log" id="exportLogBtn" disabled>📝 详细日志</button>
+                <div class="results-stats" id="resultsStats" style="display: none;">
+                    <div class="stat-badge">
+                        <span>📝</span>
+                        <span class="value" id="resultCount">0</span>
+                    </div>
+                    <div class="stat-badge">
+                        <span>✅</span>
+                        <span class="value" id="successRate">0%</span>
+                    </div>
+                    <div class="stat-badge">
+                        <span>⏱️</span>
+                        <span class="value" id="avgTime">0s</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="results-content" id="resultsContent">
+            <div class="empty-state">
+                <div class="icon">🔍</div>
+                <h3>开始搜索教育资源</h3>
+                <p>选择国家、年级和学科，点击"开始搜索"按钮</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block page_scripts %}
+<script>
+    // ========================================
+    // 🔑 API密钥配置
+    // ========================================
+    // 开发环境默认API密钥（用于个人使用）
+    // 生产环境请更改为您自己的密钥或从环境变量读取
+    const DEFAULT_API_KEY = 'dev-key-12345';
+
+    // 全局状态
+    let currentResults = [];
+    let selectedGrades = [];
+    let selectedSubjects = [];
+    let currentSearchId = null;  // 📊 当前搜索ID（用于导出详细日志）
+
+    // 年级中文映射常量（全局，避免重复创建）
+    const GRADE_MAPPING = {
+        // 印尼语
+        'Kelas 1': 'Kelas 1 / 一年级',
+        'Kelas 2': 'Kelas 2 / 二年级',
+        'Kelas 3': 'Kelas 3 / 三年级',
+        'Kelas 4': 'Kelas 4 / 四年级',
+        'Kelas 5': 'Kelas 5 / 五年级',
+        'Kelas 6': 'Kelas 6 / 六年级',
+        'Kelas 7': 'Kelas 7 / 七年级',
+        'Kelas 8': 'Kelas 8 / 八年级',
+        'Kelas 9': 'Kelas 9 / 九年级',
+        'Kelas 10': 'Kelas 10 / 十年级',
+        'Kelas 11': 'Kelas 11 / 十一年级',
+        'Kelas 12': 'Kelas 12 / 十二年级',
+        // 英语
+        'Grade 1': 'Grade 1 / 一年级',
+        'Grade 2': 'Grade 2 / 二年级',
+        'Grade 3': 'Grade 3 / 三年级',
+        'Grade 4': 'Grade 4 / 四年级',
+        'Grade 5': 'Grade 5 / 五年级',
+        'Grade 6': 'Grade 6 / 六年级',
+        'Grade 7': 'Grade 7 / 七年级',
+        'Grade 8': 'Grade 8 / 八年级',
+        'Grade 9': 'Grade 9 / 九年级',
+        'Grade 10': 'Grade 10 / 十年级',
+        'Grade 11': 'Grade 11 / 十一年级',
+        'Grade 12': 'Grade 12 / 十二年级',
+        // 俄语
+        '1 класс': '1 класс / 一年级',
+        '2 класс': '2 класс / 二年级',
+        '3 класс': '3 класс / 三年级',
+        '4 класс': '4 класс / 四年级',
+        '5 класс': '5 класс / 五年级',
+        '6 класс': '6 класс / 六年级',
+        '7 класс': '7 класс / 七年级',
+        '8 класс': '8 класс / 八年级',
+        '9 класс': '9 класс / 九年级',
+        '10 класс': '10 класс / 十年级',
+        '11 класс': '11 класс / 十一年级',
+        // 阿拉伯语
+        'رياض الأطفال': 'رياض الأطفال / 幼儿园',
+        'الصف الأول': 'الصف الأول / 一年级',
+        'الصف الثاني': 'الصف الثاني / 二年级',
+        'الصف الثالث': 'الصف الثالث / 三年级',
+        'الصف الرابع': 'الصف الرابع / 四年级',
+        'الصف الخامس': 'الصف الخامس / 五年级',
+        'الصف السادس': 'الصف السادس / 六年级',
+        'الصف الأول المتوسط': 'الصف الأول المتوسط / 初一',
+        'الصف الثاني المتوسط': 'الصف الثاني المتوسط / 初二',
+        'الصف الثالث المتوسط': 'الصف الثالث المتوسط / 初三',
+        'الصف الرابع الإعدادي': 'الصف الرابع الإعدادي / 高一',
+        'الصف الخامس الإعدادي': 'الصف الخامس الإعدادي / 高二',
+        'الصف السادس الإعدادي': 'الصف السادس الإعدادي /高三'
+    };
+
+    // 页面加载时初始化
+    window.addEventListener('DOMContentLoaded', function() {
+        loadCountries();
+        setupEventListeners();
+    });
+
+    // 设置事件监听器
+    function setupEventListeners() {
+        // 点击其他地方关闭多选下拉框
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.multi-select-dropdown')) {
+                closeAllMultiSelectDropdowns();
+            }
+        });
+
+        // 国家改变时重新加载年级和学科
+        document.getElementById('country').addEventListener('change', function() {
+            var countryCode = this.value;
+            if (countryCode) {
+                loadEducationLevels(countryCode);
+                loadSubjects(countryCode);
+            }
+        });
+
+        // 添加国家按钮
+        document.getElementById('addCountryBtn').addEventListener('click', function() {
+            var countryName = prompt('请输入国家英文名称 (例如: Thailand, Vietnam, Malaysia):');
+            if (countryName && countryName.trim()) {
+                addNewCountry(countryName.trim());
+            }
+        });
+
+        // 刷新国家按钮
+        document.getElementById('refreshCountryBtn').addEventListener('click', async function() {
+            var countryCode = document.getElementById('country').value;
+            if (!countryCode) {
+                toast.warning('提示', '请先选择一个国家');
+                return;
+            }
+
+            // 获取国家名称
+            var countrySelect = document.getElementById('country');
+            var countryName = countrySelect.options[countrySelect.selectedIndex].text;
+
+            if (!confirm('确定要刷新 "' + countryName + '" 的教育配置吗？\n\nAI Agent 将重新搜索该国的教育体系信息。')) {
+                return;
+            }
+
+            try {
+                toast.info('正在刷新', 'AI Agent 正在重新搜索 ' + countryName + ' 的教育体系信息...\n这可能需要1-2分钟，请耐心等待。');
+
+                var response = await fetch('/api/countries/' + countryCode + '/refresh', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                var data = await response.json();
+
+                if (data.success) {
+                    var country = data.country;
+                    toast.success('刷新成功',
+                        '已更新国家: ' + country.country_name + '\n' +
+                        '年级数量: ' + country.grades_count + '\n' +
+                        '学科数量: ' + country.subjects_count + '\n' +
+                        '域名数量: ' + country.domains_count
+                    );
+                    // 重新加载当前国家的年级和学科
+                    loadEducationLevels(countryCode);
+                    loadSubjects(countryCode);
+                } else {
+                    throw new Error(data.message || '刷新失败');
+                }
+            } catch (error) {
+                console.error('刷新国家失败:', error);
+                toast.error('刷新失败', error.message);
+            }
+        });
+    }
+
+    // 加载国家列表
+    async function loadCountries() {
+        var select = document.getElementById('country');
+        if (!select) {
+            console.error('国家选择器不存在');
+            return;
+        }
+        
+        // 显示加载状态
+        select.innerHTML = '<option value="">加载中...</option>';
+        select.disabled = true;
+        
+        try {
+            console.log('开始加载国家列表...');
+            var response = await fetch('/api/countries');
+            
+            if (!response.ok) {
+                throw new Error('HTTP ' + response.status + ': ' + response.statusText);
+            }
+            
+            var data = await response.json();
+            console.log('国家列表API响应:', data);
+
+            // 兼容两种响应格式：{countries: [...]} 或 {success: true, countries: [...]}
+            var countries = data.countries || (data.success ? data.countries : null);
+            
+            if (countries && Array.isArray(countries) && countries.length > 0) {
+                select.innerHTML = '<option value="">所有国家</option>';
+                
+                countries.forEach(function(country) {
+                    var option = document.createElement('option');
+                    option.value = country.country_code || country.code;
+                    option.textContent = country.country_name || country.name;
+                    select.appendChild(option);
+                });
+                
+                select.disabled = false;
+                console.log('✅ 国家列表加载成功:', countries.length + '个国家');
+            } else {
+                throw new Error('国家列表为空或格式错误: ' + JSON.stringify(data));
+            }
+        } catch (error) {
+            console.error('加载国家失败:', error);
+            select.innerHTML = '<option value="">加载失败，请刷新页面</option>';
+            select.disabled = false;
+            if (typeof toast !== 'undefined') {
+                toast.error('加载失败', '无法加载国家列表: ' + error.message);
+            } else {
+                alert('无法加载国家列表: ' + error.message);
+            }
+        }
+    }
+
+    // 添加新国家
+    async function addNewCountry(countryName) {
+        try {
+            // 显示加载提示
+            toast.info('正在搜索', 'AI Agent 正在搜索 ' + countryName + ' 的教育体系信息...\n这可能需要1-2分钟，请耐心等待。');
+
+            var response = await fetch('/api/countries', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    country_name: countryName
+                })
+            });
+
+            var data = await response.json();
+
+            if (data.success) {
+                var country = data.country;
+                toast.success('添加成功',
+                    '已添加国家: ' + country.country_name + '\n' +
+                    '国家代码: ' + country.country_code + '\n' +
+                    '年级数量: ' + country.grades_count + '\n' +
+                    '学科数量: ' + country.subjects_count + '\n' +
+                    '域名数量: ' + country.domains_count
+                );
+                // 刷新国家列表
+                loadCountries();
+            } else {
+                throw new Error(data.message || '添加失败');
+            }
+        } catch (error) {
+            console.error('添加国家失败:', error);
+            toast.error('添加失败', error.message);
+        }
+    }
+
+    // 加载教育层级（年级）
+    async function loadEducationLevels(countryCode) {
+        try {
+            var response = await fetch('/api/config/education_levels?country=' + countryCode);
+            var data = await response.json();
+
+            if (data.success && data.levels) {
+                populateMultiSelectOptions('grade', data.levels);
+            }
+        } catch (error) {
+            console.error('加载年级失败:', error);
+        }
+    }
+
+    // 加载学科
+    async function loadSubjects(countryCode) {
+        try {
+            var response = await fetch('/api/config/subjects?country=' + countryCode);
+            var data = await response.json();
+
+            if (data.success && data.subjects) {
+                populateMultiSelectOptions('subject', data.subjects);
+            }
+        } catch (error) {
+            console.error('加载学科失败:', error);
+        }
+    }
+
+    // 填充多选下拉框选项
+    function populateMultiSelectOptions(type, data) {
+        var optionsContainer = document.getElementById(type + 'Options');
+        var trigger = document.getElementById(type + 'SelectTrigger');
+        var select = document.getElementById(type);
+        var triggerText = document.getElementById(type + 'SelectText');
+
+        optionsContainer.innerHTML = '';
+        select.innerHTML = '';
+
+        if (data && data.length > 0) {
+            // 调试日志
+            // 调试日志已禁用（避免内存泄漏）
+
+            data.forEach(function(item) {
+                var label, value;
+
+                // 处理不同的数据格式
+                if (typeof item === 'string') {
+                    // 字符串格式（如年级）
+                    label = item;
+                    value = item;
+
+                    // 添加年级中文映射（格式：当地语言 / 中文）
+                    if (type === 'grade') {
+                        label = GRADE_MAPPING[item] || item;
+                    }
+                } else if (typeof item === 'object') {
+                    // 对象格式（如学科）
+                    // 格式：当地语言 / 中文
+                    var localName = item.local_name || item.name || '';
+                    var zhName = item.zh_name || '';
+                    if (localName && zhName && localName !== zhName) {
+                        label = localName + ' / ' + zhName;
+                    } else {
+                        label = localName || zhName || JSON.stringify(item);
+                    }
+                    value = localName || item.name || item.code || label;
+                } else {
+                    label = String(item);
+                    value = String(item);
+                }
+
+                var optionDiv = document.createElement('div');
+                optionDiv.className = 'multi-select-option';
+
+                // 创建安全的ID（移除特殊字符）
+                var safeId = (type + '_' + String(value)).replace(/[^a-zA-Z0-9_-]/g, '_');
+                optionDiv.innerHTML = '<input type="checkbox" id="' + safeId + '" value="' + value + '"><label for="' + safeId + '" style="margin: 0; cursor: pointer; flex: 1;">' + label + '</label>';
+
+                optionDiv.querySelector('input').addEventListener('change', function() {
+                    handleMultiSelectChange(type);
+                });
+
+                optionsContainer.appendChild(optionDiv);
+
+                var selectOption = document.createElement('option');
+                selectOption.value = value;
+                selectOption.textContent = label;
+                select.appendChild(selectOption);
+            });
+
+            triggerText.textContent = '请选择...';
+            triggerText.style.color = 'var(--text-secondary)';
+        } else {
+            triggerText.textContent = '无可用选项';
+            triggerText.style.color = 'var(--text-secondary)';
+        }
+    }
+
+    // 处理多选变化
+    function handleMultiSelectChange(type) {
+        var checkboxes = document.querySelectorAll('#' + type + 'Options input[type="checkbox"]');
+        var selected = Array.from(checkboxes)
+            .filter(function(cb) { return cb.checked; })
+            .map(function(cb) {
+                // 返回对象，包含value和label（label包含中文翻译）
+                return {
+                    value: cb.value,
+                    label: cb.nextElementSibling.textContent  // label元素的文本
+                };
+            });
+
+        var triggerText = document.getElementById(type + 'SelectText');
+        var select = document.getElementById(type);
+
+        select.innerHTML = '';
+        selected.forEach(function(item) {
+            var option = document.createElement('option');
+            option.value = item.value;
+            option.selected = true;
+            select.appendChild(option);
+        });
+
+        if (selected.length === 0) {
+            triggerText.textContent = '请选择...';
+            triggerText.style.color = 'var(--text-secondary)';
+        } else if (selected.length === 1) {
+            triggerText.textContent = selected[0].label;  // 使用包含中文的标签
+            triggerText.style.color = 'var(--text-primary)';
+        } else {
+            triggerText.textContent = '已选择 ' + selected.length + ' 项';
+            triggerText.style.color = 'var(--text-primary)';
+        }
+
+        if (type === 'grade') {
+            selectedGrades = selected;
+        } else if (type === 'subject') {
+            selectedSubjects = selected;
+        }
+    }
+
+    // 切换多选下拉框显示
+    function toggleMultiSelectDropdown(type) {
+        var dropdown = document.getElementById(type + 'Dropdown');
+        var isShown = dropdown.classList.contains('show');
+        
+        closeAllMultiSelectDropdowns();
+
+        if (!isShown) {
+            dropdown.classList.add('show');
+        }
+    }
+
+    // 关闭所有多选下拉框
+    function closeAllMultiSelectDropdowns() {
+        document.querySelectorAll('.multi-select-options').forEach(function(dropdown) {
+            dropdown.classList.remove('show');
+        });
+    }
+
+    // 全选年级
+    function selectAllGrades() {
+        document.querySelectorAll('#gradeOptions input[type="checkbox"]').forEach(function(cb) {
+            cb.checked = true;
+        });
+        handleMultiSelectChange('grade');
+    }
+
+    // 清空年级
+    function deselectAllGrades() {
+        document.querySelectorAll('#gradeOptions input[type="checkbox"]').forEach(function(cb) {
+            cb.checked = false;
+        });
+        handleMultiSelectChange('grade');
+    }
+
+    // 全选学科
+    function selectAllSubjects() {
+        document.querySelectorAll('#subjectOptions input[type="checkbox"]').forEach(function(cb) {
+            cb.checked = true;
+        });
+        handleMultiSelectChange('subject');
+    }
+
+    // 清空学科
+    function deselectAllSubjects() {
+        document.querySelectorAll('#subjectOptions input[type="checkbox"]').forEach(function(cb) {
+            cb.checked = false;
+        });
+        handleMultiSelectChange('subject');
+    }
+
+    // 搜索状态标志，防止重复请求
+    var isSearching = false;
+    var activeSearchControllers = []; // 存储所有活跃的AbortController
+
+    // 执行搜索
+    async function performSearch() {
+        // 🔥 立即检查并设置搜索状态，防止重复点击
+        if (isSearching) {
+            console.warn('⚠️ 搜索正在进行中，请勿重复点击');
+            toast.warning('搜索中', '搜索正在进行中，请稍候...');
+            return;
+        }
+        
+        // 🔥 立即设置搜索状态，防止在验证过程中重复点击
+        isSearching = true;
+        console.log('🔒 搜索状态已锁定，防止重复请求');
+
+        var countrySelect = document.getElementById('country');
+        var country = countrySelect.value;
+        var countryText = countrySelect.options[countrySelect.selectedIndex].text;
+        var resourceType = document.getElementById('resourceType').value;
+        var semester = document.getElementById('semester').value.trim();
+
+        if (!country) {
+            isSearching = false; // 验证失败，重置状态
+            toast.warning('验证失败', '请选择国家');
+            return;
+        }
+
+        if (selectedGrades.length === 0) {
+            isSearching = false; // 验证失败，重置状态
+            toast.warning('验证失败', '请至少选择一个年级');
+            return;
+        }
+
+        if (selectedSubjects.length === 0) {
+            isSearching = false; // 验证失败，重置状态
+            toast.warning('验证失败', '请至少选择一个学科');
+            return;
+        }
+
+        // 检查是否为批量搜索
+        var isBatchSearch = selectedGrades.length > 1 || selectedSubjects.length > 1;
+
+        if (isBatchSearch) {
+            var totalCombinations = selectedGrades.length * selectedSubjects.length;
+            var resultCount = 20;
+            
+            if (!confirm('即将进行 ' + totalCombinations + ' 个年级×学科组合的批量搜索，预计约 ' + (totalCombinations * resultCount) + ' 个结果。\n\n搜索完成后，请点击右上角"📊 Excel"按钮手动导出结果。\n\n是否继续？')) {
+                isSearching = false;
+                return;
+            }
+            
+            await performBatchSearch(
+                [{value: country, text: countryText}],
+                selectedGrades,  // 已经是 {value, label} 对象
+                selectedSubjects,  // 已经是 {value, label} 对象
+                resultCount,
+                semester,
+                'all'
+            );
+        } else {
+            await executeSingleSearch(country, selectedGrades[0], selectedSubjects[0], semester, resourceType);
+        }
+    }
+
+    // 执行单个搜索
+    async function executeSingleSearch(country, grade, subject, semester, resourceType) {
+        var searchBtn = document.getElementById('searchBtn');
+        searchBtn.disabled = true;
+        searchBtn.innerHTML = '<div class="spinner" style="display: inline-block; width: 16px; height: 16px; border: 2px solid #fff; border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite;"></div> 搜索中...';
+
+        // 创建AbortController用于取消请求
+        var controller = new AbortController();
+        activeSearchControllers.push(controller);
+
+        var resultsContent = document.getElementById('resultsContent');
+
+        // 显示骨架屏
+        resultsContent.innerHTML = '';
+        for (var i = 0; i < 3; i++) {
+            resultsContent.innerHTML += '<div class="skeleton-card"><div class="skeleton skeleton-title"></div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text-short"></div><div class="skeleton-meta"><div class="skeleton skeleton-badge"></div><div class="skeleton skeleton-badge"></div></div></div>';
+        }
+
+        var startTime = Date.now();
+
+        try {
+            // grade和subject现在是对象 {value, label}
+            var gradeValue = typeof grade === 'object' ? grade.value : grade;
+            var subjectValue = typeof subject === 'object' ? subject.value : subject;
+
+            var requestBody = {
+                country: country,
+                grade: gradeValue,
+                subject: subjectValue,
+                resourceType: resourceType
+            };
+
+            if (semester) {
+                requestBody.semester = semester;
+            }
+
+            // 使用之前创建的controller，设置超时（180秒）
+            var timeoutId = setTimeout(function() {
+                console.warn('⏱️ 搜索请求超时，正在取消...');
+                controller.abort();
+            }, 180000); // 180秒超时（3分钟）
+
+            var response;
+            try {
+                response = await fetch('/api/search', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-API-Key': DEFAULT_API_KEY  // 🔑 添加API密钥认证
+                    },
+                    body: JSON.stringify(requestBody),
+                    signal: controller.signal
+                });
+                clearTimeout(timeoutId);
+            } catch (fetchError) {
+                clearTimeout(timeoutId);
+                if (fetchError.name === 'AbortError') {
+                    throw new Error('请求超时（超过180秒），请稍后重试或减少搜索条件');
+                }
+                throw fetchError;
+            }
+
+            // 检查HTTP状态码
+            if (!response.ok) {
+                var errorText = await response.text();
+                try {
+                    var errorData = JSON.parse(errorText);
+                    throw new Error(errorData.message || '搜索失败: HTTP ' + response.status);
+                } catch (e) {
+                    throw new Error('搜索失败: HTTP ' + response.status + ' - ' + errorText.substring(0, 200));
+                }
+            }
+
+            var data = await response.json();
+            
+            // 检查响应数据格式
+            if (!data || typeof data !== 'object') {
+                throw new Error('服务器返回了无效的响应格式');
+            }
+
+            var endTime = Date.now();
+            var duration = ((endTime - startTime) / 1000).toFixed(2);
+
+            if (data.success) {
+                // 📊 保存搜索ID（用于导出详细日志）
+                currentSearchId = data.search_id || null;
+                console.log('📊 当前搜索ID:', currentSearchId);
+
+                currentResults = data.results || [];
+
+                // 将搜索参数附加到每个结果（用于导出）- 使用包含中文的标签
+                var gradeLabel = typeof grade === 'object' ? grade.label : grade;
+                var subjectLabel = typeof subject === 'object' ? subject.label : subject;
+
+                currentResults.forEach(function(result) {
+                    result.country = country;
+                    result.grade = gradeLabel;
+                    result.subject = subjectLabel;
+                });
+
+                displayResults(currentResults);
+                updateStats(currentResults, data.success_rate || 100, duration);
+                toast.success('搜索完成', '找到 ' + currentResults.length + ' 个结果');
+
+                // 📊 启用详细日志导出按钮
+                if (currentSearchId) {
+                    var exportLogBtn = document.getElementById('exportLogBtn');
+                    exportLogBtn.disabled = false;
+                    console.log('✅ 详细日志导出按钮已启用');
+                }
+
+                // 检查是否有优化请求
+                console.log('🔍 检查优化请求...', {
+                    has_optimization: !!data.optimization_request,
+                    has_quality: !!data.quality_report,
+                    data_keys: Object.keys(data)
+                });
+
+                if (data.optimization_request) {
+                    console.log('🤖 收到优化请求:', data.optimization_request);
+                    console.log('🤖 优化请求详情:', {
+                        request_id: data.optimization_request.request_id,
+                        status: data.optimization_request.status,
+                        plans_count: data.optimization_request.optimization_plans?.length,
+                        issues_count: data.optimization_request.detected_issues?.length
+                    });
+                    // 等待质量评估显示完成后再显示优化建议
+                    setTimeout(function() {
+                        displayOptimizationRequest(data.optimization_request);
+                    }, 500);
+                } else {
+                    console.log('✅ 无优化请求（质量良好）');
+                    if (data.quality_report) {
+                        console.log('📊 质量报告:', data.quality_report);
+                    }
+                }
+            } else {
+                resultsContent.innerHTML = '<div class="empty-state"><div class="icon">❌</div><h3>搜索失败</h3><p>' + (data.message || '未知错误') + '</p></div>';
+                toast.error('搜索失败', data.message || '未知错误');
+            }
+        } catch (error) {
+            console.error('搜索失败:', error);
+            var errorMessage = error.message || '未知错误';
+            var errorTitle = '搜索失败';
+            
+            // 根据错误类型显示不同的消息
+            if (errorMessage.includes('超时') || errorMessage.includes('timeout')) {
+                errorTitle = '请求超时';
+                errorMessage = '搜索请求超时（超过180秒）。这可能是由于：\n1. 网络连接较慢\n2. 服务器处理时间较长\n3. 搜索条件过于复杂\n\n建议：\n- 稍后重试\n- 减少搜索条件\n- 检查网络连接';
+            } else if (errorMessage.includes('网络') || errorMessage.includes('network')) {
+                errorTitle = '网络错误';
+                errorMessage = '请检查网络连接后重试';
+            } else if (errorMessage.includes('HTTP')) {
+                errorTitle = '服务器错误';
+            }
+            
+            resultsContent.innerHTML = '<div class="empty-state"><div class="icon">⚠️</div><h3>' + errorTitle + '</h3><p style="white-space: pre-line;">' + errorMessage + '</p></div>';
+            toast.error(errorTitle, errorMessage.split('\n')[0]);
+            
+            // 记录详细错误到控制台
+            console.error('详细错误信息:', {
+                name: error.name,
+                message: error.message,
+                stack: error.stack
+            });
+        } finally {
+            // 清理controller
+            var index = activeSearchControllers.indexOf(controller);
+            if (index > -1) {
+                activeSearchControllers.splice(index, 1);
+            }
+            
+            // 确保搜索按钮恢复可用
+            var searchBtn = document.getElementById('searchBtn');
+            if (searchBtn) {
+                searchBtn.disabled = false;
+                searchBtn.innerHTML = '🚀 开始搜索';
+            }
+            
+            // 重置搜索状态
+            isSearching = false;
+        }
+    }
+
+    // 执行批量搜索
+    async function performBatchSearch(countries, grades, subjects, resultCount, semester, resourceType) {
+        var searchBtn = document.getElementById('searchBtn');
+        var resultsContent = document.getElementById('resultsContent');
+        var MAX_CONCURRENT = 2;  // 与后端并发限制保持一致，避免503错误
+        
+        searchBtn.disabled = true;
+        
+        var combinations = [];
+        countries.forEach(function(country) {
+            grades.forEach(function(grade) {
+                subjects.forEach(function(subject) {
+                    combinations.push({
+                        country: country.value,
+                        grade: grade.value,
+                        subject: subject.value,
+                        // 保存显示标签（包含中文），用于导出
+                        gradeLabel: grade.label,
+                        subjectLabel: subject.label
+                    });
+                });
+            });
+        });
+        
+        var totalCount = combinations.length;
+        var completedCount = 0;
+        var failedCount = 0;
+        var allResults = [];
+        var startTime = Date.now();
+        
+        // 🔥 添加标志，阻止进度更新（当搜索完成时）
+        var isSearchCompleted = false;
+        
+        // 🔥 防抖处理，避免频繁更新DOM导致卡顿
+        var progressUpdateTimeout = null;
+        function showProgress() {
+            // 🔥 如果搜索已完成，不再更新进度
+            if (isSearchCompleted) {
+                return;
+            }
+            
+            // 清除之前的定时器
+            if (progressUpdateTimeout) {
+                clearTimeout(progressUpdateTimeout);
+            }
+            
+            // 延迟更新，避免频繁DOM操作
+            progressUpdateTimeout = setTimeout(function() {
+                // 🔥 再次检查，防止在setTimeout执行期间搜索已完成
+                if (isSearchCompleted) {
+                    return;
+                }
+                
+                var progress = (completedCount / totalCount * 100).toFixed(1);
+                var elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
+                var remaining = completedCount > 0 ? (elapsed / completedCount * (totalCount - completedCount)) : 0;
+                
+                // 使用requestAnimationFrame优化DOM更新
+                requestAnimationFrame(function() {
+                    // 🔥 最后一次检查，防止在requestAnimationFrame执行期间搜索已完成
+                    if (isSearchCompleted) {
+                        return;
+                    }
+                    
+                    resultsContent.innerHTML = '<div class="progress-container"><div class="progress-header"><h4>🚀 批量搜索进行中...</h4><div class="progress-status">已完成 ' + completedCount + '/' + totalCount + ' (' + progress + '%)</div></div><div class="progress-bar-bg"><div class="progress-bar-fill" style="width: ' + progress + '%">' + progress + '%</div></div><div class="progress-details"><span>✅ 成功: ' + (completedCount - failedCount) + '</span><span>❌ 失败: ' + failedCount + '</span><span>📝 结果: ' + allResults.length + '</span><span>⏱️ 已用时: ' + elapsed + 's</span><span>⏳ 预计剩余: ' + remaining.toFixed(1) + 's</span></div></div>';
+                });
+            }, 100); // 100ms防抖
+        }
+        
+        showProgress();
+        
+        async function executeSearch(combination) {
+            console.log('🚀 开始搜索:', combination.country, combination.grade, combination.subject, '当前并发:', executing.length);
+
+            try {
+                var requestBody = {
+                    country: combination.country,
+                    grade: combination.grade,
+                    subject: combination.subject,
+                    resourceType: resourceType
+                };
+
+                if (semester) {
+                    requestBody.semester = semester;
+                }
+
+                // 创建超时控制器（180秒超时，给后端足够时间）
+                var controller = new AbortController();
+                var timeoutId = setTimeout(function() {
+                    console.warn('⏱️ 搜索请求超时，正在取消...');
+                    controller.abort();
+                }, 180000); // 180秒超时（3分钟）
+
+                var response;
+                try {
+                    response = await fetch('/api/search', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-API-Key': DEFAULT_API_KEY  // 🔑 添加API密钥认证
+                        },
+                        body: JSON.stringify(requestBody),
+                        signal: controller.signal
+                    });
+                    clearTimeout(timeoutId);
+                } catch (fetchError) {
+                    clearTimeout(timeoutId);
+                    if (fetchError.name === 'AbortError') {
+                        throw new Error('请求超时（超过180秒），请稍后重试或减少搜索条件');
+                    }
+                    throw fetchError;
+                }
+
+                // 检查HTTP状态码
+                if (!response.ok) {
+                    var errorText = await response.text();
+                    try {
+                        var errorData = JSON.parse(errorText);
+                        throw new Error(errorData.message || '搜索失败: HTTP ' + response.status);
+                    } catch (e) {
+                        throw new Error('搜索失败: HTTP ' + response.status);
+                    }
+                }
+
+                var data = await response.json();
+                
+                // 检查响应数据格式
+                if (!data || typeof data !== 'object') {
+                    throw new Error('服务器返回了无效的响应格式');
+                }
+
+                if (data.success && data.results) {
+                    console.log('✅ 搜索完成:', combination.country, combination.grade, combination.subject, '结果数:', data.results.length);
+
+                    // 将搜索参数附加到每个结果（用于导出）
+                    data.results.forEach(function(result) {
+                        result.country = combination.country;
+                        result.grade = combination.gradeLabel || combination.grade;
+                        result.subject = combination.subjectLabel || combination.subject;
+                        allResults.push(result);
+                    });
+                } else {
+                    console.error('❌ 搜索失败（无结果）:', combination);
+                    failedCount++;
+                }
+            } catch (error) {
+                console.error('❌ 搜索失败（异常）:', combination, error);
+                failedCount++;
+            }
+
+            completedCount++;
+            showProgress();
+        }
+
+        // 🔥 修复并发控制逻辑 - 使用Promise.all等待所有任务完成
+        var index = 0;
+        var executing = [];
+        var allPromises = [];
+
+        async function runNext() {
+            // 启动新任务直到达到并发限制
+            while (index < combinations.length && executing.length < MAX_CONCURRENT) {
+                var currentIndex = index++;
+                var promise = executeSearch(combinations[currentIndex]).finally(function() {
+                    // 完成后从executing数组中移除
+                    var idx = executing.indexOf(promise);
+                    if (idx > -1) {
+                        executing.splice(idx, 1);
+                    }
+                });
+                executing.push(promise);
+                allPromises.push(promise);
+            }
+
+            // 如果还有正在执行的任务，等待至少一个完成
+            if (executing.length > 0) {
+                await Promise.race(executing);
+                // 继续处理剩余任务
+                if (index < combinations.length) {
+                    await runNext();
+                }
+            }
+        }
+
+        // 启动并发控制
+        await runNext();
+        
+        // 🔥 关键修复：等待所有promise完成，确保所有结果都已收集
+        console.log('等待所有搜索任务完成，共 ' + allPromises.length + ' 个任务');
+        await Promise.all(allPromises);
+        console.log('所有搜索任务已完成，共收集 ' + allResults.length + ' 个结果');
+        
+        // 🔥 立即设置标志，阻止所有后续的进度更新
+        isSearchCompleted = true;
+        
+        // 🔥 立即清除进度更新的定时器，防止进度条覆盖结果列表
+        if (progressUpdateTimeout) {
+            clearTimeout(progressUpdateTimeout);
+            progressUpdateTimeout = null;
+        }
+        
+        var duration = ((Date.now() - startTime) / 1000).toFixed(2);
+        
+        try {
+            if (allResults.length > 0) {
+                console.log('开始显示结果，共 ' + allResults.length + ' 个');
+                currentResults = allResults;
+
+                // 限制显示数量，避免内存溢出（最多显示100个）
+                var displayLimit = 100;
+                var resultsToDisplay = allResults.slice(0, displayLimit);
+                
+                // 🔥 立即清空进度条，然后显示结果
+                var resultsContent = document.getElementById('resultsContent');
+                resultsContent.innerHTML = '';  // 立即清空进度条
+                
+                // 🔥 直接显示结果，不使用setTimeout（避免延迟导致的问题）
+                console.log('开始渲染结果列表');
+                
+                // 显示结果列表（displayResults会清空innerHTML并重新渲染）
+                displayResults(resultsToDisplay);
+                console.log('结果列表渲染完成');
+                
+                // 🔥 如果有超过显示限制的结果，在结果列表顶部添加提示信息
+                // （必须在displayResults之后添加，因为displayResults会清空innerHTML）
+                if (allResults.length > displayLimit) {
+                    var noticeDiv = document.createElement('div');
+                    noticeDiv.className = 'results-notice';
+                    noticeDiv.style.cssText = 'background: var(--info-color); color: white; padding: 12px 20px; border-radius: 8px; margin-bottom: 20px; text-align: center;';
+                    noticeDiv.innerHTML = 'ℹ️ 找到 ' + allResults.length + ' 个结果（仅显示前 ' + displayLimit + ' 个），点击右上角"📊 Excel"按钮导出完整结果';
+                    resultsContent.insertBefore(noticeDiv, resultsContent.firstChild);
+                }
+                
+                // 更新统计信息
+                updateStats(allResults, ((totalCount - failedCount) / totalCount * 100).toFixed(2), duration);
+                
+                // 显示完成提示
+                if (allResults.length > displayLimit) {
+                    toast.success('批量搜索完成', '找到 ' + allResults.length + ' 个结果（仅显示前 ' + displayLimit + ' 个），点击"📊 Excel"按钮导出');
+                } else {
+                    toast.success('批量搜索完成', '找到 ' + allResults.length + ' 个结果，点击"📊 Excel"按钮导出');
+                }
+
+                // 🔥 不再自动导出Excel，改为手动导出（解耦搜索和导出功能）
+                console.log('批量搜索完成，共 ' + allResults.length + ' 个结果，等待用户手动导出Excel');
+            } else {
+                resultsContent.innerHTML = '<div class="empty-state"><div class="icon">❌</div><h3>批量搜索失败</h3><p>所有组合均未找到结果</p></div>';
+                toast.error('批量搜索失败', '未找到任何结果');
+            }
+        } finally {
+            // 清理内存：清空大数组引用
+            if (allResults.length > 1000) {
+                console.log('清理大量结果数据，释放内存');
+                allResults = [];
+            }
+            
+            searchBtn.disabled = false;
+            searchBtn.innerHTML = '🚀 开始搜索';
+            
+            // 重置搜索状态
+            isSearching = false;
+        }
+    }
+
+    // 显示搜索结果
+    function displayResults(results) {
+        var resultsContent = document.getElementById('resultsContent');
+
+        if (results.length === 0) {
+            resultsContent.innerHTML = '<div class="empty-state"><div class="icon">🔍</div><h3>未找到结果</h3><p>请尝试调整搜索条件</p></div>';
+            return;
+        }
+
+        // 清空现有内容
+        resultsContent.innerHTML = '';
+
+        // 使用 DocumentFragment 避免多次回流
+        var fragment = document.createDocumentFragment();
+
+        results.forEach(function(result) {
+            var videoUrl = result.url || result.video_url || '#';
+            var title = result.title || '无标题';
+            var snippet = result.snippet || '';
+            var description = snippet ? '<div class="snippet">' + snippet + '</div>' : '';
+
+            // 资源类型标签
+            var resourceType = result.resource_type || '未知';
+            var resourceTypeBadge = '<span class="badge resource-type">' + resourceType + '</span>';
+
+            // 搜索引擎标签
+            var searchEngine = result.search_engine || 'Unknown';
+            var searchEngineBadge = '<span class="badge search-engine">🔍 ' + searchEngine + '</span>';
+
+            // 评分
+            var score = result.score || 0;
+            var scoreDisplay = score > 0 ? '<span class="quality-score">⭐ ' + score.toFixed(1) + '/10</span>' : '<span class="quality-score">未评分</span>';
+
+            // 推荐理由
+            var recommendation = result.recommendation_reason || '';
+            var recommendationDisplay = recommendation ? '<div class="recommendation">💡 ' + recommendation + '</div>' : '';
+
+            var videoLink = result.url ? '<a href="' + result.url + '" target="_blank" onclick="event.stopPropagation()">' + result.url + '</a>' : '';
+
+            var resultDiv = document.createElement('div');
+            resultDiv.className = 'result-item';
+            resultDiv.onclick = function() {
+                window.open(videoUrl, '_blank');
+            };
+
+            // 添加反馈按钮
+            var resultId = result.url || result.video_url || result.id || 'unknown';
+            var feedbackBtnHtml = '<button class="feedback-btn" onclick="openFeedbackModal(\'' + resultId + '\', event); event.stopPropagation();" title="提交反馈">📝 反馈</button>';
+
+            resultDiv.innerHTML =
+                '<h3>' + title + '</h3>' +
+                videoLink +
+                description +
+                recommendationDisplay +
+                '<div class="meta">' +
+                searchEngineBadge +
+                resourceTypeBadge +
+                scoreDisplay +
+                feedbackBtnHtml +
+                '</div>';
+
+            fragment.appendChild(resultDiv);
+        });
+
+        // 一次性添加到DOM
+        resultsContent.appendChild(fragment);
+
+        updateBatchEvaluateButton(results);
+
+        // 自动评估搜索质量
+        evaluateSearchQuality(results);
+    }
+
+    // 评估搜索质量
+    async function evaluateSearchQuality(results) {
+        try {
+            var searchParams = {
+                country: document.getElementById('country').value || '',
+                grade: document.getElementById('grade').value || '',
+                subject: document.getElementById('subject').value || ''
+            };
+
+            var response = await fetch('/api/admin/quality_evaluation', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    results: results,
+                    search_params: searchParams
+                })
+            });
+
+            if (response.ok) {
+                var data = await response.json();
+                if (data.success && data.evaluation) {
+                    var evalData = data.evaluation;
+                    console.log('✅ 质量评估完成:', evalData);
+
+                    // 在结果区域显示质量评估信息
+                    var resultsContent = document.getElementById('resultsContent');
+                    var qualityInfo = document.createElement('div');
+                    qualityInfo.className = 'quality-assessment';
+                    qualityInfo.style.cssText = 'background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);';
+
+                    var qualityScore = evalData.overall_quality_score || 0;
+                    var qualityLevel = evalData.quality_level || '未知';
+                    var avgScore = evalData.basic_stats?.avg_score || 0;
+
+                    qualityInfo.innerHTML =
+                        '<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">' +
+                        '<div>' +
+                        '<h3 style="margin: 0 0 10px 0; font-size: 18px;">📊 搜索质量评估</h3>' +
+                        '<div style="font-size: 32px; font-weight: bold; margin-bottom: 5px;">' + qualityScore.toFixed(1) + '/100</div>' +
+                        '<div style="opacity: 0.9;">等级: ' + qualityLevel + ' | 平均分: ' + avgScore.toFixed(2) + '/10</div>' +
+                        '</div>' +
+                        '<div style="flex: 1; min-width: 250px;">' +
+                        '<div style="font-weight: 600; margin-bottom: 8px;">📈 统计:</div>' +
+                        '<div style="font-size: 14px; opacity: 0.95;">' +
+                        '总结果: ' + evalData.basic_stats?.total_results + ' | ' +
+                        '高质量: ' + evalData.basic_stats?.high_quality_count + ' | ' +
+                        '低质量: ' + evalData.basic_stats?.low_quality_count +
+                        '</div>' +
+                        '</div>' +
+                        '</div>';
+
+                    // 如果有优化建议，显示
+                    if (evalData.optimization_suggestions && evalData.optimization_suggestions.length > 0) {
+                        var suggestionsHtml = '<div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.3);">';
+                        suggestionsHtml += '<div style="font-weight: 600; margin-bottom: 8px;">💡 优化建议:</div>';
+                        suggestionsHtml += '<ul style="margin: 0; padding-left: 20px; font-size: 14px; opacity: 0.95;">';
+                        evalData.optimization_suggestions.forEach(function(suggestion) {
+                            suggestionsHtml += '<li style="margin-bottom: 5px;">' + suggestion + '</li>';
+                        });
+                        suggestionsHtml += '</ul></div>';
+                        qualityInfo.innerHTML += suggestionsHtml;
+                    }
+
+                    // 插入到结果区域的最前面
+                    resultsContent.insertBefore(qualityInfo, resultsContent.firstChild);
+                }
+            }
+        } catch (error) {
+            console.error('质量评估失败:', error);
+        }
+    }
+
+    // 显示优化建议卡片
+    function displayOptimizationRequest(optimizationRequest) {
+        if (!optimizationRequest || optimizationRequest.status !== 'pending_approval') {
+            return;
+        }
+
+        console.log('🤖 显示优化建议:', optimizationRequest);
+
+        var resultsContent = document.getElementById('resultsContent');
+        if (!resultsContent) return;
+
+        // 创建优化建议卡片
+        var optCard = document.createElement('div');
+        optCard.id = 'optimizationCard';
+        optCard.className = 'optimization-card';
+        optCard.style.cssText = `
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 20px 0;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            animation: slideDown 0.5s ease-out;
+        `;
+
+        // 检测到的问题
+        var issuesHtml = '<div style="margin-bottom: 20px;">';
+        issuesHtml += '<h3 style="margin: 0 0 12px 0; font-size: 18px; display: flex; align-items: center;">';
+        issuesHtml += '<span style="margin-right: 8px;">⚠️</span> 检测到问题';
+        issuesHtml += '</h3>';
+        issuesHtml += '<ul style="margin: 0; padding-left: 20px;">';
+        optimizationRequest.detected_issues.forEach(function(issue) {
+            issuesHtml += '<li style="margin: 5px 0;">' + issue + '</li>';
+        });
+        issuesHtml += '</ul></div>';
+
+        // 优化方案
+        var plansHtml = '<div style="margin-bottom: 20px;">';
+        plansHtml += '<h3 style="margin: 0 0 12px 0; font-size: 18px;">💡 优化方案</h3>';
+
+        optimizationRequest.optimization_plans.forEach(function(plan, index) {
+            var planId = plan.plan_id;
+            plansHtml += '<div style="background: rgba(255,255,255,0.15); padding: 15px; border-radius: 8px; margin-bottom: 12px; backdrop-filter: blur(10px);">';
+            plansHtml += '<div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">';
+            plansHtml += '<div style="flex: 1;">';
+            plansHtml += '<h4 style="margin: 0 0 8px 0; font-size: 16px;">方案 ' + (index + 1) + ': ' + plan.name + '</h4>';
+            plansHtml += '<p style="margin: 0 0 8px 0; font-size: 14px; opacity: 0.95;">' + plan.description + '</p>';
+            plansHtml += '<div style="display: flex; gap: 15px; font-size: 13px;">';
+            plansHtml += '<span style="background: rgba(76, 175, 80, 0.3); padding: 4px 10px; border-radius: 4px;">📈 ' + plan.expected_improvement + '</span>';
+            plansHtml += '<span style="background: rgba(255, 152, 0, 0.3); padding: 4px 10px; border-radius: 4px;">⚡ ' + plan.risk.split(' - ')[0] + '</span>';
+            plansHtml += '</div>';
+            plansHtml += '</div>';
+            plansHtml += '<button onclick="approveOptimization(\'' + optimizationRequest.request_id + '\', \'' + planId + '\')" ';
+            plansHtml += 'style="padding: 10px 20px; border: none; background: white; color: #f5576c; border-radius: 6px; cursor: pointer; font-weight: 600; white-space: nowrap; transition: transform 0.2s;">';
+            plansHtml += '✓ 批准</button>';
+            plansHtml += '</div>';
+            plansHtml += '</div>';
+        });
+
+        plansHtml += '</div>';
+
+        // 拒绝按钮
+        var rejectHtml = '<div style="text-align: right;">';
+        rejectHtml += '<button onclick="rejectOptimization(\'' + optimizationRequest.request_id + '\')" ';
+        rejectHtml += 'style="padding: 10px 20px; border: 2px solid rgba(255,255,255,0.3); background: transparent; color: white; border-radius: 6px; cursor: pointer; font-weight: 600; transition: all 0.2s;" ';
+        rejectHtml += 'onmouseover="this.style.background=\'rgba(255,255,255,0.1)\'" onmouseout="this.style.background=\'transparent\'">';
+        rejectHtml += '✗ 拒绝所有方案';
+        rejectHtml += '</button>';
+        rejectHtml += '</div>';
+
+        optCard.innerHTML = issuesHtml + plansHtml + rejectHtml;
+
+        // 插入到质量评估之后
+        var qualityInfo = document.getElementById('qualityAssessment');
+        if (qualityInfo && qualityInfo.nextSibling) {
+            resultsContent.insertBefore(optCard, qualityInfo.nextSibling);
+        } else {
+            resultsContent.insertBefore(optCard, resultsContent.firstChild);
+        }
+
+        // 滚动到优化卡片
+        optCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    // 批准优化方案
+    async function approveOptimization(requestId, planId) {
+        console.log('✅ 批准优化:', requestId, planId);
+
+        var optCard = document.getElementById('optimizationCard');
+        if (optCard) {
+            optCard.innerHTML = '<div style="text-align: center; padding: 20px;"><div style="font-size: 24px; margin-bottom: 10px;">⏳</div><div>正在执行优化...</div></div>';
+        }
+
+        try {
+            var response = await fetch('/api/admin/optimization_approve', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    request_id: requestId,
+                    plan_id: planId,
+                    approver: 'web_user'
+                })
+            });
+
+            var result = await response.json();
+
+            if (result.success) {
+                console.log('✅ 优化已批准，正在执行...');
+
+                // 执行优化
+                await executeOptimization(requestId);
+            } else {
+                console.error('❌ 批准失败:', result.message);
+                alert('批准失败: ' + result.message);
+                if (optCard) optCard.remove();
+            }
+        } catch (error) {
+            console.error('❌ 批准请求失败:', error);
+            alert('批准请求失败: ' + error);
+            if (optCard) optCard.remove();
+        }
+    }
+
+    // 拒绝优化请求
+    async function rejectOptimization(requestId) {
+        var reason = prompt('请输入拒绝原因（可选）:', '不需要优化');
+        if (reason === null) return;
+
+        console.log('❌ 拒绝优化:', requestId, reason);
+
+        var optCard = document.getElementById('optimizationCard');
+        if (optCard) {
+            optCard.innerHTML = '<div style="text-align: center; padding: 20px;"><div style="font-size: 24px; margin-bottom: 10px;">⏳</div><div>正在处理...</div></div>';
+        }
+
+        try {
+            var response = await fetch('/api/admin/optimization_reject', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    request_id: requestId,
+                    reason: reason,
+                    rejecter: 'web_user'
+                })
+            });
+
+            var result = await response.json();
+
+            if (result.success) {
+                console.log('✅ 已拒绝优化');
+                if (optCard) {
+                    optCard.innerHTML = '<div style="text-align: center; padding: 20px;"><div style="font-size: 24px; margin-bottom: 10px;">✅</div><div>优化请求已拒绝</div></div>';
+                    setTimeout(function() { optCard.remove(); }, 2000);
+                }
+            } else {
+                console.error('❌ 拒绝失败:', result.message);
+                alert('拒绝失败: ' + result.message);
+                if (optCard) optCard.remove();
+            }
+        } catch (error) {
+            console.error('❌ 拒绝请求失败:', error);
+            alert('拒绝请求失败: ' + error);
+            if (optCard) optCard.remove();
+        }
+    }
+
+    // 执行优化
+    async function executeOptimization(requestId) {
+        console.log('🚀 执行优化:', requestId);
+
+        var optCard = document.getElementById('optimizationCard');
+        if (optCard) {
+            optCard.innerHTML = '<div style="text-align: center; padding: 20px;"><div style="font-size: 24px; margin-bottom: 10px;">🔄</div><div>正在重新搜索...</div></div>';
+        }
+
+        try {
+            var response = await fetch('/api/admin/optimization_execute', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    request_id: requestId
+                })
+            });
+
+            var result = await response.json();
+
+            if (result.success && result.execution_result) {
+                console.log('✅ 优化执行成功!');
+                displayOptimizationResult(result.execution_result);
+            } else {
+                console.error('❌ 执行失败:', result.message);
+                if (optCard) {
+                    optCard.innerHTML = '<div style="text-align: center; padding: 20px;"><div style="font-size: 24px; margin-bottom: 10px;">❌</div><div>优化执行失败</div><div style="font-size: 14px; margin-top: 10px;">' + result.message + '</div></div>';
+                }
+            }
+        } catch (error) {
+            console.error('❌ 执行请求失败:', error);
+            if (optCard) {
+                optCard.innerHTML = '<div style="text-align: center; padding: 20px;"><div style="font-size: 24px; margin-bottom: 10px;">❌</div><div>执行请求失败: ' + error + '</div></div>';
+            }
+        }
+    }
+
+    // 显示优化结果
+    function displayOptimizationResult(executionResult) {
+        var optCard = document.getElementById('optimizationCard');
+        if (!optCard) return;
+
+        var comparison = executionResult.comparison;
+        var recommendation = executionResult.recommendation;
+
+        var resultHtml = '<div style="animation: slideDown 0.5s ease-out;">';
+
+        // 标题
+        resultHtml += '<h3 style="margin: 0 0 20px 0; font-size: 20px; display: flex; align-items: center;">';
+        resultHtml += '<span style="margin-right: 10px;">🎉</span> 优化完成!';
+        resultHtml += '</h3>';
+
+        // 对比表格
+        resultHtml += '<div style="background: rgba(255,255,255,0.15); padding: 20px; border-radius: 8px; margin-bottom: 15px; backdrop-filter: blur(10px);">';
+
+        resultHtml += '<h4 style="margin: 0 0 15px 0; font-size: 16px;">📊 结果对比</h4>';
+
+        resultHtml += '<table style="width: 100%; border-collapse: collapse;">';
+        resultHtml += '<tr><td style="padding: 8px; border-bottom: 1px solid rgba(255,255,255,0.2);"><strong>指标</strong></td><td style="padding: 8px; border-bottom: 1px solid rgba(255,255,255,0.2);"><strong>原始</strong></td><td style="padding: 8px; border-bottom: 1px solid rgba(255,255,255,0.2);"><strong>优化后</strong></td><td style="padding: 8px; border-bottom: 1px solid rgba(255,255,255,0.2);"><strong>变化</strong></td></tr>';
+
+        resultHtml += '<tr>';
+        resultHtml += '<td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.1);">结果数</td>';
+        resultHtml += '<td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.1);">' + comparison.original.count + '</td>';
+        resultHtml += '<td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.1);">' + comparison.optimized.count + '</td>';
+        var countDiff = comparison.improvements.count_diff || (comparison.optimized.count - comparison.original.count);
+        var countColor = countDiff > 0 ? '#4CAF50' : (countDiff < 0 ? '#f44336' : 'white');
+        resultHtml += '<td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); color: ' + countColor + '; font-weight: 600;">' + (countDiff > 0 ? '+' : '') + countDiff + '</td>';
+        resultHtml += '</tr>';
+
+        resultHtml += '<tr>';
+        resultHtml += '<td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.1);">平均分</td>';
+        resultHtml += '<td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.1);">' + comparison.original.avg_score + '</td>';
+        resultHtml += '<td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.1);">' + comparison.optimized.avg_score + '</td>';
+        var scoreDiff = comparison.improvements.avg_score_diff;
+        var scoreColor = scoreDiff > 0 ? '#4CAF50' : (scoreDiff < 0 ? '#f44336' : 'white');
+        resultHtml += '<td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); color: ' + scoreColor + '; font-weight: 600;">' + (scoreDiff > 0 ? '+' : '') + scoreDiff + '</td>';
+        resultHtml += '</tr>';
+
+        resultHtml += '<tr>';
+        resultHtml += '<td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.1);">播放列表</td>';
+        resultHtml += '<td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.1);">' + comparison.original.playlist_count + '</td>';
+        resultHtml += '<td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.1);">' + comparison.optimized.playlist_count + '</td>';
+        var playlistDiff = comparison.improvements.playlist_diff;
+        var playlistColor = playlistDiff > 0 ? '#4CAF50' : (playlistDiff < 0 ? '#f44336' : 'white');
+        resultHtml += '<td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); color: ' + playlistColor + '; font-weight: 600;">' + (playlistDiff > 0 ? '+' : '') + playlistDiff + '</td>';
+        resultHtml += '</tr>';
+
+        resultHtml += '<tr>';
+        resultHtml += '<td style="padding: 10px;">高质量</td>';
+        resultHtml += '<td style="padding: 10px;">' + comparison.original.high_quality_count + '</td>';
+        resultHtml += '<td style="padding: 10px;">' + comparison.optimized.high_quality_count + '</td>';
+        var hqDiff = comparison.improvements.high_quality_diff;
+        var hqColor = hqDiff > 0 ? '#4CAF50' : (hqDiff < 0 ? '#f44336' : 'white');
+        resultHtml += '<td style="padding: 10px; color: ' + hqColor + '; font-weight: 600;">' + (hqDiff > 0 ? '+' : '') + hqDiff + '</td>';
+        resultHtml += '</tr>';
+
+        resultHtml += '</table>';
+        resultHtml += '</div>';
+
+        // 建议
+        if (comparison.reasons && comparison.reasons.length > 0) {
+            resultHtml += '<div style="background: rgba(76, 175, 80, 0.2); padding: 15px; border-radius: 8px; margin-bottom: 15px;">';
+            resultHtml += '<h4 style="margin: 0 0 10px 0; font-size: 16px;">💡 改进点</h4>';
+            resultHtml += '<ul style="margin: 0; padding-left: 20px;">';
+            comparison.reasons.forEach(function(reason) {
+                resultHtml += '<li style="margin: 5px 0;">' + reason + '</li>';
+            });
+            resultHtml += '</ul></div>';
+        }
+
+        // 推荐
+        resultHtml += '<div style="text-align: center; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 8px; margin-bottom: 15px;">';
+        resultHtml += '<div style="font-size: 18px; font-weight: 600; margin-bottom: 8px;">' + recommendation + '</div>';
+        resultHtml += '</div>';
+
+        // 关闭按钮
+        resultHtml += '<div style="text-align: center;">';
+        resultHtml += '<button onclick="document.getElementById(\'optimizationCard\').remove()" ';
+        resultHtml += 'style="padding: 10px 30px; border: none; background: white; color: #f5576c; border-radius: 6px; cursor: pointer; font-weight: 600;">';
+        resultHtml += '关闭';
+        resultHtml += '</button>';
+        resultHtml += '</div>';
+
+        resultHtml += '</div>';
+
+        optCard.innerHTML = resultHtml;
+    }
+
+    // 打开反馈模态框
+    function openFeedbackModal(resultId, event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        // 创建模态框
+        var modal = document.createElement('div');
+        modal.id = 'feedbackModal';
+        modal.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center; z-index: 10000;';
+
+        modal.innerHTML =
+            '<div style="background: white; padding: 30px; border-radius: 12px; max-width: 500px; width: 90%; box-shadow: 0 10px 40px rgba(0,0,0,0.3); animation: slideDown 0.3s ease-out;">' +
+            '<h2 style="margin: 0 0 20px 0; color: #333;">📝 提交反馈</h2>' +
+            '<div style="margin-bottom: 20px;">' +
+            '<label style="display: block; margin-bottom: 8px; font-weight: 600; color: #555;">评分 (1-5星):</label>' +
+            '<div style="display: flex; gap: 10px; margin-bottom: 15px;">' +
+            '<button class="rating-btn" data-rating="1" onclick="setRating(1)">1⭐</button>' +
+            '<button class="rating-btn" data-rating="2" onclick="setRating(2)">2⭐</button>' +
+            '<button class="rating-btn" data-rating="3" onclick="setRating(3)">3⭐</button>' +
+            '<button class="rating-btn" data-rating="4" onclick="setRating(4)">4⭐</button>' +
+            '<button class="rating-btn" data-rating="5" onclick="setRating(5)">5⭐</button>' +
+            '</div>' +
+            '</div>' +
+            '<div style="margin-bottom: 20px;">' +
+            '<label style="display: flex; align-items: center; cursor: pointer;">' +
+            '<input type="checkbox" id="isRelevant" style="width: 20px; height: 20px; margin-right: 10px;">' +
+            '<span style="font-weight: 600; color: #555;">这个结果相关吗？</span>' +
+            '</label>' +
+            '</div>' +
+            '<div style="margin-bottom: 20px;">' +
+            '<label style="display: block; margin-bottom: 8px; font-weight: 600; color: #555;">反馈意见（可选）:</label>' +
+            '<textarea id="feedbackText" rows="3" placeholder="请告诉我们这个搜索结果是否有帮助..." style="width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 8px; font-size: 14px; resize: vertical; box-sizing: border-box;"></textarea>' +
+            '</div>' +
+            '<div style="display: flex; gap: 10px; justify-content: flex-end;">' +
+            '<button onclick="closeFeedbackModal()" style="padding: 10px 20px; border: none; background: #e0e0e0; color: #333; border-radius: 6px; cursor: pointer; font-weight: 600;">取消</button>' +
+            '<button onclick="submitFeedback(\'' + resultId + '\')" style="padding: 10px 20px; border: none; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 6px; cursor: pointer; font-weight: 600;">提交反馈</button>' +
+            '</div>' +
+            '</div>' +
+            '<style>' +
+            '@keyframes slideDown { from { transform: translateY(-50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }' +
+            '.rating-btn { padding: 10px 15px; border: 2px solid #ddd; background: white; border-radius: 8px; cursor: pointer; font-size: 16px; transition: all 0.2s; }' +
+            '.rating-btn:hover { background: #f0f0f0; transform: scale(1.1); }' +
+            '.rating-btn.selected { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-color: #667eea; }' +
+            '</style>';
+
+        document.body.appendChild(modal);
+
+        // 点击背景关闭
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                closeFeedbackModal();
+            }
+        });
+    }
+
+    // 设置评分
+    var selectedRating = 0;
+    function setRating(rating) {
+        selectedRating = rating;
+        document.querySelectorAll('.rating-btn').forEach(function(btn) {
+            btn.classList.remove('selected');
+            if (parseInt(btn.dataset.rating) === rating) {
+                btn.classList.add('selected');
+            }
+        });
+    }
+
+    // 关闭反馈模态框
+    function closeFeedbackModal() {
+        var modal = document.getElementById('feedbackModal');
+        if (modal) {
+            modal.remove();
+        }
+        selectedRating = 0;
+    }
+
+    // 提交反馈
+    async function submitFeedback(resultId) {
+        if (selectedRating === 0) {
+            alert('请先选择评分');
+            return;
+        }
+
+        var searchParams = {
+            country: document.getElementById('country').value || '',
+            grade: document.getElementById('grade').value || '',
+            subject: document.getElementById('subject').value || ''
+        };
+
+        var feedbackData = {
+            result_id: resultId,
+            search_params: searchParams,
+            explicit_feedback: {
+                rating: selectedRating,
+                is_relevant: document.getElementById('isRelevant').checked,
+                text: document.getElementById('feedbackText').value
+            },
+            implicit_signals: {
+                clicked: true,
+                dwell_time: 0,
+                scroll_depth: 0
+            }
+        };
+
+        try {
+            var response = await fetch('/api/feedback', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(feedbackData)
+            });
+
+            var data = await response.json();
+
+            if (data.success) {
+                alert('✅ 感谢您的反馈！feedback_id: ' + data.feedback_id);
+                closeFeedbackModal();
+            } else {
+                alert('❌ 提交失败: ' + (data.message || '未知错误'));
+            }
+        } catch (error) {
+            console.error('提交反馈失败:', error);
+            alert('❌ 提交失败: ' + error.message);
+        }
+    }
+
+    // 更新批量评估按钮
+    function updateBatchEvaluateButton(results) {
+        var resultsControls = document.querySelector('.results-controls');
+        var batchBtn = document.getElementById('batchEvaluateBtn');
+        
+        var hasVideos = results.some(function(r) { return r.video_url || r.url; });
+        
+        if (hasVideos) {
+            if (!batchBtn) {
+                batchBtn = document.createElement('button');
+                batchBtn.id = 'batchEvaluateBtn';
+                batchBtn.className = 'batch-evaluate-btn';
+                batchBtn.textContent = '🎬 批量评估视频';
+                batchBtn.onclick = batchEvaluateVideos;
+                
+                var statsDiv = document.getElementById('resultsStats');
+                resultsControls.insertBefore(batchBtn, statsDiv);
+            }
+            batchBtn.style.display = 'inline-block';
+        } else if (batchBtn) {
+            batchBtn.style.display = 'none';
+        }
+    }
+
+    // 批量评估视频
+    async function batchEvaluateVideos() {
+        if (!currentResults || currentResults.length === 0) {
+            toast.warning('评估失败', '没有可评估的视频');
+            return;
+        }
+
+        var videos = currentResults.filter(function(r) { return r.video_url || r.url; });
+        
+        if (videos.length === 0) {
+            toast.warning('评估失败', '没有可评估的视频');
+            return;
+        }
+
+        if (!confirm('即将评估 ' + videos.length + ' 个视频，这可能需要一些时间。\n\n是否继续？')) {
+            return;
+        }
+
+        var resultsContent = document.getElementById('resultsContent');
+        var startTime = Date.now();
+        var completed = 0;
+        var failed = 0;
+
+        function showEvaluationProgress() {
+            var progress = (completed / videos.length * 100).toFixed(1);
+            var elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
+            
+            resultsContent.innerHTML = '<div class="progress-container"><div class="progress-header"><h4>🎬 正在评估视频...</h4><div class="progress-status">已完成 ' + completed + '/' + videos.length + ' (' + progress + '%)</div></div><div class="progress-bar-bg"><div class="progress-bar-fill" style="width: ' + progress + '%">' + progress + '%</div></div><div class="progress-details"><span>✅ 成功: ' + (completed - failed) + '</span><span>❌ 失败: ' + failed + '</span><span>⏱️ 已用时: ' + elapsed + 's</span></div></div>';
+        }
+
+        showEvaluationProgress();
+
+        for (var i = 0; i < videos.length; i++) {
+            try {
+                var result = videos[i];
+                var videoUrl = result.video_url || result.url;
+                
+                result.evaluated = true;
+                result.evaluationTimestamp = new Date().toISOString();
+                
+                completed++;
+            } catch (error) {
+                console.error('评估失败:', videos[i], error);
+                failed++;
+                completed++;
+            }
+            
+            showEvaluationProgress();
+        }
+
+        var duration = ((Date.now() - startTime) / 1000).toFixed(2);
+        toast.success('评估完成', '已完成 ' + videos.length + ' 个视频的评估，用时 ' + duration + ' 秒');
+        displayResults(currentResults);
+    }
+
+    // 导出批量搜索结果到Excel（带超时和错误处理）
+    async function exportBatchResultsToExcel(results) {
+        if (!results || results.length === 0) {
+            toast.warning('导出失败', '没有可导出的结果');
+            return;
+        }
+
+        console.log('开始导出Excel，结果数量:', results.length);
+        
+        // 显示导出进度
+        toast.info('正在导出', '正在生成Excel文件，请稍候...');
+
+        try {
+            // 创建超时控制器（60秒超时）
+            var controller = new AbortController();
+            var timeoutId = setTimeout(function() {
+                console.warn('⏱️ Excel导出超时，正在取消...');
+                controller.abort();
+            }, 60000); // 60秒超时
+
+            var response;
+            try {
+                response = await fetch('/api/export_batch_excel', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        results: results
+                    }),
+                    signal: controller.signal
+                });
+                clearTimeout(timeoutId);
+            } catch (fetchError) {
+                clearTimeout(timeoutId);
+                if (fetchError.name === 'AbortError') {
+                    throw new Error('Excel导出超时（超过60秒），数据量可能过大，请减少搜索条件');
+                }
+                throw fetchError;
+            }
+
+            console.log('导出响应状态:', response.status);
+
+            if (response.ok) {
+                var blob = await response.blob();
+                var url = window.URL.createObjectURL(blob);
+                var a = document.createElement('a');
+                a.href = url;
+
+                var timestamp = new Date().toISOString().slice(0, 10);
+                a.download = '批量搜索_' + timestamp + '.xlsx';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                
+                // 立即释放blob URL，释放内存
+                window.URL.revokeObjectURL(url);
+                
+                // 清理变量
+                blob = null;
+                url = null;
+                a = null;
+
+                toast.success('导出成功', '已导出 ' + results.length + ' 条结果到Excel');
+            } else {
+                var errorText = await response.text();
+                try {
+                    var data = JSON.parse(errorText);
+                    console.error('导出失败:', data);
+                    toast.error('导出失败', data.message || '未知错误');
+                } catch (e) {
+                    console.error('导出失败:', errorText);
+                    toast.error('导出失败', '服务器错误: HTTP ' + response.status);
+                }
+            }
+        } catch (error) {
+            console.error('导出失败:', error);
+            var errorMsg = error.message || '未知错误';
+            if (errorMsg.includes('超时')) {
+                toast.error('导出超时', errorMsg + '。建议减少搜索条件或分批导出。');
+            } else {
+                toast.error('导出失败', errorMsg);
+            }
+        }
+    }
+
+    // 更新统计信息
+    function updateStats(results, successRate, duration) {
+        document.getElementById('resultCount').textContent = results.length;
+        document.getElementById('successRate').textContent = successRate + '%';
+        document.getElementById('avgTime').textContent = duration + 's';
+        document.getElementById('resultsStats').style.display = 'flex';
+    }
+
+    // 排序结果
+    function sortResults(sortBy) {
+        if (currentResults.length === 0) return;
+
+        switch (sortBy) {
+            case 'quality':
+                currentResults.sort(function(a, b) { return (b.quality_score || 0) - (a.quality_score || 0); });
+                break;
+            case 'title':
+                currentResults.sort(function(a, b) { return (a.title || '').localeCompare(b.title || ''); });
+                break;
+            default:
+                return;
+        }
+
+        displayResults(currentResults);
+        toast.info('排序完成', '结果已重新排序');
+    }
+
+    // 导出结果
+    function exportResults(format) {
+        if (currentResults.length === 0) {
+            toast.warning('导出失败', '没有可导出的结果');
+            return;
+        }
+
+        var content, filename, type;
+
+        if (format === 'csv') {
+            content = convertToCSV(currentResults);
+            filename = 'search_results.csv';
+            type = 'text/csv';
+        } else if (format === 'json') {
+            content = JSON.stringify(currentResults, null, 2);
+            filename = 'search_results.json';
+            type = 'application/json';
+        }
+
+        var blob = new Blob([content], { type: type });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        a.click();
+        URL.revokeObjectURL(url);
+
+        toast.success('导出成功', '已导出 ' + currentResults.length + ' 条结果到 ' + filename);
+    }
+
+    // 导出为Excel（使用CSV格式）
+    // 导出Excel（统一入口，自动判断是单个搜索还是批量搜索）
+    async function exportResultsToExcel() {
+        if (!currentResults || currentResults.length === 0) {
+            toast.warning('导出失败', '没有可导出的结果');
+            return;
+        }
+
+        console.log('开始导出Excel，结果数量:', currentResults.length);
+        
+        // 🔥 判断是否是批量搜索结果（批量搜索结果通常包含country/grade/subject字段）
+        var isBatchResult = currentResults.length > 0 && (
+            currentResults[0].hasOwnProperty('country') || 
+            currentResults[0].hasOwnProperty('grade') || 
+            currentResults[0].hasOwnProperty('subject')
+        );
+        
+        // 如果结果数量较多（>50），或者明确是批量搜索结果，使用批量导出API
+        if (isBatchResult || currentResults.length > 50) {
+            console.log('使用批量Excel导出API');
+            await exportBatchResultsToExcel(currentResults);
+        } else {
+            console.log('使用简单CSV导出');
+            // 单个搜索结果，使用简单的CSV导出
+            var content = convertToCSV(currentResults);
+            var blob = new Blob(['\uFEFF' + content], { type: 'text/csv;charset=utf-8;' });
+            var url = URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = 'search_results.csv';
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            // 清理变量
+            blob = null;
+            url = null;
+            a = null;
+
+            toast.success('导出成功', '已导出 ' + currentResults.length + ' 条结果到CSV文件');
+        }
+    }
+
+    // 转换为CSV格式
+    function convertToCSV(results) {
+        var headers = ['标题', '链接', '国家', '年级', '学科', '资源类型', '质量分数'];
+        var csv = headers.join(',') + '\n';
+
+        results.forEach(function(result) {
+            var row = [
+                (result.title || '').replace(/"/g, '""'),
+                (result.url || result.video_url || '').replace(/"/g, '""'),
+                (result.country || '').replace(/"/g, '""'),
+                (result.grade || '').replace(/"/g, '""'),
+                (result.subject || '').replace(/"/g, '""'),
+                (result.resource_type || result.resourceType || '').replace(/"/g, '""'),
+                (result.quality_score || result.qualityScore || 0)
+            ];
+            csv += row.map(function(cell) { return '"' + cell + '"'; }).join(',') + '\n';
+        });
+
+        return csv;
+    }
+
+    // 📊 导出详细搜索日志（Excel格式）
+    async function exportSearchLog() {
+        if (!currentSearchId) {
+            toast.warning('导出失败', '没有可导出的日志（未找到搜索ID）');
+            return;
+        }
+
+        try {
+            console.log('📊 开始导出搜索日志, ID:', currentSearchId);
+
+            // 禁用按钮，显示加载状态
+            var exportBtn = document.getElementById('exportLogBtn');
+            exportBtn.disabled = true;
+            exportBtn.textContent = '⏳ 导出中...';
+
+            // 调用后端API导出Excel
+            var response = await fetch('/api/export_search_log/' + currentSearchId);
+
+            if (!response.ok) {
+                var errorText = await response.text();
+                throw new Error(errorText || '导出失败');
+            }
+
+            // 下载文件
+            var blob = await response.blob();
+            var url = URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = 'search_log_' + currentSearchId + '.xlsx';
+            a.click();
+            URL.revokeObjectURL(url);
+
+            toast.success('导出成功', '搜索日志已导出为Excel文件');
+
+        } catch (error) {
+            console.error('❌ 导出搜索日志失败:', error);
+            toast.error('导出失败', error.message || '导出搜索日志时发生错误');
+        } finally {
+            // 恢复按钮状态
+            var exportBtn = document.getElementById('exportLogBtn');
+            exportBtn.disabled = false;
+            exportBtn.textContent = '📝 详细日志';
+        }
+    }
+
+    // 绑定搜索按钮
+    document.getElementById('searchBtn').addEventListener('click', performSearch);
+
+</script>
+{% endblock %}

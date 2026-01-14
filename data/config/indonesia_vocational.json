@@ -1,0 +1,517 @@
+{
+  "country_code": "ID",
+  "country_name": "Indonesia",
+  "country_name_zh": "印度尼西亚",
+  "education_levels": {
+    "vocational": {
+      "level_name": "Pendidikan Vokasi",
+      "level_name_zh": "职业教育",
+      "description": "职业技能培训、成人教育、证书课程",
+      "skill_areas": [
+        {
+          "area_code": "IT",
+          "local_name": "Teknologi Informasi",
+          "zh_name": "信息技术",
+          "english_name": "Information Technology",
+          "icon": "💻",
+          "programs": [
+            {
+              "program_code": "IT-BASIC",
+              "local_name": "Kursus Komputer Dasar",
+              "zh_name": "计算机基础培训",
+              "english_name": "Basic Computer Skills Course",
+              "provider": "Ruangguru",
+              "duration": "3 months",
+              "target_audience": ["beginner", "adult_learner", "career_switcher"],
+              "skills": [
+                {
+                  "skill_code": "MS-OFFICE",
+                  "local_name": "Microsoft Office",
+                  "zh_name": "微软办公软件",
+                  "english_name": "Microsoft Office",
+                  "level": "beginner",
+                  "description": "Word, Excel, PowerPoint基础操作"
+                },
+                {
+                  "skill_code": "INTERNET",
+                  "local_name": "Penggunaan Internet",
+                  "zh_name": "互联网使用",
+                  "english_name": "Internet Usage",
+                  "level": "beginner",
+                  "description": "浏览器使用、电子邮件、在线搜索"
+                }
+              ],
+              "certification": "Certificate of Completion",
+              "price_range": "Rp 500.000 - Rp 1.500.000"
+            },
+            {
+              "program_code": "IT-WEB",
+              "local_name": "Web Development",
+              "zh_name": "Web开发",
+              "english_name": "Web Development Course",
+              "provider": "Hacktiv8",
+              "duration": "6 months",
+              "target_audience": ["intermediate", "career_switcher", "job_seeker"],
+              "prerequisites": ["HTML基础", "CSS基础"],
+              "skills": [
+                {
+                  "skill_code": "HTML-CSS",
+                  "local_name": "HTML & CSS",
+                  "zh_name": "HTML与CSS",
+                  "english_name": "HTML & CSS",
+                  "level": "intermediate",
+                  "description": "网页结构与样式设计"
+                },
+                {
+                  "skill_code": "JAVASCRIPT",
+                  "local_name": "JavaScript Programming",
+                  "zh_name": "JavaScript编程",
+                  "english_name": "JavaScript Programming",
+                  "level": "intermediate",
+                  "description": "前端交互开发"
+                },
+                {
+                  "skill_code": "RESPONSIVE",
+                  "local_name": "Responsive Design",
+                  "zh_name": "响应式设计",
+                  "english_name": "Responsive Web Design",
+                  "level": "advanced",
+                  "description": "移动端适配技术"
+                }
+              ],
+              "certification": "Professional Certificate",
+              "price_range": "Rp 5.000.000 - Rp 10.000.000"
+            },
+            {
+              "program_code": "IT-DATA",
+              "local_name": "Data Science",
+              "zh_name": "数据科学",
+              "english_name": "Data Science Course",
+              "provider": "RevoU",
+              "duration": "9 months",
+              "target_audience": ["advanced", "career_switcher", "professional"],
+              "prerequisites": ["Python编程", "统计学基础", "线性代数"],
+              "skills": [
+                {
+                  "skill_code": "PYTHON",
+                  "local_name": "Python for Data Science",
+                  "zh_name": "Python数据科学",
+                  "english_name": "Python for Data Science",
+                  "level": "intermediate",
+                  "description": "Python编程及数据分析库"
+                },
+                {
+                  "skill_code": "ML",
+                  "local_name": "Machine Learning",
+                  "zh_name": "机器学习",
+                  "english_name": "Machine Learning",
+                  "level": "advanced",
+                  "description": "监督学习、非监督学习算法"
+                },
+                {
+                  "skill_code": "DATA-VIZ",
+                  "local_name": "Data Visualization",
+                  "zh_name": "数据可视化",
+                  "english_name": "Data Visualization",
+                  "level": "intermediate",
+                  "description": "Tableau, Power BI, Matplotlib"
+                }
+              ],
+              "certification": "Professional Certificate",
+              "price_range": "Rp 15.000.000 - Rp 25.000.000"
+            }
+          ]
+        },
+        {
+          "area_code": "LANG",
+          "local_name": "Bahasa Asing",
+          "zh_name": "外语学习",
+          "english_name": "Foreign Languages",
+          "icon": "🌍",
+          "programs": [
+            {
+              "program_code": "LANG-EN-BEG",
+              "local_name": "Bahasa Inggris Pemula",
+              "zh_name": "英语初级",
+              "english_name": "Beginner English Course",
+              "provider": "English First (EF)",
+              "duration": "6 months",
+              "target_audience": ["beginner", "student", "adult_learner"],
+              "skills": [
+                {
+                  "skill_code": "EN-SPEAKING",
+                  "local_name": "English Speaking",
+                  "zh_name": "英语口语",
+                  "english_name": "English Speaking Skills",
+                  "level": "beginner",
+                  "description": "日常对话、自我介绍、基础交流"
+                },
+                {
+                  "skill_code": "EN-LISTENING",
+                  "local_name": "English Listening",
+                  "zh_name": "英语听力",
+                  "english_name": "English Listening Skills",
+                  "level": "beginner",
+                  "description": "理解日常对话、新闻、电影"
+                },
+                {
+                  "skill_code": "EN-READING",
+                  "local_name": "English Reading",
+                  "zh_name": "英语阅读",
+                  "english_name": "English Reading Skills",
+                  "level": "beginner",
+                  "description": "阅读文章、邮件、简单文档"
+                }
+              ],
+              "certification": "CEFR A2 Certificate",
+              "price_range": "Rp 3.000.000 - Rp 6.000.000"
+            },
+            {
+              "program_code": "LANG-EN-BUS",
+              "local_name": "Business English",
+              "zh_name": "商务英语",
+              "english_name": "Business English Course",
+              "provider": "Wall Street English",
+              "duration": "9 months",
+              "target_audience": ["intermediate", "professional", "business"],
+              "prerequisites": ["英语基础（中级）"],
+              "skills": [
+                {
+                  "skill_code": "EN-WRITING",
+                  "local_name": "Business Writing",
+                  "zh_name": "商务写作",
+                  "english_name": "Business Writing",
+                  "level": "advanced",
+                  "description": "邮件、报告、提案写作"
+                },
+                {
+                  "skill_code": "EN-PRESENT",
+                  "local_name": "Presentation Skills",
+                  "zh_name": "演示技巧",
+                  "english_name": "Business Presentation",
+                  "level": "advanced",
+                  "description": "商务演讲、谈判、会议"
+                }
+              ],
+              "certification": "CEFR B2/C1 Certificate",
+              "price_range": "Rp 10.000.000 - Rp 20.000.000"
+            },
+            {
+              "program_code": "LANG-CN",
+              "local_name": "Bahasa Mandarin",
+              "zh_name": "中文课程",
+              "english_name": "Mandarin Chinese Course",
+              "provider": "Bina Nusantara Language Center",
+              "duration": "12 months",
+              "target_audience": ["beginner", "business", "student"],
+              "skills": [
+                {
+                  "skill_code": "CN-PINYIN",
+                  "local_name": "Pinyin & Tones",
+                  "zh_name": "拼音与声调",
+                  "english_name": "Pinyin and Tones",
+                  "level": "beginner",
+                  "description": "汉语拼音系统、四声练习"
+                },
+                {
+                  "skill_code": "CN-CHAR",
+                  "local_name": "Hanzi Characters",
+                  "zh_name": "汉字识别",
+                  "english_name": "Chinese Characters",
+                  "level": "intermediate",
+                  "description": "常用汉字读写（500-1000字）"
+                },
+                {
+                  "skill_code": "CN-CONV",
+                  "local_name": "Daily Conversation",
+                  "zh_name": "日常对话",
+                  "english_name": "Chinese Conversation",
+                  "level": "intermediate",
+                  "description": "日常生活、购物、旅游对话"
+                }
+              ],
+              "certification": "HSK 2-3 Certificate",
+              "price_range": "Rp 8.000.000 - Rp 15.000.000"
+            }
+          ]
+        },
+        {
+          "area_code": "BIZ",
+          "local_name": "Bisnis & Manajemen",
+          "zh_name": "商业与管理",
+          "english_name": "Business & Management",
+          "icon": "💼",
+          "programs": [
+            {
+              "program_code": "BIZ-MKT",
+              "local_name": "Digital Marketing",
+              "zh_name": "数字营销",
+              "english_name": "Digital Marketing Course",
+              "provider": "Rakamin Academy",
+              "duration": "4 months",
+              "target_audience": ["beginner", "career_switcher", "entrepreneur"],
+              "skills": [
+                {
+                  "skill_code": "SEO",
+                  "local_name": "SEO Optimization",
+                  "zh_name": "SEO优化",
+                  "english_name": "Search Engine Optimization",
+                  "level": "intermediate",
+                  "description": "搜索引擎优化、关键词分析"
+                },
+                {
+                  "skill_code": "SEM",
+                  "local_name": "SEM Advertising",
+                  "zh_name": "SEM广告",
+                  "english_name": "Search Engine Marketing",
+                  "level": "intermediate",
+                  "description": "Google Ads、Facebook Ads"
+                },
+                {
+                  "skill_code": "SOCIAL",
+                  "local_name": "Social Media Marketing",
+                  "zh_name": "社交媒体营销",
+                  "english_name": "Social Media Marketing",
+                  "level": "intermediate",
+                  "description": "Instagram, TikTok, LinkedIn运营"
+                }
+              ],
+              "certification": "Digital Marketing Certificate",
+              "price_range": "Rp 3.000.000 - Rp 7.000.000"
+            },
+            {
+              "program_code": "BIZ-FIN",
+              "local_name": "Financial Planning",
+              "zh_name": "理财规划",
+              "english_name": "Financial Planning Course",
+              "provider": "Finansialku",
+              "duration": "3 months",
+              "target_audience": ["beginner", "adult_learner", "professional"],
+              "skills": [
+                {
+                  "skill_code": "BUDGET",
+                  "local_name": "Personal Budgeting",
+                  "zh_name": "个人预算",
+                  "english_name": "Personal Budgeting",
+                  "level": "beginner",
+                  "description": "收支管理、储蓄规划"
+                },
+                {
+                  "skill_code": "INVEST",
+                  "local_name": "Investment Basics",
+                  "zh_name": "投资基础",
+                  "english_name": "Investment Fundamentals",
+                  "level": "intermediate",
+                  "description": "股票、基金、债券投资入门"
+                }
+              ],
+              "certification": "Financial Planning Certificate",
+              "price_range": "Rp 2.000.000 - Rp 5.000.000"
+            },
+            {
+              "program_code": "BIZ-ENTRE",
+              "local_name": "Entrepreneurship",
+              "zh_name": "创业培训",
+              "english_name": "Entrepreneurship Program",
+              "provider": "Indonesian Dream",
+              "duration": "6 months",
+              "target_audience": ["intermediate", "entrepreneur", "career_switcher"],
+              "skills": [
+                {
+                  "skill_code": "BP",
+                  "local_name": "Business Planning",
+                  "zh_name": "商业计划",
+                  "english_name": "Business Plan Development",
+                  "level": "intermediate",
+                  "description": "商业模式设计、商业计划书"
+                },
+                {
+                  "skill_code": "FUNDING",
+                  "local_name": "Funding Strategy",
+                  "zh_name": "融资策略",
+                  "english_name": "Startup Funding",
+                  "level": "advanced",
+                  "description": "天使投资、风险投资、众筹"
+                }
+              ],
+              "certification": "Entrepreneurship Certificate",
+              "price_range": "Rp 8.000.000 - Rp 15.000.000"
+            }
+          ]
+        },
+        {
+          "area_code": "DESIGN",
+          "local_name": "Desain & Kreatif",
+          "zh_name": "设计与创意",
+          "english_name": "Design & Creative",
+          "icon": "🎨",
+          "programs": [
+            {
+              "program_code": "DES-UI",
+              "local_name": "UI/UX Design",
+              "zh_name": "UI/UX设计",
+              "english_name": "UI/UX Design Course",
+              "provider": "BuildWithAngga",
+              "duration": "5 months",
+              "target_audience": ["beginner", "career_switcher", "creative"],
+              "skills": [
+                {
+                  "skill_code": "FUNDAMENTAL",
+                  "local_name": "Design Fundamentals",
+                  "zh_name": "设计基础",
+                  "english_name": "Design Principles",
+                  "level": "beginner",
+                  "description": "色彩理论、排版、视觉层次"
+                },
+                {
+                  "skill_code": "WIREFRAME",
+                  "local_name": "Wireframing",
+                  "zh_name": "线框图设计",
+                  "english_name": "Wireframing & Prototyping",
+                  "level": "intermediate",
+                  "description": "Figma, Adobe XD, 原型制作"
+                },
+                {
+                  "skill_code": "USER-RES",
+                  "local_name": "User Research",
+                  "zh_name": "用户研究",
+                  "english_name": "User Research Methods",
+                  "level": "intermediate",
+                  "description": "用户访谈、可用性测试"
+                }
+              ],
+              "certification": "UI/UX Design Certificate",
+              "price_range": "Rp 5.000.000 - Rp 12.000.000"
+            },
+            {
+              "program_code": "DES-GRA",
+              "local_name": "Graphic Design",
+              "zh_name": "平面设计",
+              "english_name": "Graphic Design Course",
+              "provider": "Lumen5",
+              "duration": "4 months",
+              "target_audience": ["beginner", "creative", "student"],
+              "skills": [
+                {
+                  "skill_code": "PS",
+                  "local_name": "Adobe Photoshop",
+                  "zh_name": "Photoshop",
+                  "english_name": "Adobe Photoshop",
+                  "level": "intermediate",
+                  "description": "图像编辑、修图、海报设计"
+                },
+                {
+                  "skill_code": "AI",
+                  "local_name": "Adobe Illustrator",
+                  "zh_name": "Illustrator",
+                  "english_name": "Adobe Illustrator",
+                  "level": "intermediate",
+                  "description": "矢量图形、logo设计、插画"
+                }
+              ],
+              "certification": "Graphic Design Certificate",
+              "price_range": "Rp 4.000.000 - Rp 8.000.000"
+            }
+          ]
+        },
+        {
+          "area_code": "SOFT",
+          "local_name": "Soft Skills",
+          "zh_name": "软技能",
+          "english_name": "Soft Skills",
+          "icon": "🤝",
+          "programs": [
+            {
+              "program_code": "SOFT-LEAD",
+              "local_name": "Leadership Skills",
+              "zh_name": "领导力培训",
+              "english_name": "Leadership Development",
+              "provider": "Konsultan Pendidikan Indonesia",
+              "duration": "3 months",
+              "target_audience": ["intermediate", "professional", "manager"],
+              "skills": [
+                {
+                  "skill_code": "TEAM-MGT",
+                  "local_name": "Team Management",
+                  "zh_name": "团队管理",
+                  "english_name": "Team Management",
+                  "level": "intermediate",
+                  "description": "团队建设、冲突解决、激励"
+                },
+                {
+                  "skill_code": "DEC-MAKING",
+                  "local_name": "Decision Making",
+                  "zh_name": "决策能力",
+                  "english_name": "Strategic Decision Making",
+                  "level": "advanced",
+                  "description": "战略思维、问题分析、风险评估"
+                }
+              ],
+              "certification": "Leadership Certificate",
+              "price_range": "Rp 5.000.000 - Rp 10.000.000"
+            },
+            {
+              "program_code": "SOFT-COMM",
+              "local_name": "Communication Skills",
+              "zh_name": "沟通技巧",
+              "english_name": "Communication Skills",
+              "provider": "Lembaga Psikologi Terapan",
+              "duration": "2 months",
+              "target_audience": ["beginner", "student", "professional"],
+              "skills": [
+                {
+                  "skill_code": "PUBLIC",
+                  "local_name": "Public Speaking",
+                  "zh_name": "公开演讲",
+                  "english_name": "Public Speaking",
+                  "level": "intermediate",
+                  "description": "演讲技巧、肢体语言、声音控制"
+                },
+                {
+                  "skill_code": "NEGOTIATION",
+                  "local_name": "Negotiation Skills",
+                  "zh_name": "谈判技巧",
+                  "english_name": "Negotiation Techniques",
+                  "level": "intermediate",
+                  "description": "商务谈判、冲突管理、达成协议"
+                }
+              ],
+              "certification": "Communication Skills Certificate",
+              "price_range": "Rp 2.000.000 - Rp 5.000.000"
+            },
+            {
+              "program_code": "SOFT-TIME",
+              "local_name": "Time Management",
+              "zh_name": "时间管理",
+              "english_name": "Time Management",
+              "provider": "Productivity Indonesia",
+              "duration": "1 month",
+              "target_audience": ["beginner", "student", "professional"],
+              "skills": [
+                {
+                  "skill_code": "PRIORITIZE",
+                  "local_name": "Prioritization",
+                  "zh_name": "优先级管理",
+                  "english_name": "Task Prioritization",
+                  "level": "beginner",
+                  "description": "任务优先级、计划制定"
+                },
+                {
+                  "skill_code": "FOCUS",
+                  "local_name": "Focus & Productivity",
+                  "zh_name": "专注与效率",
+                  "english_name": "Focus and Productivity",
+                  "level": "beginner",
+                  "description": "番茄工作法、消除干扰、深度工作"
+                }
+              ],
+              "certification": "Productivity Certificate",
+              "price_range": "Rp 1.000.000 - Rp 3.000.000"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "notes": "印度尼西亚的职业教育市场快速发展，涵盖IT技能、外语学习、商业管理、设计创意、软技能等5大领域。主要提供商包括Ruangguru、Hacktiv8、English First等。"
+}

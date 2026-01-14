@@ -1,0 +1,521 @@
+{% extends "base_new.html" %}
+
+{% block title %}搜索历史 - K12教育资源搜索系统{% endblock %}
+
+{% block page_css %}
+<style>
+    .page-header {
+        background: var(--bg-card);
+        padding: var(--spacing-lg) 30px;
+        box-shadow: var(--shadow-sm);
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-md);
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: var(--spacing-lg);
+        margin-bottom: var(--spacing-lg);
+    }
+
+    .stat-card {
+        background: var(--bg-card);
+        padding: var(--spacing-lg);
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow-md);
+        text-align: center;
+    }
+
+    .stat-card .icon {
+        font-size: 2.5em;
+        margin-bottom: 10px;
+    }
+
+    .stat-card .value {
+        font-size: 2em;
+        font-weight: 700;
+        color: var(--primary-color);
+    }
+
+    .stat-card .label {
+        color: var(--text-secondary);
+        font-size: var(--font-sm);
+        margin-top: 5px;
+    }
+
+    .filters-bar {
+        background: var(--bg-card);
+        padding: var(--spacing-lg);
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow-md);
+        margin-bottom: var(--spacing-lg);
+    }
+
+    .filters-bar .filter-row {
+        display: flex;
+        gap: var(--spacing-md);
+        margin-bottom: var(--spacing-md);
+        flex-wrap: wrap;
+    }
+
+    .filter-group {
+        flex: 1;
+        min-width: 200px;
+    }
+
+    .filter-group label {
+        display: block;
+        margin-bottom: 6px;
+        color: var(--text-secondary);
+        font-size: var(--font-sm);
+        font-weight: 600;
+    }
+
+    .filter-group input,
+    .filter-group select {
+        width: 100%;
+        padding: 10px;
+        border: 2px solid var(--border-color);
+        border-radius: var(--border-radius);
+        font-size: var(--font-base);
+    }
+
+    .filter-actions {
+        display: flex;
+        gap: 10px;
+    }
+
+    .history-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+        gap: var(--spacing-lg);
+    }
+
+    .history-card {
+        background: var(--bg-card);
+        border-radius: var(--border-radius);
+        padding: var(--spacing-lg);
+        box-shadow: var(--shadow-md);
+        transition: all var(--transition-base);
+        cursor: pointer;
+        border-left: 4px solid var(--primary-color);
+        animation: slideUp 0.3s ease-out;
+    }
+
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .history-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-lg);
+    }
+
+    .history-card .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: var(--spacing-md);
+    }
+
+    .history-card .time {
+        color: var(--text-secondary);
+        font-size: var(--font-sm);
+    }
+
+    .history-card .country-badge {
+        background: var(--primary-gradient);
+        color: white;
+        padding: 4px 12px;
+        border-radius: 12px;
+        font-size: var(--font-xs);
+    }
+
+    .history-card .query-section {
+        margin-bottom: 12px;
+    }
+
+    .history-card .query-section .label {
+        color: var(--text-secondary);
+        font-size: 0.75em;
+        margin-bottom: 4px;
+        text-transform: uppercase;
+    }
+
+    .history-card .query-section .value {
+        color: var(--text-primary);
+        font-weight: 500;
+        font-size: var(--font-sm);
+    }
+
+    .history-card .stats {
+        display: flex;
+        gap: var(--spacing-md);
+        margin-top: var(--spacing-md);
+        padding-top: var(--spacing-md);
+        border-top: 1px solid var(--border-color);
+    }
+
+    .history-card .stat {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        color: var(--text-secondary);
+        font-size: var(--font-sm);
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 80px 20px;
+        color: var(--text-secondary);
+    }
+
+    .empty-state .icon {
+        font-size: 4em;
+        margin-bottom: var(--spacing-lg);
+    }
+
+    .loading {
+        text-align: center;
+        padding: 80px 20px;
+        color: var(--primary-color);
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        margin-top: var(--spacing-lg);
+        padding: var(--spacing-lg);
+    }
+
+    .pagination button {
+        background: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: var(--border-radius);
+        cursor: pointer;
+    }
+
+    .pagination button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    .pagination .page-info {
+        color: var(--text-secondary);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="header">
+        <h1>📚 搜索历史</h1>
+        <p>查看所有搜索记录和结果</p>
+    </div>
+
+    <!-- 统计卡片 -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="icon">📊</div>
+            <div class="value" id="totalSearches">0</div>
+            <div class="label">总搜索次数</div>
+        </div>
+        <div class="stat-card">
+            <div class="icon">✅</div>
+            <div class="value" id="successSearches">0</div>
+            <div class="label">成功搜索</div>
+        </div>
+        <div class="stat-card">
+            <div class="icon">🌍</div>
+            <div class="value" id="countriesCount">0</div>
+            <div class="label">涉及国家</div>
+        </div>
+        <div class="stat-card">
+            <div class="icon">📈</div>
+            <div class="value" id="avgResults">0</div>
+            <div class="label">平均结果数</div>
+        </div>
+    </div>
+
+    <!-- 筛选栏 -->
+    <div class="filters-bar">
+        <div class="filter-row">
+            <div class="filter-group">
+                <label>搜索时间（之后）</label>
+                <input type="datetime-local" id="filterTime">
+            </div>
+            <div class="filter-group">
+                <label>国家</label>
+                <select id="filterCountry">
+                    <option value="">全部国家</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>年级</label>
+                <input type="text" id="filterGrade" placeholder="输入年级">
+            </div>
+            <div class="filter-group">
+                <label>学科</label>
+                <input type="text" id="filterSubject" placeholder="输入学科">
+            </div>
+        </div>
+        <div class="filter-actions">
+            <button class="btn btn-primary" onclick="applyFilters()">
+                🔍 筛选
+            </button>
+            <button class="btn btn-secondary" onclick="clearFilters()">
+                🗑️ 清除
+            </button>
+            <button class="btn btn-success" onclick="exportSelected()">
+                📥 导出选中
+            </button>
+        </div>
+    </div>
+
+    <!-- 历史列表 -->
+    <div id="historyList" class="history-grid">
+        <div class="loading">
+            <div class="spinner"></div>
+            <p>加载中...</p>
+        </div>
+    </div>
+
+    <!-- 分页 -->
+    <div class="pagination" id="pagination" style="display: none;">
+        <button onclick="prevPage()" id="prevBtn">← 上一页</button>
+        <span class="page-info">第 <span id="currentPage">1</span> 页</span>
+        <button onclick="nextPage()" id="nextBtn">下一页 →</button>
+    </div>
+</div>
+{% endblock %}
+
+{% block page_scripts %}
+<script>
+    let searchHistory = [];
+    let filteredHistory = [];
+    let selectedItems = new Set();
+    let currentPage = 1;
+    const itemsPerPage = 12;
+
+    // 页面加载
+    window.addEventListener('load', () => {
+        loadSearchHistory();
+        loadCountryOptions();
+    });
+
+    // 加载搜索历史
+    async function loadSearchHistory() {
+        try {
+            const response = await fetch('/api/search_history');
+            const data = await response.json();
+
+            if (data.success) {
+                searchHistory = data.history || [];
+                filteredHistory = [...searchHistory];
+                displayHistory();
+                updateStats();
+            } else {
+                throw new Error(data.message || '加载失败');
+            }
+        } catch (error) {
+            console.error('加载历史失败:', error);
+            document.getElementById('historyList').innerHTML = `
+                <div class="empty-state">
+                    <div class="icon">⚠️</div>
+                    <h3>加载失败</h3>
+                    <p>${error.message}</p>
+                </div>
+            `;
+            toast.error('加载失败', error.message);
+        }
+    }
+
+    // 显示历史列表
+    function displayHistory() {
+        const container = document.getElementById('historyList');
+
+        if (!filteredHistory || filteredHistory.length === 0) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <div class="icon">📭</div>
+                    <h3>暂无搜索历史</h3>
+                    <p>开始搜索后，历史记录将显示在这里</p>
+                </div>
+            `;
+            return;
+        }
+
+        // 分页
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        const pageItems = filteredHistory.slice(startIndex, endIndex);
+
+        let html = '';
+        pageItems.forEach((item, index) => {
+            const time = new Date(item.timestamp).toLocaleString('zh-CN');
+
+            html += `
+                <div class="history-card" onclick="replaySearch(${startIndex + index})">
+                    <div class="card-header">
+                        <span class="time">${time}</span>
+                        <span class="country-badge">${item.country || 'N/A'}</span>
+                    </div>
+
+                    <div class="query-section">
+                        <div class="label">年级</div>
+                        <div class="value">${item.grade || 'N/A'}</div>
+                    </div>
+
+                    <div class="query-section">
+                        <div class="label">学科</div>
+                        <div class="value">${item.subject || 'N/A'}</div>
+                    </div>
+
+                    ${item.query ? `
+                    <div class="query-section">
+                        <div class="label">搜索关键词</div>
+                        <div class="value">${item.query}</div>
+                    </div>
+                    ` : ''}
+
+                    <div class="stats">
+                        <span class="stat">📊 ${item.result_count || 0} 结果</span>
+                        <span class="stat">✅ ${item.success_rate || 100}% 成功率</span>
+                    </div>
+                </div>
+            `;
+        });
+
+        container.innerHTML = html;
+
+        // 更新分页
+        const totalPages = Math.ceil(filteredHistory.length / itemsPerPage);
+        document.getElementById('currentPage').textContent = currentPage;
+        document.getElementById('prevBtn').disabled = currentPage === 1;
+        document.getElementById('nextBtn').disabled = currentPage === totalPages;
+        document.getElementById('pagination').style.display = totalPages > 1 ? 'flex' : 'none';
+    }
+
+    // 更新统计
+    function updateStats() {
+        document.getElementById('totalSearches').textContent = searchHistory.length;
+
+        const successful = searchHistory.filter(h => h.success !== false).length;
+        document.getElementById('successSearches').textContent = successful;
+
+        const countries = new Set(searchHistory.map(h => h.country)).size;
+        document.getElementById('countriesCount').textContent = countries;
+
+        const avgResults = searchHistory.reduce((sum, h) => sum + (h.result_count || 0), 0) / searchHistory.length;
+        document.getElementById('avgResults').textContent = Math.round(avgResults);
+    }
+
+    // 重放搜索
+    function replaySearch(index) {
+        const item = filteredHistory[index];
+        if (!item) return;
+
+        // 构建搜索参数
+        const params = new URLSearchParams({
+            country_code: item.country_code,
+            grade: item.grade,
+            subject: item.subject,
+            query: item.query || ''
+        });
+
+        // 跳转回搜索页面
+        window.location.href = `/?${params.toString()}`;
+    }
+
+    // 应用筛选
+    function applyFilters() {
+        const filterTime = document.getElementById('filterTime').value;
+        const filterCountry = document.getElementById('filterCountry').value;
+        const filterGrade = document.getElementById('filterGrade').value.toLowerCase();
+        const filterSubject = document.getElementById('filterSubject').value.toLowerCase();
+
+        filteredHistory = searchHistory.filter(item => {
+            if (filterTime) {
+                const itemTime = new Date(item.timestamp);
+                const filterTimeObj = new Date(filterTime);
+                if (itemTime < filterTimeObj) return false;
+            }
+
+            if (filterCountry && item.country !== filterCountry) return false;
+            if (filterGrade && !item.grade.toLowerCase().includes(filterGrade)) return false;
+            if (filterSubject && !item.subject.toLowerCase().includes(filterSubject)) return false;
+
+            return true;
+        });
+
+        currentPage = 1;
+        displayHistory();
+    }
+
+    // 清除筛选
+    function clearFilters() {
+        document.getElementById('filterTime').value = '';
+        document.getElementById('filterCountry').value = '';
+        document.getElementById('filterGrade').value = '';
+        document.getElementById('filterSubject').value = '';
+
+        filteredHistory = [...searchHistory];
+        currentPage = 1;
+        displayHistory();
+    }
+
+    // 分页
+    function prevPage() {
+        if (currentPage > 1) {
+            currentPage--;
+            displayHistory();
+        }
+    }
+
+    function nextPage() {
+        const totalPages = Math.ceil(filteredHistory.length / itemsPerPage);
+        if (currentPage < totalPages) {
+            currentPage++;
+            displayHistory();
+        }
+    }
+
+    // 导出选中
+    function exportSelected() {
+        toast.info('导出功能', '此功能正在开发中...');
+    }
+
+    // 加载国家选项
+    async function loadCountryOptions() {
+        try {
+            const response = await fetch('/api/countries');
+            const data = await response.json();
+
+            if (data.success) {
+                const select = document.getElementById('filterCountry');
+                data.countries.forEach(country => {
+                    const option = document.createElement('option');
+                    option.value = country.country_code;
+                    option.textContent = country.country_name;
+                    select.appendChild(option);
+                });
+            }
+        } catch (error) {
+            console.error('加载国家选项失败:', error);
+        }
+    }
+</script>
+{% endblock %}

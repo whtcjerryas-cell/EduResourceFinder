@@ -1,0 +1,1832 @@
+[
+  {
+    "model": "gemini-3-pro-thinking-high",
+    "test_results": [
+      {
+        "test_case_id": "IQ-001",
+        "target": {
+          "country": "IQ",
+          "country_code": "IQ",
+          "grade": "1年级",
+          "grade_variants": [
+            "الصف الأول",
+            "Grade 1",
+            "Kelas 1"
+          ],
+          "subject": "数学",
+          "subject_variants": [
+            "الرياضيات",
+            "数学",
+            "Mathematics"
+          ]
+        },
+        "model": "gemini-3-pro-thinking-high",
+        "results": [
+          {
+            "title": "الرياضيات للصف الأول الشامل",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 9.5,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "الرياضيات للصف الثاني المرحلة",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 4.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "العلوم للصف الأول",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 4.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "Grade 1 Mathematics Complete Course",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 8.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          }
+        ],
+        "execution_time": 0.00033402442932128906
+      },
+      {
+        "test_case_id": "IQ-002",
+        "target": {
+          "country": "IQ",
+          "country_code": "IQ",
+          "grade": "1年级",
+          "grade_variants": [
+            "الصف الأول",
+            "Grade 1",
+            "Kelas 1"
+          ],
+          "subject": "科学",
+          "subject_variants": [
+            "العلوم",
+            "科学",
+            "Mathematics"
+          ]
+        },
+        "model": "gemini-3-pro-thinking-high",
+        "results": [
+          {
+            "title": "العلوم للصف الأول الشامل",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 9.5,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "العلوم للصف الثاني المرحلة",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 4.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "الرياضيات للصف الأول",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 4.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "Grade 1 Science Complete Course",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 8.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          }
+        ],
+        "execution_time": 0.0002789497375488281
+      },
+      {
+        "test_case_id": "IQ-003",
+        "target": {
+          "country": "IQ",
+          "country_code": "IQ",
+          "grade": "1年级",
+          "grade_variants": [
+            "الصف الأول",
+            "Grade 1",
+            "Kelas 1"
+          ],
+          "subject": "物理",
+          "subject_variants": [
+            "الفيزياء",
+            "物理",
+            "Mathematics"
+          ]
+        },
+        "model": "gemini-3-pro-thinking-high",
+        "results": [
+          {
+            "title": "الفيزياء للصف الأول الشامل",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 9.5,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "الفيزياء للصف الثاني المرحلة",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 4.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "العلوم للصف الأول",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 4.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "Grade 1 Physics Complete Course",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 8.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          }
+        ],
+        "execution_time": 0.00026607513427734375
+      },
+      {
+        "test_case_id": "IQ-004",
+        "target": {
+          "country": "IQ",
+          "country_code": "IQ",
+          "grade": "2年级",
+          "grade_variants": [
+            "الصف الثاني",
+            "Grade 2",
+            "Kelas 2"
+          ],
+          "subject": "数学",
+          "subject_variants": [
+            "الرياضيات",
+            "数学",
+            "Mathematics"
+          ]
+        },
+        "model": "gemini-3-pro-thinking-high",
+        "results": [
+          {
+            "title": "الرياضيات للصف الثاني الشامل",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 9.5,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "الرياضيات للصف الثالث المرحلة",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 4.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "العلوم للصف الثاني",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 4.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "Grade 2 Mathematics Complete Course",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 8.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          }
+        ],
+        "execution_time": 0.00026917457580566406
+      },
+      {
+        "test_case_id": "IQ-005",
+        "target": {
+          "country": "IQ",
+          "country_code": "IQ",
+          "grade": "2年级",
+          "grade_variants": [
+            "الصف الثاني",
+            "Grade 2",
+            "Kelas 2"
+          ],
+          "subject": "科学",
+          "subject_variants": [
+            "العلوم",
+            "科学",
+            "Mathematics"
+          ]
+        },
+        "model": "gemini-3-pro-thinking-high",
+        "results": [
+          {
+            "title": "العلوم للصف الثاني الشامل",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 9.5,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "العلوم للصف الثالث المرحلة",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 4.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "الرياضيات للصف الثاني",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 4.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "Grade 2 Science Complete Course",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 8.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          }
+        ],
+        "execution_time": 0.00027298927307128906
+      }
+    ],
+    "statistics": {
+      "total_tests": 5,
+      "total_time": 0.001421213150024414,
+      "average_time": 0.0002842426300048828
+    }
+  },
+  {
+    "model": "gemini-3-pro-thinking-medium",
+    "test_results": [
+      {
+        "test_case_id": "IQ-001",
+        "target": {
+          "country": "IQ",
+          "country_code": "IQ",
+          "grade": "1年级",
+          "grade_variants": [
+            "الصف الأول",
+            "Grade 1",
+            "Kelas 1"
+          ],
+          "subject": "数学",
+          "subject_variants": [
+            "الرياضيات",
+            "数学",
+            "Mathematics"
+          ]
+        },
+        "model": "gemini-3-pro-thinking-medium",
+        "results": [
+          {
+            "title": "الرياضيات للصف الأول الشامل",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 9.5,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "الرياضيات للصف الثاني المرحلة",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 4.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "العلوم للصف الأول",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 4.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "Grade 1 Mathematics Complete Course",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 8.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          }
+        ],
+        "execution_time": 0.0002880096435546875
+      },
+      {
+        "test_case_id": "IQ-002",
+        "target": {
+          "country": "IQ",
+          "country_code": "IQ",
+          "grade": "1年级",
+          "grade_variants": [
+            "الصف الأول",
+            "Grade 1",
+            "Kelas 1"
+          ],
+          "subject": "科学",
+          "subject_variants": [
+            "العلوم",
+            "科学",
+            "Mathematics"
+          ]
+        },
+        "model": "gemini-3-pro-thinking-medium",
+        "results": [
+          {
+            "title": "العلوم للصف الأول الشامل",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 9.5,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "العلوم للصف الثاني المرحلة",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 4.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "الرياضيات للصف الأول",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 4.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "Grade 1 Science Complete Course",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 8.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          }
+        ],
+        "execution_time": 0.00027179718017578125
+      },
+      {
+        "test_case_id": "IQ-003",
+        "target": {
+          "country": "IQ",
+          "country_code": "IQ",
+          "grade": "1年级",
+          "grade_variants": [
+            "الصف الأول",
+            "Grade 1",
+            "Kelas 1"
+          ],
+          "subject": "物理",
+          "subject_variants": [
+            "الفيزياء",
+            "物理",
+            "Mathematics"
+          ]
+        },
+        "model": "gemini-3-pro-thinking-medium",
+        "results": [
+          {
+            "title": "الفيزياء للصف الأول الشامل",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 9.5,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "الفيزياء للصف الثاني المرحلة",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 4.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "العلوم للصف الأول",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 4.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "Grade 1 Physics Complete Course",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 8.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          }
+        ],
+        "execution_time": 0.0002799034118652344
+      },
+      {
+        "test_case_id": "IQ-004",
+        "target": {
+          "country": "IQ",
+          "country_code": "IQ",
+          "grade": "2年级",
+          "grade_variants": [
+            "الصف الثاني",
+            "Grade 2",
+            "Kelas 2"
+          ],
+          "subject": "数学",
+          "subject_variants": [
+            "الرياضيات",
+            "数学",
+            "Mathematics"
+          ]
+        },
+        "model": "gemini-3-pro-thinking-medium",
+        "results": [
+          {
+            "title": "الرياضيات للصف الثاني الشامل",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 9.5,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "الرياضيات للصف الثالث المرحلة",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 4.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "العلوم للصف الثاني",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 4.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "Grade 2 Mathematics Complete Course",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 8.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          }
+        ],
+        "execution_time": 0.00026702880859375
+      },
+      {
+        "test_case_id": "IQ-005",
+        "target": {
+          "country": "IQ",
+          "country_code": "IQ",
+          "grade": "2年级",
+          "grade_variants": [
+            "الصف الثاني",
+            "Grade 2",
+            "Kelas 2"
+          ],
+          "subject": "科学",
+          "subject_variants": [
+            "العلوم",
+            "科学",
+            "Mathematics"
+          ]
+        },
+        "model": "gemini-3-pro-thinking-medium",
+        "results": [
+          {
+            "title": "العلوم للصف الثاني الشامل",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 9.5,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "العلوم للصف الثالث المرحلة",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 4.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "الرياضيات للصف الثاني",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 4.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "Grade 2 Science Complete Course",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 8.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          }
+        ],
+        "execution_time": 0.00026297569274902344
+      }
+    ],
+    "statistics": {
+      "total_tests": 5,
+      "total_time": 0.0013697147369384766,
+      "average_time": 0.0002739429473876953
+    }
+  },
+  {
+    "model": "gpt-5.2-thinking-medium",
+    "test_results": [
+      {
+        "test_case_id": "IQ-001",
+        "target": {
+          "country": "IQ",
+          "country_code": "IQ",
+          "grade": "1年级",
+          "grade_variants": [
+            "الصف الأول",
+            "Grade 1",
+            "Kelas 1"
+          ],
+          "subject": "数学",
+          "subject_variants": [
+            "الرياضيات",
+            "数学",
+            "Mathematics"
+          ]
+        },
+        "model": "gpt-5.2-thinking-medium",
+        "results": [
+          {
+            "title": "الرياضيات للصف الأول الشامل",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 9.5,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "الرياضيات للصف الثاني المرحلة",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 4.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "العلوم للصف الأول",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 4.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "Grade 1 Mathematics Complete Course",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 8.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          }
+        ],
+        "execution_time": 0.00026488304138183594
+      },
+      {
+        "test_case_id": "IQ-002",
+        "target": {
+          "country": "IQ",
+          "country_code": "IQ",
+          "grade": "1年级",
+          "grade_variants": [
+            "الصف الأول",
+            "Grade 1",
+            "Kelas 1"
+          ],
+          "subject": "科学",
+          "subject_variants": [
+            "العلوم",
+            "科学",
+            "Mathematics"
+          ]
+        },
+        "model": "gpt-5.2-thinking-medium",
+        "results": [
+          {
+            "title": "العلوم للصف الأول الشامل",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 9.5,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "العلوم للصف الثاني المرحلة",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 4.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "الرياضيات للصف الأول",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 4.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "Grade 1 Science Complete Course",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 8.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          }
+        ],
+        "execution_time": 0.00026106834411621094
+      },
+      {
+        "test_case_id": "IQ-003",
+        "target": {
+          "country": "IQ",
+          "country_code": "IQ",
+          "grade": "1年级",
+          "grade_variants": [
+            "الصف الأول",
+            "Grade 1",
+            "Kelas 1"
+          ],
+          "subject": "物理",
+          "subject_variants": [
+            "الفيزياء",
+            "物理",
+            "Mathematics"
+          ]
+        },
+        "model": "gpt-5.2-thinking-medium",
+        "results": [
+          {
+            "title": "الفيزياء للصف الأول الشامل",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 9.5,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "الفيزياء للصف الثاني المرحلة",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 4.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "العلوم للصف الأول",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 4.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "Grade 1 Physics Complete Course",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 8.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          }
+        ],
+        "execution_time": 0.0002586841583251953
+      },
+      {
+        "test_case_id": "IQ-004",
+        "target": {
+          "country": "IQ",
+          "country_code": "IQ",
+          "grade": "2年级",
+          "grade_variants": [
+            "الصف الثاني",
+            "Grade 2",
+            "Kelas 2"
+          ],
+          "subject": "数学",
+          "subject_variants": [
+            "الرياضيات",
+            "数学",
+            "Mathematics"
+          ]
+        },
+        "model": "gpt-5.2-thinking-medium",
+        "results": [
+          {
+            "title": "الرياضيات للصف الثاني الشامل",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 9.5,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "الرياضيات للصف الثالث المرحلة",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 4.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "العلوم للصف الثاني",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 4.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "Grade 2 Mathematics Complete Course",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 8.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          }
+        ],
+        "execution_time": 0.0002560615539550781
+      },
+      {
+        "test_case_id": "IQ-005",
+        "target": {
+          "country": "IQ",
+          "country_code": "IQ",
+          "grade": "2年级",
+          "grade_variants": [
+            "الصف الثاني",
+            "Grade 2",
+            "Kelas 2"
+          ],
+          "subject": "科学",
+          "subject_variants": [
+            "العلوم",
+            "科学",
+            "Mathematics"
+          ]
+        },
+        "model": "gpt-5.2-thinking-medium",
+        "results": [
+          {
+            "title": "العلوم للصف الثاني الشامل",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 9.5,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "العلوم للصف الثالث المرحلة",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 4.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "الرياضيات للصف الثاني",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 4.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "Grade 2 Science Complete Course",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 8.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          }
+        ],
+        "execution_time": 0.0002589225769042969
+      }
+    ],
+    "statistics": {
+      "total_tests": 5,
+      "total_time": 0.0012996196746826172,
+      "average_time": 0.00025992393493652345
+    }
+  },
+  {
+    "model": "claude-3-7-sonnet",
+    "test_results": [
+      {
+        "test_case_id": "IQ-001",
+        "target": {
+          "country": "IQ",
+          "country_code": "IQ",
+          "grade": "1年级",
+          "grade_variants": [
+            "الصف الأول",
+            "Grade 1",
+            "Kelas 1"
+          ],
+          "subject": "数学",
+          "subject_variants": [
+            "الرياضيات",
+            "数学",
+            "Mathematics"
+          ]
+        },
+        "model": "claude-3-7-sonnet",
+        "results": [
+          {
+            "title": "الرياضيات للصف الأول الشامل",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 9.5,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "الرياضيات للصف الثاني المرحلة",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 4.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "العلوم للصف الأول",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 4.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "Grade 1 Mathematics Complete Course",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 8.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          }
+        ],
+        "execution_time": 0.0002651214599609375
+      },
+      {
+        "test_case_id": "IQ-002",
+        "target": {
+          "country": "IQ",
+          "country_code": "IQ",
+          "grade": "1年级",
+          "grade_variants": [
+            "الصف الأول",
+            "Grade 1",
+            "Kelas 1"
+          ],
+          "subject": "科学",
+          "subject_variants": [
+            "العلوم",
+            "科学",
+            "Mathematics"
+          ]
+        },
+        "model": "claude-3-7-sonnet",
+        "results": [
+          {
+            "title": "العلوم للصف الأول الشامل",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 9.5,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "العلوم للصف الثاني المرحلة",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 4.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "الرياضيات للصف الأول",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 4.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "Grade 1 Science Complete Course",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 8.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          }
+        ],
+        "execution_time": 0.0002589225769042969
+      },
+      {
+        "test_case_id": "IQ-003",
+        "target": {
+          "country": "IQ",
+          "country_code": "IQ",
+          "grade": "1年级",
+          "grade_variants": [
+            "الصف الأول",
+            "Grade 1",
+            "Kelas 1"
+          ],
+          "subject": "物理",
+          "subject_variants": [
+            "الفيزياء",
+            "物理",
+            "Mathematics"
+          ]
+        },
+        "model": "claude-3-7-sonnet",
+        "results": [
+          {
+            "title": "الفيزياء للصف الأول الشامل",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 9.5,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "الفيزياء للصف الثاني المرحلة",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 4.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "العلوم للصف الأول",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 4.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "Grade 1 Physics Complete Course",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 8.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          }
+        ],
+        "execution_time": 0.00025916099548339844
+      },
+      {
+        "test_case_id": "IQ-004",
+        "target": {
+          "country": "IQ",
+          "country_code": "IQ",
+          "grade": "2年级",
+          "grade_variants": [
+            "الصف الثاني",
+            "Grade 2",
+            "Kelas 2"
+          ],
+          "subject": "数学",
+          "subject_variants": [
+            "الرياضيات",
+            "数学",
+            "Mathematics"
+          ]
+        },
+        "model": "claude-3-7-sonnet",
+        "results": [
+          {
+            "title": "الرياضيات للصف الثاني الشامل",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 9.5,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "الرياضيات للصف الثالث المرحلة",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 4.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "العلوم للصف الثاني",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 4.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "Grade 2 Mathematics Complete Course",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 8.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          }
+        ],
+        "execution_time": 0.0002601146697998047
+      },
+      {
+        "test_case_id": "IQ-005",
+        "target": {
+          "country": "IQ",
+          "country_code": "IQ",
+          "grade": "2年级",
+          "grade_variants": [
+            "الصف الثاني",
+            "Grade 2",
+            "Kelas 2"
+          ],
+          "subject": "科学",
+          "subject_variants": [
+            "العلوم",
+            "科学",
+            "Mathematics"
+          ]
+        },
+        "model": "claude-3-7-sonnet",
+        "results": [
+          {
+            "title": "العلوم للصف الثاني الشامل",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 9.5,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "العلوم للصف الثالث المرحلة",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 4.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "الرياضيات للصف الثاني",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 4.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "Grade 2 Science Complete Course",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 8.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          }
+        ],
+        "execution_time": 0.00026607513427734375
+      }
+    ],
+    "statistics": {
+      "total_tests": 5,
+      "total_time": 0.0013093948364257812,
+      "average_time": 0.00026187896728515627
+    }
+  },
+  {
+    "model": "gemini-2.5-pro",
+    "test_results": [
+      {
+        "test_case_id": "IQ-001",
+        "target": {
+          "country": "IQ",
+          "country_code": "IQ",
+          "grade": "1年级",
+          "grade_variants": [
+            "الصف الأول",
+            "Grade 1",
+            "Kelas 1"
+          ],
+          "subject": "数学",
+          "subject_variants": [
+            "الرياضيات",
+            "数学",
+            "Mathematics"
+          ]
+        },
+        "model": "gemini-2.5-pro",
+        "results": [
+          {
+            "title": "الرياضيات للصف الأول الشامل",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 9.5,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "الرياضيات للصف الثاني المرحلة",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 4.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "العلوم للصف الأول",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 4.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "Grade 1 Mathematics Complete Course",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 8.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          }
+        ],
+        "execution_time": 0.00026297569274902344
+      },
+      {
+        "test_case_id": "IQ-002",
+        "target": {
+          "country": "IQ",
+          "country_code": "IQ",
+          "grade": "1年级",
+          "grade_variants": [
+            "الصف الأول",
+            "Grade 1",
+            "Kelas 1"
+          ],
+          "subject": "科学",
+          "subject_variants": [
+            "العلوم",
+            "科学",
+            "Mathematics"
+          ]
+        },
+        "model": "gemini-2.5-pro",
+        "results": [
+          {
+            "title": "العلوم للصف الأول الشامل",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 9.5,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "العلوم للصف الثاني المرحلة",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 4.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "الرياضيات للصف الأول",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 4.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "Grade 1 Science Complete Course",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 8.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          }
+        ],
+        "execution_time": 0.00026106834411621094
+      },
+      {
+        "test_case_id": "IQ-003",
+        "target": {
+          "country": "IQ",
+          "country_code": "IQ",
+          "grade": "1年级",
+          "grade_variants": [
+            "الصف الأول",
+            "Grade 1",
+            "Kelas 1"
+          ],
+          "subject": "物理",
+          "subject_variants": [
+            "الفيزياء",
+            "物理",
+            "Mathematics"
+          ]
+        },
+        "model": "gemini-2.5-pro",
+        "results": [
+          {
+            "title": "الفيزياء للصف الأول الشامل",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 9.5,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "الفيزياء للصف الثاني المرحلة",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 4.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "العلوم للصف الأول",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 4.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "Grade 1 Physics Complete Course",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 8.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          }
+        ],
+        "execution_time": 0.0002951622009277344
+      },
+      {
+        "test_case_id": "IQ-004",
+        "target": {
+          "country": "IQ",
+          "country_code": "IQ",
+          "grade": "2年级",
+          "grade_variants": [
+            "الصف الثاني",
+            "Grade 2",
+            "Kelas 2"
+          ],
+          "subject": "数学",
+          "subject_variants": [
+            "الرياضيات",
+            "数学",
+            "Mathematics"
+          ]
+        },
+        "model": "gemini-2.5-pro",
+        "results": [
+          {
+            "title": "الرياضيات للصف الثاني الشامل",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 9.5,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "الرياضيات للصف الثالث المرحلة",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 4.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "العلوم للصف الثاني",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 4.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "Grade 2 Mathematics Complete Course",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 8.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          }
+        ],
+        "execution_time": 0.0002760887145996094
+      },
+      {
+        "test_case_id": "IQ-005",
+        "target": {
+          "country": "IQ",
+          "country_code": "IQ",
+          "grade": "2年级",
+          "grade_variants": [
+            "الصف الثاني",
+            "Grade 2",
+            "Kelas 2"
+          ],
+          "subject": "科学",
+          "subject_variants": [
+            "العلوم",
+            "科学",
+            "Mathematics"
+          ]
+        },
+        "model": "gemini-2.5-pro",
+        "results": [
+          {
+            "title": "العلوم للصف الثاني الشامل",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 9.5,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "العلوم للصف الثالث المرحلة",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 4.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "الرياضيات للصف الثاني",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 4.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "Grade 2 Science Complete Course",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 8.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          }
+        ],
+        "execution_time": 0.00026702880859375
+      }
+    ],
+    "statistics": {
+      "total_tests": 5,
+      "total_time": 0.0013623237609863281,
+      "average_time": 0.0002724647521972656
+    }
+  },
+  {
+    "model": "gemini-2.5-flash",
+    "test_results": [
+      {
+        "test_case_id": "IQ-001",
+        "target": {
+          "country": "IQ",
+          "country_code": "IQ",
+          "grade": "1年级",
+          "grade_variants": [
+            "الصف الأول",
+            "Grade 1",
+            "Kelas 1"
+          ],
+          "subject": "数学",
+          "subject_variants": [
+            "الرياضيات",
+            "数学",
+            "Mathematics"
+          ]
+        },
+        "model": "gemini-2.5-flash",
+        "results": [
+          {
+            "title": "الرياضيات للصف الأول الشامل",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 9.5,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "الرياضيات للصف الثاني المرحلة",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 4.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "العلوم للصف الأول",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 4.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "Grade 1 Mathematics Complete Course",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 8.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          }
+        ],
+        "execution_time": 0.00026798248291015625
+      },
+      {
+        "test_case_id": "IQ-002",
+        "target": {
+          "country": "IQ",
+          "country_code": "IQ",
+          "grade": "1年级",
+          "grade_variants": [
+            "الصف الأول",
+            "Grade 1",
+            "Kelas 1"
+          ],
+          "subject": "科学",
+          "subject_variants": [
+            "العلوم",
+            "科学",
+            "Mathematics"
+          ]
+        },
+        "model": "gemini-2.5-flash",
+        "results": [
+          {
+            "title": "العلوم للصف الأول الشامل",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 9.5,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "العلوم للصف الثاني المرحلة",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 4.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "الرياضيات للصف الأول",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 4.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "Grade 1 Science Complete Course",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 8.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          }
+        ],
+        "execution_time": 0.0002658367156982422
+      },
+      {
+        "test_case_id": "IQ-003",
+        "target": {
+          "country": "IQ",
+          "country_code": "IQ",
+          "grade": "1年级",
+          "grade_variants": [
+            "الصف الأول",
+            "Grade 1",
+            "Kelas 1"
+          ],
+          "subject": "物理",
+          "subject_variants": [
+            "الفيزياء",
+            "物理",
+            "Mathematics"
+          ]
+        },
+        "model": "gemini-2.5-flash",
+        "results": [
+          {
+            "title": "الفيزياء للصف الأول الشامل",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 9.5,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "الفيزياء للصف الثاني المرحلة",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 4.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "العلوم للصف الأول",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 4.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "Grade 1 Physics Complete Course",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 8.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          }
+        ],
+        "execution_time": 0.0002758502960205078
+      },
+      {
+        "test_case_id": "IQ-004",
+        "target": {
+          "country": "IQ",
+          "country_code": "IQ",
+          "grade": "2年级",
+          "grade_variants": [
+            "الصف الثاني",
+            "Grade 2",
+            "Kelas 2"
+          ],
+          "subject": "数学",
+          "subject_variants": [
+            "الرياضيات",
+            "数学",
+            "Mathematics"
+          ]
+        },
+        "model": "gemini-2.5-flash",
+        "results": [
+          {
+            "title": "الرياضيات للصف الثاني الشامل",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 9.5,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "الرياضيات للصف الثالث المرحلة",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 4.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "العلوم للصف الثاني",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 4.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "Grade 2 Mathematics Complete Course",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 8.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          }
+        ],
+        "execution_time": 0.0002689361572265625
+      },
+      {
+        "test_case_id": "IQ-005",
+        "target": {
+          "country": "IQ",
+          "country_code": "IQ",
+          "grade": "2年级",
+          "grade_variants": [
+            "الصف الثاني",
+            "Grade 2",
+            "Kelas 2"
+          ],
+          "subject": "科学",
+          "subject_variants": [
+            "العلوم",
+            "科学",
+            "Mathematics"
+          ]
+        },
+        "model": "gemini-2.5-flash",
+        "results": [
+          {
+            "title": "العلوم للصف الثاني الشامل",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 9.5,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "العلوم للصف الثالث المرحلة",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 4.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "الرياضيات للصف الثاني",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 4.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          },
+          {
+            "title": "Grade 2 Science Complete Course",
+            "score": null,
+            "reason": null,
+            "identified_info": null,
+            "expected_score": 8.0,
+            "error": "UnifiedLLMClient.call_llm() got an unexpected keyword argument 'timeout'",
+            "success": false
+          }
+        ],
+        "execution_time": 0.0002689361572265625
+      }
+    ],
+    "statistics": {
+      "total_tests": 5,
+      "total_time": 0.0013475418090820312,
+      "average_time": 0.00026950836181640627
+    }
+  }
+]

@@ -1,0 +1,267 @@
+/* ==================== 统一的侧边栏样式 ==================== */
+.sidebar {
+    width: 180px;  /* 展开状态：显示图标+文字 */
+    background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+.sidebar.collapsed {
+    width: 70px;  /* 收起状态：只显示图标 */
+}
+
+/* 侧边栏折叠按钮 */
+.sidebar-toggle {
+    position: fixed;
+    left: 190px;  /* 侧边栏宽度(180) + 间距(10) */
+    top: 20px;
+    width: 44px;
+    height: 44px;
+    background: white;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    cursor: pointer;
+    z-index: 1001;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3em;
+}
+
+.sidebar-toggle:hover {
+    background: #667eea;
+    color: white;
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+}
+
+.sidebar-toggle.collapsed {
+    left: 80px;  /* 收起侧边栏宽度(70) + 间距(10) */
+}
+
+.sidebar-toggle .icon-open {
+    display: inline-block;
+}
+
+.sidebar-toggle .icon-close {
+    display: none;
+}
+
+.sidebar-toggle.collapsed .icon-open {
+    display: none;
+}
+
+.sidebar-toggle.collapsed .icon-close {
+    display: inline-block;
+}
+
+/* 侧边栏头部 */
+.sidebar-header {
+    padding: 20px 15px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    transition: all 0.3s ease;
+}
+
+.sidebar-header h1 {
+    font-size: 1.2em;
+    margin-bottom: 3px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+/* 收起状态：隐藏标题文字，只显示图标 */
+.sidebar.collapsed .sidebar-header h1 {
+    justify-content: center;
+}
+
+.sidebar.collapsed .sidebar-header h1 .text {
+    display: none;
+}
+
+/* 侧边栏导航项 */
+.sidebar-section {
+    padding: 15px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.sidebar-section-title {
+    padding: 0 15px 8px;
+    font-size: 0.7em;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    opacity: 0.7;
+    font-weight: 600;
+    transition: opacity 0.3s ease;
+}
+
+.sidebar-nav-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    color: rgba(255,255,255,0.9);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border-left: 3px solid transparent;
+    font-size: 0.9em;
+}
+
+.sidebar-nav-item:hover {
+    background: rgba(255,255,255,0.1);
+    border-left-color: rgba(255,255,255,0.5);
+    color: white;
+    transform: translateX(3px);
+}
+
+.sidebar-nav-item.active {
+    background: rgba(255,255,255,0.15);
+    border-left-color: white;
+    color: white;
+    font-weight: 600;
+}
+
+.sidebar-nav-item .icon {
+    font-size: 1.2em;
+    margin-right: 10px;
+    width: 22px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.sidebar-nav-item .text {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: opacity 0.3s ease;
+}
+
+/* 收起状态：只显示图标，居中对齐 */
+.sidebar.collapsed .sidebar-section-title {
+    opacity: 0;
+    height: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.sidebar.collapsed .sidebar-nav-item {
+    justify-content: center;
+    padding: 15px 0;
+}
+
+.sidebar.collapsed .sidebar-nav-item .icon {
+    margin-right: 0;
+    width: auto;
+}
+
+.sidebar.collapsed .sidebar-nav-item .text {
+    display: none;
+}
+
+.sidebar.collapsed .sidebar-nav-item:hover {
+    transform: translateX(0);
+    background: rgba(255,255,255,0.15);
+}
+
+.sidebar-footer {
+    padding: 20px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    font-size: 0.75em;
+    opacity: 0.7;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.sidebar.collapsed .sidebar-footer {
+    font-size: 0.6em;
+    padding: 10px;
+}
+
+.sidebar.collapsed .sidebar-footer p {
+    display: none;
+}
+
+.sidebar.collapsed .sidebar-footer p:first-child {
+    display: block;
+}
+
+/* 主内容区（自适应） */
+.main-content {
+    margin-left: 180px;  /* 展开状态：侧边栏宽度 */
+    transition: margin-left 0.3s ease;
+}
+
+.main-content.expanded {
+    margin-left: 70px;  /* 收起状态：侧边栏图标宽度 */
+}
+
+/* 响应式优化 */
+@media (max-width: 1200px) {
+    .sidebar {
+        width: 160px;
+    }
+
+    .sidebar.collapsed {
+        width: 65px;
+    }
+
+    .sidebar-toggle {
+        left: 170px;
+    }
+
+    .sidebar-toggle.collapsed {
+        left: 75px;
+    }
+
+    .main-content {
+        margin-left: 160px;
+    }
+
+    .main-content.expanded {
+        margin-left: 65px;
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 0;
+        transform: translateX(-100%);
+    }
+
+    .sidebar.mobile-open {
+        width: 220px;
+        transform: translateX(0);
+    }
+
+    .sidebar.collapsed {
+        width: 0;
+    }
+
+    .main-content {
+        margin-left: 0;
+    }
+
+    .main-content.expanded {
+        margin-left: 0;
+    }
+
+    .sidebar-toggle {
+        left: 20px;
+    }
+
+    .sidebar-toggle.collapsed {
+        left: 20px;
+    }
+}

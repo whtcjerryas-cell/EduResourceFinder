@@ -1,0 +1,978 @@
+{% extends "base_new.html" %}
+
+{% block title %}K12教育资源搜索系统{% endblock %}
+
+{% block page_css %}
+<style>
+    /* 搜索栏样式 */
+    .search-bar {
+        background: var(--bg-card);
+        padding: var(--spacing-lg);
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow-md);
+        margin-bottom: var(--spacing-lg);
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: var(--spacing-md);
+        align-items: end;
+    }
+
+    .search-field {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .search-field label {
+        font-weight: 600;
+        margin-bottom: var(--spacing-sm);
+        color: var(--text-primary);
+        font-size: var(--font-sm);
+    }
+
+    .search-field input,
+    .search-field select {
+        padding: 10px 12px;
+        border: 2px solid var(--border-color);
+        border-radius: var(--border-radius);
+        font-size: var(--font-base);
+        transition: all var(--transition-fast);
+    }
+
+    .search-field input:focus,
+    .search-field select:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .country-controls {
+        display: flex;
+        gap: 8px;
+    }
+
+    .country-controls select {
+        flex: 1;
+    }
+
+    .btn-icon {
+        background: var(--bg-primary);
+        border: 2px solid var(--border-color);
+        padding: 10px 14px;
+        border-radius: var(--border-radius);
+        cursor: pointer;
+        font-weight: bold;
+        transition: all var(--transition-base);
+    }
+
+    .btn-icon:hover {
+        background: var(--primary-color);
+        color: white;
+        border-color: var(--primary-color);
+    }
+
+    .btn-search {
+        background: var(--primary-gradient);
+        color: white;
+        border: none;
+        padding: 10px 30px;
+        border-radius: var(--border-radius);
+        font-size: var(--font-lg);
+        font-weight: 600;
+        cursor: pointer;
+        transition: all var(--transition-base);
+        box-shadow: var(--shadow-md);
+    }
+
+    .btn-search:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-lg);
+    }
+
+    .btn-search:active {
+        transform: translateY(0);
+    }
+
+    .btn-search:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+    }
+
+    /* 多选下拉框样式 */
+    .multi-select-dropdown {
+        position: relative;
+    }
+
+    .multi-select-trigger {
+        padding: 10px 12px;
+        border: 2px solid var(--border-color);
+        border-radius: var(--border-radius);
+        background: var(--bg-secondary);
+        cursor: pointer;
+        min-height: 42px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        transition: all var(--transition-fast);
+    }
+
+    .multi-select-trigger:hover {
+        border-color: var(--primary-color);
+    }
+
+    .multi-select-options {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        max-height: 300px;
+        overflow-y: auto;
+        background: var(--bg-card);
+        border: 2px solid var(--border-color);
+        border-radius: var(--border-radius);
+        margin-top: 4px;
+        z-index: 1000;
+        box-shadow: var(--shadow-lg);
+    }
+
+    .multi-select-options.show {
+        display: block;
+    }
+
+    .multi-select-options-header {
+        padding: var(--spacing-sm);
+        border-bottom: 2px solid var(--border-color);
+        background: var(--bg-primary);
+        display: flex;
+        gap: var(--spacing-sm);
+    }
+
+    .multi-select-btn-small {
+        padding: 4px 12px;
+        font-size: var(--font-xs);
+        cursor: pointer;
+        background: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: 4px;
+        transition: all var(--transition-fast);
+    }
+
+    .multi-select-btn-small:hover {
+        background: var(--primary-dark);
+    }
+
+    .multi-select-option {
+        padding: var(--spacing-sm) var(--spacing-md);
+        cursor: pointer;
+        transition: all var(--transition-fast);
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-sm);
+    }
+
+    .multi-select-option:hover {
+        background: var(--bg-primary);
+    }
+
+    .multi-select-option input[type="checkbox"] {
+        width: auto;
+        margin: 0;
+    }
+
+    /* 结果面板样式 */
+    .results-panel {
+        background: var(--bg-card);
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow-md);
+        display: flex;
+        flex-direction: column;
+        min-height: 500px;
+    }
+
+    .results-header {
+        padding: var(--spacing-md) var(--spacing-lg);
+        border-bottom: 2px solid var(--border-color);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: var(--bg-primary);
+        flex-wrap: wrap;
+        gap: var(--spacing-md);
+    }
+
+    .results-header h3 {
+        font-size: var(--font-lg);
+        color: var(--text-primary);
+        font-weight: 600;
+    }
+
+    .results-controls {
+        display: flex;
+        gap: var(--spacing-sm);
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .results-stats {
+        display: flex;
+        gap: var(--spacing-md);
+    }
+
+    .stat-badge {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        background: var(--bg-card);
+        border-radius: 20px;
+        font-size: var(--font-sm);
+        box-shadow: var(--shadow-sm);
+    }
+
+    .stat-badge .value {
+        font-weight: 600;
+        color: var(--primary-color);
+    }
+
+    .results-content {
+        flex: 1;
+        overflow-y: auto;
+        padding: var(--spacing-lg);
+    }
+
+    .result-item {
+        background: var(--bg-primary);
+        border-left: 4px solid var(--primary-color);
+        padding: var(--spacing-lg);
+        margin-bottom: var(--spacing-md);
+        border-radius: var(--border-radius);
+        transition: all var(--transition-base);
+        cursor: pointer;
+    }
+
+    .result-item:hover {
+        transform: translateX(8px) translateY(-2px);
+        box-shadow: var(--shadow-md);
+        border-left-color: var(--primary-dark);
+    }
+
+    .result-item h3 {
+        color: var(--primary-color);
+        margin-bottom: var(--spacing-sm);
+        font-size: var(--font-lg);
+        transition: color var(--transition-fast);
+    }
+
+    .result-item:hover h3 {
+        color: var(--primary-dark);
+    }
+
+    .result-item a {
+        color: var(--primary-color);
+        text-decoration: none;
+        word-break: break-all;
+        display: block;
+        margin-bottom: var(--spacing-sm);
+        transition: color var(--transition-fast);
+    }
+
+    .result-item a:hover {
+        text-decoration: underline;
+        color: var(--primary-dark);
+    }
+
+    .result-item .snippet {
+        color: var(--text-secondary);
+        font-size: var(--font-sm);
+        margin-bottom: var(--spacing-sm);
+        line-height: 1.6;
+    }
+
+    .result-item .meta {
+        display: flex;
+        gap: var(--spacing-sm);
+        flex-wrap: wrap;
+    }
+
+    .result-item .badge {
+        background: var(--primary-gradient);
+        color: white;
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: var(--font-xs);
+    }
+
+    .result-item .quality-score {
+        background: var(--success-color);
+        color: white;
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: var(--font-xs);
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: var(--text-secondary);
+    }
+
+    .empty-state .icon {
+        font-size: 5em;
+        margin-bottom: var(--spacing-lg);
+    }
+
+    .empty-state h3 {
+        color: var(--text-primary);
+        margin-bottom: var(--spacing-md);
+    }
+
+    .btn-export {
+        padding: 6px 12px;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: var(--font-sm);
+        cursor: pointer;
+        transition: all var(--transition-base);
+    }
+
+    .btn-export:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
+    }
+
+    .btn-export-csv {
+        background: var(--success-color);
+    }
+
+    .btn-export-excel {
+        background: var(--warning-color);
+    }
+
+    .btn-export-json {
+        background: var(--primary-color);
+    }
+
+    .select-sort {
+        padding: 6px 12px;
+        border: 2px solid var(--border-color);
+        border-radius: 6px;
+        background: var(--bg-secondary);
+        color: var(--text-primary);
+        font-size: var(--font-sm);
+        cursor: pointer;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container" style="padding: var(--spacing-xl) 20px;">
+    <!-- 搜索条件栏 -->
+    <div class="search-bar">
+        <div class="search-field">
+            <label>🌍 国家</label>
+            <div class="country-controls">
+                <select id="country" name="country">
+                    <option value="">加载中...</option>
+                </select>
+                <button type="button" class="btn-icon" id="addCountryBtn" title="添加新国家">+</button>
+                <button type="button" class="btn-icon" id="refreshCountryBtn" title="刷新配置">⟳</button>
+            </div>
+        </div>
+
+        <div class="search-field">
+            <label>📖 年级（多选）</label>
+            <div class="multi-select-dropdown">
+                <div class="multi-select-trigger" id="gradeSelectTrigger" onclick="toggleMultiSelectDropdown('grade')">
+                    <span id="gradeSelectText" style="color: var(--text-secondary);">请先选择国家</span>
+                    <span style="font-size: 12px;">▼</span>
+                </div>
+                <div id="gradeDropdown" class="multi-select-options">
+                    <div class="multi-select-options-header">
+                        <button type="button" class="multi-select-btn-small" onclick="selectAllGrades()">全选</button>
+                        <button type="button" class="multi-select-btn-small" onclick="deselectAllGrades()">清空</button>
+                    </div>
+                    <div id="gradeOptions"></div>
+                </div>
+                <select id="grade" name="grade" multiple style="display: none;"></select>
+            </div>
+        </div>
+
+        <div class="search-field">
+            <label>📅 学期（可选）</label>
+            <input type="text" id="semester" name="semester" placeholder="如: 1, Semester 1">
+        </div>
+
+        <div class="search-field">
+            <label>📚 学科（多选）</label>
+            <div class="multi-select-dropdown">
+                <div class="multi-select-trigger" id="subjectSelectTrigger" onclick="toggleMultiSelectDropdown('subject')">
+                    <span id="subjectSelectText" style="color: var(--text-secondary);">请先选择国家</span>
+                    <span style="font-size: 12px;">▼</span>
+                </div>
+                <div id="subjectDropdown" class="multi-select-options">
+                    <div class="multi-select-options-header">
+                        <button type="button" class="multi-select-btn-small" onclick="selectAllSubjects()">全选</button>
+                        <button type="button" class="multi-select-btn-small" onclick="deselectAllSubjects()">清空</button>
+                    </div>
+                    <div id="subjectOptions"></div>
+                </div>
+                <select id="subject" name="subject" multiple style="display: none;"></select>
+            </div>
+        </div>
+
+        <div class="search-field">
+            <label>🎬 资源类型</label>
+            <select id="resourceType" name="resourceType">
+                <option value="all">全部资源</option>
+                <option value="video" selected>🎬 仅视频</option>
+                <option value="textbook">📚 仅教材</option>
+                <option value="supplement">📖 仅教辅</option>
+                <option value="exercise">✏️ 仅练习题</option>
+            </select>
+        </div>
+
+        <button type="button" class="btn-search" id="searchBtn">🚀 开始搜索</button>
+    </div>
+
+    <!-- 搜索结果面板 -->
+    <div class="results-panel" id="resultsPanel">
+        <div class="results-header">
+            <h3>📊 搜索结果</h3>
+            <div class="results-controls">
+                <select id="sortSelect" class="select-sort" onchange="sortResults(this.value)">
+                    <option value="default">默认排序</option>
+                    <option value="quality">质量分数</option>
+                    <option value="title">标题</option>
+                </select>
+                <button onclick="exportResults('csv')" class="btn-export btn-export-csv">📄 CSV</button>
+                <button onclick="exportResultsToExcel()" class="btn-export btn-export-excel">📊 Excel</button>
+                <button onclick="exportResults('json')" class="btn-export btn-export-json">📋 JSON</button>
+                <div class="results-stats" id="resultsStats" style="display: none;">
+                    <div class="stat-badge">
+                        <span>📝</span>
+                        <span class="value" id="resultCount">0</span>
+                    </div>
+                    <div class="stat-badge">
+                        <span>✅</span>
+                        <span class="value" id="successRate">0%</span>
+                    </div>
+                    <div class="stat-badge">
+                        <span>⏱️</span>
+                        <span class="value" id="avgTime">0s</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="results-content" id="resultsContent">
+            <div class="empty-state">
+                <div class="icon">🔍</div>
+                <h3>开始搜索教育资源</h3>
+                <p>选择国家、年级和学科，点击"开始搜索"按钮</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block page_scripts %}
+<script>
+    // 全局状态
+    let currentResults = [];
+    let selectedGrades = [];
+    let selectedSubjects = [];
+
+    // 页面加载时初始化
+    window.addEventListener('DOMContentLoaded', () => {
+        loadCountries();
+        setupEventListeners();
+    });
+
+    // 加载国家列表
+    async function loadCountries() {
+        try {
+            const response = await fetch('/api/config/countries');
+            const data = await response.json();
+
+            if (data.success && data.countries) {
+                const select = document.getElementById('country');
+                select.innerHTML = '<option value="">所有国家</option>';
+                
+                data.countries.forEach(country => {
+                    const option = document.createElement('option');
+                    option.value = country.code;
+                    option.textContent = country.name;
+                    select.appendChild(option);
+                });
+
+                toast.success('配置加载', '国家配置已加载');
+            }
+        } catch (error) {
+            console.error('加载国家失败:', error);
+            // 使用默认国家列表
+            const select = document.getElementById('country');
+            select.innerHTML = '<option value="">所有国家</option>';
+            const countries = [
+                {code: 'ID', name: '印度尼西亚'},
+                {code: 'PH', name: '菲律宾'},
+                {code: 'RU', name: '俄罗斯'},
+                {code: 'IN', name: '印度'},
+                {code: 'IQ', name: '伊拉克'},
+                {code: 'NG', name: '尼日利亚'},
+                {code: 'SA', name: '沙特'},
+                {code: 'EG', name: '埃及'},
+                {code: 'CN', name: '中国'},
+                {code: 'ZA', name: '南非'}
+            ];
+            countries.forEach(country => {
+                const option = document.createElement('option');
+                option.value = country.code;
+                option.textContent = country.name;
+                select.appendChild(option);
+            });
+        }
+    }
+
+    // 设置事件监听
+    function setupEventListeners() {
+        // 国家选择变化时更新年级和学科
+        document.getElementById('country').addEventListener('change', async (e) => {
+            const countryCode = e.target.value;
+            if (countryCode) {
+                await loadEducationLevels(countryCode);
+                await loadSubjects(countryCode);
+            } else {
+                clearMultiSelect('grade');
+                clearMultiSelect('subject');
+            }
+        });
+
+        // 搜索按钮
+        document.getElementById('searchBtn').addEventListener('click', performSearch);
+
+        // 添加国家按钮
+        document.getElementById('addCountryBtn').addEventListener('click', showAddCountryModal);
+
+        // 刷新配置按钮
+        document.getElementById('refreshCountryBtn').addEventListener('click', () => {
+            loadCountries();
+            toast.info('刷新配置', '正在重新加载国家配置...');
+        });
+
+        // 点击外部关闭多选下拉框
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.multi-select-dropdown')) {
+                closeAllMultiSelectDropdowns();
+            }
+        });
+    }
+
+    // 加载教育层级（年级）
+    async function loadEducationLevels(countryCode) {
+        try {
+            const response = await fetch(\`/api/config/education_levels?country=\${countryCode}\`);
+            const data = await response.json();
+
+            if (data.success && data.levels) {
+                populateMultiSelectOptions('grade', data.levels);
+            }
+        } catch (error) {
+            console.error('加载年级失败:', error);
+            // 使用默认年级列表
+            const defaultGrades = ['Grade 1', 'Grade 2', 'Grade 3', 'Grade 4', 'Grade 5', 'Grade 6',
+                                   'Grade 7', 'Grade 8', 'Grade 9', 'Grade 10', 'Grade 11', 'Grade 12'];
+            populateMultiSelectOptions('grade', defaultGrades);
+        }
+    }
+
+    // 加载学科
+    async function loadSubjects(countryCode) {
+        try {
+            const response = await fetch(\`/api/config/subjects?country=\${countryCode}\`);
+            const data = await response.json();
+
+            if (data.success && data.subjects) {
+                populateMultiSelectOptions('subject', data.subjects);
+            }
+        } catch (error) {
+            console.error('加载学科失败:', error);
+            // 使用默认学科列表
+            const defaultSubjects = ['Mathematics', 'Science', 'Physics', 'Chemistry', 'Biology',
+                                     'English', 'History', 'Geography'];
+            populateMultiSelectOptions('subject', defaultSubjects);
+        }
+    }
+
+    // 填充多选下拉框选项
+    function populateMultiSelectOptions(type, options) {
+        const optionsContainer = document.getElementById(\`\${type}Options\`);
+        const trigger = document.getElementById(\`\${type}SelectTrigger\`);
+        const triggerText = document.getElementById(\`\${type}SelectText\`);
+        const select = document.getElementById(type);
+
+        optionsContainer.innerHTML = '';
+        select.innerHTML = '';
+
+        options.forEach(option => {
+            const label = typeof option === 'string' ? option : option.name;
+            const value = typeof option === 'string' ? option : option.id || option.code;
+
+            // 创建选项
+            const optionDiv = document.createElement('div');
+            optionDiv.className = 'multi-select-option';
+            optionDiv.innerHTML = \`
+                <input type="checkbox" id="\${type}_\${value}" value="\${value}">
+                <label for="\${type}_\${value}" style="margin: 0; cursor: pointer; flex: 1;">\${label}</label>
+            \`;
+
+            optionDiv.querySelector('input').addEventListener('change', (e) => {
+                handleMultiSelectChange(type);
+            });
+
+            optionsContainer.appendChild(optionDiv);
+
+            // 创建select option
+            const selectOption = document.createElement('option');
+            selectOption.value = value;
+            selectOption.textContent = label;
+            select.appendChild(selectOption);
+        });
+
+        triggerText.textContent = '请选择...';
+        triggerText.style.color = 'var(--text-secondary)';
+    }
+
+    // 处理多选变化
+    function handleMultiSelectChange(type) {
+        const checkboxes = document.querySelectorAll(\`#\${type}Options input[type="checkbox"]\`);
+        const selected = Array.from(checkboxes)
+            .filter(cb => cb.checked)
+            .map(cb => cb.value);
+
+        const triggerText = document.getElementById(\`\${type}SelectText\`);
+        const select = document.getElementById(type);
+
+        // 更新隐藏的select
+        select.innerHTML = '';
+        selected.forEach(value => {
+            const option = document.createElement('option');
+            option.value = value;
+            option.selected = true;
+            select.appendChild(option);
+        });
+
+        // 更新显示文本
+        if (selected.length === 0) {
+            triggerText.textContent = '请选择...';
+            triggerText.style.color = 'var(--text-secondary)';
+        } else if (selected.length === 1) {
+            triggerText.textContent = selected[0];
+            triggerText.style.color = 'var(--text-primary)';
+        } else {
+            triggerText.textContent = \`已选择 \${selected.length} 项\`;
+            triggerText.style.color = 'var(--text-primary)';
+        }
+
+        // 更新全局状态
+        if (type === 'grade') {
+            selectedGrades = selected;
+        } else if (type === 'subject') {
+            selectedSubjects = selected;
+        }
+    }
+
+    // 切换多选下拉框显示
+    function toggleMultiSelectDropdown(type) {
+        const dropdown = document.getElementById(\`\${type}Dropdown\`);
+        const isShown = dropdown.classList.contains('show');
+        
+        // 关闭所有其他下拉框
+        closeAllMultiSelectDropdowns();
+
+        if (!isShown) {
+            dropdown.classList.add('show');
+        }
+    }
+
+    // 关闭所有多选下拉框
+    function closeAllMultiSelectDropdowns() {
+        document.querySelectorAll('.multi-select-options').forEach(dropdown => {
+            dropdown.classList.remove('show');
+        });
+    }
+
+    // 清空多选
+    function clearMultiSelect(type) {
+        const optionsContainer = document.getElementById(\`\${type}Options\`);
+        const triggerText = document.getElementById(\`\${type}SelectText\`);
+        
+        optionsContainer.innerHTML = '';
+        triggerText.textContent = '请先选择国家';
+        triggerText.style.color = 'var(--text-secondary)';
+
+        if (type === 'grade') {
+            selectedGrades = [];
+        } else if (type === 'subject') {
+            selectedSubjects = [];
+        }
+    }
+
+    // 全选年级
+    function selectAllGrades() {
+        const checkboxes = document.querySelectorAll('#gradeOptions input[type="checkbox"]');
+        checkboxes.forEach(cb => cb.checked = true);
+        handleMultiSelectChange('grade');
+    }
+
+    // 清空年级
+    function deselectAllGrades() {
+        const checkboxes = document.querySelectorAll('#gradeOptions input[type="checkbox"]');
+        checkboxes.forEach(cb => cb.checked = false);
+        handleMultiSelectChange('grade');
+    }
+
+    // 全选学科
+    function selectAllSubjects() {
+        const checkboxes = document.querySelectorAll('#subjectOptions input[type="checkbox"]');
+        checkboxes.forEach(cb => cb.checked = true);
+        handleMultiSelectChange('subject');
+    }
+
+    // 清空学科
+    function deselectAllSubjects() {
+        const checkboxes = document.querySelectorAll('#subjectOptions input[type="checkbox"]');
+        checkboxes.forEach(cb => cb.checked = false);
+        handleMultiSelectChange('subject');
+    }
+
+    // 执行搜索
+    async function performSearch() {
+        const country = document.getElementById('country').value;
+        const resourceType = document.getElementById('resourceType').value;
+        const semester = document.getElementById('semester').value.trim();
+
+        // 验证输入
+        if (!country) {
+            toast.warning('验证失败', '请选择国家');
+            return;
+        }
+
+        if (selectedGrades.length === 0) {
+            toast.warning('验证失败', '请至少选择一个年级');
+            return;
+        }
+
+        if (selectedSubjects.length === 0) {
+            toast.warning('验证失败', '请至少选择一个学科');
+            return;
+        }
+
+        // 禁用搜索按钮
+        const searchBtn = document.getElementById('searchBtn');
+        searchBtn.disabled = true;
+        searchBtn.innerHTML = '<div class="spinner" style="display: inline-block; width: 16px; height: 16px; border: 2px solid #fff; border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite;"></div> 搜索中...';
+
+        // 显示加载状态
+        const resultsContent = document.getElementById('resultsContent');
+        resultsContent.innerHTML = '<div class="empty-state"><div class="spinner"></div><p>正在搜索...</p></div>';
+
+        const startTime = Date.now();
+
+        try {
+            const params = new URLSearchParams({
+                country: country,
+                grades: selectedGrades.join(','),
+                subjects: selectedSubjects.join(','),
+                resource_type: resourceType
+            });
+
+            if (semester) {
+                params.append('semester', semester);
+            }
+
+            const response = await fetch(\`/api/search?\${params}\`);
+            const data = await response.json();
+
+            const endTime = Date.now();
+            const duration = ((endTime - startTime) / 1000).toFixed(2);
+
+            if (data.success) {
+                currentResults = data.results || [];
+                displayResults(currentResults);
+                updateStats(currentResults, data.success_rate || 100, duration);
+                toast.success('搜索完成', \`找到 \${currentResults.length} 个结果\`);
+            } else {
+                resultsContent.innerHTML = \`
+                    <div class="empty-state">
+                        <div class="icon">❌</div>
+                        <h3>搜索失败</h3>
+                        <p>\${data.message || '未知错误'}</p>
+                    </div>
+                \`;
+                toast.error('搜索失败', data.message || '未知错误');
+            }
+        } catch (error) {
+            console.error('搜索失败:', error);
+            resultsContent.innerHTML = \`
+                <div class="empty-state">
+                    <div class="icon">⚠️</div>
+                    <h3>网络错误</h3>
+                    <p>请检查网络连接后重试</p>
+                </div>
+            \`;
+            toast.error('网络错误', '请检查网络连接');
+        } finally {
+            searchBtn.disabled = false;
+            searchBtn.innerHTML = '🚀 开始搜索';
+        }
+    }
+
+    // 显示搜索结果
+    function displayResults(results) {
+        const resultsContent = document.getElementById('resultsContent');
+
+        if (results.length === 0) {
+            resultsContent.innerHTML = \`
+                <div class="empty-state">
+                    <div class="icon">🔍</div>
+                    <h3>未找到结果</h3>
+                    <p>请尝试调整搜索条件</p>
+                </div>
+            \`;
+            return;
+        }
+
+        resultsContent.innerHTML = results.map(result => \`
+            <div class="result-item" onclick="window.open('\${result.video_url || '#'}', '_blank')">
+                <h3>\${result.title || '无标题'}</h3>
+                \${result.video_url ? \`<a href="\${result.video_url}" target="_blank" onclick="event.stopPropagation()">\${result.video_url}</a>\` : ''\}
+                \${result.description ? \`<div class="snippet">\${result.description}</div>\` : ''\`
+                <div class="meta">
+                    <span class="badge">\${result.country || '-'}</span>
+                    <span class="badge">📖 \${result.grade || '-'}</span>
+                    <span class="badge">📚 \${result.subject || '-'}</span>
+                    \${result.quality_score ? \`<span class="quality-score">⭐ \${result.quality_score}/10</span>\` : ''\`
+                </div>
+            </div>
+        \`).join('');
+    }
+
+    // 更新统计信息
+    function updateStats(results, successRate, duration) {
+        document.getElementById('resultCount').textContent = results.length;
+        document.getElementById('successRate').textContent = successRate + '%';
+        document.getElementById('avgTime').textContent = duration + 's';
+        document.getElementById('resultsStats').style.display = 'flex';
+    }
+
+    // 排序结果
+    function sortResults(sortBy) {
+        if (currentResults.length === 0) return;
+
+        switch (sortBy) {
+            case 'quality':
+                currentResults.sort((a, b) => (b.quality_score || 0) - (a.quality_score || 0));
+                break;
+            case 'title':
+                currentResults.sort((a, b) => (a.title || '').localeCompare(b.title || ''));
+                break;
+            default:
+                // 默认排序，不改变
+                return;
+        }
+
+        displayResults(currentResults);
+        toast.info('排序完成', '结果已重新排序');
+    }
+
+    // 导出结果
+    function exportResults(format) {
+        if (currentResults.length === 0) {
+            toast.warning('导出失败', '没有可导出的结果');
+            return;
+        }
+
+        let content, filename, type;
+
+        if (format === 'csv') {
+            content = convertToCSV(currentResults);
+            filename = 'search_results.csv';
+            type = 'text/csv';
+        } else if (format === 'json') {
+            content = JSON.stringify(currentResults, null, 2);
+            filename = 'search_results.json';
+            type = 'application/json';
+        }
+
+        const blob = new Blob([content], { type });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        a.click();
+        URL.revokeObjectURL(url);
+
+        toast.success('导出成功', \`已导出 \${currentResults.length} 条结果到 \${filename}\`);
+    }
+
+    // 导出为Excel（使用CSV格式）
+    function exportResultsToExcel() {
+        if (currentResults.length === 0) {
+            toast.warning('导出失败', '没有可导出的结果');
+            return;
+        }
+
+        // 使用CSV格式，Excel可以打开
+        const content = convertToCSV(currentResults);
+        const blob = new Blob(['\uFEFF' + content], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'search_results.csv';
+        a.click();
+        URL.revokeObjectURL(url);
+
+        toast.success('导出成功', \`已导出 \${currentResults.length} 条结果到Excel文件\`);
+    }
+
+    // 转换为CSV
+    function convertToCSV(results) {
+        const headers = ['标题', 'URL', '国家', '年级', '学科', '质量分数', '描述'];
+        const rows = results.map(r => [
+            r.title || '',
+            r.video_url || '',
+            r.country || '',
+            r.grade || '',
+            r.subject || '',
+            r.quality_score || '',
+            r.description || ''
+        ]);
+
+        const csvContent = [
+            headers.join(','),
+            ...rows.map(row => row.map(cell => \`"\${cell.replace(/"/g, '""')}"\`).join(','))
+        ].join('\n');
+
+        return csvContent;
+    }
+
+    // 显示添加国家模态框
+    function showAddCountryModal() {
+        const countryName = prompt('请输入新国家的名称:');
+        if (!countryName) return;
+
+        const countryCode = prompt('请输入国家代码（如: ID, PH, RU）:');
+        if (!countryCode) return;
+
+        toast.info('添加国家', \`正在添加国家: \${countryName} (\${countryCode})\`);
+
+        // 这里应该调用API添加国家
+        // 暂时只显示提示
+        setTimeout(() => {
+            toast.warning('功能开发中', '添加国家功能正在开发中，敬请期待');
+        }, 500);
+    }
+</script>
+{% endblock %}

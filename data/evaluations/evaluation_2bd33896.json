@@ -1,0 +1,50 @@
+{
+  "request_id": "2bd33896",
+  "timestamp": "2026-01-05T15:29:58.374095+00:00",
+  "video_url": "https://www.youtube.com/watch?v=-doOqIfsBfk",
+  "video_metadata": {
+    "title": "MATEMATIKA KELAS 10 HALAMAN 4 KURIKULUM MERDEKA",
+    "url": "https://www.youtube.com/watch?v=-doOqIfsBfk",
+    "snippet": "... belajar Matematika yang menyenangkan dan mudah dipahami. Di video kali ini, kami akan membahas mata pelajaran Matematika kelas 10 halaman 4",
+    "source": "YouTube"
+  },
+  "evaluation": {
+    "content_relevance": 9,
+    "teaching_quality": 8,
+    "accuracy": 9,
+    "appropriateness": 9,
+    "video_quality": 7,
+    "interactivity": 6,
+    "educational_value": 8,
+    "overall_score": 8.0,
+    "strengths": [
+      "内容高度相关，直接对应Kurikulum Merdeka课程大纲",
+      "专注于具体教材页面（halaman 4），针对性强",
+      "讲解指数和对数基础概念，适合10年级学生水平",
+      "来自有267K订阅者的教育频道，有一定可信度"
+    ],
+    "weaknesses": [
+      "视频质量可能一般（基于有限的观看数据和描述判断）",
+      "互动性有限，主要是单向讲解",
+      "缺乏多样化的教学方法和视觉辅助",
+      "可能缺少实际应用示例和练习"
+    ],
+    "recommendation": "推荐作为补充学习资源。视频直接对应Kurikulum Merdeka课程，内容准确且适合10年级学生认知水平。虽然制作质量可能不是最高水平，但作为免费教育资源，对于需要额外帮助理解指数和对数概念的学生来说很有价值。建议结合其他教学资源一起使用以获得更全面的学习体验。",
+    "video_url": "https://www.youtube.com/watch?v=-doOqIfsBfk",
+    "video_title": "MATEMATIKA KELAS 10 HALAMAN 4 KURIKULUM MERDEKA",
+    "video_snippet": "... belajar Matematika yang menyenangkan dan mudah dipahami. Di video kali ini, kami akan membahas mata pelajaran Matematika kelas 10 halaman 4",
+    "evaluation_method": "url_based",
+    "evaluation_time": "2026-01-05T23:29:58.373534",
+    "search_params": {
+      "country": "ID",
+      "grade": "Kelas 10",
+      "subject": "Matematika"
+    }
+  },
+  "evaluation_method": "simple_url_based",
+  "search_params": {
+    "country": "ID",
+    "grade": "Kelas 10",
+    "subject": "Matematika"
+  }
+}

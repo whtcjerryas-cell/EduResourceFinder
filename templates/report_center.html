@@ -1,0 +1,528 @@
+{% extends "base_new.html" %}
+
+{% block title %}报告中心 - K12教育资源搜索系统{% endblock %}
+
+{% block page_css %}
+<style>
+    .page-header {
+        text-align: center;
+        color: white;
+        margin-bottom: var(--spacing-xl);
+    }
+
+    .page-header h1 {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 10px;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .page-header p {
+        font-size: 1.2rem;
+        opacity: 0.9;
+    }
+
+    .report-card {
+        background: var(--bg-card);
+        border-radius: 15px;
+        padding: var(--spacing-xl);
+        box-shadow: var(--shadow-lg);
+        margin-bottom: var(--spacing-lg);
+    }
+
+    .config-section {
+        background: var(--bg-primary);
+        border-radius: var(--border-radius);
+        padding: var(--spacing-lg);
+        margin-bottom: var(--spacing-lg);
+    }
+
+    .config-section h5 {
+        color: var(--primary-color);
+        margin-bottom: var(--spacing-md);
+        font-weight: 600;
+    }
+
+    .btn-generate {
+        background: var(--primary-gradient);
+        border: none;
+        color: white;
+        padding: 15px 40px;
+        border-radius: 25px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        transition: all var(--transition-base);
+        width: 100%;
+        cursor: pointer;
+    }
+
+    .btn-generate:hover {
+        transform: scale(1.02);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        color: white;
+    }
+
+    .btn-generate:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+    .progress-container {
+        display: none;
+        margin-top: var(--spacing-lg);
+    }
+
+    .progress {
+        height: 30px;
+        border-radius: 15px;
+        background: var(--border-color);
+        overflow: hidden;
+    }
+
+    .progress-bar {
+        background: var(--primary-gradient);
+        transition: width 0.3s ease;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 600;
+    }
+
+    .result-container {
+        display: none;
+        margin-top: var(--spacing-lg);
+    }
+
+    .result-card {
+        background: var(--bg-primary);
+        border-radius: var(--border-radius);
+        padding: var(--spacing-md);
+        margin-bottom: var(--spacing-md);
+        border-left: 4px solid var(--success-color);
+    }
+
+    .result-card h6 {
+        color: var(--text-primary);
+        font-weight: 600;
+        margin-bottom: var(--spacing-sm);
+    }
+
+    .result-card p {
+        color: var(--text-secondary);
+        margin-bottom: 5px;
+    }
+
+    .download-link {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 8px 20px;
+        background: var(--success-color);
+        color: white;
+        border-radius: 20px;
+        text-decoration: none;
+        transition: all var(--transition-base);
+    }
+
+    .download-link:hover {
+        background: #38a169;
+        color: white;
+        transform: translateX(5px);
+    }
+
+    .stat-box {
+        text-align: center;
+        padding: var(--spacing-lg);
+        background: var(--bg-card);
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow-md);
+    }
+
+    .stat-value {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--primary-color);
+    }
+
+    .stat-label {
+        color: var(--text-secondary);
+        font-size: var(--font-sm);
+        margin-top: 5px;
+    }
+
+    .feature-list {
+        list-style: none;
+        padding: 0;
+        margin-top: var(--spacing-lg);
+    }
+
+    .feature-list li {
+        padding: 10px 0;
+        border-bottom: 1px solid var(--border-color);
+        color: var(--text-primary);
+    }
+
+    .feature-list li:last-child {
+        border-bottom: none;
+    }
+
+    .feature-list li i {
+        color: var(--primary-color);
+        margin-right: 10px;
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: var(--spacing-lg);
+    }
+
+    @media (max-width: 1024px) {
+        .form-row {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .checkbox-group {
+        display: flex;
+        gap: var(--spacing-md);
+        flex-wrap: wrap;
+    }
+
+    .checkbox-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+    }
+
+    .checkbox-item input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+    }
+
+    .checkbox-list {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-sm);
+    }
+
+    .checkbox-list-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .checkbox-list-item input[type="checkbox"]:disabled {
+        cursor: not-allowed;
+        opacity: 0.6;
+    }
+
+    .spinner {
+        display: inline-block;
+        width: 1rem;
+        height: 1rem;
+        border: 2px solid rgba(255,255,255,0.3);
+        border-top-color: white;
+        border-radius: 50%;
+        animation: spin 0.6s linear infinite;
+        margin-right: 10px;
+    }
+
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container" style="background: var(--primary-gradient); min-height: 100vh; padding: var(--spacing-xl) 20px;">
+    <!-- 页面标题 -->
+    <div class="page-header">
+        <h1>📊 报告中心</h1>
+        <p>自动生成教育资源分析报告，支持多种格式导出</p>
+    </div>
+
+    <!-- 报告配置卡片 -->
+    <div class="report-card">
+        <h3 style="margin-bottom: var(--spacing-lg);">
+            <i class="fas fa-cog"></i> 报告配置
+        </h3>
+
+        <div class="form-row">
+            <div>
+                <div class="config-section">
+                    <h5>⚙️ 基本设置</h5>
+
+                    <form id="reportForm">
+                        <div class="form-group">
+                            <label for="reportTitle" class="form-label">报告标题</label>
+                            <input type="text" class="form-input" id="reportTitle"
+                                   value="K12教育资源分析报告" placeholder="请输入报告标题">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="timeRange" class="form-label">统计时间范围（天）</label>
+                            <input type="number" class="form-input" id="timeRange"
+                                   value="30" min="1" max="365" placeholder="默认30天">
+                            <small style="color: var(--text-secondary);">搜索行为分析的时间范围</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">输出格式</label>
+                            <div class="checkbox-group">
+                                <label class="checkbox-item">
+                                    <input type="checkbox" id="formatMarkdown" checked>
+                                    <span><i class="fab fa-markdown"></i> Markdown</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" id="formatJson" checked>
+                                    <span><i class="fas fa-code"></i> JSON</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">报告内容</label>
+                            <div class="checkbox-list">
+                                <div class="checkbox-list-item">
+                                    <input type="checkbox" id="includeOverview" checked disabled>
+                                    <label for="includeOverview">全球教育资源概览</label>
+                                </div>
+                                <div class="checkbox-list-item">
+                                    <input type="checkbox" id="includeDetails" checked disabled>
+                                    <label for="includeDetails">各国教育资源详情</label>
+                                </div>
+                                <div class="checkbox-list-item">
+                                    <input type="checkbox" id="includeCoverage" checked disabled>
+                                    <label for="includeCoverage">知识点覆盖率分析</label>
+                                </div>
+                                <div class="checkbox-list-item">
+                                    <input type="checkbox" id="includeBehavior" checked disabled>
+                                    <label for="includeBehavior">搜索行为分析</label>
+                                </div>
+                                <div class="checkbox-list-item">
+                                    <input type="checkbox" id="includePerformance" checked disabled>
+                                    <label for="includePerformance">系统性能报告</label>
+                                </div>
+                            </div>
+                            <small style="color: var(--text-secondary);">所有核心内容均包含在报告中</small>
+                        </div>
+
+                        <button type="submit" class="btn-generate" id="generateBtn">
+                            <i class="fas fa-magic"></i> 生成报告
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div>
+                <div class="stat-box" style="margin-bottom: var(--spacing-md);">
+                    <div class="stat-value" id="totalReports">0</div>
+                    <div class="stat-label">已生成报告</div>
+                </div>
+
+                <div class="stat-box">
+                    <h6 style="margin-bottom: var(--spacing-md);">报告包含内容</h6>
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check-circle"></i> 全球教育资源概览</li>
+                        <li><i class="fas fa-check-circle"></i> 各国教育资源详情</li>
+                        <li><i class="fas fa-check-circle"></i> 知识点覆盖率分析</li>
+                        <li><i class="fas fa-check-circle"></i> 搜索行为分析</li>
+                        <li><i class="fas fa-check-circle"></i> 系统性能报告</li>
+                        <li><i class="fas fa-check-circle"></i> 多维度数据统计</li>
+                        <li><i class="fas fa-check-circle"></i> 趋势分析图表</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 进度条 -->
+        <div class="progress-container" id="progressContainer">
+            <label class="form-label">正在生成报告...</label>
+            <div class="progress">
+                <div class="progress-bar" id="progressBar" style="width: 0%">
+                    <span id="progressText">0%</span>
+                </div>
+            </div>
+            <p style="color: var(--text-secondary); margin-top: var(--spacing-sm);" id="progressStatus">正在初始化...</p>
+        </div>
+
+        <!-- 生成结果 -->
+        <div class="result-container" id="resultContainer">
+            <h5 style="margin-bottom: var(--spacing-md);">
+                <i class="fas fa-check-circle" style="color: var(--success-color);"></i> 报告生成完成
+            </h5>
+            <div id="resultCards"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block page_scripts %}
+<script>
+    let isGenerating = false;
+
+    // 页面加载时获取报告列表
+    window.addEventListener('load', () => {
+        loadReportList();
+    });
+
+    // 表单提交
+    document.getElementById('reportForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        if (isGenerating) return;
+
+        const title = document.getElementById('reportTitle').value;
+        const timeRange = parseInt(document.getElementById('timeRange').value);
+        const formatMarkdown = document.getElementById('formatMarkdown').checked;
+        const formatJson = document.getElementById('formatJson').checked;
+
+        if (!formatMarkdown && !formatJson) {
+            toast.warning('格式选择', '请至少选择一种输出格式！');
+            return;
+        }
+
+        if (timeRange < 1 || timeRange > 365) {
+            toast.warning('时间范围', '时间范围必须在1-365天之间！');
+            return;
+        }
+
+        await generateReport(title, timeRange, formatMarkdown, formatJson);
+    });
+
+    async function generateReport(title, timeRange, formatMarkdown, formatJson) {
+        isGenerating = true;
+
+        const generateBtn = document.getElementById('generateBtn');
+        const progressContainer = document.getElementById('progressContainer');
+        const resultContainer = document.getElementById('resultContainer');
+
+        // 更新按钮状态
+        generateBtn.disabled = true;
+        generateBtn.innerHTML = '<span class="spinner"></span> 正在生成...';
+
+        // 显示进度条
+        progressContainer.style.display = 'block';
+        resultContainer.style.display = 'none';
+
+        try {
+            // 模拟进度更新
+            updateProgress(10, '正在收集数据...');
+
+            const response = await fetch('/api/generate_report', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    title: title,
+                    time_range_days: timeRange,
+                    format_markdown: formatMarkdown,
+                    format_json: formatJson
+                })
+            });
+
+            updateProgress(80, '正在生成报告文件...');
+
+            const data = await response.json();
+
+            if (data.success) {
+                updateProgress(100, '报告生成完成！');
+
+                // 显示结果
+                displayResults(data.results);
+
+                // 更新报告计数
+                loadReportList();
+
+                toast.success('报告生成', '报告已成功生成！');
+            } else {
+                toast.error('报告生成失败', data.error || '未知错误');
+                progressContainer.style.display = 'none';
+            }
+
+        } catch (error) {
+            console.error('报告生成错误:', error);
+            toast.error('报告生成失败', error.message);
+            progressContainer.style.display = 'none';
+        } finally {
+            isGenerating = false;
+            generateBtn.disabled = false;
+            generateBtn.innerHTML = '<i class="fas fa-magic"></i> 生成报告';
+
+            setTimeout(() => {
+                progressContainer.style.display = 'none';
+            }, 2000);
+        }
+    }
+
+    function updateProgress(percent, status) {
+        document.getElementById('progressBar').style.width = percent + '%';
+        document.getElementById('progressText').textContent = percent + '%';
+        document.getElementById('progressStatus').textContent = status;
+    }
+
+    function displayResults(results) {
+        const resultContainer = document.getElementById('resultContainer');
+        const resultCards = document.getElementById('resultCards');
+
+        resultCards.innerHTML = '';
+
+        // 元数据
+        const metadata = results.metadata;
+
+        // Markdown报告
+        if (results.markdown_file) {
+            const card = document.createElement('div');
+            card.className = 'result-card';
+            card.innerHTML = `
+                <h6><i class="fab fa-markdown"></i> Markdown报告</h6>
+                <p><strong>文件名:</strong> ${results.markdown_file}</p>
+                <p><strong>生成时间:</strong> ${new Date(metadata.generated_at).toLocaleString('zh-CN')}</p>
+                <p><strong>耗时:</strong> ${metadata.generation_time.toFixed(2)}秒</p>
+                <a href="/api/download_report?file=${encodeURIComponent(results.markdown_file)}&type=markdown"
+                   class="download-link" download>
+                    <i class="fas fa-download"></i> 下载Markdown报告
+                </a>
+            `;
+            resultCards.appendChild(card);
+        }
+
+        // JSON报告
+        if (results.json_file) {
+            const card = document.createElement('div');
+            card.className = 'result-card';
+            card.innerHTML = `
+                <h6><i class="fas fa-code"></i> JSON报告</h6>
+                <p><strong>文件名:</strong> ${results.json_file}</p>
+                <p><strong>生成时间:</strong> ${new Date(metadata.generated_at).toLocaleString('zh-CN')}</p>
+                <p><strong>耗时:</strong> ${metadata.generation_time.toFixed(2)}秒</p>
+                <a href="/api/download_report?file=${encodeURIComponent(results.json_file)}&type=json"
+                   class="download-link" download>
+                    <i class="fas fa-download"></i> 下载JSON报告
+                </a>
+            `;
+            resultCards.appendChild(card);
+        }
+
+        resultContainer.style.display = 'block';
+    }
+
+    async function loadReportList() {
+        try {
+            const response = await fetch('/api/list_reports');
+            const data = await response.json();
+
+            if (data.success) {
+                document.getElementById('totalReports').textContent = data.reports.length;
+            }
+        } catch (error) {
+            console.error('加载报告列表失败:', error);
+        }
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,191 @@
+{
+  "default_rules": {
+    "description": "通用年级-学科联动规则（适用于大多数国家）",
+    "primary_lower": {
+      "grades_patterns": ["1", "2", "Kelas 1", "Kelas 2", "Grade 1", "Grade 2", "一年级", "二年级"],
+      "excluded_subjects": [
+        "Fisika", "Kimia", "Biologi (Advanced)",
+        "Physics", "Chemistry", "Biology (Advanced)",
+        "物理", "化学", "生物(进阶)",
+        "Física", "Química",
+        "Physique", "Chimie"
+      ],
+      "allowed_subjects": [
+        "Matematika", "Bahasa", "Science", "Seni", "Olahraga",
+        "Mathematics", "Language", "Art", "Physical Education",
+        "数学", "语言", "科学", "艺术", "体育"
+      ],
+      "reason": "1-2年级学生的认知水平有限，不开设抽象的理科科目",
+      "max_hours_per_week": 20
+    },
+    "primary_upper": {
+      "grades_patterns": ["3", "4", "5", "6", "Kelas 3-6", "Grade 3-6", "三年级-六年级", "Primary 3-6"],
+      "excluded_subjects": [
+        "Fisika (Advanced)", "Kimia (Advanced)", "Biologi (Advanced)",
+        "Physics (Advanced)", "Chemistry (Advanced)", "Biology (Advanced)",
+        "物理(进阶)", "化学(进阶)"
+      ],
+      "allowed_subjects": [
+        "Matematika", "Bahasa", "Science", "IPS", "Seni", "Olahraga", "Agama",
+        "Mathematics", "Language", "Science", "Social Studies", "Art", "PE", "Religion",
+        "数学", "语言", "科学", "社会科学", "艺术", "体育", "宗教"
+      ],
+      "reason": "3-6年级引入综合科学，但物理化学仍为启蒙阶段，不分科",
+      "max_hours_per_week": 25
+    },
+    "junior_high": {
+      "grades_patterns": ["7", "8", "9", "Kelas 7-9", "Grade 7-9", "七-九年级", "Junior High 1-3"],
+      "included_subjects": [
+        "Fisika", "Kimia", "Biologi",
+        "Physics", "Chemistry", "Biology",
+        "物理", "化学", "生物"
+      ],
+      "allowed_subjects": [
+        "Matematika", "Bahasa", "Fisika", "Kimia", "Biologi", "IPS", "Agama", "Seni", "Olahraga",
+        "Mathematics", "Language", "Physics", "Chemistry", "Biology", "Social Studies", "Religion", "Art", "PE",
+        "数学", "语言", "物理", "化学", "生物", "社会科学", "宗教", "艺术", "体育"
+      ],
+      "reason": "初中阶段开始分科科学教育（物理、化学、生物独立授课）",
+      "max_hours_per_week": 30
+    },
+    "senior_high": {
+      "grades_patterns": ["10", "11", "12", "Kelas 10-12", "Grade 10-12", "十-十二年级", "Senior High 1-3"],
+      "streams": {
+        "science": {
+          "required_subjects": [
+            "Matematika", "Fisika", "Kimia", "Biologi",
+            "Mathematics", "Physics", "Chemistry", "Biology",
+            "数学", "物理", "化学", "生物"
+          ],
+          "optional_subjects": [
+            "Informatika", "Bahasa Asing", "Seni",
+            "Computer Science", "Foreign Language", "Art",
+            "计算机科学", "外语", "艺术"
+          ]
+        },
+        "social": {
+          "required_subjects": [
+            "Matematika", "IPS", "Ekonomi", "Sosiologi", "Sejarah",
+            "Mathematics", "Social Studies", "Economics", "Sociology", "History",
+            "数学", "社会科学", "经济学", "社会学", "历史"
+          ],
+          "optional_subjects": [
+            "Bahasa", "Seni", "Geografi",
+            "Language", "Art", "Geography",
+            "语言", "艺术", "地理"
+          ]
+        },
+        "language": {
+          "required_subjects": [
+            "Bahasa", "Sastra", "Sejarah",
+            "Language", "Literature", "History",
+            "语言", "文学", "历史"
+          ],
+          "optional_subjects": [
+            "Matematika", "IPS", "Seni",
+            "Mathematics", "Social Studies", "Art",
+            "数学", "社会科学", "艺术"
+          ]
+        }
+      },
+      "reason": "高中阶段按兴趣分科（文理分科或选科制）",
+      "max_hours_per_week": 35
+    }
+  },
+  "country_specific_rules": {
+    "CN": {
+      "description": "中国6-3-3制特殊规则",
+      "junior_high": {
+        "physics_start_grade": "初中二年级",
+        "chemistry_start_grade": "初中三年级",
+        "reason": "中国初中物理从初二开始，化学从初三开始"
+      },
+      "senior_high": {
+        "streams": ["理科", "文科", "综合"],
+        "reason": "中国高中实行文理分科"
+      }
+    },
+    "US": {
+      "description": "美国K12特殊规则",
+      "elective_system": true,
+      "reason": "美国采用选课制，学生自由度更高",
+      "ap_courses": [
+        "AP Physics", "AP Chemistry", "AP Biology",
+        "AP Calculus", "AP US History", "AP World History"
+      ]
+    },
+    "JP": {
+      "description": "日本特殊规则",
+      "elementary": {
+        "grades": ["小学1年生-6年生"],
+        "subjects": ["国語", "算数", "理科", "社会", "生活", "音楽", "図画工作", "体育", "道德"],
+        "english_start_grade": "小学3年生",
+        "reason": "日本小学从3年级开始开设英语课"
+      }
+    },
+    "ID": {
+      "description": "印度尼西亚特殊规则",
+      "curriculum_system": "Kurikulum Merdeka",
+      "fase": {
+        "A": {"grades": ["Kelas 1-2"], "focus": "基础读写算"},
+        "B": {"grades": ["Kelas 3-4"], "focus": "基础概念深化"},
+        "C": {"grades": ["Kelas 5-6"], "focus": "综合能力培养"},
+        "D": {"grades": ["Kelas 7-9"], "focus": "学科探索"},
+        "E": {"grades": ["Kelas 10-12"], "focus": "专业分化"}
+      },
+      "reason": "印尼采用新的Kurikulum Merdeka课程体系，按Fase划分"
+    }
+  },
+  "subject_categories": {
+    "core": {
+      "description": "核心学科（所有年级必修）",
+      "subjects": [
+        "Matematika", "Bahasa", "Mathematics", "Language",
+        "数学", "语言"
+      ]
+    },
+    "science": {
+      "description": "科学类学科",
+      "subjects": [
+        "Fisika", "Kimia", "Biologi", "IPA",
+        "Physics", "Chemistry", "Biology", "Science",
+        "物理", "化学", "生物", "自然科学"
+      ],
+      "start_grades": {
+        "default": "junior_high",
+        "CN": "初中二年级",
+        "JP": "中学校"
+      }
+    },
+    "social": {
+      "description": "社会科学类学科",
+      "subjects": [
+        "IPS", "Sejarah", "Geografi", "Sosiologi", "Ekonomi",
+        "Social Studies", "History", "Geography", "Sociology", "Economics",
+        "社会科学", "历史", "地理", "社会学", "经济学"
+      ]
+    },
+    "arts": {
+      "description": "艺术类学科",
+      "subjects": [
+        "Seni", "Musik", "Seni Rupa",
+        "Art", "Music", "Fine Arts",
+        "艺术", "音乐", "美术"
+      ]
+    },
+    "physical": {
+      "description": "体育与健康",
+      "subjects": [
+        "Olahraga", "PJOK", "PE", "Physical Education",
+        "体育", "体育与健康"
+      ]
+    },
+    "religious": {
+      "description": "宗教与道德教育",
+      "subjects": [
+        "Agama", "Pendidikan Agama", "Religion", "Moral Education",
+        "宗教", "宗教教育", "道德教育"
+      ]
+    }
+  }
+}

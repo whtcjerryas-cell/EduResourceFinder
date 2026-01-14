@@ -1,0 +1,72 @@
+{
+  "video_path": "/Users/shmiwanghao8/Desktop/education/Indonesia/data/videos/Counting Numbers 141 - 160.mp4",
+  "video_name": "Counting Numbers 141 - 160.mp4",
+  "evaluation_result": {
+    "overall_score": 1.91,
+    "visual_quality": {
+      "tech_score": 10.0,
+      "design_score": 8.5,
+      "combined_score": 9.4,
+      "details": "硬指标: 支持1080p及以上 (1080p); 软指标: 动画设计生动，色彩对比鲜明，字体大小适中，易于在移动端阅读。使用了卡通形象和数字的结合，增强了学习的趣味性和理解度。"
+    },
+    "relevance": {
+      "score": 0.0,
+      "details": "无字幕/转录文本"
+    },
+    "pedagogy": {
+      "score": 0.0,
+      "details": "无字幕/转录文本"
+    },
+    "metadata": {
+      "score": 0.3,
+      "details": "观看次数: 0 (得分0.5), 点赞率: 0.00% (得分0.0)"
+    },
+    "breakdown": {
+      "visual_weight": 0.2,
+      "relevance_weight": 0.4,
+      "pedagogy_weight": 0.3,
+      "metadata_weight": 0.1
+    }
+  },
+  "token_usage": {
+    "records": [
+      {
+        "step": "视觉分析",
+        "model": "gpt-4o",
+        "api_type": "vision",
+        "prompt_tokens": 5885,
+        "completion_tokens": 68,
+        "total_tokens": 5953,
+        "timestamp": "2025-12-30T09:50:07.623615"
+      }
+    ],
+    "summary": {
+      "total_records": 1,
+      "total_tokens": 5953,
+      "total_prompt_tokens": 5885,
+      "total_completion_tokens": 68,
+      "by_model": {
+        "gpt-4o": {
+          "total_tokens": 5953,
+          "count": 1
+        }
+      },
+      "by_step": {
+        "视觉分析": {
+          "total_tokens": 5953,
+          "count": 1
+        }
+      }
+    }
+  },
+  "metadata": {
+    "title": "Counting Numbers 141 - 160",
+    "width": 1920,
+    "height": 1080,
+    "max_resolution_height": 1080,
+    "duration": 218.688,
+    "format": "mov,mp4,m4a,3gp,3g2,mj2"
+  },
+  "frames_count": 5,
+  "timestamp": "2025-12-30T09:50:07.625879"
+}

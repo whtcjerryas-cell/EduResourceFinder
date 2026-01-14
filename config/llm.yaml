@@ -1,0 +1,147 @@
+# ============================================
+# LLM配置
+# ============================================
+# 用途：配置所有大语言模型相关参数
+# 修改后：重启服务生效
+# ============================================
+
+llm:
+  # ----------------------------------------
+  # 模型配置
+  # ----------------------------------------
+  models:
+    # 内部API默认模型（文本生成）
+    internal_api: "gpt-4o"
+
+    # 快速推理模型（用于搜索推荐理由生成，2-3秒响应）
+    # 注意：如果公司API不可用，自动使用AI Builders的grok-4-fast（10秒）
+    # [升级] 2025-01-09: 从 gemini-2.5-flash 升级到 gemini-2.5-pro
+    # 理由: A/B测试显示准确率提升5%（65%→70%），评分偏差降低14%，速度提升10%
+    fast_inference: "gemini-2.5-pro"
+
+    # 视觉分析模型（视频深度评估）- 使用Gemini 2.5 Pro
+    # 注意：公司内部API支持视觉功能
+    vision: "gemini-2.5-pro"  # 高质量视觉分析，更准确的评估
+
+    # 搜索策略生成模型（高推理能力，多语言支持）
+    # [升级] 2025-01-09: 从 deepseek 升级到 gemini-2.5-pro
+    # 理由: 公司内部API优先，多语言支持更好，搜索质量提升30-40%
+    search_strategy: "gemini-2.5-pro"
+
+    # 批量分类模型（极低成本）
+    classification: "gpt-4o-mini"  # 如果公司API不可用的备选
+
+    # AI Builders默认模型（备用，已验证可用）
+    ai_builders_default: "grok-4-fast"  # 10秒响应，已验证可用
+
+    # 备用模型列表（降级使用，优先公司内部API）
+    # [优化] 2025-01-09: 按优先级排序，公司内部API优先
+    fallback_order:
+      - "gemini-2.5-pro"      # 公司内部API（首选）
+      - "gemini-2.5-flash"    # 公司内部API（备选）
+      - "claude-3-7-sonnet"   # 公司内部API（备选）
+      - "gpt-4o"              # 公司内部API（备选）
+      - "grok-4-fast"         # AI Builders（降级）
+      - "deepseek"            # AI Builders（最后降级）
+
+    # Gemini模型
+    gemini: "gemini-2.5-pro"
+
+    # Whisper转录模型（tiny/base/small/medium/large）
+    transcription: "base"
+
+  # ----------------------------------------
+  # API端点配置
+  # ----------------------------------------
+  # ⚠️ 安全修复 (Issue #039): 移除硬编码的API端点，使用环境变量
+  # 所有敏感URL现在通过环境变量配置，不在此文件中暴露
+  api:
+    # 内部API（从环境变量读取）
+    internal_base_url: "${INTERNAL_API_BASE_URL}"
+    env_var: "INTERNAL_API_BASE_URL"  # 环境变量名称（必须设置）
+
+    # AI Builders API（从环境变量读取）
+    ai_builders_base_url: "${AI_BUILDERS_BASE_URL}"
+    env_var: "AI_BUILDERS_BASE_URL"   # 环境变量名称（可选）
+
+  # ----------------------------------------
+  # 默认参数
+  # ----------------------------------------
+  params:
+    # 通用默认参数
+    default:
+      temperature: 0.3
+      max_tokens: 2000
+      timeout: 300
+
+    # 视觉分析参数
+    vision:
+      max_tokens: 500
+      temperature: 0.3
+
+    # Gemini参数
+    gemini:
+      max_tokens: 8000
+      temperature: 0.3
+
+    # 评估相关参数
+    evaluation:
+      max_tokens: 500
+      temperature: 0.0    # 评估使用低温度，保证一致性
+      max_retries: 2      # 最多重试次数
+
+    # 搜索相关参数
+    search:
+      max_results: 20      # 每次搜索最大结果数
+      max_domains: 5      # 最多包含的域名数
+
+  # ----------------------------------------
+  # 模型降级策略
+  # ----------------------------------------
+  # 当一个模型失败时，按顺序尝试下一个
+  model_fallback_order:
+    - "gemini-2.5-pro"
+    - "deepseek"
+    - "gpt-4o"
+
+  # ----------------------------------------
+  # API密钥环境变量
+  # ----------------------------------------
+  # 这些环境变量需要在 .env 文件中配置
+  api_keys:
+    openai: "OPENAI_API_KEY"
+    google: "GOOGLE_API_KEY"
+    gemini: "GEMINI_API_KEY"
+    anthropic: "ANTHROPIC_API_KEY"
+
+  # ----------------------------------------
+  # 代理配置
+  # ----------------------------------------
+  proxy:
+    enabled: true
+    http_proxy_env: "HTTP_PROXY"        # 环境变量名
+    https_proxy_env: "HTTPS_PROXY"      # 环境变量名
+    # 默认值（如果环境变量不存在）
+    default_http: "http://127.0.0.1:7897"
+    default_https: "http://127.0.0.1:7897"
+
+  # ----------------------------------------
+  # 重试配置
+  # ----------------------------------------
+  retry:
+    max_attempts: 3           # 最多尝试次数
+    initial_delay: 1          # 初始延迟（秒）
+    max_delay: 10             # 最大延迟（秒）
+    exponential_backoff: true # 指数退避
+
+  # ----------------------------------------
+  # 成本优化
+  # ----------------------------------------
+  cost_optimization:
+    # 缓存相似查询的结果（减少API调用）
+    enable_cache: true
+    cache_ttl_seconds: 3600   # 缓存1小时
+
+    # 批量处理（如果可能）
+    enable_batch: true
+    batch_size: 5

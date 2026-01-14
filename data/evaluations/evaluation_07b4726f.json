@@ -1,0 +1,92 @@
+{
+  "request_id": "07b4726f",
+  "timestamp": "2025-12-30T09:52:59.378197+00:00",
+  "video_url": "https://www.youtube.com/playlist?list=PLGfmQAXebeS5CIFI0LX5NQldLTjxQo458",
+  "video_metadata": {
+    "title": "Matematika Kelas 2 SD — Tema 6 Sub Tema 1: Alat Ukur Berat",
+    "description": "Belajar mengenai berat benda, satuan berat, jenis–jenis timbangan dan cara mengukur berat benda. Jangan lupa Like dan Subscribe yaaa~\n\nSumber gambar\n• https://www.freepik.com/vectors/school School vector created by pikisuperstar\n• https://www.dekoruma.com/p/KMS-361580/Kenmaster-Timbangan-Kue---3-Kg---Random\n• https://www.duniamasak.com/products/timbangan-dapur-oxone-ox-211-hijau-8407.aspx\n• https://saran.id/downloadpng/gambar-timbangan-bebek-wallpaper-jual-timbagan-bebek-sundoro-10kg-timbangan-b",
+    "duration": 406,
+    "upload_date": "20210305",
+    "view_count": 3071,
+    "like_count": 52,
+    "channel": "Belajar Bersama",
+    "channel_id": "UCuvRxXDm0RXNhpIFcdAh0Sg",
+    "resolution": "640x360",
+    "max_resolution_height": 1080,
+    "fps": 30,
+    "format": "18 - 640x360 (360p)",
+    "ext": "mp4",
+    "url": "https://www.youtube.com/watch?v=ZNGkF6tI4jk",
+    "tags": [
+      "belajar",
+      "matematika",
+      "kelas 2",
+      "SD",
+      "belajar matematika kelas 2 SD",
+      "sekolah dasar",
+      "belajar matematika sekolah dasar kelas 2",
+      "materi matematika kelas 2 SD",
+      "daring",
+      "belajar online",
+      "kursus online",
+      "semester 2",
+      "matematika untuk anak-anak",
+      "pelajaran matematika kelas 2 SD",
+      "Tema 6 Sub Tema 1"
+    ],
+    "categories": [
+      "Education"
+    ],
+    "thumbnail": "https://i.ytimg.com/vi/ZNGkF6tI4jk/maxresdefault.jpg"
+  },
+  "evaluation": {
+    "overall_score": 4.28,
+    "visual_quality": {
+      "tech_score": 10.0,
+      "design_score": 8.0,
+      "combined_score": 9.2,
+      "details": "硬指标: 支持1080p及以上 (1080p); 软指标: 整体设计简洁，色彩鲜明，适合儿童。字体大小适中，易于阅读。使用了插图和图表辅助理解，但某些页面缺乏视觉信息。教师位置未遮挡内容，信息层次清晰。"
+    },
+    "relevance": {
+      "score": 0.5,
+      "details": "视频内容主要讲解重量测量工具、单位（如克、公斤）和类型（如厨房秤、市场秤），与学习目标的数字直观理解、心算、估算及自然数到100的知识点完全无关，未覆盖任何关键概念，全为偏离主题的内容，深度不适用目标年级。"
+    },
+    "pedagogy": {
+      "score": 7.0,
+      "details": "讲解逻辑基本清晰，有引入问候和主题、概念解释（如重量单位和秤类型）、例子（如铅笔、厨房材料），但缺乏明确总结，结构稍显松散；语速适合小学生，语言友好简单；引导性提问适当，如询问秤类型；重点强调关键概念通过例子突出；互动性好，有问候、订阅提醒和注意图片的互动元素，但文本有拼写错误影响专业性。"
+    },
+    "metadata": {
+      "score": 1.4,
+      "details": "观看次数: 3,071 (得分1.0), 点赞率: 1.69% (得分2.0)"
+    },
+    "breakdown": {
+      "visual_weight": 0.2,
+      "relevance_weight": 0.4,
+      "pedagogy_weight": 0.3,
+      "metadata_weight": 0.1
+    },
+    "matched_knowledge_point": {
+      "id": "MAT-1-01-01",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Fase A (Kelas 1-2)",
+      "subject": "Matematika",
+      "chapter_title": "Bilangan",
+      "topic_title_id": "Pemahaman Intuisi bilangan cacah sampai 100",
+      "topic_title_cn": "100以内自然数的数感",
+      "learning_objective": "学生能够灵活地理解数字，对数量有直观的感受，能够进行心算、估算和对计算结果进行合理预测，并将数字符号与具体数量和顺序联系起来。",
+      "mapping_tags": [
+        "Intuisi Bilangan",
+        "Bilangan Cacah",
+        "Number Sense",
+        "Estimasi Bilangan",
+        "Membilang"
+      ]
+    }
+  },
+  "matched_knowledge_point": null,
+  "search_params": {
+    "country": "ID",
+    "grade": "Kelas 2",
+    "subject": "Matematika"
+  }
+}

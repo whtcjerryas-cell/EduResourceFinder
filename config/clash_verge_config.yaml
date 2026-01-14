@@ -1,0 +1,59 @@
+# Clash Verge 配置：只对特定应用走代理
+# 其他流量（包括Python脚本）直连公司网络
+
+mixed-port: 7897
+allow-lan: false
+bind-address: '*'
+mode: rule
+log-level: info
+external-controller: 127.0.0.1:9090
+
+proxies:
+  - name: "你的代理节点名称"
+    type: http  # 或 ss, vmess, trojan 等
+    server: your-server.com
+    port: 443
+    # ... 其他节点配置
+
+proxy-groups:
+  - name: "PROXY"
+    type: select
+    proxies:
+      - 你的代理节点名称
+      - DIRECT
+
+# ========================================
+# 关键配置：规则列表（按顺序匹配）
+# ========================================
+rules:
+  # 🎯 浏览器流量走代理（推荐使用域名规则）
+  # Chrome/Edge/Safari浏览器
+  - DOMAIN-SUFFIX,google.com,PROXY
+  - DOMAIN-SUFFIX,github.com,PROXY
+  - DOMAIN-SUFFIX,openai.com,PROXY
+  - DOMAIN-SUFFIX,anthropic.com,PROXY
+  - DOMAIN-SUFFIX,youtube.com,PROXY
+  - DOMAIN-SUFFIX,twitter.com,PROXY
+  - DOMAIN-SUFFIX,facebook.com,PROXY
+  - DOMAIN-SUFFIX,instagram.com,PROXY
+  # 添加更多需要代理的网站...
+
+  # 🔧 Claude Code 走代理
+  # Claude Code的API域名
+  - DOMAIN-SUFFIX,anthropic.com,PROXY
+  - DOMAIN-SUFFIX,claude.ai,PROXY
+
+  # 🏢 公司内部API直连（不走代理！）
+  - DOMAIN-SUFFIX,transsion.com,DIRECT
+  - DOMAIN-SUFFIX,hk-intra-paas.transsion.com,DIRECT
+  - DOMAIN,api.transsion.com,DIRECT
+
+  # 🏠 国内网站直连
+  - GEOIP,CN,DIRECT
+
+  # 🎯 其他流量：走代理或直连（根据需求选择）
+  # 如果想让所有其他流量也走代理：
+  - MATCH,PROXY
+
+  # 或者让其他流量直连（更安全）：
+  # - MATCH,DIRECT

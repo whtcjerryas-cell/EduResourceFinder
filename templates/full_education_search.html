@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>全教育层级智能搜索系统</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .status-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 8px 20px;
+            border-radius: 20px;
+            margin-top: 15px;
+            font-size: 0.9em;
+        }
+
+        /* Tabs Navigation */
+        .tabs-container {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+        }
+
+        .tabs {
+            display: flex;
+            background: #f5f5f5;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #666;
+            border: none;
+            background: transparent;
+        }
+
+        .tab:hover {
+            background: #e8e8e8;
+            color: #667eea;
+        }
+
+        .tab.active {
+            background: white;
+            color: #667eea;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .tab-icon {
+            font-size: 1.5em;
+            margin-right: 8px;
+        }
+
+        /* Tab Content */
+        .tab-content {
+            padding: 30px;
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Form Styles */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+
+        .form-group select,
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: border-color 0.3s;
+            background: white;
+        }
+
+        .form-group select:focus,
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-group select:disabled {
+            background: #f5f5f5;
+            cursor: not-allowed;
+        }
+
+        /* Button Styles */
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        /* Loading Spinner */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Results Section */
+        .results-section {
+            margin-top: 30px;
+            display: none;
+        }
+
+        .results-section.active {
+            display: block;
+        }
+
+        .results-header {
+            background: white;
+            padding: 20px;
+            border-radius: 15px 15px 0 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .results-stats {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .results-content {
+            background: white;
+            padding: 30px;
+            border-radius: 0 0 15px 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        /* Result Card */
+        .result-card {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: all 0.3s;
+        }
+
+        .result-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        .result-title {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .result-url {
+            color: #667eea;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            word-break: break-all;
+        }
+
+        .result-snippet {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .result-metadata {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .metadata-tag {
+            background: #e7eaf6;
+            color: #667eea;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        /* Context Info Box */
+        .context-box {
+            background: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+
+        .context-title {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #1976D2;
+            margin-bottom: 15px;
+        }
+
+        .context-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .context-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .context-label {
+            font-size: 0.85em;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .context-value {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #333;
+        }
+
+        /* Error Message */
+        .error-message {
+            background: #ffebee;
+            border-left: 4px solid #f44336;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .error-title {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #c62828;
+            margin-bottom: 10px;
+        }
+
+        .error-text {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* Info Box */
+        .info-box {
+            background: #e3f2fd;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .info-box p {
+            color: #1976D2;
+            line-height: 1.6;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .empty-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
+
+        .empty-text {
+            color: #666;
+            font-size: 1.2em;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .tabs {
+                flex-direction: column;
+            }
+
+            .tab {
+                padding: 15px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .results-stats {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+
+        /* Badge for Core Subjects */
+        .core-badge {
+            background: #ff9800;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 0.75em;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+
+        /* Skill Area Icon */
+        .skill-icon {
+            font-size: 1.5em;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🎓 全教育层级智能搜索系统</h1>
+            <p>K12基础教育 · 大学本科教育 · 职业技能培训</p>
+            <div class="status-badge">
+                ✅ 系统状态: 🟢 健康 | 支持国家: 10 | 大学: 5 | 技能领域: 5
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="tabs-container">
+            <!-- Tabs Navigation -->
+            <div class="tabs">
+                <button class="tab active" data-tab="k12">
+                    <span class="tab-icon">📚</span>
+                    K12教育
+                </button>
+                <button class="tab" data-tab="university">
+                    <span class="tab-icon">🎓</span>
+                    大学教育
+                </button>
+                <button class="tab" data-tab="vocational">
+                    <span class="tab-icon">💼</span>
+                    职业教育
+                </button>
+            </div>
+
+            <!-- K12 Education Tab -->
+            <div class="tab-content active" id="k12-content">
+                <div class="info-box">
+                    <p><strong>💡 提示:</strong> K12教育搜索支持年级-学科智能联动。系统会根据所选年级自动过滤可用学科，确保搜索结果的科学性和准确性。</p>
+                </div>
+
+                <form id="k12-form">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="k12-country">🌍 国家/地区</label>
+                            <select id="k12-country" name="country" required>
+                                <option value="">选择国家...</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="k12-grade">📖 年级</label>
+                            <select id="k12-grade" name="grade" disabled required>
+                                <option value="">先选择国家</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="k12-subject">📝 学科</label>
+                            <select id="k12-subject" name="subject" disabled required>
+                                <option value="">先选择年级</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="k12-query">🔍 搜索关键词</label>
+                            <input type="text" id="k12-query" name="query" placeholder="例如: 分数、方程、语法..." required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="k12-max-results">📊 最大结果数</label>
+                            <select id="k12-max-results" name="max_results">
+                                <option value="5">5条</option>
+                                <option value="10" selected>10条</option>
+                                <option value="20">20条</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="btn-container">
+                        <button type="submit" class="btn">🔍 搜索K12资源</button>
+                    </div>
+                </form>
+
+                <div class="loading" id="k12-loading">
+                    <div class="spinner"></div>
+                    <p>正在搜索K12教育资源...</p>
+                </div>
+
+                <div class="results-section" id="k12-results"></div>
+            </div>
+
+            <!-- University Education Tab -->
+            <div class="tab-content" id="university-content">
+                <div class="info-box">
+                    <p><strong>💡 提示:</strong> 大学教育搜索支持多层级导航。您可以从大学 → 学院 → 专业 → 课程逐步筛选，也可以直接在特定课程范围内搜索学习资源。</p>
+                </div>
+
+                <form id="university-form">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="uni-country">🌍 国家/地区</label>
+                            <select id="uni-country" name="country" required>
+                                <option value="">选择国家...</option>
+                                <option value="ID" selected>印度尼西亚</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="uni-university">🏛️ 大学</label>
+                            <select id="uni-university" name="university_code">
+                                <option value="">全部大学</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="uni-faculty">🏫 学院</label>
+                            <select id="uni-faculty" name="faculty_code" disabled>
+                                <option value="">先选择大学</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="uni-major">📚 专业</label>
+                            <select id="uni-major" name="major_code" disabled>
+                                <option value="">先选择学院</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="uni-subject">📖 课程</label>
+                            <select id="uni-subject" name="subject_code">
+                                <option value="">全部课程</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="uni-year">📅 学年</label>
+                            <select id="uni-year" name="year">
+                                <option value="">全部学年</option>
+                                <option value="1">第1学年</option>
+                                <option value="2">第2学年</option>
+                                <option value="3">第3学年</option>
+                                <option value="4">第4学年</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="uni-semester">📆 学期</label>
+                            <select id="uni-semester" name="semester">
+                                <option value="">全部学期</option>
+                                <option value="1">第1学期</option>
+                                <option value="2">第2学期</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="uni-query">🔍 搜索关键词</label>
+                            <input type="text" id="uni-query" name="query" placeholder="例如: 算法、数据结构、机器学习..." required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="uni-max-results">📊 最大结果数</label>
+                            <select id="uni-max-results" name="max_results">
+                                <option value="5">5条</option>
+                                <option value="10" selected>10条</option>
+                                <option value="20">20条</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="btn-container">
+                        <button type="submit" class="btn">🔍 搜索大学资源</button>
+                    </div>
+                </form>
+
+                <div class="loading" id="uni-loading">
+                    <div class="spinner"></div>
+                    <p>正在搜索大学教育资源...</p>
+                </div>
+
+                <div class="results-section" id="uni-results"></div>
+            </div>
+
+            <!-- Vocational Education Tab -->
+            <div class="tab-content" id="vocational-content">
+                <div class="info-box">
+                    <p><strong>💡 提示:</strong> 职业教育搜索支持按技能领域、目标受众、培训时长和价格筛选。适合职场人士提升技能、求职者学习新技能、创业者学习商业知识。</p>
+                </div>
+
+                <form id="vocational-form">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="voc-country">🌍 国家/地区</label>
+                            <select id="voc-country" name="country" required>
+                                <option value="">选择国家...</option>
+                                <option value="ID" selected>印度尼西亚</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="voc-skill-area">💼 技能领域</label>
+                            <select id="voc-skill-area" name="skill_area">
+                                <option value="">全部领域</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="voc-program">📚 培训课程</label>
+                            <select id="voc-program" name="program_code">
+                                <option value="">全部课程</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="voc-audience">👥 目标受众</label>
+                            <select id="voc-audience" name="target_audience">
+                                <option value="">全部受众</option>
+                                <option value="beginner">初学者</option>
+                                <option value="intermediate">中级学习者</option>
+                                <option value="advanced">高级学习者</option>
+                                <option value="career_switcher">转行者</option>
+                                <option value="entrepreneur">创业者</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="voc-duration">⏱️ 最大培训时长（月）</label>
+                            <select id="voc-duration" name="max_duration">
+                                <option value="">不限</option>
+                                <option value="3">3个月以内</option>
+                                <option value="6">6个月以内</option>
+                                <option value="12">12个月以内</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="voc-query">🔍 搜索关键词</label>
+                            <input type="text" id="voc-query" name="query" placeholder="例如: Python、英语、领导力..." required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="voc-max-results">📊 最大结果数</label>
+                            <select id="voc-max-results" name="max_results">
+                                <option value="5">5条</option>
+                                <option value="10" selected>10条</option>
+                                <option value="20">20条</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="btn-container">
+                        <button type="submit" class="btn">🔍 搜索职业教育资源</button>
+                    </div>
+                </form>
+
+                <div class="loading" id="voc-loading">
+                    <div class="spinner"></div>
+                    <p>正在搜索职业教育资源...</p>
+                </div>
+
+                <div class="results-section" id="voc-results"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Base API URL
+        const API_BASE = window.location.origin;
+
+        // Tab switching
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                // Remove active from all tabs
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+                // Add active to clicked tab
+                this.classList.add('active');
+                const tabName = this.getAttribute('data-tab');
+                document.getElementById(`${tabName}-content`).classList.add('active');
+            });
+        });
+
+        // K12 Education Logic
+        const k12CountrySelect = document.getElementById('k12-country');
+        const k12GradeSelect = document.getElementById('k12-grade');
+        const k12SubjectSelect = document.getElementById('k12-subject');
+
+        // Load countries on page load
+        async function loadCountries() {
+            try {
+                const response = await fetch(`${API_BASE}/api/countries`);
+                const data = await response.json();
+
+                if (data.success && data.countries) {
+                    data.countries.forEach(country => {
+                        const option = document.createElement('option');
+                        option.value = country.country_code;
+                        option.textContent = `${country.country_name_zh} (${country.country_code})`;
+                        k12CountrySelect.appendChild(option);
+                    });
+                }
+            } catch (error) {
+                console.error('加载国家列表失败:', error);
+            }
+        }
+
+        // Load grades when country changes
+        k12CountrySelect.addEventListener('change', async function() {
+            const countryCode = this.value;
+            if (!countryCode) return;
+
+            // Reset dependent fields
+            k12GradeSelect.innerHTML = '<option value="">加载中...</option>';
+            k12GradeSelect.disabled = true;
+            k12SubjectSelect.innerHTML = '<option value="">先选择年级</option>';
+            k12SubjectSelect.disabled = true;
+
+            try {
+                const response = await fetch(`${API_BASE}/api/countries`);
+                const data = await response.json();
+
+                if (data.success && data.countries) {
+                    const country = data.countries.find(c => c.country_code === countryCode);
+                    if (country && country.grades) {
+                        k12GradeSelect.innerHTML = '<option value="">选择年级...</option>';
+                        country.grades.forEach(grade => {
+                            const option = document.createElement('option');
+                            option.value = grade.local_name;
+                            option.textContent = `${grade.local_name} (${grade.zh_name})`;
+                            k12GradeSelect.appendChild(option);
+                        });
+                        k12GradeSelect.disabled = false;
+                    }
+                }
+            } catch (error) {
+                console.error('加载年级列表失败:', error);
+                k12GradeSelect.innerHTML = '<option value="">加载失败</option>';
+            }
+        });
+
+        // Load available subjects when grade changes
+        k12GradeSelect.addEventListener('change', async function() {
+            const countryCode = k12CountrySelect.value;
+            const grade = this.value;
+            if (!countryCode || !grade) return;
+
+            // Reset subject field
+            k12SubjectSelect.innerHTML = '<option value="">加载中...</option>';
+            k12SubjectSelect.disabled = true;
+
+            try {
+                const response = await fetch(`${API_BASE}/api/available_subjects?country=${countryCode}&grade=${encodeURIComponent(grade)}`);
+                const data = await response.json();
+
+                if (data.success && data.subjects) {
+                    k12SubjectSelect.innerHTML = '<option value="">选择学科...</option>';
+                    data.subjects.forEach(subject => {
+                        const option = document.createElement('option');
+                        option.value = subject.local_name;
+                        option.textContent = subject.local_name;
+                        if (subject.is_core) {
+                            option.textContent += ' ★';
+                        }
+                        k12SubjectSelect.appendChild(option);
+                    });
+                    k12SubjectSelect.disabled = false;
+                }
+            } catch (error) {
+                console.error('加载学科列表失败:', error);
+                k12SubjectSelect.innerHTML = '<option value="">加载失败</option>';
+            }
+        });
+
+        // K12 Search
+        document.getElementById('k12-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+
+            // Show loading
+            document.getElementById('k12-loading').classList.add('active');
+            document.getElementById('k12-results').classList.remove('active');
+
+            try {
+                const response = await fetch(`${API_BASE}/api/search`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+                displayResults('k12', result);
+            } catch (error) {
+                displayError('k12', error.message);
+            } finally {
+                document.getElementById('k12-loading').classList.remove('active');
+            }
+        });
+
+        // University Education Logic
+        const uniCountrySelect = document.getElementById('uni-country');
+        const uniUniversitySelect = document.getElementById('uni-university');
+        const uniFacultySelect = document.getElementById('uni-faculty');
+        const uniMajorSelect = document.getElementById('uni-major');
+        const uniSubjectSelect = document.getElementById('uni-subject');
+
+        // Load universities on page load
+        async function loadUniversities() {
+            try {
+                const response = await fetch(`${API_BASE}/api/universities?country=ID`);
+                const data = await response.json();
+
+                if (data.success && data.universities) {
+                    data.universities.forEach(uni => {
+                        const option = document.createElement('option');
+                        option.value = uni.code;
+                        option.textContent = `${uni.zh_name} (${uni.code})`;
+                        uniUniversitySelect.appendChild(option);
+                    });
+                }
+            } catch (error) {
+                console.error('加载大学列表失败:', error);
+            }
+        }
+
+        // Load faculties when university changes
+        uniUniversitySelect.addEventListener('change', async function() {
+            const universityCode = this.value;
+            const countryCode = uniCountrySelect.value;
+
+            uniFacultySelect.innerHTML = '<option value="">全部学院</option>';
+            uniFacultySelect.disabled = !universityCode;
+            uniMajorSelect.innerHTML = '<option value="">先选择学院</option>';
+            uniMajorSelect.disabled = true;
+            uniSubjectSelect.innerHTML = '<option value="">全部课程</option>';
+
+            if (!universityCode) return;
+
+            try {
+                const response = await fetch(`${API_BASE}/api/universities/${universityCode}/faculties?country=${countryCode}`);
+                const data = await response.json();
+
+                if (data.success && data.faculties) {
+                    data.faculties.forEach(fac => {
+                        const option = document.createElement('option');
+                        option.value = fac.code;
+                        option.textContent = `${fac.zh_name} (${fac.code})`;
+                        uniFacultySelect.appendChild(option);
+                    });
+                    uniFacultySelect.disabled = false;
+                }
+            } catch (error) {
+                console.error('加载学院列表失败:', error);
+            }
+        });
+
+        // Load majors when faculty changes
+        uniFacultySelect.addEventListener('change', async function() {
+            const universityCode = uniUniversitySelect.value;
+            const facultyCode = this.value;
+            const countryCode = uniCountrySelect.value;
+
+            uniMajorSelect.innerHTML = '<option value="">全部专业</option>';
+            uniMajorSelect.disabled = !facultyCode;
+            uniSubjectSelect.innerHTML = '<option value="">全部课程</option>';
+
+            if (!facultyCode) return;
+
+            try {
+                const response = await fetch(`${API_BASE}/api/universities/${universityCode}/faculties/${facultyCode}/majors?country=${countryCode}`);
+                const data = await response.json();
+
+                if (data.success && data.majors) {
+                    data.majors.forEach(major => {
+                        const option = document.createElement('option');
+                        option.value = major.code;
+                        option.textContent = `${major.zh_name} (${major.code})`;
+                        uniMajorSelect.appendChild(option);
+                    });
+                    uniMajorSelect.disabled = false;
+                }
+            } catch (error) {
+                console.error('加载专业列表失败:', error);
+            }
+        });
+
+        // Load subjects when major changes
+        uniMajorSelect.addEventListener('change', async function() {
+            const universityCode = uniUniversitySelect.value;
+            const facultyCode = uniFacultySelect.value;
+            const majorCode = this.value;
+            const countryCode = uniCountrySelect.value;
+            const year = document.getElementById('uni-year').value;
+            const semester = document.getElementById('uni-semester').value;
+
+            uniSubjectSelect.innerHTML = '<option value="">全部课程</option>';
+
+            if (!majorCode) return;
+
+            try {
+                let url = `${API_BASE}/api/universities/${universityCode}/faculties/${facultyCode}/majors/${majorCode}/subjects?country=${countryCode}`;
+                if (year) url += `&year=${year}`;
+                if (semester) url += `&semester=${semester}`;
+
+                const response = await fetch(url);
+                const data = await response.json();
+
+                if (data.success && data.subjects) {
+                    data.subjects.forEach(subj => {
+                        const option = document.createElement('option');
+                        option.value = subj.code;
+                        option.textContent = `${subj.zh_name} (第${subj.year}学年, ${subj.credits}学分)`;
+                        uniSubjectSelect.appendChild(option);
+                    });
+                }
+            } catch (error) {
+                console.error('加载课程列表失败:', error);
+            }
+        });
+
+        // Also reload subjects when year/semester changes
+        document.getElementById('uni-year').addEventListener('change', function() {
+            uniMajorSelect.dispatchEvent(new Event('change'));
+        });
+
+        document.getElementById('uni-semester').addEventListener('change', function() {
+            uniMajorSelect.dispatchEvent(new Event('change'));
+        });
+
+        // University Search
+        document.getElementById('university-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+
+            // Remove empty fields
+            Object.keys(data).forEach(key => {
+                if (data[key] === '' || data[key] === null) {
+                    delete data[key];
+                }
+            });
+
+            // Show loading
+            document.getElementById('uni-loading').classList.add('active');
+            document.getElementById('uni-results').classList.remove('active');
+
+            try {
+                const response = await fetch(`${API_BASE}/api/search_university`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+                displayResults('uni', result);
+            } catch (error) {
+                displayError('uni', error.message);
+            } finally {
+                document.getElementById('uni-loading').classList.remove('active');
+            }
+        });
+
+        // Vocational Education Logic
+        const vocSkillAreaSelect = document.getElementById('voc-skill-area');
+        const vocProgramSelect = document.getElementById('voc-program');
+
+        // Load skill areas on page load
+        async function loadSkillAreas() {
+            try {
+                const response = await fetch(`${API_BASE}/api/vocational/skill_areas?country=ID`);
+                const data = await response.json();
+
+                if (data.success && data.skill_areas) {
+                    data.skill_areas.forEach(area => {
+                        const option = document.createElement('option');
+                        option.value = area.code;
+                        option.textContent = `${area.icon} ${area.zh_name}`;
+                        vocSkillAreaSelect.appendChild(option);
+                    });
+                }
+            } catch (error) {
+                console.error('加载技能领域失败:', error);
+            }
+        }
+
+        // Load programs when skill area changes
+        vocSkillAreaSelect.addEventListener('change', async function() {
+            const skillArea = this.value;
+            const countryCode = document.getElementById('voc-country').value;
+
+            vocProgramSelect.innerHTML = '<option value="">全部课程</option>';
+
+            if (!skillArea) return;
+
+            try {
+                const response = await fetch(`${API_BASE}/api/vocational/${skillArea}/programs?country=${countryCode}`);
+                const data = await response.json();
+
+                if (data.success && data.programs) {
+                    data.programs.forEach(prog => {
+                        const option = document.createElement('option');
+                        option.value = prog.code;
+                        option.textContent = `${prog.zh_name} (${prog.provider}, ${prog.duration})`;
+                        vocProgramSelect.appendChild(option);
+                    });
+                }
+            } catch (error) {
+                console.error('加载课程列表失败:', error);
+            }
+        });
+
+        // Vocational Search
+        document.getElementById('vocational-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+
+            // Remove empty fields
+            Object.keys(data).forEach(key => {
+                if (data[key] === '' || data[key] === null) {
+                    delete data[key];
+                }
+            });
+
+            // Show loading
+            document.getElementById('voc-loading').classList.add('active');
+            document.getElementById('voc-results').classList.remove('active');
+
+            try {
+                const response = await fetch(`${API_BASE}/api/search_vocational`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+                displayResults('voc', result);
+            } catch (error) {
+                displayError('voc', error.message);
+            } finally {
+                document.getElementById('voc-loading').classList.remove('active');
+            }
+        });
+
+        // Display Results
+        function displayResults(type, result) {
+            const resultsContainer = document.getElementById(`${type}-results`);
+
+            if (!result.success) {
+                displayError(type, result.message || '搜索失败');
+                return;
+            }
+
+            let html = '<div class="results-header">';
+
+            // Context info (for university and vocational)
+            if (result.context) {
+                html += '<div class="context-box">';
+                html += '<div class="context-title">📋 搜索上下文信息</div>';
+                html += '<div class="context-info">';
+
+                if (type === 'uni' && result.context) {
+                    if (result.context.university) {
+                        html += `<div class="context-item">
+                            <div class="context-label">大学</div>
+                            <div class="context-value">${result.context.university.zh_name}</div>
+                        </div>`;
+                    }
+                    if (result.context.faculty) {
+                        html += `<div class="context-item">
+                            <div class="context-label">学院</div>
+                            <div class="context-value">${result.context.faculty.zh_name}</div>
+                        </div>`;
+                    }
+                    if (result.context.major) {
+                        html += `<div class="context-item">
+                            <div class="context-label">专业</div>
+                            <div class="context-value">${result.context.major.zh_name}</div>
+                        </div>`;
+                    }
+                    if (result.context.subject) {
+                        html += `<div class="context-item">
+                            <div class="context-label">课程</div>
+                            <div class="context-value">${result.context.subject.zh_name}</div>
+                        </div>`;
+                    }
+                } else if (type === 'voc' && result.context) {
+                    if (result.context.skill_area) {
+                        html += `<div class="context-item">
+                            <div class="context-label">技能领域</div>
+                            <div class="context-value">${result.context.skill_area.icon} ${result.context.skill_area.zh_name}</div>
+                        </div>`;
+                    }
+                    if (result.context.program) {
+                        const prog = result.context.program;
+                        html += `<div class="context-item">
+                            <div class="context-label">培训课程</div>
+                            <div class="context-value">${prog.zh_name}</div>
+                        </div>`;
+                        html += `<div class="context-item">
+                            <div class="context-label">提供商</div>
+                            <div class="context-value">${prog.provider}</div>
+                        </div>`;
+                        html += `<div class="context-item">
+                            <div class="context-label">时长</div>
+                            <div class="context-value">${prog.duration}</div>
+                        </div>`;
+                    }
+                }
+
+                html += '</div></div>';
+            }
+
+            // Search query
+            if (result.k12_search_query || result.university_search_query || result.vocational_search_query) {
+                const query = result.k12_search_query || result.university_search_query || result.vocational_search_query;
+                html += `<div style="margin-top: 15px; padding: 10px; background: #f0f0f0; border-radius: 8px;">
+                    <strong>🔍 搜索查询:</strong> ${query}
+                </div>`;
+            }
+
+            // Stats
+            html += '<div class="results-stats" style="margin-top: 20px;">';
+            html += `<div class="stat-item">
+                <div class="stat-label">搜索结果</div>
+                <div class="stat-value">${result.total_results || 0} 条</div>
+            </div>`;
+            html += '</div></div>';
+
+            // Results
+            html += '<div class="results-content">';
+
+            if (result.results && result.results.length > 0) {
+                result.results.forEach((item, index) => {
+                    html += '<div class="result-card">';
+                    html += `<div class="result-title">${index + 1}. ${item.title || '无标题'}</div>`;
+
+                    if (item.url) {
+                        html += `<div class="result-url">🔗 ${item.url}</div>`;
+                    }
+
+                    if (item.snippet) {
+                        html += `<div class="result-snippet">${item.snippet}</div>`;
+                    }
+
+                    if (item.metadata) {
+                        html += '<div class="result-metadata">';
+                        Object.entries(item.metadata).forEach(([key, value]) => {
+                            html += `<span class="metadata-tag">${key}: ${value}</span>`;
+                        });
+                        html += '</div>';
+                    }
+
+                    html += '</div>';
+                });
+            } else {
+                html += '<div class="empty-state">';
+                html += '<div class="empty-icon">🔍</div>';
+                html += '<div class="empty-text">未找到相关结果，请尝试其他关键词或筛选条件</div>';
+                html += '</div>';
+            }
+
+            html += '</div>';
+
+            resultsContainer.innerHTML = html;
+            resultsContainer.classList.add('active');
+        }
+
+        // Display Error
+        function displayError(type, message) {
+            const resultsContainer = document.getElementById(`${type}-results`);
+
+            let html = '<div class="error-message">';
+            html += '<div class="error-title">❌ 搜索出错</div>';
+            html += `<div class="error-text">${message}</div>`;
+            html += '</div>';
+
+            resultsContainer.innerHTML = html;
+            resultsContainer.classList.add('active');
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            loadCountries();
+            loadUniversities();
+            loadSkillAreas();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+# 部署包排除文件列表
+# 以下文件和目录不会被包含在部署包中
+
+# Python 虚拟环境
+venv/
+evaluation/venv/
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Git 相关
+.git/
+.gitignore
+
+# 日志文件
+logs/
+*.log
+web_app.pid
+
+# 测试覆盖率报告
+htmlcov/
+.coverage
+.coverage.*
+
+# IDE 和编辑器
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# 临时文件和缓存
+.pytest_cache/
+.mcp.json
+.playwright-mcp/
+outputs/
+todos/
+
+# 开发文档（保留部署文档）
+# 测试报告
+TEST_REPORT*.md
+ITERATION_*.md
+FINAL_*.md
+MCP_*.md
+AGENT_*.md
+SYSTEM_*.md
+PLAYWRIGHT_*.md
+COMPREHENSIVE_*.md
+ULTIMATE_*.md
+EXHAUSTIVE_*.md
+ABSOLUTE_*.md
+
+# 备份文件
+*_backup.*
+*_before_*
+
+# 测试视频
+test_videos/
+
+# 环境配置（使用模板）
+.env
+.env.no_proxy
+
+# 数据库文件（可重新生成）
+*.db
+*.db-journal
+
+# 大文件（搜索历史）
+search_history.json
+
+# 内部文档
+CLAUDE.md
+PLAN_*.md
+REPORTS_INDEX.md
+REFACTORING_*.md
+TASKS_*.md

@@ -1,0 +1,62 @@
+{
+  "timestamp": "2026-01-05T22:11:12.714593",
+  "total": 9,
+  "passed": 1,
+  "failed": 8,
+  "results": [
+    {
+      "test": "主页加载",
+      "success": true,
+      "message": "0.67s",
+      "timestamp": "2026-01-05T22:08:11.228613"
+    },
+    {
+      "test": "搜索功能",
+      "success": false,
+      "message": "Locator.select_option: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"#country\")\n    - locator resolved to <select required=\"\" id=\"country\" name=\"country\">…</select>\n  - attempting select option action\n    2 × waiting for element to be visible and enabled\n      - did not find some options\n    - retrying select option action\n    - waiting 20ms\n    2 × waiting for element to be visible and enabled\n      - did not find some options\n    - retrying select option action\n      - waiting 100ms\n    59 × waiting for element to be visible and enabled\n       - did not find some options\n     - retrying select option action\n       - waiting 500ms\n",
+      "timestamp": "2026-01-05T22:08:41.260082"
+    },
+    {
+      "test": "知识点概览",
+      "success": false,
+      "message": "Page.screenshot: Timeout 30000ms exceeded.\nCall log:\n  - taking page screenshot\n  - waiting for fonts to load...\n  - fonts loaded\n",
+      "timestamp": "2026-01-05T22:09:12.670503"
+    },
+    {
+      "test": "Debug日志",
+      "success": false,
+      "message": "Locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"button:has-text(\\\"🐛 Debug日志\\\")\")\n",
+      "timestamp": "2026-01-05T22:09:42.677358"
+    },
+    {
+      "test": "评估报告",
+      "success": false,
+      "message": "按钮不存在",
+      "timestamp": "2026-01-05T22:09:42.682893"
+    },
+    {
+      "test": "添加国家",
+      "success": false,
+      "message": "Locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"#addCountryBtn\")\n",
+      "timestamp": "2026-01-05T22:10:12.687613"
+    },
+    {
+      "test": "刷新配置",
+      "success": false,
+      "message": "Locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"#refreshCountryBtn\")\n",
+      "timestamp": "2026-01-05T22:10:42.693769"
+    },
+    {
+      "test": "选择框",
+      "success": false,
+      "message": "Page.select_option: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"#country\")\n",
+      "timestamp": "2026-01-05T22:11:12.699354"
+    },
+    {
+      "test": "结果按钮",
+      "success": false,
+      "message": "无按钮",
+      "timestamp": "2026-01-05T22:11:12.706435"
+    }
+  ]
+}

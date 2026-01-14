@@ -1,0 +1,121 @@
+{
+  "request_id": "00582243",
+  "timestamp": "2026-01-06T01:01:14.966187+00:00",
+  "video_url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+  "video_metadata": {
+    "title": "Rick Astley - Never Gonna Give You Up (Official Video) (4K Remaster)",
+    "description": "The official video for “Never Gonna Give You Up” by Rick Astley. \n\nNever: The Autobiography 📚 OUT NOW! \nFollow this link to get your copy and listen to Rick’s ‘Never’ playlist ❤️ #RickAstleyNever\nhttps://linktr.ee/rickastleynever\n\n“Never Gonna Give You Up” was a global smash on its release in July 1987, topping the charts in 25 countries including Rick’s native UK and the US Billboard Hot 100.  It also won the Brit Award for Best single in 1988. Stock Aitken and Waterman wrote and produced the t",
+    "duration": 213,
+    "upload_date": "20091025",
+    "view_count": 1729346628,
+    "like_count": 18716698,
+    "channel": "Rick Astley",
+    "channel_id": "UCuAXFkgsw1L7xaCfnd5JJOw",
+    "resolution": "640x360",
+    "max_resolution_height": 1080,
+    "fps": 25,
+    "format": "18 - 640x360 (360p)",
+    "ext": "mp4",
+    "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "tags": [
+      "rick astley",
+      "Never Gonna Give You Up",
+      "nggyu",
+      "never gonna give you up lyrics",
+      "rick rolled",
+      "Rick Roll",
+      "rick astley official",
+      "rickrolled",
+      "Fortnite song",
+      "Fortnite event",
+      "Fortnite dance",
+      "fortnite never gonna give you up",
+      "rick roll",
+      "rickrolling",
+      "rick rolling",
+      "never gonna give you up",
+      "80s music",
+      "rick astley new",
+      "animated video",
+      "rickroll",
+      "meme songs",
+      "never gonna give u up lyrics",
+      "Rick Astley 2022",
+      "never gonna let you down",
+      "animated",
+      "rick rolls 2022",
+      "never gonna give you up karaoke"
+    ],
+    "categories": [
+      "Music"
+    ],
+    "thumbnail": "https://i.ytimg.com/vi/dQw4w9WgXcQ/maxresdefault.jpg"
+  },
+  "evaluation": {
+    "overall_score": 0.0,
+    "visual_quality": {
+      "tech_score": 10.0,
+      "design_score": 5.0,
+      "combined_score": 8.0,
+      "details": "硬指标: 支持1080p及以上 (1080p); 软指标: Vision AI分析失败: API 请求异常: HTTPSConnectionPool(host='space.ai-builders.com', port=443): Max retries exceeded with url: /backend/v1/chat/completions?debug=true (Caused by ProxyError('Unable to connect to proxy', RemoteDisconnected('Remote end closed connection without response')))"
+    },
+    "relevance": {
+      "score": 0,
+      "details": "视频内容完全无关，是Rick Astley的歌曲歌词，没有任何讲解数字理解、心算、估算或自然数到100的直观知识点。未覆盖任何学习目标关键概念，全为无关内容，不适合任何年级教育目的。"
+    },
+    "pedagogy": {
+      "score": 0,
+      "details": "The provided subtitles are lyrics from a song ('Never Gonna Give You Up'), not educational content. There is no introduction, concepts, examples, summary, questions, emphasis on key points, or interactive elements. This fails all evaluation dimensions for teaching quality."
+    },
+    "metadata": {
+      "score": 3.8,
+      "details": "观看次数: 1,729,346,628 (得分5.0), 点赞率: 1.08% (得分2.0)"
+    },
+    "breakdown": {
+      "visual_quality": 0.2,
+      "relevance": 0.4,
+      "pedagogy": 0.3,
+      "metadata": 0.1
+    },
+    "matched_knowledge_point": {
+      "id": "MAT-1-01-01",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Fase A (Kelas 1-2)",
+      "subject": "Matematika",
+      "chapter_title": "Bilangan",
+      "topic_title_id": "Pemahaman Intuisi bilangan cacah sampai 100",
+      "topic_title_cn": "100以内自然数的数感",
+      "learning_objective": "学生能够灵活地理解数字，对数量有直观的感受，能够进行心算、估算和对计算结果进行合理预测，并将数字符号与具体数量和顺序联系起来。",
+      "mapping_tags": [
+        "Intuisi Bilangan",
+        "Bilangan Cacah",
+        "Number Sense",
+        "Estimasi Bilangan",
+        "Membilang"
+      ]
+    },
+    "error": "'visual_weight'"
+  },
+  "matched_knowledge_point": {
+    "id": "MAT-1-01-01",
+    "curriculum_standard": "Kurikulum Merdeka",
+    "grade_level": "Fase A (Kelas 1-2)",
+    "subject": "Matematika",
+    "chapter_title": "Bilangan",
+    "topic_title_id": "Pemahaman Intuisi bilangan cacah sampai 100",
+    "topic_title_cn": "100以内自然数的数感",
+    "learning_objective": "学生能够灵活地理解数字，对数量有直观的感受，能够进行心算、估算和对计算结果进行合理预测，并将数字符号与具体数量和顺序联系起来。",
+    "mapping_tags": [
+      "Intuisi Bilangan",
+      "Bilangan Cacah",
+      "Number Sense",
+      "Estimasi Bilangan",
+      "Membilang"
+    ]
+  },
+  "search_params": {
+    "country": "ID",
+    "grade": "1",
+    "subject": "Matematika"
+  }
+}

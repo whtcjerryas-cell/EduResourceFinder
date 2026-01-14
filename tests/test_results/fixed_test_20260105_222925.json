@@ -1,0 +1,50 @@
+{
+  "timestamp": "2026-01-05T22:29:25.499018",
+  "total": 7,
+  "passed": 3,
+  "failed": 4,
+  "results": [
+    {
+      "test": "页面初始化",
+      "success": true,
+      "message": "所有下拉框已加载",
+      "timestamp": "2026-01-05T22:28:19.056928"
+    },
+    {
+      "test": "搜索功能",
+      "success": false,
+      "message": "搜索结果未显示",
+      "timestamp": "2026-01-05T22:29:20.797817"
+    },
+    {
+      "test": "Debug日志",
+      "success": true,
+      "message": "正常",
+      "timestamp": "2026-01-05T22:29:22.402429"
+    },
+    {
+      "test": "添加国家",
+      "success": false,
+      "message": "模态框未打开",
+      "timestamp": "2026-01-05T22:29:23.447142"
+    },
+    {
+      "test": "刷新配置",
+      "success": true,
+      "message": "正常",
+      "timestamp": "2026-01-05T22:29:25.488601"
+    },
+    {
+      "test": "知识点概览",
+      "success": false,
+      "message": "链接不存在",
+      "timestamp": "2026-01-05T22:29:25.494724"
+    },
+    {
+      "test": "结果交互",
+      "success": false,
+      "message": "无搜索结果",
+      "timestamp": "2026-01-05T22:29:25.497503"
+    }
+  ]
+}

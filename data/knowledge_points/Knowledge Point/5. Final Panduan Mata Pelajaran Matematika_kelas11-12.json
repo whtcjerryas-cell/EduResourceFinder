@@ -1,0 +1,221 @@
+{
+  "metadata": {
+    "source_file": "/Users/shmiwanghao8/Desktop/education/Indonesia/syllabus/5. Final Panduan Mata Pelajaran Matematika_12_09_2025_Revisi 3_202-221.pdf",
+    "total_pages": 20,
+    "total_knowledge_points": 12,
+    "check_iterations": 2,
+    "has_remaining_issues": true
+  },
+  "knowledge_points": [
+    {
+      "id": "MAT-11-01-01",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 11 & 12",
+      "subject": "Matematika",
+      "chapter_title": "Bilangan",
+      "topic_title_id": "Pemahaman Konsep Barisan dan Deret (Aritmetika dan Geometri)",
+      "topic_title_cn": "数列与级数的概念理解（等差与等比）",
+      "learning_objective": "学生能够从具体情境中建立对数列和级数的理解，区分等差与等比数列/级数，识别数列模式，并理解等差数列与线性函数、等比数列与指数函数之间的关系。",
+      "mapping_tags": [
+        "Barisan Aritmetika",
+        "Deret Geometri",
+        "Pola Bilangan",
+        "Fungsi Linear",
+        "Fungsi Eksponen"
+      ]
+    },
+    {
+      "id": "MAT-11-01-02",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 11 & 12",
+      "subject": "Matematika",
+      "chapter_title": "Bilangan",
+      "topic_title_id": "Penerapan dan Pemodelan Barisan dan Deret pada Pinjaman dan Investasi dengan Bunga Majemuk dan Anuitas",
+      "topic_title_cn": "数列与级数在贷款和投资中的应用与建模（复利与年金）",
+      "learning_objective": "学生能够将等差和等比数列/级数的概念应用于金融情境，如复利和年金。学生应能探究利率、支付周期等参数在模型中的影响，并利用这些模型做出明智的财务决策。",
+      "mapping_tags": [
+        "Bunga Majemuk",
+        "Anuitas",
+        "Literasi Finansial",
+        "Investasi",
+        "Pinjaman"
+      ]
+    },
+    {
+      "id": "MAT-11-02-01",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 11 & 12",
+      "subject": "Matematika",
+      "chapter_title": "Aljabar dan Fungsi",
+      "topic_title_id": "Penyelesaian masalah yang berkaitan dengan Fungsi Invers dan Fungsi Komposisi",
+      "topic_title_cn": "解决与反函数和复合函数相关的问题",
+      "learning_objective": "学生能够理解反函数和复合函数的概念，并将其应用于解决实际问题，例如在生产、经济和计算机科学领域中对过程进行建模。",
+      "mapping_tags": [
+        "Fungsi Invers",
+        "Fungsi Komposisi",
+        "Invers Fungsi",
+        "Domain Fungsi",
+        "Range Fungsi"
+      ]
+    },
+    {
+      "id": "MAT-11-02-02",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 11 & 12",
+      "subject": "Matematika",
+      "chapter_title": "Aljabar dan Fungsi",
+      "topic_title_id": "Penyelesaian masalah yang berkaitan dengan Transformasi Fungsi",
+      "topic_title_cn": "解决与函数变换相关的问题",
+      "learning_objective": "学生能够理解函数的变换（平移、反射、伸缩）如何影响其图形，并利用函数变换来建模和解决现实世界中的问题，例如优化成本或预测弹道轨迹。",
+      "mapping_tags": [
+        "Transformasi Fungsi",
+        "Translasi",
+        "Refleksi",
+        "Dilatasi",
+        "Pergeseran Grafik"
+      ]
+    },
+    {
+      "id": "MAT-11-02-03",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 11 & 12",
+      "subject": "Matematika",
+      "chapter_title": "Aljabar dan Fungsi",
+      "topic_title_id": "Operasi dan Faktorisasi Polinomial",
+      "topic_title_cn": "多项式的运算与因式分解",
+      "learning_objective": "学生能够进行多项式的加、减、乘、除运算，并应用余数定理和因式定理解多项式方程。",
+      "mapping_tags": [
+        "Polinomial",
+        "Suku Banyak",
+        "Teorema Sisa",
+        "Teorema Faktor",
+        "Pembagian Polinomial"
+      ]
+    },
+    {
+      "id": "MAT-11-03-01",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 11 & 12",
+      "subject": "Matematika",
+      "chapter_title": "Geometri",
+      "topic_title_id": "Identifikasi Hubungan Antara Unsur-unsur Lingkaran",
+      "topic_title_cn": "识别圆中各元素之间的关系",
+      "learning_objective": "学生能够识别并证明圆心角、圆周角、弧、弦和切线之间的关系，并应用这些性质解决问题。",
+      "mapping_tags": [
+        "Sudut Pusat",
+        "Sudut Keliling",
+        "Garis Singgung Lingkaran",
+        "Tali Busur",
+        "Juring Lingkaran"
+      ]
+    },
+    {
+      "id": "MAT-11-03-02",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 11 & 12",
+      "subject": "Matematika",
+      "chapter_title": "Geometri",
+      "topic_title_id": "Operasi Vektor dan Aplikasinya dalam Geometri",
+      "topic_title_cn": "向量运算及其在几何中的应用",
+      "learning_objective": "学生能够理解向量的概念，进行向量的加、减、数乘和点积运算，并将其应用于解决几何问题，如证明平行和垂直关系。",
+      "mapping_tags": [
+        "Vektor",
+        "Penjumlahan Vektor",
+        "Perkalian Skalar",
+        "Dot Product",
+        "Proyeksi Vektor"
+      ]
+    },
+    {
+      "id": "MAT-11-04-01",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 11 & 12",
+      "subject": "Matematika",
+      "chapter_title": "Analisis Data dan Peluang",
+      "topic_title_id": "Penyelidikan statistika untuk mengidentifikasi asosiasi antara dua variabel dan regresi linear",
+      "topic_title_cn": "通过统计调查识别两个变量间的关联性与线性回归",
+      "learning_objective": "学生能够使用统计工具（如散点图）来调查两个变量之间的关联，区分关联关系和因果关系，并能确定和解释最佳拟合线（线性回归）。",
+      "mapping_tags": [
+        "Regresi Linear",
+        "Diagram Pencar",
+        "Korelasi",
+        "Asosiasi Variabel",
+        "Hubungan Sebab-Akibat"
+      ]
+    },
+    {
+      "id": "MAT-11-04-02",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 11 & 12",
+      "subject": "Matematika",
+      "chapter_title": "Analisis Data dan Peluang",
+      "topic_title_id": "Distribusi Peluang dan Peluang Bersyarat",
+      "topic_title_cn": "概率分布与条件概率",
+      "learning_objective": "学生能够理解离散随机变量的概念，解释和使用概率分布（特别是二项分布）来解决问题，并计算条件概率。",
+      "mapping_tags": [
+        "Distribusi Peluang",
+        "Variabel Acak",
+        "Distribusi Binomial",
+        "Peluang Bersyarat",
+        "Kejadian Saling Bebas"
+      ]
+    },
+    {
+      "id": "MAT-11-05-01",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 11 & 12",
+      "subject": "Matematika",
+      "chapter_title": "Kalkulus",
+      "topic_title_id": "Konsep Limit Fungsi Aljabar",
+      "topic_title_cn": "代数函数的极限概念",
+      "learning_objective": "学生能够直观地理解函数极限的概念，并能使用代数方法（如替换、因式分解、乘以共轭式）来确定函数在某一点的极限。",
+      "mapping_tags": [
+        "Limit Fungsi",
+        "Limit Tak Hingga",
+        "Kekontinuan Fungsi",
+        "Limit Sisi Kiri",
+        "Limit Sisi Kanan"
+      ]
+    },
+    {
+      "id": "MAT-11-05-02",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 11 & 12",
+      "subject": "Matematika",
+      "chapter_title": "Kalkulus",
+      "topic_title_id": "Konsep dan Aplikasi Turunan Fungsi",
+      "topic_title_cn": "导数的概念与应用",
+      "learning_objective": "学生能够使用极限的概念来定义导数，掌握基本函数的求导法则（如幂函数、乘法法则、除法法则），并应用导数解决与变化率、最优化和函数图形绘制相关的问题。",
+      "mapping_tags": [
+        "Turunan Fungsi",
+        "Diferensial",
+        "Laju Perubahan",
+        "Nilai Maksimum dan Minimum",
+        "Garis Singgung Kurva"
+      ]
+    },
+    {
+      "id": "MAT-11-05-03",
+      "curriculum_standard": "Kurikulum Merdeka",
+      "grade_level": "Kelas 11 & 12",
+      "subject": "Matematika",
+      "chapter_title": "Kalkulus",
+      "topic_title_id": "Konsep dan Aplikasi Integral Tak Tentu dan Tentu",
+      "topic_title_cn": "不定积分与定积分的概念与应用",
+      "learning_objective": "学生能够理解积分作为反导数（不定积分）和面积（定积分）的概念，掌握基本函数的积分法则，并应用定积分计算曲线下的面积。",
+      "mapping_tags": [
+        "Integral Tak Tentu",
+        "Integral Tentu",
+        "Anti Turunan",
+        "Luas Daerah",
+        "Teorema Dasar Kalkulus"
+      ]
+    }
+  ],
+  "issues": [
+    "覆盖率问题：数据遗漏了 Kurikulum Merdeka 11年级数学中的核心章节，例如代数 (Aljabar) 中的“多项式 (Polinomial)”和几何 (Geometri) 中的“向量 (Vektor)”。",
+    "mapping_tags 质量问题 (ID: MAT-11-02-01)：标签 'f(g(x))' 和 'g(f(x))' 是数学符号而非印尼语核心词汇，降低了可搜索性。",
+    "mapping_tags 质量问题 (ID: MAT-11-04-01)：标签 'Best-fit line' 是英文，应使用印尼语术语 'Garis Regresi'。",
+    "覆盖率不足：数据遗漏了 Kurikulum Merdeka 高中阶段（Fase F）数学课程中的重要领域。具体缺失内容包括：1. 'Analisis Data dan Peluang' 章节下的 'Peluang' (概率论) 部分，例如概率分布和条件概率。2. 'Kalkulus' (微积分) 整个章节，包括极限、导数和积分。"
+  ]
+}
