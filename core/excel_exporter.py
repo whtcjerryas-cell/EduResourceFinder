@@ -103,14 +103,24 @@ class ExcelExporter:
             ws.cell(row=row_idx, column=2, value=llm_call.function)
             ws.cell(row=row_idx, column=3, value=llm_call.provider)
             ws.cell(row=row_idx, column=4, value=llm_call.timestamp)
-            ws.cell(row=row_idx, column=5, value=llm_call.prompt)  # 🔥 完整提示词
-            ws.cell(row=row_idx, column=6, value=llm_call.input_data)
-            ws.cell(row=row_idx, column=7, value=llm_call.output_data)  # 🔥 完整输出
+
+            # 🔥 完整提示词 (启用换行)
+            cell_prompt = ws.cell(row=row_idx, column=5, value=llm_call.prompt)
+            cell_prompt.alignment = self.Alignment(wrap_text=True, vertical="top")
+
+            # 🔥 完整输入信息 (启用换行)
+            cell_input = ws.cell(row=row_idx, column=6, value=llm_call.input_data)
+            cell_input.alignment = self.Alignment(wrap_text=True, vertical="top")
+
+            # 🔥 完整输出 (启用换行)
+            cell_output = ws.cell(row=row_idx, column=7, value=llm_call.output_data)
+            cell_output.alignment = self.Alignment(wrap_text=True, vertical="top")
+
             ws.cell(row=row_idx, column=8, value=llm_call.execution_time)
             ws.cell(row=row_idx, column=9, value=llm_call.tokens_used or "")
             ws.cell(row=row_idx, column=10, value=llm_call.cost or "")
         
-        # 自动调整列宽
+        # 自动调整列宽（不限制最大宽度，完整展示内容）
         for col in ws.columns:
             max_length = 0
             column = col[0].column_letter
@@ -122,7 +132,9 @@ class ExcelExporter:
                             max_length = cell_length
                 except:
                     pass
-            adjusted_width = min(max_length + 2, 80)
+            # 🔥 不限制最大宽度，完整展示所有内容
+            # 对于非常长的文本，Excel会自动处理
+            adjusted_width = max_length + 2
             ws.column_dimensions[column].width = adjusted_width
         
         logger.info(f"✅ 模型输入输出表已创建: {len(search_log.llm_calls)}行")
@@ -171,7 +183,7 @@ class ExcelExporter:
             additional_info_json = json.dumps(result.additional_info, ensure_ascii=False, indent=2)
             ws.cell(row=row_idx, column=9, value=additional_info_json)
         
-        # 自动调整列宽
+        # 自动调整列宽（不限制最大宽度，完整展示内容）
         for col in ws.columns:
             max_length = 0
             column = col[0].column_letter
@@ -183,7 +195,8 @@ class ExcelExporter:
                             max_length = cell_length
                 except:
                     pass
-            adjusted_width = min(max_length + 2, 100)
+            # 🔥 不限制最大宽度，完整展示所有内容
+            adjusted_width = max_length + 2
             ws.column_dimensions[column].width = adjusted_width
         
         # 设置文本换行

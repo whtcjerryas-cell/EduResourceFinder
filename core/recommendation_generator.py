@@ -41,13 +41,23 @@ class LLMRecommendationGenerator:
         self._init_llm_client()
 
     def _init_llm_client(self):
-        """延迟初始化LLM客户端"""
+        """延迟初始化LLM客户端（优先使用 Internal API 的 gemini-2.5-pro）"""
         try:
-            from llm_client import get_llm_client
-            self.llm_client = get_llm_client()
-            logger.info("✅ 推荐理由生成器初始化成功")
+            from llm_client import InternalAPIClient
+            self.llm_client = InternalAPIClient(model_type='vision')  # 使用 gemini-2.5-pro
+            self.model_name = 'gemini-2.5-pro'
+            logger.info(f"✅ 推荐理由生成器初始化成功，使用 Internal API (gemini-2.5-pro)")
         except Exception as e:
-            logger.warning(f"⚠️ LLM客户端初始化失败: {str(e)}")
+            # 降级到 AI Builders API
+            try:
+                from llm_client import AIBuildersAPIClient
+                self.llm_client = AIBuildersAPIClient()
+                self.model_name = 'deepseek'
+                logger.warning(f"⚠️ Internal API 初始化失败: {str(e)}，使用 AI Builders API (deepseek)")
+            except Exception as e2:
+                logger.error(f"❌ LLM客户端初始化失败: {str(e2)}")
+                self.llm_client = None
+                self.model_name = 'none'
 
     def generate_recommendations_batch(
         self,

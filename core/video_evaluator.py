@@ -180,7 +180,8 @@ class VideoEvaluator:
         audio_path: Optional[str] = None,
         transcript: Optional[str] = None,
         knowledge_point: Optional[Dict[str, Any]] = None,
-        knowledge_points: Optional[List[Dict[str, Any]]] = None  # 新增：知识点列表（用于自动匹配）
+        knowledge_points: Optional[List[Dict[str, Any]]] = None,  # 新增：知识点列表（用于自动匹配）
+        log_collector=None  # 新增：搜索日志收集器（可选），用于记录模型调用
     ) -> Dict[str, Any]:
         """
         评估视频内容
@@ -227,7 +228,10 @@ class VideoEvaluator:
         logger.info(f"\n{'='*80}")
         logger.info(f"🎬 开始评估视频内容")
         logger.info(f"{'='*80}")
-        
+
+        # 设置日志收集器（用于记录模型调用）
+        self.log_collector = log_collector
+
         # 自动匹配知识点（如果提供了知识点列表但没有指定知识点）
         matched_knowledge_point = knowledge_point  # 初始化
         if not knowledge_point and knowledge_points:
@@ -549,6 +553,10 @@ class VideoEvaluator:
                 # 限制图片数量（避免请求过大）
                 frames_to_analyze = frames_paths[:6]  # 最多分析6张
                 
+                # 记录开始时间
+                import time
+                start_time = time.time()
+
                 # 调用视觉API
                 result = self.vision_client.analyze_images(
                     image_paths=frames_to_analyze,
@@ -558,10 +566,42 @@ class VideoEvaluator:
                     max_tokens=500,
                     temperature=0.3
                 )
-                
+
+                # 计算执行时间
+                execution_time = time.time() - start_time
+
                 if result["success"]:
                     response_text = result["response"]
-                    
+
+                    # ✅ 新增：记录视觉模型调用到日志收集器
+                    if self.log_collector:
+                        try:
+                            # 构建输入信息摘要
+                            input_summary = f"分析了 {len(frames_to_analyze)} 张视频截图"
+                            if frames_paths:
+                                input_summary += f"\n图片路径: {frames_paths[0]}"
+                                if len(frames_paths) > 1:
+                                    input_summary += f" 等{len(frames_to_analyze)}张"
+
+                            # 截取输出结果（限制长度）
+                            output_summary = response_text[:500] + "..." if len(response_text) > 500 else response_text
+
+                            # 记录LLM调用
+                            self.log_collector.record_llm_call(
+                                model_name="gemini-2.5-pro (Vision)",
+                                function="视频视觉评估",
+                                provider="Internal API",
+                                prompt=user_prompt[:200] + "..." if len(user_prompt) > 200 else user_prompt,
+                                input_data=input_summary,
+                                output_data=output_summary,
+                                execution_time=execution_time,
+                                tokens_used=None,  # Vision API暂未返回token数
+                                cost=None
+                            )
+                            logger.info("        [📝 日志] 视觉模型调用已记录到搜索日志")
+                        except Exception as log_err:
+                            logger.warning(f"        [⚠️ 警告] 记录视觉模型调用失败: {log_err}")
+
                     # 保存 token 使用情况（如果可用）
                     usage = result.get("usage")
                     if usage:

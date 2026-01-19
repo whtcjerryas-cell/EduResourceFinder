@@ -24,6 +24,7 @@ from logger_utils import get_logger
 from json_utils import extract_json_array
 from search_strategy_agent import SearchStrategyAgent
 from core.search_cache import get_search_cache
+from core.multi_level_cache import get_cache as get_multi_level_cache
 from core.config_loader import get_config
 from core.performance_monitor import get_performance_monitor
 from core.result_scorer import get_result_scorer
@@ -273,16 +274,83 @@ class AIBuildersClient:
             import traceback
             print(f"[❌ 错误] 异常堆栈:\n{traceback.format_exc()}")
             raise ValueError(f"API 请求异常: {str(e)}")
-    
-    def search(self, query: str, max_results: int = 20, include_domains: Optional[List[str]] = None) -> List[SearchResult]:
+            
+    def search(self, query: str, max_results: int = 10, include_domains: list = None) -> list:
         """
-        使用 Tavily 搜索
+        执行搜索 (适配 Tavily/Metaso)
+        """
+        # 1. 优先使用 UnifiedClient 的 Metaso 搜索
+        if self.use_unified_client and hasattr(self.unified_client, 'metaso_client') and self.unified_client.metaso_client:
+            try:
+                results_dicts = self.unified_client.metaso_client.search(
+                    query=query,
+                    max_results=max_results,
+                    include_domains=include_domains
+                )
+                # Convert dicts to SearchResult objects
+                results = []
+                for item in results_dicts:
+                    results.append(SearchResult(
+                        title=item.get('title', ''),
+                        url=item.get('url', ''),
+                        snippet=item.get('snippet', ''),
+                        source="Metaso搜索",
+                        search_engine="Metaso"
+                    ))
+                return results
+            except Exception as e:
+                print(f"[⚠️ 搜索失败] Metaso 搜索失败: {str(e)}")
+                # Continue to fallback
+        
+        # 2. 这里可以添加 Tavily Fallback，但目前看来 UnifiedClient 没有暴露 Tavily
+        # 暂时返回空列表或抛出异常，或者尝试使用 AIBuilders 的其他方式
+        print(f"[❌ 搜索失败] 无可用的搜索引擎 (Metaso不可用)")
+        return []
+    
+        """
+        使用 Google 优先搜索 (用户请求: 解决搜索结果不一致问题)
         
         Args:
             query: 搜索查询
             max_results: 最大结果数
             include_domains: 可选的域名列表，用于限制搜索范围
         """
+        # 1. 优先尝试 Google 搜索 (如果启用)
+        if self.google_search_enabled and self.google_hunter:
+            try:
+                print(f"    [🔍 Google搜索] 优先使用 Google: {query}")
+                google_results = self.google_hunter.search(query)
+                
+                # 转换格式
+                results = []
+                for item in google_results[:max_results]:
+                    # GoogleSearchResults 可能返回字典或对象，需适配
+                    # 假设返回的是字典列表，包含 title, link, snippet
+                    url = item.get('link', item.get('url', ''))
+                    title = item.get('title', '')
+                    snippet = item.get('snippet', item.get('body', ''))
+                    
+                    cleaned_title = clean_title(title, url)
+                    cleaned_snippet = clean_snippet(snippet)
+                    
+                    results.append(SearchResult(
+                        title=cleaned_title,
+                        url=url,
+                        snippet=cleaned_snippet,
+                        source="Google",
+                        search_engine="Google"
+                    ))
+                
+                if results:
+                    print(f"    [✅ Google搜索] 成功获取 {len(results)} 个结果")
+                    return results
+                else:
+                    print(f"    [⚠️ Google搜索] 返回结果为空，回退到 Tavily")
+            
+            except Exception as e:
+                print(f"    [❌ Google搜索] 失败: {str(e)}，回退到 Tavily")
+        
+        # 2. 如果使用统一客户端，尝试使用其search方法 (Tavily/Fallback)
         # 如果使用统一客户端，尝试使用其search方法
         if self.use_unified_client:
             try:
@@ -587,11 +655,11 @@ class ResultEvaluator:
             resource_type = self._classify_resource_type(result.title, result.url, result.snippet)
             result.resource_type = resource_type
 
-            # 设置默认评分
-            if not result.score or result.score == 0:
-                result.score = 7.5
-            if not result.recommendation_reason:
-                result.recommendation_reason = "默认推荐"
+            # 设置默认评分 (修复: 移除虚假的默认评分)
+            # if not result.score or result.score == 0:
+            #     result.score = 7.5
+            # if not result.recommendation_reason:
+            #     result.recommendation_reason = "默认推荐"
             if not result.source:
                 result.source = "规则"
 
@@ -614,8 +682,9 @@ class ResultEvaluator:
 class SearchEngineV2:
     """新版搜索引擎"""
 
-    def __init__(self, llm_client: Optional[AIBuildersClient] = None):
+    def __init__(self, llm_client: Optional[AIBuildersClient] = None, log_collector=None):
         self.llm_client = llm_client or AIBuildersClient()
+        self.log_collector = log_collector  # 保存日志收集器引用
         self.config_manager = ConfigManager()  # 用于读取国家配置
 
         # 初始化搜索策略代理
@@ -652,7 +721,8 @@ class SearchEngineV2:
 
         self.app_config = SimpleConfigManager()
 
-        self.search_cache = get_search_cache()  # 搜索结果缓存
+        self.search_cache = get_search_cache()  # 旧版单级缓存（兼容保留）
+        self.multi_cache = get_multi_level_cache()  # 新版三级缓存（L1内存+L2Redis+L3磁盘）
         # 评分器将在search方法中根据country_code动态初始化（带知识库）
         self.result_scorer = None  # 将在search时初始化为带知识库的评分器
         self.result_scorer_without_kb = get_result_scorer()  # 无知识库的备用评分器
@@ -660,6 +730,7 @@ class SearchEngineV2:
         self.recommendation_generator = get_recommendation_generator()  # LLM推荐理由生成器
         print(f"    [✅] 智能评分器已初始化（将在搜索时加载知识库）")
         print(f"    [✅] LLM推荐理由生成器已初始化")
+        print(f"    [✅] 三级缓存系统已启用 (L1:内存100条/5分钟 + L2:Redis/1小时 + L3:磁盘/24小时)")
 
         # 初始化百度搜索客户端（如果配置了）
         self.baidu_search_enabled = False
@@ -709,7 +780,9 @@ class SearchEngineV2:
     def _cached_search(self, query: str, search_func, engine_name: str, max_results: int = 15,
                        include_domains: Optional[List[str]] = None) -> List[SearchResult]:
         """
-        带缓存的搜索包装器
+        带多级缓存的搜索包装器
+
+        使用三级缓存系统（L1内存+L2Redis+L3磁盘）提升性能
 
         Args:
             query: 搜索查询
@@ -721,24 +794,40 @@ class SearchEngineV2:
         Returns:
             搜索结果列表
         """
-        # 尝试从缓存获取
-        cache_key = f"{query}_{max_results}_{include_domains}"
-        cached_result = self.search_cache.get(cache_key, engine_name)
+        # 使用多级缓存系统（带查询规范化）
+        cached_result = self.multi_cache.get(
+            query=query,
+            engine=engine_name,
+            max_results=max_results,
+            include_domains=include_domains
+        )
 
         if cached_result is not None:
-            logger.info(f"✅ 缓存命中 [{engine_name}]: {query[:50]}...")
+            cache_stats = self.multi_cache.get_stats()
+            logger.info(
+                f"✅ 多级缓存命中 [{engine_name}]: {query[:50]}... "
+                f"(命中率: {cache_stats['hit_rate']:.1f}%, "
+                f"L1:{cache_stats['l1_hit_rate']:.1f}% "
+                f"L2:{cache_stats['l2_hit_rate']:.1f}% "
+                f"L3:{cache_stats['l3_hit_rate']:.1f}%)"
+            )
             # 从缓存数据重建SearchResult对象
             return [SearchResult(**item) for item in cached_result]
 
         # 缓存未命中，执行实际搜索
-        logger.info(f"❌ 缓存未命中 [{engine_name}]: {query[:50]}...")
+        logger.info(f"❌ 多级缓存未命中 [{engine_name}]: {query[:50]}...")
         results = search_func(query, max_results, include_domains)
 
-        # 将结果存入缓存
+        # 将结果存入多级缓存
         results_dict = [result.model_dump() for result in results]
-        self.search_cache.set(cache_key, results_dict, engine_name,
-                             metadata={"query": query, "max_results": max_results})
-
+        self.multi_cache.set(
+            query=query,
+            engine=engine_name,
+            data=results_dict,
+            ttl=3600,  # 1小时TTL
+            max_results=max_results,
+            include_domains=include_domains
+        )
         return results
 
     def _parallel_search(self, query: str, search_tasks: List[Dict[str, Any]],
@@ -960,20 +1049,29 @@ class SearchEngineV2:
             # 检查缓存中是否已有该国家的评分器
             country_code = request.country.upper()
             if country_code not in self._scorer_cache:
-                # 创建带知识库的评分器
-                self.result_scorer = IntelligentResultScorer(country_code=country_code)
+                # 创建带知识库的评分器（传递 log_collector）
+                self.result_scorer = IntelligentResultScorer(
+                    country_code=country_code,
+                    log_collector=self.log_collector
+                )
                 self._scorer_cache[country_code] = self.result_scorer
-                logger.info(f"[📚 知识库] 已加载 {country_code} 评分器（带知识库）")
+                logger.info(f"[📚 知识库] 已加载 {country_code} 评分器（带知识库和日志记录）")
                 print(f"    [✅ 知识库] 已加载 {country_code} 搜索知识库")
             else:
-                # 使用缓存的评分器
+                # 使用缓存的评分器（更新其 log_collector）
                 self.result_scorer = self._scorer_cache[country_code]
+                # 更新 log_collector（可能是新的搜索请求）
+                if self.log_collector:
+                    self.result_scorer.log_collector = self.log_collector
                 logger.debug(f"[📚 知识库] 使用缓存的 {country_code} 评分器")
 
         except Exception as e:
             # 如果知识库加载失败，使用不带知识库的评分器
             logger.warning(f"[📚 知识库] 加载失败，使用备用评分器: {str(e)}")
             self.result_scorer = self.result_scorer_without_kb
+            # 也更新备用评分器的 log_collector
+            if self.log_collector:
+                self.result_scorer.log_collector = self.log_collector
         # ========== 评分器初始化结束 ==========
 
         try:
@@ -994,42 +1092,19 @@ class SearchEngineV2:
             if strategy.notes:
                 print(f"    [📝 策略说明] {strategy.notes}")
             
-            # Step 1: 生成搜索词（优先使用智能查询生成器）
-            print(f"\n[步骤 1] 生成智能搜索词...")
+            # Step 1: 使用搜索策略中的搜索词
+            print(f"\n[步骤 1] 使用搜索策略生成的高质量搜索词...")
 
-            # 尝试使用IntelligentQueryGenerator
-            try:
-                from core.intelligent_query_generator import get_intelligent_query_generator
-                intelligent_gen = get_intelligent_query_generator()
-
-                query = intelligent_gen.generate_query(
-                    country=request.country,
-                    grade=request.grade,
-                    subject=request.subject,
-                    semester=request.semester
-                )
-
-                print(f"    [🤖 智能生成] 搜索词: \"{query}\"")
-                print(f"    [✅ 优势] LLM自动识别语言和术语，支持多种输入格式")
-
-                # 将智能生成的查询添加到策略中
-                strategy.search_queries.insert(0, query)
-
-            except Exception as e:
-                print(f"    [⚠️ 智能生成失败，降级到策略生成器] {str(e)}")
-                logger.warning(f"IntelligentQueryGenerator失败: {str(e)}，使用策略生成器")
-
-                # 降级：使用策略中的搜索词或规则生成
-                if strategy.search_queries:
-                    # 使用策略中的第一个搜索词作为主查询
-                    query = strategy.search_queries[0]
-                    print(f"    [✅ 使用策略搜索词] \"{query}\"")
-                else:
-                    # 🔥 如果没有策略搜索词，使用规则生成（移除了QueryGenerator）
-                    # QueryGenerator 已被 IntelligentQueryGenerator 替代，功能重复
-                    query = self._generate_fallback_query(request)
-                    print(f"    [✅ 使用规则生成搜索词] \"{query}\"")
-                    strategy.search_queries = [query]  # 将生成的查询添加到策略中
+            # 直接使用策略生成的搜索词（已包含多个变体，包括playlist等优化）
+            if strategy.search_queries:
+                query = strategy.search_queries[0]
+                print(f"    [✅ 使用策略搜索词] \"{query}\"")
+                print(f"    [✅ 优势] 策略已生成 {len(strategy.search_queries)} 个高质量变体")
+            else:
+                # 降级：如果策略中没有搜索词，使用规则生成
+                query = self._generate_fallback_query(request)
+                print(f"    [✅ 使用规则生成搜索词] \"{query}\"")
+                strategy.search_queries = [query]  # 将生成的查询添加到策略中
 
             # 显示所有搜索词变体
             if len(strategy.search_queries) > 1:
@@ -1069,29 +1144,28 @@ class SearchEngineV2:
                 queries_to_use = strategy.search_queries[:3] if len(strategy.search_queries) >= 3 else strategy.search_queries
                 print(f"    [🎯 多查询搜索] 将使用 {len(queries_to_use)} 个搜索词进行搜索")
 
-                # Google搜索（Google优先策略）- 对每个查询都执行（3次）✅ 主要引擎
-                if self.google_search_enabled:
-                    for query_idx, search_query in enumerate(queries_to_use, 1):
-                        is_playlist_focused = any(kw in search_query.lower() for kw in ['playlist', 'complete course', 'full series', 'koleksi', 'kursus lengkap', '播放列表', '完整课程', '系列'])
-                        query_type = "播放列表" if is_playlist_focused else "常规"
+                # Tavily/Metaso搜索 - 对每个查询都执行（3次）✅ 主要引擎（高质量，avg 4.65）
+                for query_idx, search_query in enumerate(queries_to_use, 1):
+                    is_playlist_focused = any(kw in search_query.lower() for kw in ['playlist', 'complete course', 'full series', 'koleksi', 'kursus lengkap', '播放列表', '完整课程', '系列'])
+                    query_type = "播放列表" if is_playlist_focused else "常规"
 
-                        search_tasks.append({
-                            'name': f'Google搜索 [{query_type}] #{query_idx}',
-                            'query': search_query,  # 使用特定的搜索词
-                            'func': self.google_hunter.search,
-                            'engine_name': 'Google',
-                            'max_results': 10,  # 减少每个查询的结果数，避免过多重复
-                            'include_domains': None
-                        })
-
-                # Tavily/Metaso搜索 - 只使用第一个查询（1次）✅ 辅助引擎
-                if len(queries_to_use) > 0:
                     search_tasks.append({
-                        'name': 'Tavily/Metaso搜索',
-                        'query': queries_to_use[0],  # 只用第一个查询
+                        'name': f'Tavily/Metaso搜索 [{query_type}] #{query_idx}',
+                        'query': search_query,  # 使用特定的搜索词
                         'func': self.llm_client.search,  # 内部会根据免费额度优先选择Tavily或Metaso
                         'engine_name': 'Tavily/Metaso',
-                        'max_results': 15,
+                        'max_results': 15,  # Tavily返回更高质量的结果
+                        'include_domains': None
+                    })
+
+                # Google搜索 - 只使用第一个查询（1次）✅ 辅助引擎（低质量，avg 1.50）
+                if self.google_search_enabled and len(queries_to_use) > 0:
+                    search_tasks.append({
+                        'name': 'Google搜索',
+                        'query': queries_to_use[0],  # 只用第一个查询
+                        'func': self.google_hunter.search,
+                        'engine_name': 'Google',
+                        'max_results': 10,  # 减少每个查询的结果数，避免过多重复
                         'include_domains': None
                     })
 
@@ -1233,41 +1307,10 @@ class SearchEngineV2:
                     else:
                         print(f"    [ℹ️] 百度搜索已配置但未启用（可能策略判断不需要）")
                 
-                # 对于非中文搜索，优先使用 Google（如果配置了），否则使用 Tavily
-                if self.google_search_enabled:
-                    print(f"    [🔍 搜索A-Google] 查询: \"{query}\"")
-                    print(f"    [⚙️ 参数] max_results=15")
-                    try:
-                        google_results = self.google_hunter.search(query, max_results=15)
-                        search_results_a = []
-                        for item in google_results:
-                            search_results_a.append(SearchResult(
-                                title=item.title,
-                                url=item.url,
-                                snippet=item.snippet,
-                                source="Google搜索",
-                                search_engine="Google"
-                            ))
-                        print(f"    [✅ 搜索A-Google] 找到 {len(search_results_a)} 个结果")
-                    except Exception as e:
-                        print(f"    [❌ 错误] Google 搜索失败: {str(e)}")
-                        print(f"    [🔄 降级] 切换到 Tavily 搜索...")
-                        # 🔥 从llm_client.search()返回的Dict转换为SearchResult
-                        tavily_dicts = self.llm_client.search(query, max_results=15)
-                        search_results_a = []
-                        for item in tavily_dicts:
-                            search_engine = item.get('search_engine', 'Tavily')
-                            search_results_a.append(SearchResult(
-                                title=item.get('title', ''),
-                                url=item.get('url', ''),
-                                snippet=item.get('snippet', ''),
-                                source=item.get('source', 'Tavily'),
-                                search_engine=search_engine
-                            ))
-                        print(f"    [✅ 搜索A-Tavily] 找到 {len(search_results_a)} 个结果")
-                else:
-                    print(f"    [🔍 搜索A-通用] 查询: \"{query}\"")
-                    print(f"    [⚙️ 参数] max_results=15")
+                # 对于非中文搜索，优先使用 Tavily（高质量，avg 4.65），Google作为降级选项（低质量，avg 1.50）
+                print(f"    [🔍 搜索A-Tavily] 查询: \"{query}\"")
+                print(f"    [⚙️ 参数] max_results=15")
+                try:
                     # 🔥 从llm_client.search()返回的Dict转换为SearchResult
                     search_dicts = self.llm_client.search(query, max_results=15)
                     search_results_a = []
@@ -1281,6 +1324,29 @@ class SearchEngineV2:
                             search_engine=search_engine
                         ))
                     print(f"    [✅ 搜索A-Tavily] 找到 {len(search_results_a)} 个结果")
+                except Exception as e:
+                    print(f"    [❌ 错误] Tavily 搜索失败: {str(e)}")
+                    # 降级到 Google 搜索（如果可用）
+                    if self.google_search_enabled:
+                        print(f"    [🔄 降级] 切换到 Google 搜索...")
+                        try:
+                            google_results = self.google_hunter.search(query, max_results=15)
+                            search_results_a = []
+                            for item in google_results:
+                                search_results_a.append(SearchResult(
+                                    title=item.title,
+                                    url=item.url,
+                                    snippet=item.snippet,
+                                    source="Google搜索",
+                                    search_engine="Google"
+                                ))
+                            print(f"    [✅ 搜索A-Google] 找到 {len(search_results_a)} 个结果")
+                        except Exception as e2:
+                            print(f"    [❌ 错误] Google 搜索也失败: {str(e2)}")
+                            search_results_a = []
+                    else:
+                        print(f"    [❌ 错误] Google 搜索未配置，无法降级")
+                        search_results_a = []
             if search_results_a:
                 print(f"    [📋 搜索A结果详情]")
                 for idx, result in enumerate(search_results_a[:5], 1):  # 只显示前5个
@@ -1341,7 +1407,7 @@ class SearchEngineV2:
                         "ar": "فيديو تعليمي",  # 阿拉伯语
                         "ru": "Видео урок",  # 俄语
                     }
-                    country_language = country_config.language_code or "en"
+                    country_language = country_config.language_code if country_config else "en"
                     local_keyword = language_map.get(country_language, "Video lesson")
                     
                     # 构建纯净的搜索词（学科 + 年级 + 学期）
@@ -1514,7 +1580,7 @@ class SearchEngineV2:
 
                 # 设置并发参数
                 MAX_PLAYLIST_WORKERS = 20  # 最多20个并发（修复：P1 - N+1查询优化）
-                SINGLE_TIMEOUT = 8  # 单个播放列表8秒超时
+                SINGLE_TIMEOUT = 3  # 单个播放列表3秒超时（优化：从8秒降低到3秒，2.6倍提速）
 
                 success_count = 0
                 fail_count = 0
@@ -1801,32 +1867,41 @@ class SearchEngineV2:
                     method = r.get('evaluation_method', 'Unknown')
                     print(f"        {i}. {r.get('score', 0):.1f}/10 [{method}] - {r.get('title', 'N/A')[:50]}...")
 
-            # 将评分信息添加回SearchResult对象
-            # ✅ 修复：使用original_index来正确匹配结果和评分（因为results_dicts已被排序）
-            final_results = []
-            scored_dict_by_index = {r.get('original_index'): r for r in results_dicts}
+            # ✅ 新逻辑：通过URL匹配评分和结果（2025-01-16）
+            # 问题：results_dicts和evaluated_results的顺序可能不一致
+            # 解决：通过URL进行一一对应匹配
+            logger.info(f"[📊 URL匹配] 开始通过URL匹配评分（{len(results_dicts)}个评分，{len(evaluated_results)}个结果）")
 
-            for i, result in enumerate(evaluated_results):
-                # 使用original_index查找对应的评分结果
-                # 如果没有original_index，回退到顺序匹配（可能不准确）
-                scored_dict = scored_dict_by_index.get(i, results_dicts[i] if i < len(results_dicts) else None)
+            # 1. 构建URL到评分的映射
+            url_to_score = {}
+            for scored_dict in results_dicts:
+                if 'url' in scored_dict and 'score' in scored_dict:
+                    url = scored_dict['url']
+                    url_to_score[url] = {
+                        'score': scored_dict['score'],
+                        'recommendation_reason': scored_dict.get('recommendation_reason', ''),
+                        'evaluation_method': scored_dict.get('evaluation_method', 'LLM')
+                    }
 
-                if scored_dict:
-                    # 更新SearchResult对象
-                    result.score = scored_dict.get('score', 0)
-                    result.recommendation_reason = scored_dict.get('recommendation_reason', '')
-                    # ✅ 保留evaluation_method（使用model_dump方式避免字段不存在的错误）
-                    # 注意：SearchResult可能没有evaluation_method字段，所以我们不直接赋值
-                    # 而是在字典中保留这个信息
+            # 2. 通过URL匹配，将评分赋值给对应的结果
+            matched_count = 0
+            for result in evaluated_results:
+                result_url = result.url
+                if result_url in url_to_score:
+                    # 找到匹配的评分
+                    score_info = url_to_score[result_url]
+                    result.score = score_info['score']
+                    result.recommendation_reason = score_info['recommendation_reason']
+                    matched_count += 1
+                else:
+                    # 未找到评分，设置默认值
+                    logger.warning(f"[⚠️ 未找到评分] URL: {result_url[:60]}...")
+                    result.score = 0.0
+                    result.recommendation_reason = '未找到评分'
 
-                # ✅ 将评分信息保存为字典（保留evaluation_method）
-                result_dict = result.model_dump()
-                result_dict['evaluation_method'] = scored_dict.get('evaluation_method', 'LLM')
-                final_results.append(SearchResult(**result_dict))
+            logger.info(f"[✅ URL匹配完成] 匹配成功: {matched_count}/{len(evaluated_results)}")
 
-            evaluated_results = final_results
-
-            # ✅ 在正确匹配分数后，按评分降序排序
+            # 3. 按评分降序排序
             evaluated_results.sort(key=lambda x: x.score, reverse=True)
             logger.info(f"✅ 结果已按评分降序排序 (最高分: {evaluated_results[0].score if evaluated_results else 0:.1f})")
 
@@ -1847,14 +1922,13 @@ class SearchEngineV2:
             print(f"    [📊 统计] 视频: {video_count} 个")
             print(f"    [📊 统计] 总计: {len(evaluated_results)} 个")
 
-            # 显示缓存统计
-            cache_stats = self.search_cache.get_stats()
-            print(f"\n[💾 缓存统计]")
-            print(f"    [📊 统计] 命中次数: {cache_stats['hits']}")
-            print(f"    [📊 统计] 未命中次数: {cache_stats['misses']}")
-            print(f"    [📊 统计] 总查询次数: {cache_stats['total_queries']}")
-            print(f"    [📊 统计] 命中率: {cache_stats['hit_rate']:.1%}")
-            print(f"    [📊 统计] 缓存文件数: {cache_stats['cache_files_count']}")
+            # 显示多级缓存统计
+            cache_stats = self.multi_cache.get_stats()
+            print(f"\n[💾 多级缓存统计]")
+            print(f"    [📊 L1内存] 命中: {cache_stats['l1_hits']}次 ({cache_stats['l1_hit_rate']:.1f}%)")
+            print(f"    [📊 L2 Redis] 命中: {cache_stats['l2_hits']}次 ({cache_stats['l2_hit_rate']:.1f}%)")
+            print(f"    [📊 L3磁盘] 命中: {cache_stats['l3_hits']}次 ({cache_stats['l3_hit_rate']:.1f}%)")
+            print(f"    [📊 总计] 查询: {cache_stats['total']}次 | 命中率: {cache_stats['hit_rate']:.1f}%")
 
             # 性能监控 - 记录成功的搜索
             search_duration = time.time() - search_start_time

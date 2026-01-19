@@ -61,6 +61,27 @@ from flask_cors import CORS
 app = Flask(__name__)
 
 # ==============================================================================
+# 注册蓝图模块（架构优化：拆分God Object）
+# ==============================================================================
+try:
+    from routes import BLUEPRINT_CONFIG
+    logger.info("🚀 开始注册蓝图模块...")
+
+    for name, config in BLUEPRINT_CONFIG.items():
+        try:
+            init_func = config['init_func']
+            url_prefix = config['url_prefix']
+            bp = init_func()  # 初始化蓝图
+            app.register_blueprint(bp, url_prefix=url_prefix)
+            logger.info(f"  ✅ 已注册蓝图: {name} (前缀: {url_prefix or '/'})")
+        except Exception as e:
+            logger.error(f"  ❌ 蓝图 {name} 注册失败: {str(e)[:200]}")
+
+    logger.info("✅ 蓝图注册完成")
+except ImportError as e:
+    logger.warning(f"⚠️ 蓝图模块导入失败: {str(e)}，将使用web_app.py中的路由")
+
+# ==============================================================================
 # 安全的 CORS 配置（修复：CORS Misconfiguration - P1 Critical）
 # ==============================================================================
 # 从环境变量读取允许的域名，默认为 localhost 开发环境
@@ -719,15 +740,16 @@ def search():
         from concurrent.futures import ThreadPoolExecutor, TimeoutError as FuturesTimeoutError
         search_start_time = time.time()
         
-        # 添加整体超时保护（150秒）- 使用ThreadPoolExecutor实现真正的超时中断
-        SEARCH_TIMEOUT = 150
+        # 添加整体超时保护（200秒）- 使用ThreadPoolExecutor实现真正的超时中断
+        SEARCH_TIMEOUT = 200  # 🔧 增加到200秒以支持LLM评估
         response = None
         search_engine_instance = None  # 用于内存清理
         
         def execute_search():
             """在独立线程中执行搜索"""
             nonlocal search_engine_instance
-            search_engine_instance = ReloadedSearchEngineV2()
+            # 传递 log_collector 给搜索引擎
+            search_engine_instance = ReloadedSearchEngineV2(log_collector=log_collector)
             try:
                 result = search_engine_instance.search(search_request)
                 return result
@@ -1159,7 +1181,8 @@ def analyze_video():
             audio_path=process_result.get('audio_path'),
             transcript=process_result.get('transcript'),
             knowledge_point=matched_knowledge_point,
-            knowledge_points=knowledge_points
+            knowledge_points=knowledge_points,
+            log_collector=log_collector  # 传递日志收集器，用于记录视觉模型调用
         )
         
         # 保存评估结果
