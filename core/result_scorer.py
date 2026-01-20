@@ -18,6 +18,7 @@ from functools import lru_cache
 from typing import Dict, List, Any, Optional
 from logger_utils import get_logger
 from llm_client import InternalAPIClient, AIBuildersAPIClient
+from config.llm_config import get_batch_evaluation_params
 
 logger = get_logger('result_scorer')
 
@@ -123,6 +124,27 @@ class IntelligentResultScorer:
         }
         key_str = json.dumps(key_data, sort_keys=True)
         return hashlib.md5(key_str.encode()).hexdigest()
+
+    def _safe_extract_metadata(self, metadata: Optional[Dict], field: str, max_len: int = 50) -> str:
+        """
+        安全提取元数据字段
+
+        Args:
+            metadata: 元数据字典
+            field: 字段名（会自动尝试 field_name 作为后备）
+            max_len: 最大长度（默认50）
+
+        Returns:
+            提取的字符串值，如果未找到则返回空字符串
+        """
+        if not metadata:
+            return ''
+
+        # 尝试获取字段（支持 field 和 field_name 两种形式）
+        value = metadata.get(field) or metadata.get(f'{field}_name', '')
+
+        # 转换为字符串并限制长度
+        return str(value)[:max_len] if value else ''
 
     # ==============================================================================
     # 黑名单过滤（安全功能，保留）
@@ -235,9 +257,9 @@ class IntelligentResultScorer:
 - 使用自然、流畅的语言解释评分原因
 """
 
-            # 获取元数据
-            safe_grade = (metadata.get('grade', metadata.get('grade_name', '')) if metadata else '')[:50]
-            safe_subject = (metadata.get('subject', metadata.get('subject_name', '')) if metadata else '')[:50]
+            # 获取元数据（使用辅助方法）
+            safe_grade = self._safe_extract_metadata(metadata, 'grade')
+            safe_subject = self._safe_extract_metadata(metadata, 'subject')
             safe_query = query[:200] if query else ''
 
             # 构建用户prompt
@@ -274,13 +296,16 @@ class IntelligentResultScorer:
             import time
             start_time = time.time()
 
+            # 获取LLM参数（使用配置管理）
+            llm_params = get_batch_evaluation_params(max_results=len(batch))
+
             # 调用LLM（使用 lru_cache 自动缓存）
             response = _call_llm_with_cache(
                 cache_key=cache_key,
                 system_prompt=system_prompt,
                 user_prompt=user_prompt,
-                max_tokens=8000,
-                temperature=0.3
+                max_tokens=llm_params['max_tokens'],
+                temperature=llm_params['temperature']
             )
 
             # 计算执行时间
@@ -289,10 +314,10 @@ class IntelligentResultScorer:
             # ✅ 记录LLM调用到日志收集器
             if self.log_collector:
                 try:
-                    # 构建输入信息摘要
+                    # 构建输入信息摘要（使用辅助方法）
                     input_summary = f"批量评估 {len(batch)} 个搜索结果\n"
-                    input_summary += f"目标年级: {(metadata.get('grade', metadata.get('grade_name', '')) if metadata else '')}\n"
-                    input_summary += f"目标学科: {(metadata.get('subject', metadata.get('subject_name', '')) if metadata else '')}"
+                    input_summary += f"目标年级: {self._safe_extract_metadata(metadata, 'grade')}\n"
+                    input_summary += f"目标学科: {self._safe_extract_metadata(metadata, 'subject')}"
 
                     # 截取输出结果（限制长度）
                     output_summary = response[:500] + "..." if len(response) > 500 else response
@@ -385,11 +410,11 @@ class IntelligentResultScorer:
             title = result.get('title', '')
             url = result.get('url', '')
             snippet = result.get('snippet', '')
-            
-            # 获取元数据
-            safe_grade = (metadata.get('grade', metadata.get('grade_name', '')) if metadata else '')[:50]
-            safe_subject = (metadata.get('subject', metadata.get('subject_name', '')) if metadata else '')[:50]
-            
+
+            # 获取元数据（使用辅助方法）
+            safe_grade = self._safe_extract_metadata(metadata, 'grade')
+            safe_subject = self._safe_extract_metadata(metadata, 'subject')
+
             system_prompt = """你是一个精准的教育资源评分专家。请严格按照以下规则评分：
 
 【🚨 评分维度】（总分10分）
@@ -430,12 +455,15 @@ class IntelligentResultScorer:
             import time
             start_time = time.time()
 
+            # 获取LLM参数（使用配置管理）
+            llm_params = get_batch_evaluation_params(max_results=1)
+
             # 调用LLM
             response = self.llm_client.call_llm(
                 prompt=user_prompt,
                 system_prompt=system_prompt,
-                max_tokens=8000,  # [修复] 2026-01-20: 从1500增加到8000，避免响应被截断
-                temperature=0.3
+                max_tokens=llm_params['max_tokens'],
+                temperature=llm_params['temperature']
             )
 
             # 计算执行时间

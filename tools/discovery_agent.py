@@ -17,6 +17,82 @@ from json_utils import extract_and_parse_json, extract_json_object, extract_json
 # 初始化日志记录器
 logger = get_logger('discovery_agent')
 
+
+# ============================================================================
+# 统一的国家名称到ISO代码映射
+# ============================================================================
+COUNTRY_NAME_TO_CODE = {
+    # Asia
+    "indonesia": "ID",
+    "philippines": "PH",
+    "japan": "JP",
+    "china": "CN",
+    "malaysia": "MY",
+    "singapore": "SG",
+    "india": "IN",
+    "thailand": "TH",
+    "vietnam": "VN",
+    "south korea": "KR",
+    "korea": "KR",
+    "taiwan": "TW",
+    "hong kong": "HK",
+
+    # Middle East
+    "iraq": "IQ",
+    "iran": "IR",
+    "saudi arabia": "SA",
+    "uae": "AE",
+    "united arab emirates": "AE",
+    "egypt": "EG",
+    "syria": "SY",
+    "jordan": "JO",
+    "lebanon": "LB",
+    "israel": "IL",
+    "palestine": "PS",
+    "kuwait": "KW",
+    "qatar": "QA",
+    "bahrain": "BH",
+    "oman": "OM",
+    "yemen": "YE",
+    "turkey": "TR",
+
+    # Americas
+    "united states": "US",
+    "usa": "US",
+    "canada": "CA",
+    "brazil": "BR",
+    "mexico": "MX",
+    "argentina": "AR",
+    "chile": "CL",
+    "colombia": "CO",
+    "peru": "PE",
+
+    # Europe
+    "united kingdom": "GB",
+    "uk": "GB",
+    "spain": "ES",
+    "france": "FR",
+    "germany": "DE",
+    "italy": "IT",
+    "russia": "RU",
+
+    # Africa
+    "south africa": "ZA",
+    "nigeria": "NG",
+    "kenya": "KE",
+    "ghana": "GH",
+    "ethiopia": "ET",
+    "morocco": "MA",
+    "algeria": "DZ",
+    "tunisia": "TN",
+    "libya": "LY",
+    "sudan": "SD",
+
+    # Oceania
+    "australia": "AU",
+    "new zealand": "NZ",
+}
+
 # 包装 print 函数，同时写入日志文件
 import builtins
 _original_print = builtins.print
@@ -56,15 +132,28 @@ class CountryProfile(BaseModel):
 
 class CountryDiscoveryAgent:
     """AI 驱动的国家信息调研 Agent"""
-    
+
     def __init__(self, api_token: Optional[str] = None):
         """
         初始化 Discovery Agent
-        
+
         Args:
             api_token: AI Builders API 令牌，如果不提供则从环境变量读取
         """
         self.client = AIBuildersClient(api_token)
+
+    def _get_country_code(self, country_name: str) -> str:
+        """
+        从国家名称获取ISO代码
+
+        Args:
+            country_name: 国家名称
+
+        Returns:
+            ISO国家代码，如果未找到则返回None
+        """
+        # 使用模块级别的统一映射（支持大小写不敏感）
+        return get_country_code_from_name(country_name)
     
     def discover_country_profile(self, country_name: str) -> CountryProfile:
         """
@@ -79,7 +168,14 @@ class CountryDiscoveryAgent:
         print(f"\n{'='*80}")
         print(f"🌍 开始调研国家: {country_name}")
         print(f"{'='*80}\n")
-        
+
+        # 获取国家代码
+        country_code = self._get_country_code(country_name)
+        if country_code:
+            print(f"    [✅] 国家代码: {country_code}")
+        else:
+            print(f"    [⚠️ 警告] 未找到国家 '{country_name}' 的ISO代码，将使用默认搜索设置")
+
         # 步骤 1: 使用 Tavily 搜索该国的 K12 教育体系信息
         print("[步骤 1] 使用 Tavily 搜索国家教育体系信息...")
         search_queries = [
@@ -88,12 +184,13 @@ class CountryDiscoveryAgent:
             f"{country_name} online education platforms edtech",
             f"{country_name} national curriculum subjects local language"
         ]
-        
+
         all_search_results: List[SearchResult] = []
         for query in search_queries:
             try:
                 print(f"    [🔍 搜索] 查询: {query}")
-                results = self.client.search(query, max_results=10)
+                # [修复] 2026-01-20: 传递 country_code 参数
+                results = self.client.search(query, max_results=10, country_code=country_code)
                 all_search_results.extend(results)
                 print(f"    [✅ 找到] {len(results)} 个结果")
             except Exception as e:
@@ -106,11 +203,12 @@ class CountryDiscoveryAgent:
         
         # 步骤 2: 使用 LLM 提取结构化信息
         print("[步骤 2] 使用 LLM 提取结构化信息...")
-        
+
+        # [修复] 2026-01-20: 增加评测结果数量（20→100）
         # 构建搜索结果的上下文
         search_context = "\n\n".join([
             f"标题: {r.title}\nURL: {r.url}\n摘要: {r.snippet[:500]}"
-            for r in all_search_results[:20]  # 只使用前20个结果
+            for r in all_search_results[:100]  # 使用前100个结果进行评测
         ])
         
         # 构建强力的 Prompt，确保提取本地语言
@@ -230,7 +328,7 @@ class CountryDiscoveryAgent:
             llm_response = self.client.call_gemini(
                 prompt=user_prompt,
                 system_prompt=system_prompt,
-                max_tokens=4000,
+                max_tokens=8000,  # [修复] 2026-01-20: 从4000增加到8000，避免截断
                 temperature=0.2  # 使用较低温度以确保准确性
             )
             
@@ -356,11 +454,11 @@ class CountryDiscoveryAgent:
         
         try:
             print("    [🤖 LLM] 调用 AI 进行学科验证...")
-            print(f"    [⚙️ 参数] model=deepseek, max_tokens=1000, temperature=0.2")
+            print(f"    [⚙️ 参数] model=deepseek, max_tokens=8000, temperature=0.2")
             llm_response = self.client.call_llm(
                 prompt=user_prompt,
                 system_prompt=system_prompt,
-                max_tokens=1000,
+                max_tokens=8000,  # [修复] 2026-01-20: 从1000增加到8000，避免截断
                 temperature=0.2,
                 model="deepseek"  # 使用 deepseek 以节省成本
             )
@@ -779,78 +877,20 @@ class CountryDiscoveryAgent:
 
 def get_country_code_from_name(country_name: str) -> str:
     """
-    从国家名称获取国家代码（简单映射）
-    
+    从国家名称获取国家代码（使用统一映射）
+
     Args:
         country_name: 国家名称（英文）
-    
+
     Returns:
         国家代码（ISO 3166-1 alpha-2）
     """
-    # 常见国家映射
-    mapping = {
-        "indonesia": "ID",
-        "philippines": "PH",
-        "japan": "JP",
-        "china": "CN",
-        "united states": "US",
-        "usa": "US",
-        "malaysia": "MY",
-        "singapore": "SG",
-        "india": "IN",
-        "thailand": "TH",
-        "vietnam": "VN",
-        "south korea": "KR",
-        "korea": "KR",
-        "taiwan": "TW",
-        "hong kong": "HK",
-        "australia": "AU",
-        "new zealand": "NZ",
-        "united kingdom": "GB",
-        "uk": "GB",
-        "canada": "CA",
-        "brazil": "BR",
-        "mexico": "MX",
-        "argentina": "AR",
-        "chile": "CL",
-        "colombia": "CO",
-        "peru": "PE",
-        "spain": "ES",
-        "france": "FR",
-        "germany": "DE",
-        "italy": "IT",
-        "russia": "RU",
-        "turkey": "TR",
-        "saudi arabia": "SA",
-        "uae": "AE",
-        "united arab emirates": "AE",
-        "egypt": "EG",
-        "iraq": "IQ",
-        "iran": "IR",
-        "syria": "SY",
-        "jordan": "JO",
-        "lebanon": "LB",
-        "israel": "IL",
-        "palestine": "PS",
-        "kuwait": "KW",
-        "qatar": "QA",
-        "bahrain": "BH",
-        "oman": "OM",
-        "yemen": "YE",
-        "south africa": "ZA",
-        "nigeria": "NG",
-        "kenya": "KE",
-        "ghana": "GH",
-        "ethiopia": "ET",
-        "morocco": "MA",
-        "algeria": "DZ",
-        "tunisia": "TN",
-        "libya": "LY",
-        "sudan": "SD"
-    }
-    
+    # 使用模块级别的统一映射（支持大小写不敏感）
     country_lower = country_name.lower().strip()
-    return mapping.get(country_lower, country_name[:2].upper() if len(country_name) >= 2 else "XX")
+    return COUNTRY_NAME_TO_CODE.get(
+        country_lower,
+        country_name[:2].upper() if len(country_name) >= 2 else "XX"
+    )
 
 
 if __name__ == "__main__":
