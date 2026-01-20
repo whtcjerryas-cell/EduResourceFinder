@@ -1651,18 +1651,24 @@ class SearchEngineV2:
                 print(f"    [🔍 搜索A-Tavily] 查询: \"{query}\"")
                 print(f"    [⚙️ 参数] max_results=30")
                 try:
-                    # 🔥 从llm_client.search()返回的Dict转换为SearchResult
+                    # 🔥 从llm_client.search()返回的Dict或SearchResult转换为SearchResult
                     search_dicts = self.llm_client.search(query, max_results=30, country_code=country_code_upper)
                     search_results_a = []
                     for item in search_dicts:
-                        search_engine = item.get('search_engine', 'Tavily')
-                        search_results_a.append(SearchResult(
-                            title=item.get('title', ''),
-                            url=item.get('url', ''),
-                            snippet=item.get('snippet', ''),
-                            source=item.get('source', 'Tavily'),
-                            search_engine=search_engine
-                        ))
+                        # [修复] 2026-01-20: 处理字典和SearchResult对象两种类型
+                        if isinstance(item, dict):
+                            # 如果是字典，使用.get()方法
+                            search_engine = item.get('search_engine', 'Tavily')
+                            search_results_a.append(SearchResult(
+                                title=item.get('title', ''),
+                                url=item.get('url', ''),
+                                snippet=item.get('snippet', ''),
+                                source=item.get('source', 'Tavily'),
+                                search_engine=search_engine
+                            ))
+                        else:
+                            # 如果是SearchResult对象，直接使用属性访问
+                            search_results_a.append(item)
                     print(f"    [✅ 搜索A-Tavily] 找到 {len(search_results_a)} 个结果")
                 except Exception as e:
                     print(f"    [❌ 错误] Tavily 搜索失败: {str(e)}")
