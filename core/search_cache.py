@@ -47,34 +47,43 @@ class SearchCache:
 
         logger.info(f"✅ 搜索缓存初始化完成: {self.cache_dir}, TTL={ttl_seconds}秒")
 
-    def _generate_cache_key(self, query: str, engine: str = "default") -> str:
+    def _generate_cache_key(self, query: str, engine: str = "default",
+                           max_results: int = 15, include_domains: Optional[List[str]] = None) -> str:
         """
         生成缓存键
 
         Args:
             query: 搜索查询
             engine: 搜索引擎名称
+            max_results: 最大结果数
+            include_domains: 包含的域名列表
 
         Returns:
             缓存键（MD5哈希）
         """
-        # 组合查询和引擎，生成唯一哈希
-        content = f"{engine}:{query}"
+        # 组合查询、引擎、结果数和域名，生成唯一哈希
+        cache_parts = [engine, query, str(max_results)]
+        if include_domains:
+            cache_parts.extend(sorted(include_domains))
+        content = ":".join(cache_parts)
         return hashlib.md5(content.encode('utf-8')).hexdigest()
 
-    def get(self, query: str, engine: str = "default") -> Optional[Dict[str, Any]]:
+    def get(self, query: str, engine: str = "default",
+            max_results: int = 15, include_domains: Optional[List[str]] = None) -> Optional[Dict[str, Any]]:
         """
         获取缓存结果
 
         Args:
             query: 搜索查询
             engine: 搜索引擎名称
+            max_results: 最大结果数
+            include_domains: 包含的域名列表
 
         Returns:
             缓存的结果字典，如果不存在或已过期则返回None
         """
         self.stats["total_queries"] += 1
-        cache_key = self._generate_cache_key(query, engine)
+        cache_key = self._generate_cache_key(query, engine, max_results, include_domains)
         cache_file = self.cache_dir / f"{cache_key}.json"
 
         if not cache_file.exists():
@@ -107,7 +116,9 @@ class SearchCache:
             self.stats["misses"] += 1
             return None
 
-    def set(self, query: str, results: List[Any], engine: str = "default", metadata: Optional[Dict] = None):
+    def set(self, query: str, results: List[Any], engine: str = "default",
+            metadata: Optional[Dict] = None, max_results: int = 15,
+            include_domains: Optional[List[str]] = None):
         """
         设置缓存结果
 
@@ -116,8 +127,10 @@ class SearchCache:
             results: 搜索结果列表
             engine: 搜索引擎名称
             metadata: 额外的元数据
+            max_results: 最大结果数
+            include_domains: 包含的域名列表
         """
-        cache_key = self._generate_cache_key(query, engine)
+        cache_key = self._generate_cache_key(query, engine, max_results, include_domains)
         cache_file = self.cache_dir / f"{cache_key}.json"
 
         cache_data = {
@@ -136,15 +149,18 @@ class SearchCache:
         except Exception as e:
             logger.error(f"保存缓存失败: {str(e)}")
 
-    def invalidate(self, query: str, engine: str = "default"):
+    def invalidate(self, query: str, engine: str = "default",
+                   max_results: int = 15, include_domains: Optional[List[str]] = None):
         """
         使特定查询的缓存失效
 
         Args:
             query: 搜索查询
             engine: 搜索引擎名称
+            max_results: 最大结果数
+            include_domains: 包含的域名列表
         """
-        cache_key = self._generate_cache_key(query, engine)
+        cache_key = self._generate_cache_key(query, engine, max_results, include_domains)
         cache_file = self.cache_dir / f"{cache_key}.json"
 
         if cache_file.exists():

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+from utils.json_parser import JSONParser
 """
 视觉快速评估器 - VisualQuickEvaluator
 基于网页截图的快速教育资源评估系统
@@ -186,7 +187,7 @@ class VisualQuickEvaluator:
 
             # 解析JSON响应
             response_text = result.get('response', '')
-            parsed = self._extract_json(response_text)
+            parsed = JSONParser.extract_json_from_response(response_text)
 
             if parsed:
                 logger.info(f"✅ 语言检测成功: {parsed}")
@@ -251,7 +252,7 @@ class VisualQuickEvaluator:
 
             # 解析JSON响应
             response_text = result.get('response', '')
-            parsed = self._extract_json(response_text)
+            parsed = JSONParser.extract_json_from_response(response_text)
 
             if parsed:
                 logger.info(f"✅ 综合评估成功")
@@ -478,105 +479,3 @@ class VisualQuickEvaluator:
     # JSON解析工具
     # ========================================================================
 
-    def _extract_json(self, response_text: str) -> Optional[Dict]:
-        """
-        从响应文本中提取JSON
-
-        Args:
-            response_text: 模型响应文本
-
-        Returns:
-            解析后的字典，失败返回None
-        """
-        try:
-            # 移除可能的markdown标记
-            text = response_text.strip()
-            if text.startswith('```json'):
-                text = text[7:]
-            if text.startswith('```'):
-                text = text[3:]
-            if text.endswith('```'):
-                text = text[:-3]
-            text = text.strip()
-
-            # 尝试直接解析
-            return json.loads(text)
-
-        except json.JSONDecodeError:
-            # 尝试使用正则表达式提取JSON
-            try:
-                # 查找第一个 { 和最后一个 }
-                start = text.find('{')
-                end = text.rfind('}')
-
-                if start != -1 and end != -1 and end > start:
-                    json_str = text[start:end + 1]
-                    return json.loads(json_str)
-
-            except Exception as e:
-                logger.warning(f"JSON提取失败: {str(e)}")
-
-            return None
-
-
-# ============================================================================
-# 全局实例
-# ============================================================================
-
-_evaluator_instance: Optional[VisualQuickEvaluator] = None
-
-
-def get_visual_quick_evaluator() -> VisualQuickEvaluator:
-    """获取视觉快速评估器实例（单例模式）"""
-    global _evaluator_instance
-    if _evaluator_instance is None:
-        _evaluator_instance = VisualQuickEvaluator()
-    return _evaluator_instance
-
-
-# ============================================================================
-# 测试代码
-# ============================================================================
-
-if __name__ == "__main__":
-    import sys
-
-    if len(sys.argv) < 3:
-        print("用法: python visual_quick_evaluator.py <截图路径> <目标语言>")
-        print("示例: python visual_quick_evaluator.py /path/to/screenshot.png ar")
-        sys.exit(1)
-
-    screenshot_path = sys.argv[1]
-    target_language = sys.argv[2]
-
-    # 创建评估器
-    evaluator = VisualQuickEvaluator()
-
-    # 测试语言检测
-    print("\n=== 测试语言检测 ===")
-    language_result = evaluator.evaluate_language(
-        screenshot_path=screenshot_path,
-        target_language=target_language
-    )
-    print(f"语言检测结果: {json.dumps(language_result, ensure_ascii=False, indent=2)}")
-
-    # 测试综合评估
-    print("\n=== 测试综合评估 ===")
-    comprehensive_result = evaluator.evaluate_comprehensive(
-        screenshot_path=screenshot_path,
-        title="测试视频标题",
-        target_grade="高中一年级",
-        subject="数学"
-    )
-    print(f"综合评估结果: {json.dumps(comprehensive_result, ensure_ascii=False, indent=2)}")
-
-    # 测试完整评估
-    print("\n=== 测试完整评估 ===")
-    full_result = evaluator.evaluate_full(
-        screenshot_path=screenshot_path,
-        title="测试视频标题",
-        target_grade="高中一年级",
-        subject="数学",
-        target_language=target_language
-    )
-    print(f"完整评估结果: {json.dumps(full_result, ensure_ascii=False, indent=2)}")

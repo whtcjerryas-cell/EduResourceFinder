@@ -13,12 +13,64 @@ sys.path.insert(0, str(project_root))
 
 import re
 import json
-from collections import OrderedDict
+import hashlib
+from functools import lru_cache
 from typing import Dict, List, Any, Optional
 from logger_utils import get_logger
 from llm_client import InternalAPIClient, AIBuildersAPIClient
 
 logger = get_logger('result_scorer')
+
+
+# ==============================================================================
+# LLM调用缓存（使用 functools.lru_cache）
+# ==============================================================================
+@lru_cache(maxsize=1000)
+def _call_llm_with_cache(
+    cache_key: str,
+    system_prompt: str,
+    user_prompt: str,
+    max_tokens: int,
+    temperature: float
+) -> str:
+    """
+    带缓存的LLM调用（使用 functools.lru_cache）
+
+    Args:
+        cache_key: 缓存键（MD5哈希）
+        system_prompt: 系统提示
+        user_prompt: 用户提示
+        max_tokens: 最大token数
+        temperature: 温度参数
+
+    Returns:
+        LLM响应文本
+
+    Note:
+        此函数在模块级别定义，以便使用 lru_cache
+        实际的LLM调用通过内部的 _llm_client_for_cache 完成
+    """
+    # 获取全局LLM客户端（需要在类初始化时设置）
+    global _llm_client_for_cache
+    if _llm_client_for_cache is None:
+        logger.warning("LLM客户端未初始化，返回空响应")
+        return "[]"
+
+    try:
+        response = _llm_client_for_cache.call_llm(
+            prompt=user_prompt,
+            system_prompt=system_prompt,
+            max_tokens=max_tokens,
+            temperature=temperature
+        )
+        return response
+    except Exception as e:
+        logger.error(f"LLM调用失败: {str(e)}")
+        return "[]"
+
+
+# 全局LLM客户端（用于缓存函数）
+_llm_client_for_cache = None
 
 
 class IntelligentResultScorer:
@@ -53,28 +105,17 @@ class IntelligentResultScorer:
                 self.llm_client = None
                 self.model_name = 'none'
 
-        # 初始化缓存
-        self._llm_response_cache: OrderedDict = OrderedDict()
-        self._max_cache_size = 1000
+        # 设置全局LLM客户端（用于缓存函数）
+        global _llm_client_for_cache
+        _llm_client_for_cache = self.llm_client
 
-        logger.info("✅ 评分器初始化完成（纯LLM模式）")
+        logger.info("✅ 评分器初始化完成（纯LLM模式，使用 lru_cache)")
 
     # ==============================================================================
-    # 缓存管理方法
+    # 缓存键生成
     # ==============================================================================
-    def _cache_get(self, cache_dict: OrderedDict, key: str, default=None):
-        """从缓存获取值"""
-        return cache_dict.get(key, default)
-
-    def _cache_set(self, cache_dict: OrderedDict, key: str, value):
-        """设置缓存值"""
-        if len(cache_dict) >= self._max_cache_size:
-            cache_dict.popitem(last=False)  # 删除最旧的项
-        cache_dict[key] = value
-
     def _generate_llm_cache_key(self, batch: List[Dict[str, Any]], query: str, metadata: Optional[Dict] = None) -> str:
         """生成LLM缓存键"""
-        import hashlib
         key_data = {
             'query': query,
             'metadata': metadata,
@@ -139,7 +180,9 @@ class IntelligentResultScorer:
         if not self.llm_client or not results:
             return results
         
-        BATCH_SIZE = 10
+        # ✨ 优化性能：减少批量大小（10个 → 5个），降低单次LLM评分时间，避免超时
+        # 配合前端超时从180秒增加到300秒的优化，确保搜索请求在合理时间内完成
+        BATCH_SIZE = 5
         batches = [results[i:i + BATCH_SIZE] for i in range(0, len(results), BATCH_SIZE)]
         
         scored_results = []
@@ -227,30 +270,21 @@ class IntelligentResultScorer:
             # 生成缓存键
             cache_key = self._generate_llm_cache_key(batch, query, metadata)
 
-            # 检查缓存
-            cached_response = self._cache_get(self._llm_response_cache, cache_key)
-            if cached_response:
-                logger.debug(f"✅ LLM响应缓存命中: {cache_key[:16]}...")
-                scored_batch = self._parse_batch_response(cached_response, batch)
-                return scored_batch
-
             # 记录开始时间
             import time
             start_time = time.time()
 
-            # 调用LLM
-            response = self.llm_client.call_llm(
-                prompt=user_prompt,
+            # 调用LLM（使用 lru_cache 自动缓存）
+            response = _call_llm_with_cache(
+                cache_key=cache_key,
                 system_prompt=system_prompt,
-                max_tokens=2000,
+                user_prompt=user_prompt,
+                max_tokens=8000,
                 temperature=0.3
             )
 
             # 计算执行时间
             execution_time = time.time() - start_time
-
-            # 存储到缓存
-            self._cache_set(self._llm_response_cache, cache_key, response)
 
             # ✅ 记录LLM调用到日志收集器
             if self.log_collector:
@@ -400,7 +434,7 @@ class IntelligentResultScorer:
             response = self.llm_client.call_llm(
                 prompt=user_prompt,
                 system_prompt=system_prompt,
-                max_tokens=1500,  # 🔧 增加到1500以避免响应被截断
+                max_tokens=8000,  # [修复] 2026-01-20: 从1500增加到8000，避免响应被截断
                 temperature=0.3
             )
 
