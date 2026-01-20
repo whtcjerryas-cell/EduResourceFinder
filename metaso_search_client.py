@@ -134,12 +134,14 @@ class MetasoSearchClient:
 
             # 发送请求
             start_time = time.time()
-            response = requests.post(
-                self.base_url,
-                headers=headers,
-                json=payload,
-                timeout=timeout
-            )
+            with requests.Session() as session:
+                session.trust_env = False  # 强制禁用代理
+                response = session.post(
+                    self.base_url,
+                    headers=headers,
+                    json=payload,
+                    timeout=timeout
+                )
             elapsed_time = time.time() - start_time
 
             logger.info(f"[📥 响应] 状态码: {response.status_code}, 耗时: {elapsed_time:.2f}s")
@@ -213,14 +215,29 @@ class MetasoSearchClient:
                 results.append(result)
 
             # 域名过滤（如果指定）
+            # [修复] 2026-01-20: 重新启用域名过滤，确保搜索结果来自优先域名
             if include_domains:
-                logger.info(f"[🔍 过滤] 应用域名过滤: {include_domains}")
                 original_count = len(results)
                 results = [
                     r for r in results
-                    if any(domain in r.get("url", "") for domain in include_domains)
+                    if any(domain.lower() in r.get("url", "").lower() for domain in include_domains)
                 ]
-                logger.info(f"[🔍 过滤] 从 {original_count} 个结果过滤到 {len(results)} 个")
+                logger.info(f"[🔍 过滤] 域名过滤: 从 {original_count} 个结果过滤到 {len(results)} 个")
+                logger.info(f"[📋 目标域名] {', '.join(include_domains[:5])}")
+
+                # 如果过滤后没有结果，记录警告但不过滤（回退到全部结果）
+                if len(results) == 0:
+                    logger.warning(f"[⚠️ 警告] 域名过滤后无结果，使用原始搜索结果（共 {original_count} 个）")
+                    results = webpages  # 回退到未过滤的结果
+                    for item in results:
+                        result = {
+                            "title": item.get("title", ""),
+                            "url": item.get("link", ""),
+                            "snippet": item.get("snippet", ""),
+                            "source": "Metaso搜索",
+                            "search_engine": "Metaso"
+                        }
+                    results = results[:original_count]
 
             # 更新使用计数
             self.usage_count += 1

@@ -1414,22 +1414,60 @@ class SearchEngineV2:
         # ========== 评分器初始化结束 ==========
 
         try:
-            # Step 0: 生成搜索策略
+            # Step 0: 获取搜索策略（已跳过LLM生成，直接使用默认策略）
+            # [优化] 2026-01-20: 跳过LLM策略生成，直接使用默认规则策略，提升响应速度
             step0_start = time.time()
-            logger.info(f"[步骤 0] 制定搜索策略...")
-            print(f"[步骤 0] 制定搜索策略...")
-            strategy = self.strategy_agent.generate_strategy(
-                country=request.country,
-                grade=request.grade,
-                subject=request.subject,
-                semester=request.semester
+            logger.info(f"[步骤 0] 获取搜索策略（使用默认规则策略）...")
+            print(f"[步骤 0] 获取搜索策略（已跳过LLM生成，使用默认规则策略）...")
+
+            # 直接使用默认策略，跳过LLM生成
+            from search_strategy_agent import SearchStrategy
+            country_config = self.config_manager.get_country_config(request.country.upper())
+            language_code = country_config.language_code if country_config else "en"
+            domains = country_config.domains[:5] if country_config else []
+
+            # 构建默认搜索词（规则生成，不使用LLM）
+            default_query = f"{request.subject} {request.grade} playlist"
+            if request.semester:
+                default_query += f" semester {request.semester}"
+
+            # 生成多个播放列表优先的搜索查询（7个高度差异化的变体）
+            playlist_keywords_map = {
+                "id": ["playlist", "complete course", "full series", "koleksi lengkap", "kursus lengkap"],
+                "en": ["playlist", "complete course", "full series", "video collection"],
+                "zh": ["播放列表", "完整课程", "系列教程"],
+                "ms": ["playlist", "kursus lengkap", "siri lengkap"],
+                "ar": ["قائمة التشغيل", "دورة كاملة"],
+                "ru": ["плейлист", "полный курс"],
+            }
+            playlist_keywords = playlist_keywords_map.get(language_code, ["playlist", "complete course"])
+
+            # 生成7个差异化搜索查询
+            search_queries = [
+                f"site:youtube.com {request.subject} {request.grade} {playlist_keywords[0]}",
+                f"{request.subject} {request.grade} {playlist_keywords[1] if len(playlist_keywords) > 1 else 'complete course'}",
+                f"site:youtube.com \"{request.subject}\" \"{request.grade}\" playlist",
+                f"{request.subject} {request.grade} video lesson chapter",
+                f"{request.grade} {request.subject} full course curriculum",
+                f"{request.subject} for {request.grade} students tutorial",
+                f"{request.grade} {request.subject} learning series complete"
+            ]
+
+            # 创建策略对象（不使用LLM）
+            strategy = SearchStrategy(
+                search_language=language_code,
+                use_chinese_search_engine=(request.country.upper() == "CN"),
+                platforms=["youtube.com"] + domains[:3],
+                search_queries=search_queries,
+                priority_domains=domains[:5],
+                notes=f"默认搜索策略（规则生成）：使用{language_code}语言，优先搜索YouTube播放列表（7个差异化查询）"
             )
+
             print(f"    [✅ 策略] 搜索语言: {strategy.search_language}")
             print(f"    [✅ 策略] 使用中文搜索引擎: {strategy.use_chinese_search_engine}")
             print(f"    [✅ 策略] 平台列表: {', '.join(strategy.platforms[:5])}")
             print(f"    [✅ 策略] 优先域名: {', '.join(strategy.priority_domains[:5])}")
-            if strategy.notes:
-                print(f"    [📝 策略说明] {strategy.notes}")
+            print(f"    [⚡ 优化] 跳过LLM生成，使用默认规则策略，提升响应速度")
             
             # Step 1: 使用搜索策略中的搜索词
             print(f"\n[步骤 1] 使用搜索策略生成的高质量搜索词...")
