@@ -185,3 +185,160 @@ search:
       - "peluang"               # 概率
       - "bangun ruang"          # 空间
       - "transformasi"          # 变换
+
+# ============================================
+# 渐进式搜索优化配置（方案一）
+# ============================================
+# [新增] 2026-01-20: 渐进式搜索优化配置
+# 目标: 简化搜索流程，提高搜索质量，减少API调用
+# ============================================
+
+incremental_search:
+  # ----------------------------------------
+  # 优化策略选择
+  # ----------------------------------------
+  # 可选值: incremental(渐进式) / fusion(智能融合) / hybrid(混合评分)
+  strategy: incremental
+
+  # ----------------------------------------
+  # 查询生成配置
+  # ----------------------------------------
+  query_generation:
+    # 使用LLM生成最优查询
+    use_llm: true
+
+    # 是否包含播放列表关键词
+    include_playlist: true
+
+    # 是否包含本地化关键词
+    include_localized: true
+
+    # 备选查询数量（用于重试）
+    max_alternative_queries: 5
+
+  # ----------------------------------------
+  # 搜索引擎配置
+  # ----------------------------------------
+  engines:
+    # 主引擎（用于初始搜索）
+    primary: tavily    # 或 metaso
+
+    # 辅助引擎（用于补充搜索）
+    secondary: google
+
+    # 降级引擎（用于引擎切换）
+    fallback: metaso
+
+  # ----------------------------------------
+  # 质量控制配置
+  # ----------------------------------------
+  quality:
+    # 高质量阈值（>=此分数直接返回）
+    high_threshold: 7.0
+
+    # 低质量阈值（<此分数触发重试）
+    low_threshold: 5.0
+
+    # 质量评估使用的结果数量
+    evaluation_count: 10
+
+    # 最少结果数量（低于此数量视为失败）
+    min_results_count: 5
+
+    # 是否启用LLM评分
+    enable_llm_scoring: false
+
+  # ----------------------------------------
+  # 降级策略配置
+  # ----------------------------------------
+  fallback:
+    # 是否启用降级策略
+    enabled: true
+
+    # 最大重试次数
+    max_attempts: 3
+
+    # 启用的降级策略
+    strategies:
+      - query_rewrite        # 查询重写
+      - engine_switching     # 引擎切换
+      - relax_filters        # 放宽筛选条件
+      - historical_cache     # 历史缓存
+
+    # 查询重写配置
+    query_rewrite:
+      enabled: true
+      max_attempts: 5
+
+    # 引擎切换配置
+    engine_switching:
+      enabled: true
+      try_engines:
+        - tavily
+        - google
+        - metaso
+        - baidu
+
+    # 放宽筛选配置
+    relax_filters:
+      enabled: true
+      relaxed_min_score: 3.0
+      increased_max_results: 50
+
+    # 历史缓存配置
+    historical_cache:
+      enabled: true
+      max_age_hours: 48    # 最长使用48小时前的缓存
+      include_expired: true
+
+  # ----------------------------------------
+  # 性能配置
+  # ----------------------------------------
+  performance:
+    # 初始搜索超时（秒）
+    initial_search_timeout: 20
+
+    # 补充搜索超时（秒）
+    supplementary_search_timeout: 15
+
+    # 重试超时（秒）
+    retry_timeout: 20
+
+    # 总体超时（秒）
+    total_timeout: 60
+
+  # ----------------------------------------
+  # 缓存配置（如果启用）
+  # ----------------------------------------
+  cache:
+    # 是否启用多级缓存
+    enabled: false
+
+    # L1: 内存缓存
+    l1_enabled: true
+    l1_ttl: 300           # 5分钟
+    l1_max_size: 100
+
+    # L2: Redis缓存
+    l2_enabled: true
+    l2_ttl: 3600          # 1小时
+
+    # L3: 磁盘缓存
+    l3_enabled: true
+    l3_ttl: 86400         # 24小时
+
+  # ----------------------------------------
+  # 日志配置
+  # ----------------------------------------
+  logging:
+    # 是否记录详细日志
+    verbose: true
+
+    # 是否记录搜索步骤
+    log_steps: true
+
+    # 是否记录质量评估
+    log_quality_assessment: true
+
+    # 是否记录降级策略
+    log_fallback: true

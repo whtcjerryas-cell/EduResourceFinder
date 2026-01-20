@@ -153,8 +153,8 @@ class AIBuildersClient:
             "Content-Type": "application/json"
         }
     
-    def call_llm(self, prompt: str, system_prompt: Optional[str] = None, 
-                 max_tokens: int = 2000, temperature: float = 0.3,
+    def call_llm(self, prompt: str, system_prompt: Optional[str] = None,
+                 max_tokens: int = 8000, temperature: float = 0.3,  # [修复] 2026-01-20: 从2000增加到8000
                  model: str = "deepseek") -> str:
         """调用 LLM"""
         # 如果使用统一客户端，直接调用
@@ -275,17 +275,20 @@ class AIBuildersClient:
             print(f"[❌ 错误] 异常堆栈:\n{traceback.format_exc()}")
             raise ValueError(f"API 请求异常: {str(e)}")
             
-    def search(self, query: str, max_results: int = 10, include_domains: list = None) -> list:
+    def search(self, query: str, max_results: int = 10, include_domains: list = None, country_code: str = None) -> list:
         """
         执行搜索 (适配 Tavily/Metaso)
+        [修复] 2026-01-20: 添加 country_code 参数支持
         """
-        # 1. 优先使用 UnifiedClient 的 Metaso 搜索
-        if self.use_unified_client and hasattr(self.unified_client, 'metaso_client') and self.unified_client.metaso_client:
+        # 1. 优先使用 UnifiedClient 的 search 方法（支持 Google/Tavily/Metaso）
+        if self.use_unified_client:
             try:
-                results_dicts = self.unified_client.metaso_client.search(
+                # 使用统一客户端的 search 方法，它会自动选择最佳的搜索引擎
+                results_dicts = self.unified_client.search(
                     query=query,
                     max_results=max_results,
-                    include_domains=include_domains
+                    include_domains=include_domains,
+                    country_code=country_code or "CN"  # 默认使用中国，可以传入其他代码
                 )
                 # Convert dicts to SearchResult objects
                 results = []
@@ -293,18 +296,17 @@ class AIBuildersClient:
                     results.append(SearchResult(
                         title=item.get('title', ''),
                         url=item.get('url', ''),
-                        snippet=item.get('snippet', ''),
-                        source="Metaso搜索",
-                        search_engine="Metaso"
+                        snippet=item.get('snippet', item.get('content', '')),
+                        source=item.get('search_engine', 'Unknown'),
+                        search_engine=item.get('search_engine', 'Unknown')
                     ))
                 return results
             except Exception as e:
-                print(f"[⚠️ 搜索失败] Metaso 搜索失败: {str(e)}")
-                # Continue to fallback
-        
-        # 2. 这里可以添加 Tavily Fallback，但目前看来 UnifiedClient 没有暴露 Tavily
-        # 暂时返回空列表或抛出异常，或者尝试使用 AIBuilders 的其他方式
-        print(f"[❌ 搜索失败] 无可用的搜索引擎 (Metaso不可用)")
+                print(f"[⚠️ 搜索失败] UnifiedClient 搜索失败: {str(e)}")
+                import traceback
+                traceback.print_exc()
+        # 2. Fallback：返回空列表
+        print(f"[❌ 搜索失败] 无可用的搜索引擎")
         return []
     
         """
@@ -783,6 +785,7 @@ class SearchEngineV2:
         带多级缓存的搜索包装器
 
         使用三级缓存系统（L1内存+L2Redis+L3磁盘）提升性能
+        [修复] 2026-01-20: 添加环境变量 ENABLE_MULTI_CACHE 控制缓存开关
 
         Args:
             query: 搜索查询
@@ -794,13 +797,20 @@ class SearchEngineV2:
         Returns:
             搜索结果列表
         """
-        # 使用多级缓存系统（带查询规范化）
-        cached_result = self.multi_cache.get(
-            query=query,
-            engine=engine_name,
-            max_results=max_results,
-            include_domains=include_domains
-        )
+        # 检查是否启用多级缓存
+        enable_multi_cache = os.getenv("ENABLE_MULTI_CACHE", "false").lower() == "true"
+
+        if enable_multi_cache:
+            # 使用多级缓存系统（带查询规范化）
+            cached_result = self.multi_cache.get(
+                query=query,
+                engine=engine_name,
+                max_results=max_results,
+                include_domains=include_domains
+            )
+        else:
+            # 禁用缓存，直接执行搜索
+            cached_result = None
 
         if cached_result is not None:
             cache_stats = self.multi_cache.get_stats()
@@ -815,19 +825,23 @@ class SearchEngineV2:
             return [SearchResult(**item) for item in cached_result]
 
         # 缓存未命中，执行实际搜索
-        logger.info(f"❌ 多级缓存未命中 [{engine_name}]: {query[:50]}...")
+        if not enable_multi_cache:
+            logger.info(f"⚠️ 多级缓存已禁用 [{engine_name}]: {query[:50]}...")
+        else:
+            logger.info(f"❌ 多级缓存未命中 [{engine_name}]: {query[:50]}...")
         results = search_func(query, max_results, include_domains)
 
-        # 将结果存入多级缓存
-        results_dict = [result.model_dump() for result in results]
-        self.multi_cache.set(
-            query=query,
-            engine=engine_name,
-            data=results_dict,
-            ttl=3600,  # 1小时TTL
-            max_results=max_results,
-            include_domains=include_domains
-        )
+        # 将结果存入多级缓存（仅在启用时）
+        if enable_multi_cache:
+            results_dict = [result.model_dump() for result in results]
+            self.multi_cache.set(
+                query=query,
+                engine=engine_name,
+                data=results_dict,
+                ttl=3600,  # 1小时TTL
+                max_results=max_results,
+                include_domains=include_domains
+            )
         return results
 
     def _parallel_search(self, query: str, search_tasks: List[Dict[str, Any]],
@@ -887,14 +901,29 @@ class SearchEngineV2:
                         include_domains=include_domains
                     )
                 else:
-                    # 其他搜索函数（google_hunter.search, baidu_hunter.search）不支持 country_code
-                    task_results = self._cached_search(
-                        query=task_query,
-                        search_func=lambda q, mr, id: search_func(q, max_results=mr),
-                        engine_name=engine_name,
-                        max_results=max_results,
-                        include_domains=include_domains
-                    )
+                    # ✨ 修复：检查搜索函数是否支持 country_code 参数
+                    # 只给 Google Hunter 传递 country_code（用于本地化搜索）
+                    # Tavily/Metaso/Baidu 不支持此参数
+                    import inspect
+                    func_name = search_func.__name__ if hasattr(search_func, '__name__') else str(search_func)
+                    if hasattr(search_func, '__self__') and 'google_hunter' in str(type(search_func.__self__)):
+                        # Google Hunter 支持 country_code 参数
+                        task_results = self._cached_search(
+                            query=task_query,
+                            search_func=lambda q, mr, id: search_func(q, max_results=mr, country_code=country_code),
+                            engine_name=engine_name,
+                            max_results=max_results,
+                            include_domains=include_domains
+                        )
+                    else:
+                        # 其他搜索引擎不支持 country_code 参数
+                        task_results = self._cached_search(
+                            query=task_query,
+                            search_func=lambda q, mr, id: search_func(q, max_results=mr),
+                            engine_name=engine_name,
+                            max_results=max_results,
+                            include_domains=include_domains
+                        )
 
                 task_elapsed = time.time() - task_start
                 print(f"    [✅ {task_name}] 完成 ({task_elapsed:.2f}秒, {len(task_results)}个结果)")
@@ -986,6 +1015,316 @@ class SearchEngineV2:
 
         logger.info(f"[🔄 规则生成] 生成默认搜索词: \"{default_query}\"")
         return default_query
+
+    def incremental_search(self, request: SearchRequest) -> SearchResponse:
+        """
+        渐进式搜索（优化方案一）
+
+        特点：
+        - 生成1个最优查询（而非5-7个）
+        - 根据质量动态决定是否补充搜索
+        - 高质量直接返回，中低质量进行补充搜索或重试
+        - 显著降低API调用次数和响应时间
+
+        Args:
+            request: 搜索请求
+
+        Returns:
+            搜索响应
+        """
+        search_start_time = time.time()
+
+        logger.info("="*80)
+        logger.info(f"🎯 [渐进式搜索] {request.country} - {request.grade} - {request.subject}")
+        logger.info("="*80)
+
+        print(f"\n{'='*80}")
+        print(f"🎯 渐进式搜索（优化方案一）")
+        print(f"{'='*80}\n")
+
+        # ========== Step 1: 生成最优查询 ==========
+        print(f"[Step 1] 生成最优查询...")
+        logger.info(f"[Step 1] 生成最优查询...")
+
+        try:
+            best_query = self.strategy_agent.generate_best_query(
+                country=request.country,
+                grade=request.grade,
+                subject=request.subject,
+                semester=request.semester
+            )
+            print(f"    [✅ 最优查询] \"{best_query}\"")
+            logger.info(f"[✅ 最优查询] \"{best_query}\"")
+        except Exception as e:
+            logger.warning(f"[⚠️ LLM查询生成失败] {str(e)}，使用规则生成")
+            best_query = self._generate_fallback_query(request)
+            print(f"    [✅ 规则查询] \"{best_query}\"")
+
+        # ========== Step 2: 初始搜索 ==========
+        print(f"\n[Step 2] 执行初始搜索...")
+        logger.info(f"[Step 2] 执行初始搜索...")
+
+        initial_results = self._perform_initial_search(best_query, request.country)
+
+        if not initial_results:
+            logger.warning("[⚠️ 初始搜索无结果]，尝试降级策略")
+            return self._handle_empty_results(request, best_query)
+
+        print(f"    [✅ 初始结果] {len(initial_results)} 个")
+        logger.info(f"[✅ 初始结果] {len(initial_results)} 个")
+
+        # ========== Step 3: 快速质量评估 ==========
+        print(f"\n[Step 3] 快速质量评估...")
+        logger.info(f"[Step 3] 快速质量评估...")
+
+        # 使用规则评分进行快速质量评估
+        self._ensure_result_scorer(request.country)
+        scored_results = self.result_scorer.score_results(
+            initial_results,
+            best_query,
+            metadata={'country': request.country, 'grade': request.grade, 'subject': request.subject}
+        )
+
+        # 计算前10个结果的平均分
+        top_10 = scored_results[:10]
+        avg_score = sum(r.get('score', 0) for r in top_10) / len(top_10) if top_10 else 0.0
+
+        print(f"    [📊 质量评估] 平均分: {avg_score:.2f}")
+        logger.info(f"[📊 质量评估] 平均分: {avg_score:.2f}")
+
+        # ========== Step 4-5: 根据质量决定后续策略 ==========
+        if avg_score >= 7.0:
+            # 高质量：直接返回
+            print(f"    [✅ 高质量] 直接返回前20个结果")
+            logger.info(f"[✅ 高质量] 直接返回前20个结果")
+            return self._build_response(best_query, scored_results[:20], search_start_time, request)
+
+        elif avg_score >= 5.0:
+            # 中等质量：补充搜索
+            print(f"    [⚠️ 中等质量] 执行补充搜索...")
+            logger.info(f"[⚠️ 中等质量] 执行补充搜索...")
+
+            supplementary_results = self._perform_supplementary_search(
+                best_query, request.country
+            )
+
+            if supplementary_results:
+                print(f"    [✅ 补充结果] {len(supplementary_results)} 个")
+                logger.info(f"[✅ 补充结果] {len(supplementary_results)} 个")
+
+                # 合并并重新评分
+                all_results = self._merge_and_deduplicate(
+                    scored_results, supplementary_results, best_query, request
+                )
+                return self._build_response(best_query, all_results[:20], search_start_time, request)
+            else:
+                print(f"    [⚠️ 补充搜索无结果]，返回初始结果")
+                return self._build_response(best_query, scored_results[:20], search_start_time, request)
+
+        else:
+            # 低质量：查询重试
+            print(f"    [❌ 低质量] 尝试查询重试...")
+            logger.info(f"[❌ 低质量] 尝试查询重试...")
+
+            # 生成备选查询并重试
+            for attempt in range(1, 4):  # 最多重试3次
+                try:
+                    alt_query = self.strategy_agent.generate_alternative_query(
+                        country=request.country,
+                        grade=request.grade,
+                        subject=request.subject,
+                        semester=request.semester,
+                        attempt_number=attempt
+                    )
+
+                    print(f"    [🔄 重试 {attempt}] 使用备选查询: \"{alt_query}\"")
+                    logger.info(f"[🔄 重试 {attempt}] 备选查询: \"{alt_query}\"")
+
+                    retry_results = self._perform_initial_search(alt_query, request.country)
+
+                    if retry_results:
+                        retry_scored = self.result_scorer.score_results(
+                            retry_results,
+                            alt_query,
+                            metadata={'country': request.country, 'grade': request.grade, 'subject': request.subject}
+                        )
+
+                        retry_top_10 = retry_scored[:10]
+                        retry_avg = sum(r.get('score', 0) for r in retry_top_10) / len(retry_top_10)
+
+                        print(f"    [📊 重试质量] 平均分: {retry_avg:.2f}")
+                        logger.info(f"[📊 重试质量] 平均分: {retry_avg:.2f}")
+
+                        if retry_avg >= 5.0:
+                            print(f"    [✅ 重试成功] 返回重试结果")
+                            logger.info(f"[✅ 重试成功] 返回重试结果")
+                            return self._build_response(alt_query, retry_scored[:20], search_start_time, request)
+
+                except Exception as e:
+                    logger.warning(f"[⚠️ 重试 {attempt} 失败]: {str(e)}")
+                    continue
+
+            # 所有重试都失败，返回初始结果
+            print(f"    [⚠️ 所有重试失败]，返回初始最佳结果")
+            logger.warning(f"[⚠️ 所有重试失败]，返回初始最佳结果")
+            return self._build_response(best_query, scored_results[:20], search_start_time, request)
+
+    def _perform_initial_search(self, query: str, country_code: str) -> List[Dict]:
+        """执行初始搜索（使用Tavily/Metaso）"""
+        try:
+            results = self.llm_client.search(
+                query=query,
+                max_results=30,
+                country_code=country_code
+            )
+
+            # 转换为SearchResult格式
+            search_results = []
+            for r in results:
+                search_results.append(SearchResult(
+                    title=r.get('title', ''),
+                    url=r.get('url', ''),
+                    snippet=r.get('content', r.get('snippet', '')),
+                    source='规则',
+                    search_engine=r.get('engine', 'Tavily/Metaso'),
+                    score=0.0
+                ))
+
+            return search_results
+
+        except Exception as e:
+            logger.error(f"[❌ 初始搜索失败]: {str(e)}")
+            return []
+
+    def _perform_supplementary_search(self, query: str, country_code: str) -> List[Dict]:
+        """执行补充搜索（使用Google）"""
+        if not self.google_search_enabled:
+            logger.info("[ℹ️ Google搜索未启用，跳过补充搜索]")
+            return []
+
+        try:
+            results = self.google_hunter.search(
+                query=query,
+                max_results=20
+            )
+
+            # 转换为SearchResult格式
+            search_results = []
+            for r in results:
+                search_results.append(SearchResult(
+                    title=r.get('title', ''),
+                    url=r.get('url', ''),
+                    snippet=r.get('snippet', ''),
+                    source='规则',
+                    search_engine='Google',
+                    score=0.0
+                ))
+
+            return search_results
+
+        except Exception as e:
+            logger.error(f"[❌ 补充搜索失败]: {str(e)}")
+            return []
+
+    def _merge_and_deduplicate(self, initial_results: List[Dict],
+                             supplementary_results: List[Dict],
+                             query: str, request: SearchRequest) -> List[Dict]:
+        """合并结果并去重"""
+        seen_urls = {r['url'] for r in initial_results}
+        merged = list(initial_results)
+
+        for result in supplementary_results:
+            if result['url'] not in seen_urls:
+                merged.append(result)
+                seen_urls.add(result['url'])
+
+        # 重新评分合并后的结果
+        scored = self.result_scorer.score_results(
+            merged,
+            query,
+            metadata={'country': request.country, 'grade': request.grade, 'subject': request.subject}
+        )
+
+        # 按分数排序
+        scored.sort(key=lambda x: x.get('score', 0), reverse=True)
+        return scored
+
+    def _handle_empty_results(self, request: SearchRequest, query: str) -> SearchResponse:
+        """处理空结果的情况"""
+        logger.warning(f"[⚠️ 空结果] 尝试使用备选查询...")
+
+        # 尝试使用备选查询
+        for attempt in range(1, 4):
+            try:
+                alt_query = self.strategy_agent.generate_alternative_query(
+                    country=request.country,
+                    grade=request.grade,
+                    subject=request.subject,
+                    semester=request.semester,
+                    attempt_number=attempt
+                )
+
+                logger.info(f"[🔄 空结果重试 {attempt}]: \"{alt_query}\"")
+                results = self._perform_initial_search(alt_query, request.country)
+
+                if results:
+                    scored = self.result_scorer.score_results(
+                        results,
+                        alt_query,
+                        metadata={'country': request.country, 'grade': request.grade, 'subject': request.subject}
+                    )
+                    return self._build_response(alt_query, scored[:20], time.time(), request)
+
+            except Exception as e:
+                logger.warning(f"[⚠️ 空结果重试 {attempt} 失败]: {str(e)}")
+                continue
+
+        # 所有尝试都失败，返回空响应
+        return SearchResponse(
+            success=False,
+            query=query,
+            results=[],
+            total_count=0,
+            playlist_count=0,
+            video_count=0,
+            message="未找到相关搜索结果，请尝试调整搜索关键词"
+        )
+
+    def _build_response(self, query: str, results: List[SearchResult],
+                       start_time: float, request: SearchRequest) -> SearchResponse:
+        """构建搜索响应"""
+        elapsed = time.time() - start_time
+
+        # 统计播放列表和视频数量
+        playlist_count = sum(1 for r in results if 'playlist' in r.title.lower())
+        video_count = len(results) - playlist_count
+
+        logger.info(f"[✅ 搜索完成] 耗时: {elapsed:.2f}秒, 结果: {len(results)}个")
+        print(f"    [✅ 完成] 耗时: {elapsed:.2f}秒, 返回: {len(results)}个结果\n")
+
+        return SearchResponse(
+            success=True,
+            query=query,
+            results=results,
+            total_count=len(results),
+            playlist_count=playlist_count,
+            video_count=video_count,
+            message=f"搜索完成，耗时 {elapsed:.2f} 秒"
+        )
+
+    def _ensure_result_scorer(self, country_code: str):
+        """确保已初始化带知识库的评分器"""
+        if country_code not in self._scorer_cache:
+            try:
+                from core.result_scorer import get_result_scorer_with_kb
+                scorer = get_result_scorer_with_kb(country_code)
+                self._scorer_cache[country_code] = scorer
+                logger.info(f"[✅ 评分器] 已加载 {country_code} 知识库评分器")
+            except Exception as e:
+                logger.warning(f"[⚠️ 评分器] 无法加载知识库评分器: {e}")
+                self._scorer_cache[country_code] = self.result_scorer_without_kb
+
+        self.result_scorer = self._scorer_cache.get(country_code, self.result_scorer_without_kb)
 
     def search(self, request: SearchRequest) -> SearchResponse:
         """
@@ -1140,11 +1479,12 @@ class SearchEngineV2:
                 search_tasks = []
 
                 # 使用策略中的多个搜索词进行搜索（优先播放列表相关查询）
-                # 取前3个搜索词，确保至少包含播放列表查询
-                queries_to_use = strategy.search_queries[:3] if len(strategy.search_queries) >= 3 else strategy.search_queries
-                print(f"    [🎯 多查询搜索] 将使用 {len(queries_to_use)} 个搜索词进行搜索")
+                # ✨ 取前5个搜索词，充分利用查询多样性（原来只取3个）
+                queries_to_use = strategy.search_queries[:5] if len(strategy.search_queries) >= 5 else strategy.search_queries
+                print(f"    [🎯 多查询搜索] 将使用 {len(queries_to_use)} 个高度差异化的搜索词进行搜索")
 
-                # Tavily/Metaso搜索 - 对每个查询都执行（3次）✅ 主要引擎（高质量，avg 4.65）
+                # Tavily/Metaso搜索 - 对每个查询都执行（5次）✅ 主要引擎（高质量，avg 4.65）
+                # ✨ 增加查询数量，提高结果多样性
                 for query_idx, search_query in enumerate(queries_to_use, 1):
                     is_playlist_focused = any(kw in search_query.lower() for kw in ['playlist', 'complete course', 'full series', 'koleksi', 'kursus lengkap', '播放列表', '完整课程', '系列'])
                     query_type = "播放列表" if is_playlist_focused else "常规"
@@ -1154,7 +1494,7 @@ class SearchEngineV2:
                         'query': search_query,  # 使用特定的搜索词
                         'func': self.llm_client.search,  # 内部会根据免费额度优先选择Tavily或Metaso
                         'engine_name': 'Tavily/Metaso',
-                        'max_results': 15,  # Tavily返回更高质量的结果
+                        'max_results': 30,  # 增加到30，获取更多结果
                         'include_domains': None
                     })
 
@@ -1165,7 +1505,7 @@ class SearchEngineV2:
                         'query': queries_to_use[0],  # 只用第一个查询
                         'func': self.google_hunter.search,
                         'engine_name': 'Google',
-                        'max_results': 10,  # 减少每个查询的结果数，避免过多重复
+                        'max_results': 20,  # 增加到20
                         'include_domains': None
                     })
 
@@ -1176,7 +1516,7 @@ class SearchEngineV2:
                         'query': queries_to_use[0],  # 使用第一个查询
                         'func': self.baidu_hunter.search,
                         'engine_name': 'Baidu',
-                        'max_results': 15,
+                        'max_results': 30,  # 增加到30
                         'include_domains': None
                     })
 
@@ -1222,7 +1562,7 @@ class SearchEngineV2:
                         'name': f'本地定向搜索({country_code_upper})',
                         'func': self.llm_client.search,
                         'engine_name': f'Local-{country_code_upper}',
-                        'max_results': 10,
+                        'max_results': 20,  # 增加到20
                         'include_domains': selected_domains
                     })
 
@@ -1259,9 +1599,9 @@ class SearchEngineV2:
             if strategy.use_chinese_search_engine and self.baidu_search_enabled:
                 print(f"    [🌐 策略] 检测到需要使用中文搜索引擎，使用百度搜索")
                 print(f"    [🔍 搜索A-百度搜索] 查询: \"{query}\"")
-                print(f"    [⚙️ 参数] max_results=15")
+                print(f"    [⚙️ 参数] max_results=30")
                 try:
-                    baidu_results = self.baidu_hunter.search(query, max_results=15)
+                    baidu_results = self.baidu_hunter.search(query, max_results=30)
                     # 转换为SearchResult对象
                     search_results_a = []
                     for item in baidu_results:
@@ -1279,7 +1619,7 @@ class SearchEngineV2:
                     if self.google_search_enabled:
                         print(f"    [🔄 降级] 切换到 Google 搜索...")
                         try:
-                            google_results = self.google_hunter.search(query, max_results=15)
+                            google_results = self.google_hunter.search(query, max_results=30, country_code=country_code_upper)
                             search_results_a = []
                             for item in google_results:
                                 search_results_a.append(SearchResult(
@@ -1293,11 +1633,11 @@ class SearchEngineV2:
                         except Exception as e2:
                             print(f"    [❌ 错误] Google 搜索也失败: {str(e2)}")
                             print(f"    [🔄 降级] 切换到 Tavily 搜索...")
-                            search_results_a = self.llm_client.search(query, max_results=15)
+                            search_results_a = self.llm_client.search(query, max_results=30, country_code=country_code_upper)
                             print(f"    [✅ 搜索A-Tavily] 找到 {len(search_results_a)} 个结果")
                     else:
                         print(f"    [🔄 降级] 切换到Tavily搜索...")
-                        search_results_a = self.llm_client.search(query, max_results=15)
+                        search_results_a = self.llm_client.search(query, max_results=30, country_code=country_code_upper)
                         print(f"    [✅ 搜索A-Tavily] 找到 {len(search_results_a)} 个结果")
             else:
                 if strategy.use_chinese_search_engine:
@@ -1309,10 +1649,10 @@ class SearchEngineV2:
                 
                 # 对于非中文搜索，优先使用 Tavily（高质量，avg 4.65），Google作为降级选项（低质量，avg 1.50）
                 print(f"    [🔍 搜索A-Tavily] 查询: \"{query}\"")
-                print(f"    [⚙️ 参数] max_results=15")
+                print(f"    [⚙️ 参数] max_results=30")
                 try:
                     # 🔥 从llm_client.search()返回的Dict转换为SearchResult
-                    search_dicts = self.llm_client.search(query, max_results=15)
+                    search_dicts = self.llm_client.search(query, max_results=30, country_code=country_code_upper)
                     search_results_a = []
                     for item in search_dicts:
                         search_engine = item.get('search_engine', 'Tavily')
@@ -1330,7 +1670,7 @@ class SearchEngineV2:
                     if self.google_search_enabled:
                         print(f"    [🔄 降级] 切换到 Google 搜索...")
                         try:
-                            google_results = self.google_hunter.search(query, max_results=15)
+                            google_results = self.google_hunter.search(query, max_results=30, country_code=country_code_upper)
                             search_results_a = []
                             for item in google_results:
                                 search_results_a.append(SearchResult(
@@ -1627,9 +1967,11 @@ class SearchEngineV2:
             # ⚠️ 临时禁用：视觉评估会导致请求超时（错误代码5）
             # 原因：TOP 20个结果串行处理需要5-10分钟，超过HTTP请求超时限制
             # TODO: 需要改为后台异步处理或大幅减少评估数量（TOP 5）
+            #
+            # [修复] 2026-01-20: 启用视觉评估（默认true），但限制评估数量为TOP 5避免超时
 
-            # 读取环境变量控制是否启用（默认禁用）
-            ENABLE_VISUAL_EVALUATION = os.getenv('ENABLE_VISUAL_EVALUATION', 'false').lower() == 'true'
+            # 读取环境变量控制是否启用（默认启用）
+            ENABLE_VISUAL_EVALUATION = os.getenv('ENABLE_VISUAL_EVALUATION', 'true').lower() == 'true'
 
             # 读取环境变量控制LLM评分数量（默认TOP 10，避免超时）
             LLM_SCORE_TOP_N = int(os.getenv('LLM_SCORE_TOP_N', '10'))
