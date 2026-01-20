@@ -209,7 +209,7 @@ class AIBuildersClient:
                 json=payload,
                 params={"debug": "true"},
                 timeout=300,
-                proxies=get_proxy_config()
+                proxies=None  # [修复] 2026-01-20: AI Builders 是内网 API，不需要代理
             )
             elapsed_time = time.time() - start_time
             
@@ -449,7 +449,7 @@ class AIBuildersClient:
                 headers=self.headers,
                 json=payload,
                 timeout=30,
-                proxies=get_proxy_config()
+                proxies=None  # [修复] 2026-01-20: AI Builders 是内网 API，不需要代理
             )
             
             print(f"        [📥 响应] 状态码: {response.status_code}")

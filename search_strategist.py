@@ -285,8 +285,8 @@ class AIBuildersClient:
         except requests.exceptions.RequestException as e:
             raise ValueError(f"API 请求异常: {str(e)}")
     
-    def call_llm(self, prompt: str, system_prompt: Optional[str] = None, 
-                 max_tokens: int = 2000, temperature: float = 0.3,
+    def call_llm(self, prompt: str, system_prompt: Optional[str] = None,
+                 max_tokens: int = 8000, temperature: float = 0.3,  # [修复] 2026-01-20: 从2000增加到8000
                  model: str = "deepseek") -> str:
         """
         调用 LLM（支持 DeepSeek 和 Gemini）
@@ -338,7 +338,7 @@ class AIBuildersClient:
                     json=payload,
                     params={"debug": "true"},
                     timeout=300,
-                    proxies=get_proxy_config()
+                    proxies=None  # [修复] 2026-01-20: AI Builders 是内网 API，不需要代理
                 )
                 
                 if response.status_code == 200:
@@ -363,29 +363,34 @@ class AIBuildersClient:
             # 对于其他模型，使用 call_gemini
             return self.call_gemini(prompt, system_prompt, max_tokens, temperature, model)
     
-    def search(self, query: str, max_results: int = 10, region: str = "id", 
-               search_depth: str = "advanced", 
-               include_domains: Optional[List[str]] = None) -> List[SearchResult]:
+    def search(self, query: str, max_results: int = 10, region: str = "id",
+               search_depth: str = "advanced",
+               include_domains: Optional[List[str]] = None,
+               country_code: Optional[str] = None) -> List[SearchResult]:
         """
         使用 AI Builders Tavily 搜索 API 执行搜索
-        
+        [修复] 2026-01-20: 添加 country_code 参数支持
+
         Args:
             query: 搜索查询词
             max_results: 最大返回结果数（1-20，默认10）
             region: 搜索区域（默认：id，印尼）- 注意：Tavily API 可能不支持此参数
             search_depth: 搜索深度（"basic" 或 "advanced"，默认 "advanced"）
             include_domains: 限定搜索的域名列表（可选）
-        
+            country_code: 国家代码（可选，如果提供则使用 country_code）
+
         Returns:
             搜索结果列表
         """
         # 如果使用统一客户端，尝试使用其search方法
         if self.use_unified_client:
             try:
+                # [修复] 2026-01-20: 传递 country_code 参数
                 search_results = self.unified_client.search(
                     query=query,
                     max_results=max_results,
-                    include_domains=include_domains
+                    include_domains=include_domains,
+                    country_code=country_code or region  # 如果提供了 country_code，使用它；否则使用 region
                 )
                 # 转换为SearchResult对象
                 results = []
@@ -489,7 +494,7 @@ class AIBuildersClient:
             response_text = self.call_gemini(
                 prompt=user_prompt,
                 system_prompt=system_prompt,
-                max_tokens=4000,
+                max_tokens=8000,  # [修复] 2026-01-20: 从4000增加到8000
                 temperature=0.1
             )
             
@@ -565,28 +570,29 @@ class SearchHunter:
             if not self.baidu_secret_key:
                 print(f"    [⚠️ 警告] BAIDU_SECRET_KEY 未设置，请在.env文件中配置")
     
-    def search(self, query: str, max_results: int = 10) -> List[SearchResult]:
+    def search(self, query: str, max_results: int = 10, country_code: str = None) -> List[SearchResult]:
         """
         执行搜索
-        
+
         Args:
             query: 搜索查询词
             max_results: 最大返回结果数
-        
+            country_code: 国家代码（ISO 3166-1 alpha-2），用于本地化搜索结果
+
         Returns:
             搜索结果列表
         """
-        print(f"    [🔍 搜索] 执行搜索: \"{query}\"")
-        
+        print(f"    [🔍 搜索] 执行搜索: \"{query}\"" + (f" [国家: {country_code}]" if country_code else ""))
+
         try:
             if self.search_engine == "ai-builders":
-                return self._search_ai_builders(query, max_results)
+                return self._search_ai_builders(query, max_results, country_code)
             elif self.search_engine == "duckduckgo":
                 return self._search_duckduckgo(query, max_results)
             elif self.search_engine == "serpapi":
                 return self._search_serpapi(query, max_results)
             elif self.search_engine == "google":
-                return self._search_google(query, max_results)
+                return self._search_google(query, max_results, country_code)
             elif self.search_engine == "baidu":
                 return self._search_baidu(query, max_results)
             else:
@@ -644,30 +650,30 @@ class SearchHunter:
             print(f"    [❌ 错误] DuckDuckGo 搜索异常: {str(e)}")
             return self._mock_search(query, max_results)
     
-    def _search_ai_builders(self, query: str, max_results: int) -> List[SearchResult]:
+    def _search_ai_builders(self, query: str, max_results: int, country_code: str = None) -> List[SearchResult]:
         """
         使用 AI Builders Tavily 搜索 API（增强日志版本）
-        
+
         Args:
             query: 搜索查询词
             max_results: 最大返回结果数
-        
+            country_code: 国家代码（ISO 3166-1 alpha-2）
+
         Returns:
             搜索结果列表
         """
         if not self.llm_client:
             raise ValueError("使用 ai-builders 搜索需要提供 llm_client")
-        
+
         try:
             print(f"    [🔍 Tavily] 准备调用 API，查询: \"{query}\"")
-            print(f"    [🔍 Tavily] 请求参数: max_results={max_results}")
-            
+            print(f"    [🔍 Tavily] 请求参数: max_results={max_results}, country_code={country_code or 'ID'}")
+
             results = self.llm_client.search(
                 query=query,
                 max_results=max_results,
-                region="id",
-                search_depth="advanced",
-                include_domains=None  # 注意：当前 API 可能不支持此参数
+                country_code=country_code or "ID"
+                # 注意：search_depth 和 include_domains 参数已移除，因为 API 不支持
             )
             
             print(f"    [✅ Tavily] API 调用成功，返回 {len(results)} 个结果")
@@ -728,17 +734,156 @@ class SearchHunter:
             print(f"    [❌ 错误] SerpAPI 搜索异常: {str(e)}")
             return self._mock_search(query, max_results)
     
-    def _search_google(self, query: str, max_results: int) -> List[SearchResult]:
+    def _search_google(self, query: str, max_results: int, country_code: str = None) -> List[SearchResult]:
         """
         使用 Google Custom Search API 搜索
-        
+
         Args:
             query: 搜索查询词
             max_results: 最大返回结果数（Google API限制每次最多10个结果）
-        
+            country_code: 国家代码（ISO 3166-1 alpha-2），用于本地化搜索结果
+
         Returns:
             搜索结果列表
         """
+        # ✨ 修复：国家代码到 Google 参数的映射（支持多语言/多地区搜索）
+        # 参考: https://developers.google.com/custom-search/v1/parameter_guide
+        country_google_params = {
+            # 亚洲
+            "ID": {"gl": "ID", "hl": "id", "lr": "lang_id"},  # 印度尼西亚
+            "PH": {"gl": "PH", "hl": "fil", "lr": "lang_tl"},  # 菲律宾
+            "JP": {"gl": "JP", "hl": "ja", "lr": "lang_ja"},  # 日本
+            "CN": {"gl": "CN", "hl": "zh-CN", "lr": "lang_zh-CN"},  # 中国
+            "MY": {"gl": "MY", "hl": "ms", "lr": "lang_ms"},  # 马来西亚
+            "SG": {"gl": "SG", "hl": "en", "lr": "lang_en"},  # 新加坡
+            "IN": {"gl": "IN", "hl": "hi", "lr": "lang_hi"},  # 印度
+            "TH": {"gl": "TH", "hl": "th", "lr": "lang_th"},  # 泰国
+            "VN": {"gl": "VN", "hl": "vi", "lr": "lang_vi"},  # 越南
+            "KR": {"gl": "KR", "hl": "ko", "lr": "lang_ko"},  # 韩国
+            "TW": {"gl": "TW", "hl": "zh-TW", "lr": "lang_zh-TW"},  # 台湾
+            # 中东
+            "IQ": {"gl": "IQ", "hl": "ar", "lr": "lang_ar"},  # 伊拉克
+            "SA": {"gl": "SA", "hl": "ar", "lr": "lang_ar"},  # 沙特阿拉伯
+            "AE": {"gl": "AE", "hl": "ar", "lr": "lang_ar"},  # 阿联酋
+            "EG": {"gl": "EG", "hl": "ar", "lr": "lang_ar"},  # 埃及
+            "IR": {"gl": "IR", "hl": "fa", "lr": "lang_fa"},  # 伊朗
+            "SY": {"gl": "SY", "hl": "ar", "lr": "lang_ar"},  # 叙利亚
+            "JO": {"gl": "JO", "hl": "ar", "lr": "lang_ar"},  # 约旦
+            "LB": {"gl": "LB", "hl": "ar", "lr": "lang_ar"},  # 黎巴嫩
+            "IL": {"gl": "IL", "hl": "he", "lr": "lang_he"},  # 以色列
+            "KW": {"gl": "KW", "hl": "ar", "lr": "lang_ar"},  # 科威特
+            "QA": {"gl": "QA", "hl": "ar", "lr": "lang_ar"},  # 卡塔尔
+            "BH": {"gl": "BH", "hl": "ar", "lr": "lang_ar"},  # 巴林
+            "OM": {"gl": "OM", "hl": "ar", "lr": "lang_ar"},  # 阿曼
+            "YE": {"gl": "YE", "hl": "ar", "lr": "lang_ar"},  # 也门
+            # 欧美
+            "US": {"gl": "US", "hl": "en", "lr": "lang_en"},  # 美国
+            "GB": {"gl": "GB", "hl": "en", "lr": "lang_en"},  # 英国
+            "CA": {"gl": "CA", "hl": "en", "lr": "lang_en"},  # 加拿大
+            "AU": {"gl": "AU", "hl": "en", "lr": "lang_en"},  # 澳大利亚
+            "NZ": {"gl": "NZ", "hl": "en", "lr": "lang_en"},  # 新西兰
+            "DE": {"gl": "DE", "hl": "de", "lr": "lang_de"},  # 德国
+            "FR": {"gl": "FR", "hl": "fr", "lr": "lang_fr"},  # 法国
+            "IT": {"gl": "IT", "hl": "it", "lr": "lang_it"},  # 意大利
+            "ES": {"gl": "ES", "hl": "es", "lr": "lang_es"},  # 西班牙
+            "RU": {"gl": "RU", "hl": "ru", "lr": "lang_ru"},  # 俄罗斯
+            "TR": {"gl": "TR", "hl": "tr", "lr": "lang_tr"},  # 土耳其
+            # 拉美
+            "BR": {"gl": "BR", "hl": "pt-BR", "lr": "lang_pt-BR"},  # 巴西
+            "MX": {"gl": "MX", "hl": "es", "lr": "lang_es"},  # 墨西哥
+            "AR": {"gl": "AR", "hl": "es", "lr": "lang_es"},  # 阿根廷
+            "CL": {"gl": "CL", "hl": "es", "lr": "lang_es"},  # 智利
+            "CO": {"gl": "CO", "hl": "es", "lr": "lang_es"},  # 哥伦比亚
+            "PE": {"gl": "PE", "hl": "es", "lr": "lang_es"},  # 秘鲁
+            # 非洲
+            "ZA": {"gl": "ZA", "hl": "en", "lr": "lang_en"},  # 南非
+            "NG": {"gl": "NG", "hl": "en", "lr": "lang_en"},  # 尼日利亚
+            "KE": {"gl": "KE", "hl": "en", "lr": "lang_en"},  # 肯尼亚
+            "GH": {"gl": "GH", "hl": "en", "lr": "lang_en"},  # 加纳
+            "ET": {"gl": "ET", "hl": "am", "lr": "lang_am"},  # 埃塞俄比亚
+            "MA": {"gl": "MA", "hl": "ar", "lr": "lang_ar"},  # 摩洛哥
+            "DZ": {"gl": "DZ", "hl": "ar", "lr": "lang_ar"},  # 阿尔及利亚
+            "TN": {"gl": "TN", "hl": "ar", "lr": "lang_ar"},  # 突尼斯
+            "LY": {"gl": "LY", "hl": "ar", "lr": "lang_ar"},  # 利比亚
+            "SD": {"gl": "SD", "hl": "ar", "lr": "lang_ar"},  # 苏丹
+        }
+
+        # 根据国家代码获取 Google 参数，如果未找到则使用默认值（英语）
+        # ✨ 增强：支持国家名称（如 "Iraq"）和 ISO 代码（如 "IQ"）
+        country_key = country_code.upper() if country_code else None
+        if country_key and country_key in country_google_params:
+            google_params = country_google_params[country_key]
+            print(f"    [✅ 本地化] 使用国家代码 {country_key}: gl={google_params['gl']}, hl={google_params['hl']}, lr={google_params['lr']}")
+        elif country_key:
+            # 尝试从国家名称查找 ISO 代码
+            # 创建国家名称到 ISO 代码的反向映射
+            name_to_code = {
+                "IRAQ": "IQ", "IRAQ": "IQ",
+                "INDONESIA": "ID", "INDONESIA": "ID",
+                "SAUDI ARABIA": "SA", "SAUDI ARABIA": "SA",
+                "UNITED ARAB EMIRATES": "AE", "UAE": "AE",
+                "EGYPT": "EG",
+                "IRAN": "IR",
+                "SYRIA": "SY",
+                "JORDAN": "JO",
+                "LEBANON": "LB",
+                "ISRAEL": "IL",
+                "KUWAIT": "KW",
+                "QATAR": "QA",
+                "BAHRAIN": "BH",
+                "OMAN": "OM",
+                "YEMEN": "YE",
+                "PHILIPPINES": "PH",
+                "JAPAN": "JP",
+                "CHINA": "CN",
+                "MALAYSIA": "MY",
+                "SINGAPORE": "SG",
+                "INDIA": "IN",
+                "THAILAND": "TH",
+                "VIETNAM": "VN",
+                "SOUTH KOREA": "KR", "KOREA": "KR",
+                "TAIWAN": "TW",
+                "UNITED STATES": "US", "USA": "US",
+                "UNITED KINGDOM": "GB", "UK": "GB",
+                "CANADA": "CA",
+                "AUSTRALIA": "AU",
+                "NEW ZEALAND": "NZ",
+                "GERMANY": "DE",
+                "FRANCE": "FR",
+                "ITALY": "IT",
+                "SPAIN": "ES",
+                "RUSSIA": "RU",
+                "TURKEY": "TR",
+                "BRAZIL": "BR",
+                "MEXICO": "MX",
+                "ARGENTINA": "AR",
+                "CHILE": "CL",
+                "COLOMBIA": "CO",
+                "PERU": "PE",
+                "SOUTH AFRICA": "ZA",
+                "NIGERIA": "NG",
+                "KENYA": "KE",
+                "GHANA": "GH",
+                "ETHIOPIA": "ET",
+                "MOROCCO": "MA",
+                "ALGERIA": "DZ",
+                "TUNISIA": "TN",
+                "LIBYA": "LY",
+                "SUDAN": "SD",
+            }
+            iso_code = name_to_code.get(country_key)
+            if iso_code and iso_code in country_google_params:
+                google_params = country_google_params[iso_code]
+                print(f"    [✅ 本地化] 从国家名称 {country_key} 映射到 ISO 代码 {iso_code}: gl={google_params['gl']}, hl={google_params['hl']}, lr={google_params['lr']}")
+            else:
+                # 默认使用英语
+                google_params = {"gl": "US", "hl": "en", "lr": "lang_en"}
+                print(f"    [⚠️ 警告] 未找到国家 {country_key} 的映射，使用默认值（美国/英语）")
+        else:
+            # 默认使用英语
+            google_params = {"gl": "US", "hl": "en", "lr": "lang_en"}
+            print(f"    [ℹ️ 信息] 未提供国家代码，使用默认值（美国/英语）")
+
         api_key = getattr(self, 'google_api_key', None) or os.getenv("GOOGLE_API_KEY")
         cx = getattr(self, 'google_cx', None) or os.getenv("GOOGLE_CX")
         
@@ -762,11 +907,15 @@ class SearchHunter:
                 "key": api_key,
                 "cx": cx,
                 "q": query,
-                "num": num_results
+                "num": num_results,
+                # ✨ 修复：使用动态国家参数（支持多语言/多地区搜索）
+                "gl": google_params["gl"],  # 地理位置（影响排序和本地化）
+                "hl": google_params["hl"],  # 界面语言
+                "lr": google_params["lr"]   # 结果语言限制
             }
-            
+
             print(f"    [🔍 Google] 准备调用 API，查询: \"{query}\"")
-            print(f"    [🔍 Google] 请求参数: num={num_results}, cx={cx}")
+            print(f"    [🔍 Google] 请求参数: num={num_results}, cx={cx}, gl={google_params['gl']}, hl={google_params['hl']}, lr={google_params['lr']}")
             
             response = requests.get(endpoint, params=params, timeout=30)
             response.raise_for_status()
@@ -961,7 +1110,7 @@ class ResultInspector:
                         response_text = self.llm_client.call_gemini(
                             prompt=user_prompt,
                             system_prompt=None,  # 不使用 system_prompt，避免可能的格式问题
-                            max_tokens=500,  # 进一步减少 max_tokens
+                            max_tokens=8000,  # [修复] 2026-01-20: 从500增加到8000
                             temperature=0.0,  # 使用最低温度，使输出更确定
                             model=model_name  # 使用指定的模型
                         )
@@ -1540,8 +1689,8 @@ class SearchStrategist:
 只返回 JSON，不要其他文字。"""
             
             response = self.inspector.llm_client.call_gemini(
-                prompt, 
-                max_tokens=1000, 
+                prompt,
+                max_tokens=8000,  # [修复] 2026-01-20: 从1000增加到8000
                 temperature=0.3
             )
             
