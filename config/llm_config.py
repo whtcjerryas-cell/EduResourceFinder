@@ -150,3 +150,34 @@ def get_recommendation_params(result_count: int) -> dict:
         'max_tokens': default_config.RECOMMENDATION_TOKENS_PER_RESULT * result_count,
         'temperature': default_config.CREATIVE_TEMPERATURE
     }
+
+
+@dataclass
+class SearchConfig:
+    """
+    搜索引擎配置
+
+    集中管理搜索引擎相关的配置参数，消除代码中的魔法数字。
+    """
+
+    # 并发配置
+    MAX_PLAYLIST_WORKERS: int = 20  # 播放列表信息获取的最大并发数
+    SINGLE_TIMEOUT: int = 3  # 单个播放列表获取超时（秒）
+    VISUAL_TIMEOUT: int = 30  # 视觉评估超时（秒）
+
+    # 质量阈值
+    HIGH_QUALITY_THRESHOLD: float = 7.0  # 高质量阈值
+    MEDIUM_QUALITY_THRESHOLD: float = 5.0  # 中等质量阈值
+    LOW_QUALITY_THRESHOLD: float = 3.0  # 低质量阈值
+
+    # 搜索结果配置
+    MAX_RESULTS_TO_RETURN: int = 20  # 返回的最大结果数
+    TOP_N_FOR_QUALITY_CHECK: int = 10  # 用于质量检查的Top N结果数
+
+    # 搜索查询配置
+    MAX_SEARCH_QUERIES: int = 5  # 并行搜索使用的最大查询数
+    MAX_PRIORITY_DOMAINS: int = 5  # 优先域名数量
+
+
+# 默认搜索配置实例
+default_search_config = SearchConfig()

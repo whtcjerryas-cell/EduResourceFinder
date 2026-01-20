@@ -681,6 +681,19 @@ class ResultEvaluator:
 # 主搜索引擎
 # ============================================================================
 
+@dataclass
+class CountrySearchContext:
+    """
+    国家搜索上下文
+
+    封装国家相关的搜索配置信息，消除重复的国家配置获取代码
+    """
+    country_code: str  # 国家代码（大写，如 "ID", "CN"）
+    language_code: str  # 语言代码（如 "id", "zh"）
+    domains: List[str]  # 优先域名列表
+    config: Any  # 国家配置对象（可选）
+
+
 class SearchEngineV2:
     """新版搜索引擎"""
 
@@ -778,6 +791,229 @@ class SearchEngineV2:
             return f"{rss_mb:.1f} MB"
         except:
             return "Unknown"
+
+    def _log_step(self, message: str, level: str = "info", emoji: str = "✅") -> None:
+        """
+        统一的步骤日志输出
+
+        同时输出到控制台和日志文件，消除重复代码
+
+        Args:
+            message: 日志消息
+            level: 日志级别
+            emoji: 表情符号
+        """
+        formatted_msg = f"    [{emoji} {message}]"
+        print(formatted_msg)
+
+        logger_func = getattr(logger, level.lower(), logger.info)
+        logger_func(f"[{message}]")
+
+    def _get_country_context(self, country: str) -> CountrySearchContext:
+        """
+        获取国家搜索上下文
+
+        封装重复的国家配置获取逻辑
+
+        Args:
+            country: 国家名称或代码
+
+        Returns:
+            CountrySearchContext 对象
+        """
+        country_code = country.upper()
+        config = self.config_manager.get_country_config(country_code)
+
+        return CountrySearchContext(
+            country_code=country_code,
+            language_code=config.language_code if config else "en",
+            domains=config.domains[:5] if config else [],
+            config=config
+        )
+
+    def _setup_visual_evaluation_timeout(self, timeout_seconds: int = 30) -> None:
+        """
+        设置视觉评估超时
+
+        Args:
+            timeout_seconds: 超时时间（秒）
+        """
+        import signal
+
+        def timeout_handler(signum, frame):
+            raise TimeoutError("视觉评估超时")
+
+        if hasattr(signal, 'SIGALRM'):
+            signal.signal(signal.SIGALRM, timeout_handler)
+            signal.alarm(timeout_seconds)
+
+    def _clear_visual_evaluation_timeout(self) -> None:
+        """清除视觉评估超时"""
+        import signal
+        if hasattr(signal, 'SIGALRM'):
+            signal.alarm(0)
+
+    def _evaluate_with_visual_timeout(
+        self,
+        result_dict: dict,
+        screenshot_path: str,
+        query: str,
+        metadata: dict,
+        timeout_seconds: int = 30
+    ) -> Optional[dict]:
+        """
+        带超时保护的视觉评估
+
+        Args:
+            result_dict: 结果字典
+            screenshot_path: 截图路径
+            query: 搜索查询
+            metadata: 元数据
+            timeout_seconds: 超时时间（秒）
+
+        Returns:
+            视觉评估结果字典，失败返回 None
+        """
+        try:
+            # 设置超时
+            self._setup_visual_evaluation_timeout(timeout_seconds)
+
+            try:
+                visual_evaluation = self.result_scorer.evaluate_with_visual(
+                    result=result_dict,
+                    screenshot_path=screenshot_path,
+                    query=query,
+                    metadata=metadata
+                )
+                return visual_evaluation
+            finally:
+                # 清除超时
+                self._clear_visual_evaluation_timeout()
+
+        except TimeoutError:
+            logger.warning(f"视觉评估超时: {result_dict.get('title', '')[:40]}...")
+            return None
+        except Exception as e:
+            logger.warning(f"视觉评估异常: {str(e)[:100]}")
+            return None
+
+    def _validate_grade_subject_pair(self, request: SearchRequest) -> None:
+        """
+        验证年级-学科配对
+
+        Args:
+            request: 搜索请求
+        """
+        from core.grade_subject_validator import GradeSubjectValidator
+
+        logger.info("[步骤 0] 年级-学科配对验证...")
+        print("[验证] 检查年级-学科配对...")
+        try:
+            validator = GradeSubjectValidator()
+            validation_result = validator.validate(
+                request.country,
+                request.grade,
+                request.subject
+            )
+
+            if not validation_result["valid"]:
+                warning_msg = f"⚠️ {validation_result['reason']}"
+                print(f"    {warning_msg}")
+                if validation_result.get("suggestions"):
+                    print(f"    💡 建议: {', '.join(validation_result['suggestions'][:5])}")
+                logger.warning(f"年级-学科配对验证失败: {request.country} {request.grade} {request.subject}")
+            else:
+                print(f"    ✅ 年级-学科配对验证通过")
+                logger.info(f"   ✅ 配对验证通过")
+        except Exception as e:
+            print(f"    ⚠️ 验证失败，继续搜索: {str(e)}")
+            logger.warning(f"配对验证异常: {str(e)}")
+
+    def _initialize_scorer_for_search(self, request: SearchRequest) -> None:
+        """
+        为搜索初始化评分器
+
+        Args:
+            request: 搜索请求
+        """
+        from core.result_scorer import IntelligentResultScorer
+
+        country_code = request.country.upper()
+        if country_code not in self._scorer_cache:
+            self.result_scorer = IntelligentResultScorer(
+                country_code=country_code,
+                log_collector=self.log_collector
+            )
+            self._scorer_cache[country_code] = self.result_scorer
+            logger.info(f"[📚 知识库] 已加载 {country_code} 评分器（带知识库和日志记录）")
+            print(f"    [✅ 知识库] 已加载 {country_code} 搜索知识库")
+        else:
+            self.result_scorer = self._scorer_cache[country_code]
+            if self.log_collector:
+                self.result_scorer.log_collector = self.log_collector
+            logger.debug(f"[📚 知识库] 使用缓存的 {country_code} 评分器")
+
+    def _generate_default_search_queries(
+        self,
+        request: SearchRequest,
+        language_code: str
+    ) -> List[str]:
+        """
+        生成默认搜索查询
+
+        Args:
+            request: 搜索请求
+            language_code: 语言代码
+
+        Returns:
+            搜索查询列表
+        """
+        playlist_keywords_map = {
+            "id": ["playlist", "complete course", "full series", "koleksi lengkap", "kursus lengkap"],
+            "en": ["playlist", "complete course", "full series", "video collection"],
+            "zh": ["播放列表", "完整课程", "系列教程"],
+            "ms": ["playlist", "kursus lengkap", "siri lengkap"],
+            "ar": ["قائمة التشغيل", "دورة كاملة"],
+            "ru": ["плейлист", "полный курс"],
+        }
+        playlist_keywords = playlist_keywords_map.get(language_code, ["playlist", "complete course"])
+
+        return [
+            f"site:youtube.com {request.subject} {request.grade} {playlist_keywords[0]}",
+            f"{request.subject} {request.grade} {playlist_keywords[1] if len(playlist_keywords) > 1 else 'complete course'}",
+            f"site:youtube.com \"{request.subject}\" \"{request.grade}\" playlist",
+            f"{request.subject} {request.grade} video lesson chapter",
+            f"{request.grade} {request.subject} full course curriculum",
+            f"{request.subject} for {request.grade} students tutorial",
+            f"{request.grade} {request.subject} learning series complete"
+        ]
+
+    def _get_default_search_strategy(self, request: SearchRequest) -> 'SearchStrategy':
+        """
+        生成默认搜索策略
+
+        Args:
+            request: 搜索请求
+
+        Returns:
+            SearchStrategy 对象
+        """
+        from search_strategy_agent import SearchStrategy
+
+        ctx = self._get_country_context(request.country)
+
+        search_queries = self._generate_default_search_queries(request, ctx.language_code)
+
+        strategy = SearchStrategy(
+            search_language=ctx.language_code,
+            use_chinese_search_engine=(ctx.country_code == "CN"),
+            platforms=["youtube.com"] + ctx.domains[:3],
+            search_queries=search_queries,
+            priority_domains=ctx.domains[:5],
+            notes=f"默认搜索策略（规则生成）：使用{ctx.language_code}语言，优先搜索YouTube播放列表（7个差异化查询）"
+        )
+
+        return strategy
 
     def _cached_search(self, query: str, search_func, engine_name: str, max_results: int = 15,
                        include_domains: Optional[List[str]] = None) -> List[SearchResult]:
