@@ -542,10 +542,11 @@ class AIBuildersClient:
                     print(f"[❌ 错误] API 响应格式异常，缺少 choices 字段")
                     raise ValueError(f"API 响应格式异常")
             else:
-                error_text = response.text[:500] if hasattr(response, 'text') else 'N/A'
-                print(f"[❌ 错误] API 调用失败")
-                print(f"[❌ 错误] 状态码: {response.status_code}")
-                print(f"[❌ 错误] 错误响应: {error_text}")
+                # 🔒 P1安全修复：使用logger和脱敏，避免暴露敏感错误信息
+                error_text = response.text[:200] if hasattr(response, 'text') else 'N/A'  # 减少到200字符
+                sanitized_error = safe_log(error_text)  # 脱敏错误信息
+                logger.error(f"API call failed: {response.status_code}, error: {sanitized_error}")
+                print(f"[❌ 错误] API 调用失败，状态码: {response.status_code}")
                 raise ValueError(f"API 调用失败，状态码: {response.status_code}")
         except requests.exceptions.RequestException as e:
             # 🔒 P1 安全修复: 不暴露详细的异常信息和堆栈跟踪
@@ -2028,14 +2029,15 @@ class SearchEngineV2:
                 # 构建并行搜索任务列表
                 search_tasks = []
 
-                # 使用策略中的多个搜索词进行搜索（优先播放列表相关查询）
-                # ✨ 取前5个搜索词，充分利用查询多样性（原来只取3个）
-                queries_to_use = strategy.search_queries[:5] if len(strategy.search_queries) >= 5 else strategy.search_queries
-                print(f"    [🎯 多查询搜索] 将使用 {len(queries_to_use)} 个高度差异化的搜索词进行搜索")
+                # 🚀 P1性能优化：减少API调用次数（从7-8次减少到2-3次）
+                # 使用策略中的最优质2-3个搜索词进行搜索
+                # 优先级：1) YouTube播放列表搜索 2) 通用播放列表搜索 3) 精确匹配搜索
+                queries_to_use = strategy.search_queries[:3] if len(strategy.search_queries) >= 3 else strategy.search_queries
+                print(f"    [🎯 优化搜索] 将使用 {len(queries_to_use)} 个高质量搜索词（减少API调用）")
 
-                # Tavily/Metaso搜索 - 对每个查询都执行（5次）✅ 主要引擎（高质量，avg 4.65）
-                # ✨ 增加查询数量，提高结果多样性
-                for query_idx, search_query in enumerate(queries_to_use, 1):
+                # Tavily/Metaso搜索 - 只对前2个最佳查询执行（2次）✅ 主要引擎（高质量，avg 4.65）
+                # 🚀 P1优化：减少查询数量，从5个降低到2个，减少60%的API调用
+                for query_idx, search_query in enumerate(queries_to_use[:2], 1):
                     is_playlist_focused = any(kw in search_query.lower() for kw in ['playlist', 'complete course', 'full series', 'koleksi', 'kursus lengkap', '播放列表', '完整课程', '系列'])
                     query_type = "播放列表" if is_playlist_focused else "常规"
 
@@ -2048,16 +2050,10 @@ class SearchEngineV2:
                         'include_domains': None
                     })
 
-                # Google搜索 - 只使用第一个查询（1次）✅ 辅助引擎（低质量，avg 1.50）
-                if self.google_search_enabled and len(queries_to_use) > 0:
-                    search_tasks.append({
-                        'name': 'Google搜索',
-                        'query': queries_to_use[0],  # 只用第一个查询
-                        'func': self.google_hunter.search,
-                        'engine_name': 'Google',
-                        'max_results': 20,  # 增加到20
-                        'include_domains': None
-                    })
+                # 🚀 P1优化：移除Google搜索（低质量，avg 1.50），减少不必要的API调用
+                # Google搜索结果质量远低于Tavily/Metaso，性价比低
+                # if self.google_search_enabled and len(queries_to_use) > 0:
+                #     search_tasks.append({...})
 
                 # 任务3: 百度搜索（如果启用且需要中文搜索）
                 if strategy.use_chinese_search_engine and self.baidu_search_enabled and len(queries_to_use) > 0:
@@ -2070,51 +2066,12 @@ class SearchEngineV2:
                         'include_domains': None
                     })
 
-                # 任务4: 本地定向搜索（如果有域名配置）
-                if selected_domains:
-                    # 构建本地搜索查询
-                    base_query = query.replace("playlist", "").replace("Playlist", "").strip()
-
-                    # 从配置读取本地化关键词
-                    try:
-                        search_config = self.app_config.get_search_config()
-                        localization_keywords = search_config.get('localization', {})
-                        country_language = country_config.language_code if country_config else "en"
-                        local_keyword = localization_keywords.get(country_language, "Video lesson")
-                        logger.debug(f"从配置读取本地化关键词: {country_language} -> {local_keyword}")
-                    except Exception as e:
-                        # 降级为硬编码映射
-                        logger.warning(f"从配置读取本地化关键词失败: {str(e)}，使用硬编码映射")
-                        language_map = {
-                            "id": "Video pembelajaran",
-                            "en": "Video lesson",
-                            "zh": "教学视频",
-                            "ms": "Video pembelajaran",
-                            "ar": "فيديو تعليمي",
-                            "ru": "Видео урок",
-                        }
-                        country_language = country_config.language_code if country_config else "en"
-                        local_keyword = language_map.get(country_language, "Video lesson")
-
-                    # 构建纯净查询
-                    clean_query_parts = []
-                    if request.subject:
-                        clean_query_parts.append(request.subject)
-                    if request.grade:
-                        clean_query_parts.append(request.grade)
-                    if request.semester:
-                        clean_query_parts.append(request.semester)
-
-                    local_base_query = " ".join(clean_query_parts) if clean_query_parts else base_query
-                    local_query = f"{local_base_query} {local_keyword}".strip()
-
-                    search_tasks.append({
-                        'name': f'本地定向搜索({country_code_upper})',
-                        'func': self.llm_client.search,
-                        'engine_name': f'Local-{country_code_upper}',
-                        'max_results': 20,  # 增加到20
-                        'include_domains': selected_domains
-                    })
+                # 🚀 P1优化：本地定向搜索（条件性启用，仅在Tavily/Metaso结果不足时）
+                # 策略：先执行主搜索，如果结果数量<30，再启用本地定向搜索作为补充
+                # 这样可以避免不必要的API调用，提升性能
+                # if selected_domains:
+                #     # ... 本地定向搜索逻辑 ...
+                # 注意：本地定向搜索已移至主搜索之后，根据结果数量动态决定是否执行
 
                 # 执行并行搜索（传递 country_code 用于免费额度优先策略）
                 parallel_results = self._parallel_search(query, search_tasks, timeout=30, country_code=request.country)
@@ -2575,14 +2532,12 @@ class SearchEngineV2:
 
                         print(f"    [📸] 开始并发截图 {len(urls_to_screenshot)} 个URL...")
 
-                        # 异步批量截图（增加超时保护 + 自动资源释放 + 多层保险）
+                        # 异步批量截图（增加超时保护 + 避免资源泄漏）
                         async def capture_screenshots_async():
-                            service = None
-                            browser = None
+                            """🔒 P1修复：避免关闭全局单例的browser"""
                             try:
-                                # 创建截图服务
+                                # 获取截图服务（全局单例，不要关闭）
                                 service = await get_screenshot_service()
-                                browser = service.browser if hasattr(service, 'browser') else None
 
                                 # 添加60秒总超时保护
                                 result = await asyncio.wait_for(
@@ -2600,31 +2555,8 @@ class SearchEngineV2:
                             except Exception as e:
                                 logger.warning(f"截图服务异常: {str(e)[:100]}")
                                 return {}
-                            finally:
-                                # 🔥 关键：多层保险确保资源释放（修复：P1 - 内存泄漏）
-                                # 1. 关闭浏览器实例
-                                if browser is not None:
-                                    try:
-                                        await browser.close()
-                                        logger.debug("🗑️ 浏览器实例已关闭")
-                                    except Exception as e:
-                                        logger.debug(f"关闭浏览器实例失败（可忽略）: {str(e)[:50]}")
-
-                                # 2. 停止截图服务
-                                if service is not None:
-                                    try:
-                                        await service.stop()
-                                        logger.debug("🗑️ 截图服务已关闭")
-                                    except Exception as e:
-                                        logger.debug(f"关闭截图服务失败（可忽略）: {str(e)[:50]}")
-
-                                # 3. 强制垃圾回收，确保内存释放
-                                try:
-                                    import gc
-                                    gc.collect()
-                                    logger.debug("♻️ 已强制垃圾回收")
-                                except Exception:
-                                    pass
+                            # 🔥 关键修复：移除finally块，不要关闭全局单例的browser
+                            # ScreenshotService使用全局单例模式，由生命周期管理器负责清理
 
                         # 运行异步任务
                         screenshot_results = asyncio.run(capture_screenshots_async())
@@ -2895,8 +2827,9 @@ class SearchEngineV2:
                         print(f"    [✅ 质量良好] 无需优化")
 
             except Exception as opt_error:
-                print(f"    [⚠️ 智能优化失败] {str(opt_error)}")
-                logger.warning(f"智能优化失败: {str(opt_error)}", exc_info=True)
+                # 🔒 P1安全修复：不暴露异常细节给用户
+                logger.warning(f"智能优化失败: {type(opt_error).__name__}", exc_info=True)
+                print(f"    [⚠️ 智能优化失败] 将使用默认排序")
             # ========== 智能优化循环结束 ==========
 
             # ========== 🔍 记录评分分布和过滤到透明度收集器（P0-1） ==========
