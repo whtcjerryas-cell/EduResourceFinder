@@ -51,6 +51,12 @@ htmlcov/
 search_history.json
 *.cache
 .pytest_cache/
+data/cache/
+data/videos/analyzed/
+
+# JSON 和临时数据文件（保留配置文件）
+data/*.json
+!data/config/*.json
 
 # 部署包
 deployment_packages/

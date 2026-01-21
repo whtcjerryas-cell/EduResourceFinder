@@ -15,7 +15,7 @@ project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
 from search_engine_v2 import SearchEngineV2 as SearchEngine, SearchRequest
-from logger_utils import get_logger
+from utils.logger_utils import get_logger
 from core.search_cache import get_search_cache
 from core.performance_monitor import get_performance_monitor
 

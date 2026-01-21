@@ -26,20 +26,14 @@ load_dotenv()
 INTERNAL_API_KEY = os.getenv("INTERNAL_API_KEY", "sk_4c34c16af4f8bb4bc102f3d1afd6439127c4d95a2912af34efcbda0")
 INTERNAL_API_BASE_URL = os.getenv("INTERNAL_API_BASE_URL", "https://hk-intra-paas.transsion.com/tranai-proxy/v1")
 
-# 禁用代理（公司内部API需要）
-def disable_proxy():
-    """强制禁用所有代理设置"""
-    proxy_vars = [
-        "HTTP_PROXY", "HTTPS_PROXY", "http_proxy", "https_proxy",
-        "ALL_PROXY", "all_proxy", "NO_PROXY", "no_proxy"
-    ]
-    for var in proxy_vars:
-        if var in os.environ:
-            del os.environ[var]
-    os.environ["HTTP_PROXY"] = ""
-    os.environ["HTTPS_PROXY"] = ""
+# 导入统一的代理工具（proxy_utils 模块导入时会自动禁用代理）
+import sys
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+from core.proxy_utils import disable_proxy  # 导入即自动禁用代理（见 proxy_utils.py:78）
+from utils.json_parser import JSONParser
+from utils.platform_detector import PlatformDetector
 
-disable_proxy()
+# 注意：无需手动调用 disable_proxy()，因为导入 core.proxy_utils 时已自动执行
 
 
 class ResourceEvaluator:
@@ -51,17 +45,6 @@ class ResourceEvaluator:
             base_url=INTERNAL_API_BASE_URL
         )
         self.model = "gemini-2.5-pro"
-
-    def identify_platform(self, url: str) -> str:
-        """识别教育平台类型"""
-        if 'youtube.com' in url or 'youtu.be' in url:
-            return 'YouTube'
-        elif 'ruangguru.com' in url:
-            return 'Ruangguru（印尼领先在线教育平台）'
-        elif 'khanacademy.org' in url:
-            return 'Khan Academy'
-        else:
-            return '其他平台'
 
     def evaluate_by_info(self, name: str, url: str, page_info: str = "") -> Dict[str, Any]:
         """
@@ -77,7 +60,7 @@ class ResourceEvaluator:
         """
         print(f"\n🤖 AI评估: {name}")
 
-        platform = self.identify_platform(url)
+        platform = PlatformDetector.identify_platform(url)
         is_playlist = 'playlist' in url
         is_kurikulum_merdeka = 'merdeka' in url.lower() or 'merdeka' in name.lower()
         is_youtube = 'youtube.com' in url
@@ -151,7 +134,7 @@ class ResourceEvaluator:
             result_text = response.choices[0].message.content.strip()
 
             # 提取JSON
-            json_text = self._extract_json(result_text)
+            json_text = JSONParser.extract_json_from_response(result_text)
             evaluation = json.loads(json_text)
 
             print(f"✅ 评分: {evaluation.get('overall_score', 'N/A')}/10 | {evaluation.get('recommendation', 'N/A')}")
@@ -160,21 +143,6 @@ class ResourceEvaluator:
         except Exception as e:
             print(f"❌ 评估失败: {str(e)[:100]}")
             return self._create_error_evaluation(str(e))
-
-    def _extract_json(self, text: str) -> str:
-        """从文本中提取JSON"""
-        patterns = [
-            r'```json\s*(\{.*?\})\s*```',
-            r'```\s*(\{.*?\})\s*```',
-        ]
-        for pattern in patterns:
-            match = re.search(pattern, text, re.DOTALL)
-            if match:
-                return match.group(1)
-        match = re.search(r'\{[^{}]*(?:\{[^{}]*\}[^{}]*)*\}', text, re.DOTALL)
-        if match:
-            return match.group(0)
-        return text.strip()
 
     def _create_error_evaluation(self, error_msg: str) -> Dict[str, Any]:
         """创建错误评估结果"""

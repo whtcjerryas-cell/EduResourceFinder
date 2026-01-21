@@ -9,7 +9,7 @@ import uuid
 from datetime import datetime, timezone
 from typing import Dict, List, Tuple, Optional
 from flask import jsonify
-from logger_utils import get_logger
+from utils.logger_utils import get_logger
 from utils.error_handling import ValidationError, ServiceUnavailableError
 
 logger = get_logger('batch_video_service')

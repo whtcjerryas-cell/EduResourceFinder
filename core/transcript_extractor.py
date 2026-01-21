@@ -21,7 +21,7 @@ try:
 except ImportError:
     HAS_WHISPER = False
 
-from logger_utils import get_logger
+from utils.logger_utils import get_logger
 
 logger = get_logger('transcript_extractor')
 

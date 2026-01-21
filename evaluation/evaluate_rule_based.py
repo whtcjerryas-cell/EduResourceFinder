@@ -16,6 +16,11 @@ import pandas as pd
 from typing import Dict, Any, Tuple
 from urllib.parse import urlparse
 
+# 导入平台检测工具
+import sys
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+from utils.platform_detector import PlatformDetector
+
 
 class RuleBasedEvaluator:
     """基于规则的教育资源评估器"""
@@ -34,17 +39,6 @@ class RuleBasedEvaluator:
             'sd_kelas_1': 0.5,  # 明确标注一年级
             'topik': 0.3,  # 按主题组织
         }
-
-    def identify_platform(self, url: str) -> str:
-        """识别教育平台类型"""
-        if 'youtube.com' in url or 'youtu.be' in url:
-            return 'YouTube（全球最大视频平台，免费）'
-        elif 'ruangguru.com' in url:
-            return 'Ruangguru（印尼领先在线教育平台）'
-        elif 'dafalulu.ruangguru.com' in url:
-            return 'Ruangguru Dafalulu（Ruangguru子品牌）'
-        else:
-            return '其他平台'
 
     def extract_features(self, name: str, url: str) -> Dict[str, bool]:
         """提取资源特征"""
@@ -239,7 +233,7 @@ class RuleBasedEvaluator:
         """完整评估流程"""
         print(f"\n🔍 评估: {name}")
 
-        platform = self.identify_platform(url)
+        platform = PlatformDetector.identify_platform(url)
         features = self.extract_features(name, url)
         scores = self.calculate_scores(name, url, features)
         recommendation = self.get_recommendation(scores['overall'], features)

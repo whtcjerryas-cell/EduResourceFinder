@@ -5,7 +5,7 @@ Excel导出器 - 生成详细的搜索日志分析报告
 import json
 from typing import List, Dict, Any
 from pathlib import Path
-from logger_utils import get_logger
+from utils.logger_utils import get_logger
 
 logger = get_logger('excel_exporter')
 

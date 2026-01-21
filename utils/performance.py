@@ -6,7 +6,7 @@
 import time
 import functools
 from typing import Callable, Any
-from logger_utils import get_logger
+from utils.logger_utils import get_logger
 
 logger = get_logger('performance')
 

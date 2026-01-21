@@ -10,8 +10,16 @@ from pathlib import Path
 from typing import Dict, List, Optional, Any
 from pydantic import BaseModel, Field
 from config_manager import ConfigManager
-from logger_utils import get_logger
+from utils.logger_utils import get_logger
 from json_utils import extract_json_object
+
+# 导入提示词管理器
+try:
+    from utils.prompt_manager import get_prompt_manager
+    HAS_PROMPT_MANAGER = True
+except ImportError:
+    HAS_PROMPT_MANAGER = False
+    print("[⚠️] 警告: 无法导入提示词管理器，将使用原有实现")
 
 logger = get_logger('search_strategy_agent')
 
@@ -32,13 +40,15 @@ class SearchStrategyAgent:
     def __init__(self, llm_client, config_manager: ConfigManager):
         """
         初始化搜索策略 Agent
-        
+
         Args:
             llm_client: LLM客户端（用于AI生成策略）
             config_manager: 配置管理器
         """
         self.llm_client = llm_client
         self.config_manager = config_manager
+        # ✨ 初始化提示词管理器
+        self.prompt_mgr = get_prompt_manager() if HAS_PROMPT_MANAGER else None
     
     def generate_strategy(self, country: str, grade: str, subject: str, semester: Optional[str] = None) -> SearchStrategy:
         """
@@ -93,8 +103,22 @@ class SearchStrategyAgent:
         existing_domains: List[str]
     ) -> SearchStrategy:
         """使用LLM生成搜索策略"""
-        
-        system_prompt = """你是一个专业的搜索策略专家。你的任务是根据国家、年级、科目制定个性化的搜索策略。
+
+        # ✨ 使用提示词管理器构建搜索策略提示词（替代硬编码）
+        if self.prompt_mgr:
+            system_prompt = self.prompt_mgr.get_strategy_system_prompt()
+            user_prompt = self.prompt_mgr.get_strategy_user_prompt(
+                country=country,
+                country_name=country_name,
+                language_code=language_code,
+                grade=grade,
+                subject=subject,
+                semester=semester or '不指定',
+                existing_domains=existing_domains
+            )
+        else:
+            # 降级方案：使用原有实现
+            system_prompt = """你是一个专业的搜索策略专家。你的任务是根据国家、年级、科目制定个性化的搜索策略。
 
 **关键要求**：
 1. 只能返回JSON格式，不能返回任何其他文本、解释、Markdown格式或代码块标记
@@ -113,8 +137,8 @@ class SearchStrategyAgent:
 }
 
 **重要**：直接返回JSON，不要添加任何前缀或后缀。"""
-        
-        user_prompt = f"""请为以下搜索请求制定搜索策略：
+
+            user_prompt = f"""请为以下搜索请求制定搜索策略：
 
 国家: {country} ({country_name})
 语言代码: {language_code}
@@ -357,7 +381,20 @@ class SearchStrategyAgent:
     ) -> str:
         """使用LLM生成单个最优查询"""
 
-        system_prompt = """你是一个专业的搜索查询优化专家。你的任务是根据国家、年级、科目生成单个最优搜索查询。
+        # ✨ 使用提示词管理器构建最优查询提示词（替代硬编码）
+        if self.prompt_mgr:
+            system_prompt = self.prompt_mgr.get_best_query_system_prompt()
+            user_prompt = self.prompt_mgr.get_best_query_user_prompt(
+                country=country,
+                country_name=country_name,
+                language_code=language_code,
+                grade=grade,
+                subject=subject,
+                semester=semester or '不指定'
+            )
+        else:
+            # 降级方案：使用原有实现
+            system_prompt = """你是一个专业的搜索查询优化专家。你的任务是根据国家、年级、科目生成单个最优搜索查询。
 
 **关键要求**：
 1. 专注于教育视频资源的搜索
@@ -372,7 +409,7 @@ class SearchStrategyAgent:
 
 **重要**：直接返回查询字符串，不要添加引号、JSON格式或其他文本。"""
 
-        user_prompt = f"""请为以下搜索请求生成单个最优查询：
+            user_prompt = f"""请为以下搜索请求生成单个最优查询：
 
 国家: {country} ({country_name})
 语言代码: {language_code}

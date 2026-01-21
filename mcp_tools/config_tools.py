@@ -9,7 +9,7 @@
 import json
 import os
 from typing import Dict, List, Any
-from logger_utils import get_logger
+from utils.logger_utils import get_logger
 
 logger = get_logger('config_tools')
 

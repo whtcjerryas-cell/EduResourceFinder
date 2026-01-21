@@ -10,7 +10,7 @@ import time
 from typing import Dict, List, Optional, Any
 from datetime import datetime, timedelta
 from pathlib import Path
-from logger_utils import get_logger
+from utils.logger_utils import get_logger
 
 logger = get_logger('search_cache')
 

@@ -11,7 +11,7 @@ from pathlib import Path
 project_root = Path(__file__).parent
 sys.path.insert(0, str(project_root))
 
-from logger_utils import get_logger
+from utils.logger_utils import get_logger
 from core.result_scorer import IntelligentResultScorer
 from core.arabic_normalizer import ArabicNormalizer
 

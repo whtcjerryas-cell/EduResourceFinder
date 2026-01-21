@@ -7,7 +7,7 @@ import sys
 import os
 
 # 初始化日志系统（必须在导入其他模块之前）
-from logger_utils import get_logger
+from utils.logger_utils import get_logger
 logger = get_logger('test_web_app')
 
 # 保存原始 print 函数

@@ -8,7 +8,7 @@ import json
 import re
 from typing import Dict, List, Tuple, Optional
 from flask import jsonify
-from logger_utils import get_logger
+from utils.logger_utils import get_logger
 from utils.error_handling import ValidationError, NotFoundError
 
 logger = get_logger('knowledge_overview_service')

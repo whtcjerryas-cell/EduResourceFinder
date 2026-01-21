@@ -7,7 +7,7 @@
 """
 
 from typing import Optional
-from logger_utils import get_logger
+from utils.logger_utils import get_logger
 
 logger = get_logger('query_generator')
 

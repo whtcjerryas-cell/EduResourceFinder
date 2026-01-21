@@ -10,7 +10,7 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from core.video_processor import VideoCrawler, process_video
-from logger_utils import get_logger
+from utils.logger_utils import get_logger
 
 logger = get_logger('test_video_processor')
 

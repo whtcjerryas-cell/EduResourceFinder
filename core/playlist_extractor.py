@@ -8,7 +8,7 @@ YouTube播放列表信息提取器
 
 from typing import Dict, Any, Optional
 from concurrent.futures import ThreadPoolExecutor, as_completed, TimeoutError as FuturesTimeoutError
-from logger_utils import get_logger
+from utils.logger_utils import get_logger
 
 logger = get_logger('playlist_extractor')
 

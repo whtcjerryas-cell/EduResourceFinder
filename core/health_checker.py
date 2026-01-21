@@ -18,7 +18,7 @@ import threading
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from config_manager import ConfigManager
-from logger_utils import get_logger
+from utils.logger_utils import get_logger
 from search_strategist import SearchHunter
 from tools.discovery_agent import CountryDiscoveryAgent
 

@@ -13,7 +13,7 @@ project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
 from core.result_scorer import get_result_scorer
-from logger_utils import get_logger
+from utils.logger_utils import get_logger
 
 logger = get_logger('result_ranker')
 

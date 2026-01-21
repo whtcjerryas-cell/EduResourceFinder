@@ -29,6 +29,12 @@ INTERNAL_API_BASE_URL = os.getenv("INTERNAL_API_BASE_URL", "https://hk-intra-paa
 # 代理配置
 PROXY_URL = "http://127.0.0.1:7897"
 
+# 导入JSON解析工具
+import sys
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+from utils.json_parser import JSONParser
+from utils.platform_detector import PlatformDetector
+
 
 def setup_environment():
     """配置环境变量和代理"""
@@ -54,17 +60,6 @@ class ResourceEvaluator:
         )
         self.model = "gemini-2.5-pro"
 
-    def identify_platform(self, url: str) -> str:
-        """识别教育平台类型"""
-        if 'youtube.com' in url or 'youtu.be' in url:
-            return 'YouTube'
-        elif 'ruangguru.com' in url:
-            return 'Ruangguru（印尼领先在线教育平台）'
-        elif 'khanacademy.org' in url:
-            return 'Khan Academy'
-        else:
-            return '其他平台'
-
     def evaluate(self, name: str, url: str) -> Dict[str, Any]:
         """
         使用 Gemini 2.5 Pro 进行评估
@@ -78,7 +73,7 @@ class ResourceEvaluator:
         """
         print(f"\n🤖 Gemini 2.5 Pro 评估: {name}")
 
-        platform = self.identify_platform(url)
+        platform = PlatformDetector.identify_platform(url)
         is_playlist = 'playlist' in url
         is_kurikulum_merdeka = 'merdeka' in url.lower() or 'merdeka' in name.lower()
 
@@ -179,7 +174,7 @@ class ResourceEvaluator:
             result_text = response.choices[0].message.content.strip()
 
             # 提取JSON部分
-            json_text = self._extract_json(result_text)
+            json_text = JSONParser.extract_json_from_response(result_text)
 
             # 解析JSON
             evaluation = json.loads(json_text)
@@ -198,27 +193,6 @@ class ResourceEvaluator:
             print(f"❌ 评估失败: {str(e)}")
             # 如果代理调用失败，返回基于规则的后备评估
             return self._create_rule_based_fallback(name, url, platform, str(e))
-
-    def _extract_json(self, text: str) -> str:
-        """从文本中提取JSON"""
-        # 尝试找到JSON代码块
-        patterns = [
-            r'```json\s*(\{.*?\})\s*```',
-            r'```\s*(\{.*?\})\s*```',
-        ]
-
-        for pattern in patterns:
-            match = re.search(pattern, text, re.DOTALL)
-            if match:
-                return match.group(1)
-
-        # 尝试找到第一个完整的JSON对象
-        match = re.search(r'\{[^{}]*(?:\{[^{}]*\}[^{}]*)*\}', text, re.DOTALL)
-        if match:
-            return match.group(0)
-
-        # 如果没找到，尝试直接解析整个文本
-        return text.strip()
 
     def _create_error_evaluation(self, error_msg: str, raw_text: str) -> Dict[str, Any]:
         """创建错误评估结果"""

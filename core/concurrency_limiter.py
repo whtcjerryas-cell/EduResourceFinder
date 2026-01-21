@@ -10,7 +10,7 @@ from typing import Optional, Callable, Any
 from queue import Queue, Empty, Full
 from datetime import datetime, timedelta
 from functools import wraps
-from logger_utils import get_logger
+from utils.logger_utils import get_logger
 
 logger = get_logger('concurrency_limiter')
 

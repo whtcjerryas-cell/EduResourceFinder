@@ -80,6 +80,14 @@ except ImportError:
     HAS_UNIFIED_CLIENT = False
     print("[⚠️] 警告: 无法导入统一LLM客户端，将使用原有实现")
 
+# 导入提示词管理器
+try:
+    from utils.prompt_manager import get_prompt_manager
+    HAS_PROMPT_MANAGER = True
+except ImportError:
+    HAS_PROMPT_MANAGER = False
+    print("[⚠️] 警告: 无法导入提示词管理器，将使用原有实现")
+
 class AIBuildersClient:
     """
     AI Builders API 客户端（兼容性包装器）
@@ -471,19 +479,29 @@ class AIBuildersClient:
     def _search_via_llm_tools(self, query: str, max_results: int, region: str) -> List[SearchResult]:
         """
         通过 LLM 工具调用方式执行搜索（备选方案）
-        
+
         Args:
             query: 搜索查询词
             max_results: 最大返回结果数
             region: 搜索区域
-        
+
         Returns:
             搜索结果列表
         """
-        system_prompt = """你是一个搜索助手。当用户请求搜索时，请使用可用的搜索工具来获取结果。
+        # ✨ 使用提示词管理器构建搜索助手提示词（替代硬编码）
+        if HAS_PROMPT_MANAGER:
+            prompt_mgr = get_prompt_manager()
+            system_prompt, user_prompt = prompt_mgr.get_llm_search_assistant_prompts(
+                query=query,
+                max_results=max_results,
+                region=region
+            )
+        else:
+            # 降级方案：使用原有实现
+            system_prompt = """你是一个搜索助手。当用户请求搜索时，请使用可用的搜索工具来获取结果。
 如果搜索工具返回了结果，请以 JSON 格式返回搜索结果数组。"""
-        
-        user_prompt = f"""请搜索以下查询词，返回前 {max_results} 个结果：
+
+            user_prompt = f"""请搜索以下查询词，返回前 {max_results} 个结果：
 查询词: {query}
 地区: {region}
 
@@ -1025,11 +1043,13 @@ class ResultInspector:
     def __init__(self, llm_client: AIBuildersClient):
         """
         初始化评估器
-        
+
         Args:
             llm_client: LLM 客户端实例
         """
         self.llm_client = llm_client
+        # ✨ 初始化提示词管理器
+        self.prompt_mgr = get_prompt_manager() if HAS_PROMPT_MANAGER else None
     
     def evaluate_results(self, search_results: List[SearchResult], 
                         chapter_info: ChapterInfo) -> EvaluationResult:
@@ -1073,10 +1093,18 @@ class ResultInspector:
             # 只评估前5个结果，减少 token 数量
             limited_results = search_results[:5]
             results_text = self._format_results_for_llm(limited_results)
-            
-            # 使用实际的评估 prompt
-            # 重要：明确告诉模型不要使用工具，直接返回 JSON
-            user_prompt = f"""请直接返回JSON格式，不要使用任何工具或搜索功能。
+
+            # ✨ 使用提示词管理器构建评估提示词（替代硬编码）
+            if self.prompt_mgr:
+                user_prompt = self.prompt_mgr.get_search_evaluation_user_prompt(
+                    grade=chapter_info.grade_level,
+                    subject=chapter_info.subject,
+                    chapter=chapter_info.chapter_title,
+                    results_text=results_text
+                )
+            else:
+                # 降级方案：使用原有实现
+                user_prompt = f"""请直接返回JSON格式，不要使用任何工具或搜索功能。
 
 从以下搜索结果中选择适合小学1-2年级数学教学的视频资源。
 
@@ -1670,7 +1698,16 @@ class SearchStrategist:
     def _try_llm_generated_links(self, chapter_info: ChapterInfo):
         """使用 LLM 生成已知印尼教育平台的直接链接"""
         try:
-            prompt = f"""请为以下章节提供印尼主要教育平台（Ruangguru, Quipper, Zenius, Pahamify, Kelas Pintar）的直接链接。
+            # ✨ 使用提示词管理器构建平台链接生成提示词（替代硬编码）
+            if self.prompt_mgr:
+                prompt = self.prompt_mgr.get_platform_links_user_prompt(
+                    grade=chapter_info.grade_level,
+                    subject=chapter_info.subject,
+                    chapter=chapter_info.chapter_title
+                )
+            else:
+                # 降级方案：使用原有实现
+                prompt = f"""请为以下章节提供印尼主要教育平台（Ruangguru, Quipper, Zenius, Pahamify, Kelas Pintar）的直接链接。
 
 年级：{chapter_info.grade_level}（小学1-2年级）
 学科：{chapter_info.subject}

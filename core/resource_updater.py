@@ -18,7 +18,7 @@ import threading
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from config_manager import ConfigManager
-from logger_utils import get_logger
+from utils.logger_utils import get_logger
 from video_evaluator import VideoEvaluator
 
 logger = get_logger('resource_updater')

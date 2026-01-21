@@ -7,7 +7,7 @@ import os
 import uuid
 from datetime import datetime
 from flask import Blueprint, request, jsonify, send_file
-from logger_utils import get_logger
+from utils.logger_utils import get_logger
 
 logger = get_logger('export_routes')
 

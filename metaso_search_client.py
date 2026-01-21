@@ -21,7 +21,8 @@ import json
 import time
 import requests
 from typing import Optional, List, Dict, Any
-from logger_utils import get_logger
+from utils.logger_utils import get_logger  # 修复: 使用正确的导入路径
+from utils.error_handler import ErrorHandler
 
 logger = get_logger('metaso_client')
 

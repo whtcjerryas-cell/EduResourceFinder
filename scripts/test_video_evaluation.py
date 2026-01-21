@@ -25,7 +25,7 @@ except ImportError:
 
 from core.video_processor import VideoCrawler
 from core.video_evaluator import VideoEvaluator
-from logger_utils import get_logger
+from utils.logger_utils import get_logger
 
 logger = get_logger('test_video_evaluation')
 

@@ -15,7 +15,7 @@ sys.path.insert(0, str(project_root))
 
 from abc import ABC, abstractmethod
 from typing import Dict, List, Any, Optional
-from logger_utils import get_logger
+from utils.logger_utils import get_logger
 
 logger = get_logger('base_search_engine')
 

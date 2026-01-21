@@ -35,7 +35,7 @@ except ImportError:
 
 from metaso_search_client import MetasoSearchClient
 from llm_client import UnifiedLLMClient
-from logger_utils import get_logger
+from utils.logger_utils import get_logger
 
 logger = get_logger('search_comparison')
 

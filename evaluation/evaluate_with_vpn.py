@@ -25,45 +25,27 @@ load_dotenv()
 INTERNAL_API_KEY = os.getenv("INTERNAL_API_KEY", "sk_4c34c16af4f8bb4bc102f3d1afd6439127c4d95a2912af34efcbda0")
 INTERNAL_API_BASE_URL = os.getenv("INTERNAL_API_BASE_URL", "https://hk-intra-paas.transsion.com/tranai-proxy/v1")
 
-
-def disable_proxy():
-    """禁用所有代理设置，使用VPN直连"""
-    proxy_vars = [
-        "HTTP_PROXY", "HTTPS_PROXY", "http_proxy", "https_proxy",
-        "ALL_PROXY", "all_proxy", "NO_PROXY", "no_proxy"
-    ]
-    for var in proxy_vars:
-        if var in os.environ:
-            del os.environ[var]
-        os.environ[var] = ""
-    os.environ["HTTP_PROXY"] = ""
-    os.environ["HTTPS_PROXY"] = ""
-    print("✅ 已禁用代理，使用VPN直连API")
+# 导入统一的代理工具（proxy_utils 模块导入时会自动禁用代理）
+import sys
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+from core.proxy_utils import disable_proxy  # 导入即自动禁用代理（见 proxy_utils.py:78）
+from utils.json_parser import JSONParser
+from utils.platform_detector import PlatformDetector
 
 
 class ResourceEvaluator:
     """教育资源评估器 - 使用公司内部 Gemini 2.5 Pro"""
 
     def __init__(self):
+        # 注意：无需手动调用 disable_proxy()，因为导入 core.proxy_utils 时已自动执行
         # 确保不使用代理，直接通过VPN访问
-        disable_proxy()
+        # disable_proxy()  # 已在 proxy_utils 模块导入时自动执行
 
         self.client = OpenAI(
             api_key=INTERNAL_API_KEY,
             base_url=INTERNAL_API_BASE_URL,
         )
         self.model = "gemini-2.5-pro"
-
-    def identify_platform(self, url: str) -> str:
-        """识别教育平台类型"""
-        if 'youtube.com' in url or 'youtu.be' in url:
-            return 'YouTube（全球最大视频平台，免费）'
-        elif 'ruangguru.com' in url:
-            return 'Ruangguru（印尼领先在线教育平台）'
-        elif 'khanacademy.org' in url:
-            return 'Khan Academy'
-        else:
-            return '其他平台'
 
     def evaluate(self, name: str, url: str) -> Dict[str, Any]:
         """
@@ -78,7 +60,7 @@ class ResourceEvaluator:
         """
         print(f"\n🤖 Gemini 2.5 Pro 评估: {name}")
 
-        platform = self.identify_platform(url)
+        platform = PlatformDetector.identify_platform(url)
         is_playlist = 'playlist' in url
         is_kurikulum_merdeka = 'merdeka' in url.lower() or 'merdeka' in name.lower()
         is_ruangguru = 'ruangguru.com' in url
@@ -191,7 +173,7 @@ class ResourceEvaluator:
             result_text = response.choices[0].message.content.strip()
 
             # 提取JSON部分
-            json_text = self._extract_json(result_text)
+            json_text = JSONParser.extract_json_from_response(result_text)
 
             # 解析JSON
             evaluation = json.loads(json_text)
@@ -211,27 +193,6 @@ class ResourceEvaluator:
             import traceback
             traceback.print_exc()
             return self._create_error_evaluation(str(e), '')
-
-    def _extract_json(self, text: str) -> str:
-        """从文本中提取JSON"""
-        # 尝试找到JSON代码块
-        patterns = [
-            r'```json\s*(\{.*?\})\s*```',
-            r'```\s*(\{.*?\})\s*```',
-        ]
-
-        for pattern in patterns:
-            match = re.search(pattern, text, re.DOTALL)
-            if match:
-                return match.group(1)
-
-        # 尝试找到第一个完整的JSON对象（支持嵌套）
-        match = re.search(r'\{[^{}]*(?:\{[^{}]*\}[^{}]*)*\}', text, re.DOTALL)
-        if match:
-            return match.group(0)
-
-        # 如果没找到，尝试直接解析整个文本
-        return text.strip()
 
     def _create_error_evaluation(self, error_msg: str, raw_text: str) -> Dict[str, Any]:
         """创建错误评估结果"""

@@ -11,7 +11,8 @@ llm:
   # ----------------------------------------
   models:
     # 内部API默认模型（文本生成）
-    internal_api: "gpt-4o"
+    # [修复] 2026-01-20: 从 gpt-4o 改为 gemini-2.5-flash（更快速、成本更低）
+    internal_api: "gemini-2.5-flash"
 
     # 快速推理模型（用于搜索推荐理由生成，2-3秒响应）
     # 注意：如果公司API不可用，自动使用AI Builders的grok-4-fast（10秒）
@@ -69,9 +70,10 @@ llm:
   # ----------------------------------------
   params:
     # 通用默认参数
+    # [修复] 2026-01-20: max_tokens 从 2000 增加到 8000，避免输出截断
     default:
       temperature: 0.3
-      max_tokens: 2000
+      max_tokens: 8000
       timeout: 300
 
     # 视觉分析参数

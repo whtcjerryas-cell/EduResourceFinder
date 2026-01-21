@@ -5,7 +5,7 @@
 """
 
 from flask import Blueprint, render_template, send_from_directory
-from logger_utils import get_logger
+from utils.logger_utils import get_logger
 
 logger = get_logger('page_routes')
 

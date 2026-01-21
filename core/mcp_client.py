@@ -11,7 +11,7 @@ import asyncio
 from typing import Optional, Dict, Any, List
 from pathlib import Path
 import requests
-from logger_utils import get_logger
+from utils.logger_utils import get_logger
 
 logger = get_logger('mcp_client')
 

@@ -8,7 +8,7 @@ import gc
 import uuid
 from concurrent.futures import ThreadPoolExecutor, TimeoutError as FuturesTimeoutError
 from typing import Dict, Any, List, Optional, Tuple
-from logger_utils import get_logger
+from utils.logger_utils import get_logger
 from utils.constants import (
     SEARCH_TIMEOUT_SECONDS,
     CONCURRENCY_LIMITER_TIMEOUT,

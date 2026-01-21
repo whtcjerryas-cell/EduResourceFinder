@@ -23,7 +23,7 @@ except ImportError:
     print("❌ 请安装 requests 库: pip install requests")
     sys.exit(1)
 
-from logger_utils import get_logger
+from utils.logger_utils import get_logger
 
 logger = get_logger('performance_test')
 

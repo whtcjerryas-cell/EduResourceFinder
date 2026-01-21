@@ -16,7 +16,7 @@ from datetime import datetime
 project_root = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(project_root))
 
-from logger_utils import get_logger
+from utils.logger_utils import get_logger
 from tests.ab_testing.runners.scoring_test_runner import ScoringTestRunner
 
 logger = get_logger('run_ab_test')

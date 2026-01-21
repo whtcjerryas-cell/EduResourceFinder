@@ -21,7 +21,7 @@ try:
 except ImportError:
     ffmpeg = None
 
-from logger_utils import get_logger
+from utils.logger_utils import get_logger
 
 logger = get_logger('video_processor')
 

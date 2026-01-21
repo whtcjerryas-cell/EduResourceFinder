@@ -19,7 +19,7 @@ import threading
 # 添加项目根目录到路径
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from logger_utils import get_logger
+from utils.logger_utils import get_logger
 
 logger = get_logger('scheduler')
 

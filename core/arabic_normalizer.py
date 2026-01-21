@@ -11,7 +11,7 @@
 
 import re
 from typing import Dict, List, Optional, Tuple
-from logger_utils import get_logger
+from utils.logger_utils import get_logger
 
 logger = get_logger('arabic_normalizer')
 

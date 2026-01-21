@@ -532,6 +532,414 @@
             opacity: 1;
         }
     }
+
+    /* 分页按钮样式 */
+    .pagination-btn {
+        background: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: var(--border-radius);
+        font-size: var(--font-base);
+        font-weight: 600;
+        cursor: pointer;
+        transition: all var(--transition-base);
+        box-shadow: var(--shadow-sm);
+    }
+
+    .pagination-btn:hover:not(:disabled) {
+        background: var(--primary-dark);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
+    }
+
+    .pagination-btn:disabled {
+        background: var(--border-color);
+        color: var(--text-secondary);
+        cursor: not-allowed;
+        opacity: 0.5;
+    }
+
+    .pagination-container {
+        padding: var(--spacing-md);
+        background: var(--bg-card);
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow-sm);
+    }
+
+    /* ========================================
+       🔍 透明度UI样式 (P0-4 到 P0-8)
+       ======================================== */
+    
+    /* 标签页容器 */
+    .tab-container {
+        display: flex;
+        gap: 10px;
+        padding: 10px;
+        background: var(--bg-card);
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow-sm);
+        margin-bottom: var(--spacing-lg);
+    }
+
+    .tab-button {
+        flex: 1;
+        padding: 12px 24px;
+        background: var(--bg-primary);
+        border: 2px solid var(--border-color);
+        border-radius: var(--border-radius);
+        font-size: var(--font-base);
+        font-weight: 600;
+        color: var(--text-secondary);
+        cursor: pointer;
+        transition: all var(--transition-base);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .tab-button:hover {
+        background: var(--bg-hover);
+        border-color: var(--primary-color);
+    }
+
+    .tab-button.active {
+        background: var(--primary-gradient);
+        color: white;
+        border-color: var(--primary-color);
+        box-shadow: var(--shadow-md);
+    }
+
+    /* 透明度面板 */
+    .transparency-panel {
+        background: var(--bg-card);
+        padding: var(--spacing-lg);
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow-md);
+    }
+
+    .transparency-content {
+        margin-top: var(--spacing-lg);
+    }
+
+    /* 透明度统计徽章 */
+    #transparencyStats {
+        display: flex;
+        gap: var(--spacing-md);
+    }
+
+    #transparencyStats .stat-badge {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: var(--spacing-sm);
+        background: var(--bg-primary);
+        border-radius: var(--border-radius);
+        min-width: 80px;
+    }
+
+    #transparencyStats .stat-badge .label {
+        font-size: var(--font-sm);
+        color: var(--text-secondary);
+        margin-top: 4px;
+    }
+
+    /* 透明度各个区块 */
+    .transparency-section {
+        background: var(--bg-primary);
+        padding: var(--spacing-lg);
+        border-radius: var(--border-radius);
+        margin-bottom: var(--spacing-lg);
+        box-shadow: var(--shadow-sm);
+    }
+
+    .transparency-section h4 {
+        margin: 0 0 var(--spacing-md) 0;
+        font-size: var(--font-lg);
+        color: var(--text-primary);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    /* P0-4: 搜索策略卡片 */
+    .strategy-card {
+        display: grid;
+        gap: var(--spacing-md);
+    }
+
+    .strategy-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: var(--spacing-md);
+        background: var(--bg-card);
+        border-radius: var(--border-radius);
+        border-left: 4px solid var(--primary-color);
+    }
+
+    .strategy-label {
+        font-weight: 600;
+        color: var(--text-secondary);
+        font-size: var(--font-sm);
+    }
+
+    .strategy-value {
+        font-weight: 500;
+        color: var(--text-primary);
+    }
+
+    .search-queries-list {
+        margin-top: var(--spacing-sm);
+        display: grid;
+        gap: var(--spacing-sm);
+    }
+
+    .search-query-item {
+        padding: var(--spacing-sm);
+        background: var(--bg-card);
+        border-radius: var(--border-radius);
+        font-family: monospace;
+        font-size: var(--font-sm);
+        border-left: 3px solid var(--success-color);
+    }
+
+    /* P0-5: 搜索时间轴 */
+    .timeline-container {
+        position: relative;
+        padding-left: 40px;
+    }
+
+    .timeline-container::before {
+        content: '';
+        position: absolute;
+        left: 15px;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: var(--border-color);
+    }
+
+    .timeline-item {
+        position: relative;
+        margin-bottom: var(--spacing-md);
+        padding: var(--spacing-md);
+        background: var(--bg-card);
+        border-radius: var(--border-radius);
+        transition: all var(--transition-base);
+    }
+
+    .timeline-item:hover {
+        transform: translateX(5px);
+        box-shadow: var(--shadow-md);
+    }
+
+    .timeline-item::before {
+        content: '';
+        position: absolute;
+        left: -33px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: var(--primary-color);
+        border: 2px solid white;
+        box-shadow: 0 0 0 2px var(--primary-color);
+    }
+
+    .timeline-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: var(--spacing-sm);
+    }
+
+    .timeline-engine {
+        font-weight: 600;
+        color: var(--primary-color);
+    }
+
+    .timeline-stats {
+        display: flex;
+        gap: var(--spacing-md);
+        font-size: var(--font-sm);
+        color: var(--text-secondary);
+    }
+
+    .timeline-query {
+        font-family: monospace;
+        font-size: var(--font-sm);
+        color: var(--text-primary);
+        padding: var(--spacing-sm);
+        background: var(--bg-primary);
+        border-radius: var(--border-radius);
+        margin-top: var(--spacing-sm);
+    }
+
+    /* P0-6: 过滤流水线 */
+    .pipeline-container {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-md);
+    }
+
+    .pipeline-stage {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-md);
+        padding: var(--spacing-md);
+        background: var(--bg-card);
+        border-radius: var(--border-radius);
+        position: relative;
+    }
+
+    .pipeline-stage:not(:last-child)::after {
+        content: '↓';
+        position: absolute;
+        bottom: -24px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 24px;
+        color: var(--primary-color);
+    }
+
+    .stage-box {
+        flex: 1;
+        padding: var(--spacing-md);
+        background: var(--bg-primary);
+        border-radius: var(--border-radius);
+        text-align: center;
+        min-width: 120px;
+    }
+
+    .stage-name {
+        font-weight: 600;
+        color: var(--text-secondary);
+        font-size: var(--font-sm);
+        margin-bottom: var(--spacing-sm);
+    }
+
+    .stage-count {
+        font-size: var(--font-xl);
+        font-weight: bold;
+        color: var(--primary-color);
+    }
+
+    .stage-arrow {
+        font-size: 24px;
+        color: var(--primary-color);
+    }
+
+    .stage-filtered {
+        font-size: var(--font-sm);
+        color: var(--danger-color);
+        margin-top: 4px;
+    }
+
+    /* P0-7: 被过滤结果样本 */
+    .filtered-results {
+        display: grid;
+        gap: var(--spacing-md);
+    }
+
+    .filtered-item {
+        padding: var(--spacing-md);
+        background: var(--bg-card);
+        border-radius: var(--border-radius);
+        border-left: 4px solid var(--warning-color);
+    }
+
+    .filtered-title {
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: var(--spacing-sm);
+    }
+
+    .filtered-reason {
+        display: inline-block;
+        padding: 4px 12px;
+        background: var(--warning-bg);
+        color: var(--warning-color);
+        border-radius: 12px;
+        font-size: var(--font-sm);
+        font-weight: 600;
+    }
+
+    /* P0-8: 评分分布 */
+    .score-distribution {
+        display: grid;
+        gap: var(--spacing-sm);
+    }
+
+    .score-bar-container {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-md);
+        padding: var(--spacing-sm);
+        background: var(--bg-card);
+        border-radius: var(--border-radius);
+    }
+
+    .score-range {
+        min-width: 60px;
+        font-weight: 600;
+        color: var(--text-secondary);
+    }
+
+    .score-bar {
+        flex: 1;
+        height: 30px;
+        background: var(--bg-primary);
+        border-radius: 15px;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .score-bar-fill {
+        height: 100%;
+        background: var(--primary-gradient);
+        transition: width var(--transition-base);
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        padding-right: 10px;
+    }
+
+    .score-count {
+        font-weight: 600;
+        color: white;
+        font-size: var(--font-sm);
+    }
+
+    .score-bar-zero {
+        background: var(--border-color);
+    }
+
+    /* 响应式调整 */
+    @media (max-width: 768px) {
+        .tab-container {
+            flex-direction: column;
+        }
+
+        .timeline-container::before {
+            left: 10px;
+        }
+
+        .timeline-item::before {
+            left: -28px;
+        }
+
+        .pipeline-stage {
+            flex-direction: column;
+        }
+
+        .stage-arrow {
+            transform: rotate(90deg);
+        }
+    }
+
 </style>
 {% endblock %}
 
@@ -605,6 +1013,12 @@
         <button type="button" class="btn-search" id="searchBtn">🚀 开始搜索</button>
     </div>
 
+
+    <!-- 标签页切换 -->
+    <div class="tab-container" style="margin-bottom: 20px;">
+        <button class="tab-button active" onclick="switchTab('results')" id="tabResults">📊 搜索结果</button>
+        <button class="tab-button" onclick="switchTab('transparency')" id="tabTransparency">🔍 搜索透明度</button>
+    </div>
     <!-- 搜索结果面板 -->
     <div class="results-panel" id="resultsPanel">
         <div class="results-header">
@@ -642,6 +1056,74 @@
                 <p>选择国家、年级和学科，点击"开始搜索"按钮</p>
             </div>
         </div>
+        <!-- 分页按钮 -->
+        <div class="pagination-container" id="paginationContainer" style="display: none; margin-top: 20px; text-align: center;">
+            <button class="pagination-btn" id="prevBtn" onclick="changePage(-1)" disabled>← 上一页</button>
+            <span id="pageInfo" style="margin: 0 15px; font-weight: 600;">第 1 页 / 共 1 页</span>
+            <button class="pagination-btn" id="nextBtn" onclick="changePage(1)" disabled>下一页 →</button>
+        </div>
+    </div>
+
+    <!-- 透明度信息面板 -->
+    <div class="transparency-panel" id="transparencyPanel" style="display: none;">
+        <div class="results-header">
+            <h3>🔍 搜索透明度</h3>
+            <div class="results-stats" id="transparencyStats">
+                <div class="stat-badge">
+                    <span>🔍</span>
+                    <span class="value" id="searchCount">0</span>
+                    <span class="label">搜索次数</span>
+                </div>
+                <div class="stat-badge">
+                    <span>📊</span>
+                    <span class="value" id="rawResults">0</span>
+                    <span class="label">原始结果</span>
+                </div>
+                <div class="stat-badge">
+                    <span>⏱️</span>
+                    <span class="value" id="totalTime">0s</span>
+                    <span class="label">总耗时</span>
+                </div>
+            </div>
+        </div>
+        <div class="transparency-content" id="transparencyContent">
+            <!-- 搜索策略卡片 -->
+            <div class="transparency-section" id="strategySection" style="display: none;">
+                <h4>📋 搜索策略</h4>
+                <div class="strategy-card" id="strategyCard"></div>
+            </div>
+
+            <!-- 搜索时间轴 -->
+            <div class="transparency-section" id="timelineSection" style="display: none;">
+                <h4>⏱️ 搜索执行时间轴</h4>
+                <div class="timeline-container" id="timelineContainer"></div>
+            </div>
+
+            <!-- 过滤流水线 -->
+            <div class="transparency-section" id="pipelineSection" style="display: none;">
+                <h4>🔍 过滤流水线</h4>
+                <div class="pipeline-container" id="pipelineContainer"></div>
+            </div>
+
+            <!-- 被过滤结果样本 -->
+            <div class="transparency-section" id="filteredSection" style="display: none;">
+                <h4>🚫 被过滤结果样本</h4>
+                <div class="filtered-results" id="filteredResults"></div>
+            </div>
+
+            <!-- 评分分布 -->
+            <div class="transparency-section" id="scoreSection" style="display: none;">
+                <h4>📈 评分分布</h4>
+                <div class="score-distribution" id="scoreDistribution"></div>
+            </div>
+
+            <!-- 空状态 -->
+            <div class="empty-state" id="transparencyEmpty">
+                <div class="icon">🔍</div>
+                <h3>执行搜索后查看透明度信息</h3>
+                <p>透明度信息将显示搜索策略、执行时间轴、过滤过程等详细信息</p>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}
@@ -660,6 +1142,11 @@
     let selectedGrades = [];
     let selectedSubjects = [];
     let currentSearchId = null;  // 📊 当前搜索ID（用于导出详细日志）
+
+    // 分页状态
+    let currentPage = 1;
+    let pageSize = 20;  // 每页显示20条结果
+    let totalPages = 1;
 
     // 年级中文映射常量（全局，避免重复创建）
     const GRADE_MAPPING = {
@@ -1182,11 +1669,11 @@
                 requestBody.semester = semester;
             }
 
-            // 使用之前创建的controller，设置超时（180秒）
+            // ✨ 优化性能：增加超时时间（180秒 → 300秒），适应max_tokens增加后的LLM响应时间
             var timeoutId = setTimeout(function() {
                 console.warn('⏱️ 搜索请求超时，正在取消...');
                 controller.abort();
-            }, 180000); // 180秒超时（3分钟）
+            }, 300000); // 300秒超时（5分钟）- 从180秒增加
 
             var response;
             try {
@@ -1203,7 +1690,7 @@
             } catch (fetchError) {
                 clearTimeout(timeoutId);
                 if (fetchError.name === 'AbortError') {
-                    throw new Error('请求超时（超过180秒），请稍后重试或减少搜索条件');
+                    throw new Error('请求超时（超过300秒），请稍后重试或减少搜索条件');
                 }
                 throw fetchError;
             }
@@ -1248,6 +1735,16 @@
 
                 displayResults(currentResults);
                 updateStats(currentResults, data.success_rate || 100, duration);
+                
+                // 🔍 显示透明度信息（P0-1）
+                if (data.transparency) {
+                    console.log('🔍 [透明度] 收到透明度数据，准备显示...');
+                    displayTransparency(data.transparency);
+                } else {
+                    console.log('⚠️ [透明度] 未收到透明度数据');
+                    showTransparencyEmpty();
+                }
+                
                 toast.success('搜索完成', '找到 ' + currentResults.length + ' 个结果');
 
                 // 📊 启用详细日志导出按钮
@@ -1294,7 +1791,7 @@
             // 根据错误类型显示不同的消息
             if (errorMessage.includes('超时') || errorMessage.includes('timeout')) {
                 errorTitle = '请求超时';
-                errorMessage = '搜索请求超时（超过180秒）。这可能是由于：\n1. 网络连接较慢\n2. 服务器处理时间较长\n3. 搜索条件过于复杂\n\n建议：\n- 稍后重试\n- 减少搜索条件\n- 检查网络连接';
+                errorMessage = '搜索请求超时（超过300秒）。这可能是由于：\n1. 网络连接较慢\n2. 服务器处理时间较长\n3. 搜索条件过于复杂\n\n建议：\n- 稍后重试\n- 减少搜索条件\n- 检查网络连接';
             } else if (errorMessage.includes('网络') || errorMessage.includes('network')) {
                 errorTitle = '网络错误';
                 errorMessage = '请检查网络连接后重试';
@@ -1416,12 +1913,12 @@
                     requestBody.semester = semester;
                 }
 
-                // 创建超时控制器（180秒超时，给后端足够时间）
+                // ✨ 优化性能：增加超时时间（180秒 → 300秒），适应max_tokens增加后的LLM响应时间
                 var controller = new AbortController();
                 var timeoutId = setTimeout(function() {
                     console.warn('⏱️ 搜索请求超时，正在取消...');
                     controller.abort();
-                }, 180000); // 180秒超时（3分钟）
+                }, 300000); // 300秒超时（5分钟）- 从180秒增加
 
                 var response;
                 try {
@@ -1438,7 +1935,7 @@
                 } catch (fetchError) {
                     clearTimeout(timeoutId);
                     if (fetchError.name === 'AbortError') {
-                        throw new Error('请求超时（超过180秒），请稍后重试或减少搜索条件');
+                        throw new Error('请求超时（超过300秒），请稍后重试或减少搜索条件');
                     }
                     throw fetchError;
                 }
@@ -1532,36 +2029,24 @@
         }
         
         var duration = ((Date.now() - startTime) / 1000).toFixed(2);
-        
+
         try {
             if (allResults.length > 0) {
                 console.log('开始显示结果，共 ' + allResults.length + ' 个');
+
+                // 保存所有结果用于分页
                 currentResults = allResults;
 
-                // 限制显示数量，避免内存溢出（最多显示100个）
-                var displayLimit = 100;
-                var resultsToDisplay = allResults.slice(0, displayLimit);
-                
                 // 🔥 立即清空进度条，然后显示结果
                 var resultsContent = document.getElementById('resultsContent');
                 resultsContent.innerHTML = '';  // 立即清空进度条
-                
-                // 🔥 直接显示结果，不使用setTimeout（避免延迟导致的问题）
+
+                // 🔥 直接显示结果（支持分页）
                 console.log('开始渲染结果列表');
-                
-                // 显示结果列表（displayResults会清空innerHTML并重新渲染）
-                displayResults(resultsToDisplay);
+
+                // 显示结果列表（displayResults会处理分页）
+                displayResults(allResults);
                 console.log('结果列表渲染完成');
-                
-                // 🔥 如果有超过显示限制的结果，在结果列表顶部添加提示信息
-                // （必须在displayResults之后添加，因为displayResults会清空innerHTML）
-                if (allResults.length > displayLimit) {
-                    var noticeDiv = document.createElement('div');
-                    noticeDiv.className = 'results-notice';
-                    noticeDiv.style.cssText = 'background: var(--info-color); color: white; padding: 12px 20px; border-radius: 8px; margin-bottom: 20px; text-align: center;';
-                    noticeDiv.innerHTML = 'ℹ️ 找到 ' + allResults.length + ' 个结果（仅显示前 ' + displayLimit + ' 个），点击右上角"📊 Excel"按钮导出完整结果';
-                    resultsContent.insertBefore(noticeDiv, resultsContent.firstChild);
-                }
                 
                 // 更新统计信息
                 updateStats(allResults, ((totalCount - failedCount) / totalCount * 100).toFixed(2), duration);
@@ -1594,22 +2079,306 @@
         }
     }
 
-    // 显示搜索结果
+    // ========================================
+    // 🔍 标签页切换功能
+    // ========================================
+    function switchTab(tabName) {
+        console.log('🔄 切换标签页:', tabName);
+
+        // 隐藏所有面板
+        document.getElementById('resultsPanel').style.display = 'none';
+        document.getElementById('transparencyPanel').style.display = 'none';
+
+        // 移除所有标签的激活状态
+        document.getElementById('tabResults').classList.remove('active');
+        document.getElementById('tabTransparency').classList.remove('active');
+
+        // 显示选中的面板
+        if (tabName === 'results') {
+            document.getElementById('resultsPanel').style.display = 'block';
+            document.getElementById('tabResults').classList.add('active');
+        } else if (tabName === 'transparency') {
+            document.getElementById('transparencyPanel').style.display = 'block';
+            document.getElementById('tabTransparency').classList.add('active');
+        }
+    }
+
+    // ========================================
+    // 🔍 透明度显示功能
+    // ========================================
+    function displayTransparency(transparencyData) {
+        console.log('🔍 [透明度] 开始显示透明度数据:', transparencyData);
+
+        // 隐藏空状态
+        document.getElementById('transparencyEmpty').style.display = 'none';
+
+        // 显示各个区块
+        var strategySection = document.getElementById('strategySection');
+        var timelineSection = document.getElementById('timelineSection');
+        var pipelineSection = document.getElementById('pipelineSection');
+        var filteredSection = document.getElementById('filteredSection');
+        var scoreSection = document.getElementById('scoreSection');
+
+        // 显示搜索策略
+        if (transparencyData.search_strategy) {
+            strategySection.style.display = 'block';
+            var strategyCard = document.getElementById('strategyCard');
+            strategyCard.innerHTML = formatSearchStrategy(transparencyData.search_strategy);
+        } else {
+            strategySection.style.display = 'none';
+        }
+
+        // 显示时间轴
+        if (transparencyData.timeline && transparencyData.timeline.length > 0) {
+            timelineSection.style.display = 'block';
+            var timelineContainer = document.getElementById('timelineContainer');
+            timelineContainer.innerHTML = formatTimeline(transparencyData.timeline);
+        } else {
+            timelineSection.style.display = 'none';
+        }
+
+        // 显示过滤流水线
+        if (transparencyData.filtering_pipeline) {
+            pipelineSection.style.display = 'block';
+            var pipelineContainer = document.getElementById('pipelineContainer');
+            pipelineContainer.innerHTML = formatPipeline(transparencyData.filtering_pipeline);
+        } else {
+            pipelineSection.style.display = 'none';
+        }
+
+        // 显示被过滤结果
+        if (transparencyData.filtered_samples && transparencyData.filtered_samples.length > 0) {
+            filteredSection.style.display = 'block';
+            var filteredResults = document.getElementById('filteredResults');
+            filteredResults.innerHTML = formatFilteredResults(transparencyData.filtered_samples);
+        } else {
+            filteredSection.style.display = 'none';
+        }
+
+        // 显示评分分布
+        if (transparencyData.score_distribution) {
+            scoreSection.style.display = 'block';
+            var scoreDistribution = document.getElementById('scoreDistribution');
+            scoreDistribution.innerHTML = formatScoreDistribution(transparencyData.score_distribution);
+        } else {
+            scoreSection.style.display = 'none';
+        }
+
+        // 更新透明度统计
+        updateTransparencyStats(transparencyData);
+
+        console.log('✅ [透明度] 透明度数据显示完成');
+    }
+
+    function showTransparencyEmpty() {
+        console.log('🔍 [透明度] 显示空状态');
+
+        // 隐藏所有区块
+        document.getElementById('strategySection').style.display = 'none';
+        document.getElementById('timelineSection').style.display = 'none';
+        document.getElementById('pipelineSection').style.display = 'none';
+        document.getElementById('filteredSection').style.display = 'none';
+        document.getElementById('scoreSection').style.display = 'none';
+
+        // 显示空状态
+        document.getElementById('transparencyEmpty').style.display = 'block';
+
+        console.log('✅ [透明度] 空状态显示完成');
+    }
+
+    function updateTransparencyStats(transparencyData) {
+        var statsHTML = '';
+
+        if (transparencyData.total_queries) {
+            statsHTML += '<div class="stat-badge"><span>🔍</span><div><strong>查询次数</strong><span>' + transparencyData.total_queries + '</span></div></div>';
+        }
+
+        if (transparencyData.total_results) {
+            statsHTML += '<div class="stat-badge"><span>📊</span><div><strong>总结果数</strong><span>' + transparencyData.total_results + '</span></div></div>';
+        }
+
+        if (transparencyData.filtered_count !== undefined) {
+            statsHTML += '<div class="stat-badge"><span>🚫</span><div><strong>已过滤</strong><span>' + transparencyData.filtered_count + '</span></div></div>';
+        }
+
+        if (transparencyData.final_count !== undefined) {
+            statsHTML += '<div class="stat-badge"><span>✅</span><div><strong>最终结果</strong><span>' + transparencyData.final_count + '</span></div></div>';
+        }
+
+        document.getElementById('transparencyStats').innerHTML = statsHTML || '<div class="stat-badge"><span>🔍</span><div><strong>透明度信息</strong></div></div>';
+    }
+
+    function formatSearchStrategy(strategy) {
+        var html = '<div class="strategy-info">';
+
+        if (strategy.selected_engine) {
+            html += '<div class="strategy-item"><strong>搜索引擎:</strong> <span>' + strategy.selected_engine + '</span></div>';
+        }
+
+        if (strategy.reasoning) {
+            html += '<div class="strategy-item"><strong>选择理由:</strong> <p>' + strategy.reasoning + '</p></div>';
+        }
+
+        if (strategy.query_count !== undefined) {
+            html += '<div class="strategy-item"><strong>查询数量:</strong> <span>' + strategy.query_count + '</span></div>';
+        }
+
+        html += '</div>';
+        return html;
+    }
+
+    function formatTimeline(timeline) {
+        var html = '<div class="timeline">';
+
+        timeline.forEach(function(item, index) {
+            html += '<div class="timeline-item">';
+            html += '<div class="timeline-marker">' + (index + 1) + '</div>';
+            html += '<div class="timeline-content">';
+            html += '<div class="timeline-title">' + (item.step || '步骤 ' + (index + 1)) + '</div>';
+
+            if (item.description) {
+                html += '<div class="timeline-description">' + item.description + '</div>';
+            }
+
+            if (item.duration !== undefined) {
+                html += '<div class="timeline-duration">⏱️ 耗时: ' + item.duration + 'ms</div>';
+            }
+
+            html += '</div></div>';
+        });
+
+        html += '</div>';
+        return html;
+    }
+
+    function formatPipeline(pipeline) {
+        var html = '<div class="pipeline">';
+
+        if (pipeline.stages && pipeline.stages.length > 0) {
+            pipeline.stages.forEach(function(stage, index) {
+                html += '<div class="pipeline-stage">';
+                html += '<div class="stage-header">';
+                html += '<span class="stage-number">' + (index + 1) + '</span>';
+                html += '<span class="stage-name">' + (stage.name || '阶段 ' + (index + 1)) + '</span>';
+                html += '</div>';
+
+                if (stage.description) {
+                    html += '<div class="stage-description">' + stage.description + '</div>';
+                }
+
+                if (stage.input_count !== undefined) {
+                    html += '<div class="stage-stats">输入: ' + stage.input_count;
+                    if (stage.output_count !== undefined) {
+                        html += ' → 输出: ' + stage.output_count;
+                    }
+                    html += '</div>';
+                }
+
+                html += '</div>';
+            });
+        }
+
+        html += '</div>';
+        return html;
+    }
+
+    function formatFilteredResults(samples) {
+        var html = '<div class="filtered-samples-list">';
+
+        samples.forEach(function(sample) {
+            html += '<div class="filtered-sample">';
+            html += '<div class="sample-title">' + (sample.title || sample.url || '未知') + '</div>';
+
+            if (sample.reason) {
+                html += '<div class="sample-reason">🚫 原因: ' + sample.reason + '</div>';
+            }
+
+            if (sample.score !== undefined) {
+                html += '<div class="sample-score">评分: ' + sample.score.toFixed(2) + '</div>';
+            }
+
+            if (sample.url) {
+                html += '<div class="sample-url"><a href="' + sample.url + '" target="_blank">' + sample.url + '</a></div>';
+            }
+
+            html += '</div>';
+        });
+
+        html += '</div>';
+        return html;
+    }
+
+    function formatScoreDistribution(distribution) {
+        var html = '<div class="score-distribution-chart">';
+
+        if (distribution.ranges && distribution.ranges.length > 0) {
+            distribution.ranges.forEach(function(range) {
+                var percentage = range.percentage || 0;
+                html += '<div class="score-range">';
+                html += '<div class="range-label">' + range.label + '</div>';
+                html += '<div class="range-bar">';
+                html += '<div class="range-fill" style="width: ' + percentage + '%"></div>';
+                html += '</div>';
+                html += '<div class="range-count">' + range.count + ' (' + percentage.toFixed(1) + '%)</div>';
+                html += '</div>';
+            });
+        }
+
+        html += '</div>';
+        return html;
+    }
+
+    // 显示搜索结果（支持分页）
     function displayResults(results) {
         var resultsContent = document.getElementById('resultsContent');
+        var paginationContainer = document.getElementById('paginationContainer');
 
         if (results.length === 0) {
             resultsContent.innerHTML = '<div class="empty-state"><div class="icon">🔍</div><h3>未找到结果</h3><p>请尝试调整搜索条件</p></div>';
+            paginationContainer.style.display = 'none';
             return;
         }
+
+        // 计算分页
+        currentPage = 1;
+        totalPages = Math.ceil(results.length / pageSize);
+
+        // 显示分页信息
+        paginationContainer.style.display = 'block';
+        updatePaginationControls();
+
+        // 显示当前页的结果
+        showPage(currentPage);
+
+        // 自动评估搜索质量（只评估第一页）
+        var pageResults = getPaginatedResults(currentPage);
+        evaluateSearchQuality(pageResults);
+    }
+
+    // 获取当前页的结果
+    function getPaginatedResults(page) {
+        var startIndex = (page - 1) * pageSize;
+        var endIndex = Math.min(startIndex + pageSize, currentResults.length);
+        return currentResults.slice(startIndex, endIndex);
+    }
+
+    // 显示指定页的结果
+    function showPage(page) {
+        var resultsContent = document.getElementById('resultsContent');
+        var pageResults = getPaginatedResults(page);
 
         // 清空现有内容
         resultsContent.innerHTML = '';
 
+        if (pageResults.length === 0) {
+            resultsContent.innerHTML = '<div class="empty-state"><div class="icon">🔍</div><h3>未找到结果</h3><p>请尝试调整搜索条件</p></div>';
+            return;
+        }
+
         // 使用 DocumentFragment 避免多次回流
         var fragment = document.createDocumentFragment();
 
-        results.forEach(function(result) {
+        pageResults.forEach(function(result) {
             var videoUrl = result.url || result.video_url || '#';
             var title = result.title || '无标题';
             var snippet = result.snippet || '';
@@ -1661,10 +2430,37 @@
         // 一次性添加到DOM
         resultsContent.appendChild(fragment);
 
-        updateBatchEvaluateButton(results);
+        // 更新批量评估按钮
+        updateBatchEvaluateButton(pageResults);
 
-        // 自动评估搜索质量
-        evaluateSearchQuality(results);
+        // 更新分页控制
+        updatePaginationControls();
+
+        // 滚动到结果区域顶部
+        resultsContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // 更新分页控制按钮
+    function updatePaginationControls() {
+        var pageInfo = document.getElementById('pageInfo');
+        var prevBtn = document.getElementById('prevBtn');
+        var nextBtn = document.getElementById('nextBtn');
+
+        // 更新页码信息
+        pageInfo.textContent = '第 ' + currentPage + ' 页 / 共 ' + totalPages + ' 页（总共 ' + currentResults.length + ' 条结果）';
+
+        // 更新按钮状态
+        prevBtn.disabled = currentPage <= 1;
+        nextBtn.disabled = currentPage >= totalPages;
+    }
+
+    // 切换页面
+    function changePage(delta) {
+        var newPage = currentPage + delta;
+        if (newPage >= 1 && newPage <= totalPages) {
+            currentPage = newPage;
+            showPage(currentPage);
+        }
     }
 
     // 评估搜索质量

@@ -23,38 +23,18 @@ load_dotenv()
 INTERNAL_API_KEY = os.getenv("INTERNAL_API_KEY", "sk_4c34c16af4f8bb4bc102f3d1afd6439127c4d95a2912af34efcbda0")
 INTERNAL_API_BASE_URL = os.getenv("INTERNAL_API_BASE_URL", "https://hk-intra-paas.transsion.com/tranai-proxy/v1")
 
+# 导入统一的代理工具（proxy_utils 模块导入时会自动禁用代理）
+import sys
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+from core.proxy_utils import disable_proxy  # 导入即自动禁用代理（见 proxy_utils.py:78）
+from utils.json_parser import JSONParser
+from utils.platform_detector import PlatformDetector
 
 # ========================================
-# 重要：启动时清除所有代理环境变量
-# 原因：代理会导致公司内部API被WAF拦截
+# 代理管理
 # ========================================
-def disable_proxy():
-    """
-    强制禁用所有代理设置
-    确保公司内部API可以正常访问
-    """
-    proxy_vars = [
-        "HTTP_PROXY", "HTTPS_PROXY", "http_proxy", "https_proxy",
-        "ALL_PROXY", "all_proxy", "NO_PROXY", "no_proxy"
-    ]
-
-    disabled_count = 0
-    for var in proxy_vars:
-        if var in os.environ:
-            del os.environ[var]
-            disabled_count += 1
-
-    # 也设置为空，防止代码中读取
-    os.environ["HTTP_PROXY"] = ""
-    os.environ["HTTPS_PROXY"] = ""
-    os.environ["http_proxy"] = ""
-    os.environ["https_proxy"] = ""
-
-    if disabled_count > 0:
-        print(f"✅ 已清除 {disabled_count} 个代理环境变量，确保公司API可访问")
-
-# 在模块加载时立即禁用代理
-disable_proxy()
+# 注意：导入 core.proxy_utils 时已自动执行 disable_proxy()（见 proxy_utils.py:78）
+# 因此这里无需再手动调用
 
 
 class ResourceEvaluator:
@@ -91,17 +71,6 @@ class ResourceEvaluator:
         print(f"   代理: 已强制禁用")
         print(f"   trust_env: False（不读取环境变量代理）")
 
-    def identify_platform(self, url: str) -> str:
-        """识别教育平台类型"""
-        if 'youtube.com' in url or 'youtu.be' in url:
-            return 'YouTube（全球最大视频平台，免费）'
-        elif 'ruangguru.com' in url:
-            return 'Ruangguru（印尼领先在线教育平台）'
-        elif 'khanacademy.org' in url:
-            return 'Khan Academy'
-        else:
-            return '其他平台'
-
     def evaluate(self, name: str, url: str) -> Dict[str, Any]:
         """
         使用 Gemini 2.5 Pro 进行评估
@@ -115,7 +84,7 @@ class ResourceEvaluator:
         """
         print(f"\n🤖 Gemini 2.5 Pro 评估: {name}")
 
-        platform = self.identify_platform(url)
+        platform = PlatformDetector.identify_platform(url)
         is_playlist = 'playlist' in url
         is_kurikulum_merdeka = 'merdeka' in url.lower() or 'merdeka' in name.lower()
 
@@ -225,7 +194,7 @@ class ResourceEvaluator:
             result_text = response.choices[0].message.content.strip()
 
             # 提取JSON部分
-            json_text = self._extract_json(result_text)
+            json_text = JSONParser.extract_json_from_response(result_text)
 
             # 调试：打印提取的JSON前500字符
             print(f"   [DEBUG] 提取的JSON长度: {len(json_text)} 字符")
@@ -249,38 +218,6 @@ class ResourceEvaluator:
             import traceback
             traceback.print_exc()
             return self._create_error_evaluation(str(e), '')
-
-    def _extract_json(self, text: str) -> str:
-        """从文本中提取JSON"""
-        # 首先移除```json和```代码块标记
-        if '```json' in text:
-            # 找到```json之后的内容
-            start = text.find('```json') + 7
-            end = text.find('```', start)
-            if end != -1:
-                text = text[start:end].strip()
-            else:
-                # 如果没有找到结束的```，就从```json之后截取
-                text = text[start:].strip()
-        elif '```' in text:
-            # 找到第一个```之后的内容
-            start = text.find('```') + 3
-            end = text.find('```', start)
-            if end != -1:
-                text = text[start:end].strip()
-            else:
-                text = text[start:].strip()
-
-        # 然后从第一个{到最后一个}
-        first_brace = text.find('{')
-        last_brace = text.rfind('}')
-
-        if first_brace != -1 and last_brace != -1 and last_brace > first_brace:
-            json_text = text[first_brace:last_brace + 1]
-            return json_text
-
-        # 如果都失败，返回原文本
-        return text.strip()
 
     def _create_error_evaluation(self, error_msg: str, raw_text: str) -> Dict[str, Any]:
         """创建错误评估结果"""

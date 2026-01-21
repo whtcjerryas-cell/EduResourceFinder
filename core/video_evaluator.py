@@ -9,7 +9,7 @@ import json
 from typing import Dict, List, Optional, Any
 from pathlib import Path
 
-from logger_utils import get_logger
+from utils.logger_utils import get_logger
 from search_strategist import AIBuildersClient
 from json_utils import extract_and_parse_json, extract_json_object
 from core.config_loader import get_config

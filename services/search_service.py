@@ -9,7 +9,7 @@ import uuid
 import importlib
 from concurrent.futures import ThreadPoolExecutor, TimeoutError as FuturesTimeoutError
 from typing import Optional, Dict, Any
-from logger_utils import get_logger
+from utils.logger_utils import get_logger
 
 logger = get_logger('search_service')
 

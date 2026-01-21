@@ -6,7 +6,7 @@
 import uuid
 import contextvars
 from typing import Dict, Any, Optional
-from logger_utils import get_logger
+from utils.logger_utils import get_logger
 
 logger = get_logger('helpers')
 

@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+from utils.json_parser import JSONParser
+from utils.platform_detector import PlatformDetector
 # -*- coding: utf-8 -*-
 """
 印尼一年级数学教育资源评估脚本（使用AI Builders API）
@@ -34,15 +36,6 @@ class ResourceEvaluator:
         self.base_url = AI_BUILDERS_BASE_URL
         self.model = "deepseek"  # AI Builders的DeepSeek模型
 
-    def identify_platform(self, url: str) -> str:
-        """识别教育平台类型"""
-        if 'youtube.com' in url or 'youtu.be' in url:
-            return 'YouTube'
-        elif 'ruangguru.com' in url:
-            return 'Ruangguru（印尼领先在线教育平台）'
-        else:
-            return '其他平台'
-
     def evaluate(self, name: str, url: str) -> Dict[str, Any]:
         """
         基于资源信息进行评估
@@ -56,7 +49,7 @@ class ResourceEvaluator:
         """
         print(f"\n🤖 AI评估: {name}")
 
-        platform = self.identify_platform(url)
+        platform = PlatformDetector.identify_platform(url)
         is_playlist = 'playlist' in url
         is_kurikulum_merdeka = 'merdeka' in url.lower() or 'merdeka' in name.lower()
 
@@ -121,7 +114,7 @@ class ResourceEvaluator:
                 result_text = result['choices'][0]['message']['content'].strip()
 
                 # 提取JSON
-                json_text = self._extract_json(result_text)
+                json_text = JSONParser.extract_json_from_response(result_text)
                 evaluation = json.loads(json_text)
 
                 print(f"✅ 评分: {evaluation.get('overall_score', 'N/A')}/10 | {evaluation.get('recommendation', 'N/A')}")
@@ -133,21 +126,6 @@ class ResourceEvaluator:
         except Exception as e:
             print(f"❌ 评估失败: {str(e)[:100]}")
             return self._create_fallback_evaluation(name, url, platform)
-
-    def _extract_json(self, text: str) -> str:
-        """从文本中提取JSON"""
-        patterns = [
-            r'```json\s*(\{.*?\})\s*```',
-            r'```\s*(\{.*?\})\s*```',
-        ]
-        for pattern in patterns:
-            match = re.search(pattern, text, re.DOTALL)
-            if match:
-                return match.group(1)
-        match = re.search(r'\{[^{}]*(?:\{[^{}]*\}[^{}]*)*\}', text, re.DOTALL)
-        if match:
-            return match.group(0)
-        return text.strip()
 
     def _create_fallback_evaluation(self, name: str, url: str, platform: str) -> Dict[str, Any]:
         """创建后备评估结果"""

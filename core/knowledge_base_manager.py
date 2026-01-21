@@ -10,7 +10,7 @@ import re
 from typing import Dict, List, Any, Optional, Tuple
 from datetime import datetime, timezone
 from pathlib import Path
-from logger_utils import get_logger
+from utils.logger_utils import get_logger
 
 logger = get_logger('knowledge_base')
 

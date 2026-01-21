@@ -7,7 +7,7 @@
 """
 
 from typing import Dict, List, Optional, Any
-from logger_utils import get_logger
+from utils.logger_utils import get_logger
 
 logger = get_logger('fallback_utils')
 

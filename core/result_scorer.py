@@ -16,9 +16,10 @@ import json
 import hashlib
 from functools import lru_cache
 from typing import Dict, List, Any, Optional
-from logger_utils import get_logger
+from utils.logger_utils import get_logger
 from llm_client import InternalAPIClient, AIBuildersAPIClient
 from config.llm_config import get_batch_evaluation_params
+from utils.prompt_manager import get_prompt_manager
 
 logger = get_logger('result_scorer')
 
@@ -90,6 +91,7 @@ class IntelligentResultScorer:
             log_collector: 搜索日志收集器（可选），用于记录模型调用
         """
         self.log_collector = log_collector  # 保存日志收集器引用
+        self.prompt_mgr = get_prompt_manager()  # 初始化提示词管理器
         # 初始化LLM客户端（优先使用 Internal API 的 gemini-2.5-pro）
         try:
             self.llm_client = InternalAPIClient(model_type='vision')  # 使用 vision 类型，实际会用 gemini-2.5-pro
@@ -220,74 +222,21 @@ class IntelligentResultScorer:
             return batch
         
         try:
-            # 构建批量评估的prompt
-            system_prompt = """你是一个精准的教育资源批量评分专家。请按照给定的评分规则，一次性评估多个教育资源。
-
-【🚨 评分维度】（总分10分）
-1. ⭐ 年级匹配度（0-3分）【最关键】
-2. ⭐ 学科匹配度（0-3分）【关键】
-3. 资源质量（0-2分）
-4. 内容完整性（0-2分）
-
-【🔴 评分规则 - 必须遵守】
-- 年级不符 → 必须给 ≤5分
-- 学科不符 → 必须给 ≤5分
-- 年级和学科都不符 → 必须给 ≤3分
-
-【📝 推荐理由要求】
-推荐理由必须是详细的自然语言描述，具体说明：
-- 年级是否匹配（为什么匹配或不匹配）
-- 学科是否匹配（为什么匹配或不匹配）
-- 资源质量如何（YouTube播放列表、官方内容等）
-- 内容是否完整（视频数量、课程覆盖等）
-
-【📝 批量输出格式】
-返回JSON数组，每个元素包含一个结果的评分：
-[
-  {"index":0,"score":9.5,"reason":"这个YouTube播放列表专门针对Kelas 3 SD（三年级）设计的数学课程，完全符合目标年级和学科。播放列表包含多个章节的完整教学内容，来自教育频道，资源质量高。"},
-  {"index":1,"score":3.0,"reason":"虽然标题包含数学内容，但针对的是SMU kelas 3（高中三年级），与目标年级（小学三年级）不符。内容关于SNMPTN大学入学考试，并非小学数学教育。"},
-  ...
-]
-
-其中index是结果在输入列表中的索引（从0开始）。
-
-【⚠️ 重要】
-- reason必须是详细的自然语言说明（至少20字），而不是简短的关键词
-- 不要使用"年级匹配度优秀（3分）"这种格式化表达
-- 使用自然、流畅的语言解释评分原因
-"""
+            # ✨ 从提示词管理器获取系统提示词（替代硬编码）
+            system_prompt = self.prompt_mgr.get_batch_scoring_system_prompt()
 
             # 获取元数据（使用辅助方法）
             safe_grade = self._safe_extract_metadata(metadata, 'grade')
             safe_subject = self._safe_extract_metadata(metadata, 'subject')
             safe_query = query[:200] if query else ''
 
-            # 构建用户prompt
-            user_prompt_parts = [
-                f"【目标信息】",
-                f"- 目标年级：{safe_grade}",
-                f"- 目标学科：{safe_subject}",
-                f"- 搜索查询：{safe_query}",
-                f"",
-                f"【待评估的 {len(batch)} 个资源】"
-            ]
-
-            # 添加每个结果的信息
-            for idx, result in enumerate(batch):
-                safe_title = result.get('title', '')[:200]
-                safe_snippet = result.get('snippet', '')[:500]
-                url = result.get('url', '')
-
-                user_prompt_parts.append(f"\n【资源 {idx}】")
-                user_prompt_parts.append(f"- 标题：{safe_title}")
-                user_prompt_parts.append(f"- 描述：{safe_snippet}")
-                user_prompt_parts.append(f"- URL：{url}")
-
-            user_prompt_parts.append("\n【任务】")
-            user_prompt_parts.append(f"请评估以上 {len(batch)} 个资源，返回JSON数组格式的评分结果。")
-            user_prompt_parts.append("确保每个资源都有对应的评分，index必须正确对应。")
-
-            user_prompt = "\n".join(user_prompt_parts)
+            # ✨ 使用提示词管理器构建用户提示词（替代硬编码）
+            user_prompt = self.prompt_mgr.get_batch_scoring_user_prompt(
+                grade=safe_grade,
+                subject=safe_subject,
+                query=safe_query,
+                results=batch
+            )
 
             # 生成缓存键
             cache_key = self._generate_llm_cache_key(batch, query, metadata)
@@ -415,41 +364,16 @@ class IntelligentResultScorer:
             safe_grade = self._safe_extract_metadata(metadata, 'grade')
             safe_subject = self._safe_extract_metadata(metadata, 'subject')
 
-            system_prompt = """你是一个精准的教育资源评分专家。请严格按照以下规则评分：
+            # ✨ 从提示词管理器获取系统提示词（替代硬编码）
+            system_prompt = self.prompt_mgr.get_single_scoring_system_prompt()
 
-【🚨 评分维度】（总分10分）
-1. ⭐ 年级匹配度（0-3分）【最关键】
-2. ⭐ 学科匹配度（0-3分）【关键】
-3. 资源质量（0-2分）
-4. 内容完整性（0-2分）
-
-【🔴 评分规则 - 必须遵守】
-- 年级不符 → 必须给 ≤5分
-- 学科不符 → 必须给 ≤5分
-- 年级和学科都不符 → 必须给 ≤3分
-
-【📝 推荐理由要求】
-推荐理由必须是详细的自然语言描述，至少20字，说明：
-- 年级是否匹配及原因
-- 学科是否匹配及原因
-- 资源质量和内容完整性
-
-【📝 输出格式】
-返回JSON：{"score":8.5,"reason":"详细理由..."}
-"""
-
-            user_prompt = f"""【目标信息】
-- 目标年级：{safe_grade}
-- 目标学科：{safe_subject}
-- 搜索查询：{query[:200]}
-
-【待评估资源】
-- 标题：{title[:200]}
-- 描述：{snippet[:500]}
-- URL：{url}
-
-【任务】
-请评估以上资源，返回JSON格式的评分结果。"""
+            # ✨ 使用提示词管理器构建用户提示词（替代硬编码）
+            user_prompt = self.prompt_mgr.get_single_scoring_user_prompt(
+                grade=safe_grade,
+                subject=safe_subject,
+                query=query,
+                result=result
+            )
 
             # 记录开始时间
             import time

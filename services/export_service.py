@@ -7,7 +7,7 @@ import os
 import time
 from datetime import datetime
 from typing import Dict, Any, List
-from logger_utils import get_logger
+from utils.logger_utils import get_logger
 
 logger = get_logger('export_service')
 

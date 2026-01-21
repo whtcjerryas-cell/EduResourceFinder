@@ -13,7 +13,7 @@ from pathlib import Path
 import requests
 from llm_client import InternalAPIClient
 from core.mcp_client import SimpleWebEvaluator
-from logger_utils import get_logger
+from utils.logger_utils import get_logger
 
 logger = get_logger('webpage_evaluator')
 

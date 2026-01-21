@@ -31,7 +31,8 @@ except ImportError:
 
 from core.config_loader import get_config
 from core.proxy_utils import disable_proxy  # 统一的代理禁用函数
-from logger_utils import get_logger
+from core.search_strategies import SearchOrchestrator, SearchContext  # 搜索引擎策略模式
+from utils.logger_utils import get_logger  # 修复: 使用正确的导入路径
 from metaso_search_client import MetasoSearchClient
 
 logger = get_logger('llm_client')
@@ -834,6 +835,10 @@ class UnifiedLLMClient:
         # 初始化 Tavily 使用计数器（每月重置）
         self.tavily_usage = 0
 
+        # 初始化搜索引擎编排器（策略模式）
+        # 重构: 使用策略模式简化 search() 方法复杂度
+        self.search_orchestrator = SearchOrchestrator()
+
     def call_llm(self, prompt: str, system_prompt: Optional[str] = None,
                  max_tokens: int = 8000, temperature: float = 0.3,  # [修复] 2026-01-20: 从2000增加到8000
                  model: str = "deepseek") -> str:
@@ -985,18 +990,17 @@ class UnifiedLLMClient:
                include_domains: Optional[List[str]] = None,
                country_code: str = "CN") -> List[Dict[str, Any]]:
         """
-        搜索功能（Google优先策略 + Tavily for 非英语）
+        搜索功能（使用策略模式）
 
-        优化后的搜索引擎选择策略：
-        - Google优先（10,000次/天免费，主要引擎）
-        - Tavily优先（1,000次/月免费，**非英语内容优化**）✨ 新增
-        - Metaso辅助（5,000次免费，中英语优化）
-        - Baidu辅助（100次/天免费，中文备用）
+        重构后的搜索引擎选择策略：
+        - 使用 SearchOrchestrator 管理搜索引擎选择
+        - 自动根据语言和额度选择最合适的引擎
+        - 优先级：中文(Google>Metaso>Baidu>Tavily)、英语(Google>Metaso>Tavily)、其他(Google>Tavily>Metaso)
 
-        调用次数策略：
-        - Google: 3次（所有查询）
-        - Tavily/Metaso: 1次（仅第一个查询）
-        - Baidu: 1次（仅中文，仅第一个查询）
+        重构改进：
+        - 圈复杂度：>15 → <5
+        - 代码行数：104行 → ~20行
+        - 可维护性：显著提升
 
         Args:
             query: 搜索查询
@@ -1007,85 +1011,24 @@ class UnifiedLLMClient:
         Returns:
             搜索结果列表
         """
-        # 步骤 1: 检测查询语言
-        is_chinese = self._is_chinese_content(query)
-        is_english = self._is_english_content(query)  # ✨ 新增英语检测
+        # 创建搜索上下文（包含各搜索引擎的剩余额度）
+        context = SearchContext(
+            google_remaining=10000 - self.google_usage if self.google_hunter else 0,
+            metaso_remaining=5000 - self.metaso_client.usage_count if self.metaso_client else 0,
+            tavily_remaining=1000 - self.tavily_usage,
+            baidu_remaining=100 - self.baidu_usage if self.baidu_hunter else 0
+        )
 
-        # 步骤 2: 计算剩余免费额度
-        google_remaining = 10000 - self.google_usage if self.google_hunter else 0
-        metaso_remaining = 5000 - self.metaso_client.usage_count if self.metaso_client else 0
-        tavily_remaining = 1000 - self.tavily_usage
-        baidu_remaining = 100 - self.baidu_usage if self.baidu_hunter else 0
-
-        # 步骤 3: 根据语言和国家选择搜索引擎（Google优先策略）
-        if is_chinese:
-            # 中文查询优先级: Google > Metaso > Baidu > Tavily ✅ Google优先
-            if google_remaining > 0:
-                results = self._search_with_google(query, max_results, country_code,
-                                                   reason=f"中文内容（Google优先，剩余免费: {google_remaining:,}）")
-                # 如果 Google 返回空结果，降级到 Metaso
-                if not results and metaso_remaining > 0:
-                    logger.warning(f"Google] 未返回结果，降级到 Metaso")
-                    return self._search_with_metaso(query, max_results, include_domains,
-                                                   reason=f"中文内容（剩余免费: {metaso_remaining:,}）")
-                # 如果 Metaso 也返回空结果，继续降级到 Baidu
-                if not results and baidu_remaining > 0:
-                    logger.warning(f"Metaso] 未返回结果，降级到 Baidu")
-                    return self._search_with_baidu(query, max_results,
-                                                   reason=f"中文内容（剩余免费: {baidu_remaining:,}）")
-                # 最后降级到 Tavily
-                if not results:
-                    logger.warning(f"Baidu] 未返回结果，降级到 Tavily")
-                    return self._search_with_tavily(query, max_results, include_domains,
-                                                   reason="中文内容（其他引擎额度用尽）")
-                return results
-            elif metaso_remaining > 0:
-                return self._search_with_metaso(query, max_results, include_domains,
-                                               reason=f"中文内容（剩余免费: {metaso_remaining:,}）")
-            elif baidu_remaining > 0:
-                return self._search_with_baidu(query, max_results,
-                                           reason=f"中文内容（剩余免费: {baidu_remaining:,}）")
-            else:
-                return self._search_with_tavily(query, max_results, include_domains,
-                                               reason="中文内容（其他引擎额度用尽）")
-        elif is_english:
-            # ✨ 英语查询优先级: Google > Metaso > Tavily
-            # 英语内容使用 Metaso 效果更好
-            if google_remaining > 0:
-                results = self._search_with_google(query, max_results, country_code,
-                                                   reason=f"英语内容（Google优先，剩余免费: {google_remaining:,}）")
-                # 如果 Google 返回空结果，降级到 Metaso
-                if not results and metaso_remaining > 0:
-                    logger.warning(f"Google] 未返回结果，降级到 Metaso")
-                    return self._search_with_metaso(query, max_results, include_domains,
-                                                   reason=f"英语内容（剩余免费: {metaso_remaining:,}）")
-                return results
-            elif metaso_remaining > 0:
-                return self._search_with_metaso(query, max_results, include_domains,
-                                               reason=f"英语内容（剩余免费: {metaso_remaining:,}）")
-            else:
-                return self._search_with_tavily(query, max_results, include_domains,
-                                               reason="英语内容（其他引擎额度用尽）")
-        else:
-            # ✨ 非英语查询（印尼语、阿拉伯语等）: Google > Tavily > Metaso
-            # 非英语内容使用 Tavily 效果更好
-            if google_remaining > 0:
-                results = self._search_with_google(query, max_results, country_code,
-                                                   reason=f"非英语内容（Google优先，剩余免费: {google_remaining:,}）")
-                # 如果 Google 返回空结果，降级到 Tavily
-                if not results and tavily_remaining > 0:
-                    logger.warning(f"Google] 未返回结果，降级到 Tavily")
-                    return self._search_with_tavily(query, max_results, include_domains,
-                                                   reason=f"非英语内容（Tavily优先，剩余免费: {tavily_remaining:,}）")
-                return results
-            elif tavily_remaining > 0:
-                return self._search_with_tavily(query, max_results, include_domains,
-                                               reason=f"非英语内容（Tavily优先，剩余免费: {tavily_remaining:,}）")
-            elif metaso_remaining > 0:
-                return self._search_with_metaso(query, max_results, include_domains,
-                                               reason=f"非英语内容（剩余免费: {metaso_remaining:,}）")
-            else:
-                raise ValueError("所有搜索引擎免费额度已用尽")
+        # 使用编排器执行搜索（策略模式）
+        # 编排器会自动选择最合适的搜索引擎并处理降级逻辑
+        return self.search_orchestrator.search(
+            client=self,
+            query=query,
+            max_results=max_results,
+            include_domains=include_domains,
+            country_code=country_code,
+            context=context
+        )
 
     def _search_with_metaso(
         self,

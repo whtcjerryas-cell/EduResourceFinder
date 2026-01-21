@@ -6,7 +6,7 @@
 import traceback
 from typing import Callable, Any, Tuple, Optional
 from flask import jsonify
-from logger_utils import get_logger
+from utils.logger_utils import get_logger
 
 logger = get_logger('error_handling')
 

@@ -6,7 +6,7 @@ Prevents malicious user input from manipulating LLM behavior
 
 import re
 from typing import Optional
-from logger_utils import get_logger
+from utils.logger_utils import get_logger
 
 logger = get_logger('input_sanitizer')
 

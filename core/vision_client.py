@@ -16,7 +16,7 @@ project_root = Path(__file__).parent.parent
 if str(project_root) not in sys.path:
     sys.path.insert(0, str(project_root))
 
-from logger_utils import get_logger
+from utils.logger_utils import get_logger
 from llm_client import InternalAPIClient
 
 logger = get_logger('vision_client')

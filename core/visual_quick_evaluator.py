@@ -19,7 +19,7 @@ sys.path.insert(0, str(project_root))
 import json
 import re
 from typing import Dict, List, Optional, Any
-from logger_utils import get_logger
+from utils.logger_utils import get_logger
 
 logger = get_logger('visual_quick_evaluator')
 

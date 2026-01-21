@@ -22,7 +22,7 @@ else:
 # 检查 2: 日志模块是否可以导入
 print(f"\n[检查 2] 导入日志模块...")
 try:
-    from logger_utils import get_logger
+    from utils.logger_utils import get_logger
     print("    ✅ logger_utils 导入成功")
 except ImportError as e:
     print(f"    ❌ logger_utils 导入失败: {str(e)}")

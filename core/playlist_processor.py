@@ -13,7 +13,7 @@ try:
 except ImportError:
     yt_dlp = None
 
-from logger_utils import get_logger
+from utils.logger_utils import get_logger
 
 logger = get_logger('playlist_processor')
 

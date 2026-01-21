@@ -15,7 +15,7 @@ from pathlib import Path
 project_root = Path(__file__).parent
 sys.path.insert(0, str(project_root))
 
-from logger_utils import get_logger
+from utils.logger_utils import get_logger
 from llm_client import get_llm_client
 
 logger = get_logger('verify_full_upgrade')

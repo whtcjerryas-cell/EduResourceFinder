@@ -15,7 +15,7 @@ from typing import List, Dict, Any
 project_root = Path(__file__).parent.parent.parent.parent
 sys.path.insert(0, str(project_root))
 
-from logger_utils import get_logger
+from utils.logger_utils import get_logger
 from tests.ab_testing.utils.llm_caller import LLMCaller
 
 logger = get_logger('scoring_test_runner')

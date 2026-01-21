@@ -10,7 +10,7 @@
 import re
 from typing import Dict, List, Any, Optional
 from urllib.parse import urlparse
-from logger_utils import get_logger
+from utils.logger_utils import get_logger
 from .config_tools import read_country_config
 
 logger = get_logger('validation_tools')
@@ -233,18 +233,19 @@ async def validate_url_quality(url: str, title: str = "") -> Dict[str, Any]:
 
         for blacklist_domain in blacklist:
             if blacklist_domain in domain:
-                logger.warning(f"[❌ 黑名单匹配] 域名 {domain} 匹配黑名单规则: {blacklist_domain}")
+                # ✅ 优化P0-1: 改为软过滤（只是降权，不直接过滤）
+                logger.info(f"[⚠️ 软过滤] 域名 {domain} 匹配软黑名单: {blacklist_domain}，降权而非过滤")
                 return {
                     "success": True,
                     "data": {
-                        "quality": "low",
-                        "reason": "blacklist",
+                        "quality": "medium",  # 从low提升到medium
+                        "reason": "soft_blacklist",  # 标记为软黑名单
                         "domain": domain,
-                        "filter": True,
-                        "score_adjustment": -8.0,
+                        "filter": False,  # ✅ 关键改变：不过滤，只是降权
+                        "score_adjustment": -2.0,  # ✅ 从-8.0改为-2.0（从满分降2分）
                         "matched_rule": blacklist_domain
                     },
-                    "text": f"不推荐：来源在黑名单中 ({domain} - {blacklist_domain})"
+                    "text": f"降权：来源在软黑名单中 ({domain} - {blacklist_domain})"
                 }
 
         logger.debug(f"[✅ 黑名单检查] 域名 {domain} 不在黑名单中")
@@ -342,20 +343,41 @@ async def validate_url_quality(url: str, title: str = "") -> Dict[str, Any]:
             for category, keywords in irrelevant_categories.items():
                 matched_keywords = [kw for kw in keywords if kw in title_lower]
                 if matched_keywords:
-                    logger.warning(f"[❌ 明显无关内容] 标题包含 {category} 关键词: {matched_keywords}")
-                    return {
-                        "success": True,
-                        "data": {
-                            "quality": "low",
-                            "reason": f"irrelevant_content_{category}",
-                            "domain": domain,
-                            "filter": True,  # ✅ 应该过滤
-                            "score_adjustment": -10.0,
-                            "matched_keywords": matched_keywords,
-                            "category": category
-                        },
-                        "text": f"不推荐：明显无关内容（{category}）: {', '.join(matched_keywords)}"
-                    }
+                    # ✅ 优化P0-1: 区分硬过滤和软过滤
+                    # automotive/music/gaming - 硬过滤（完全无关）
+                    # shopping/news_general - 软过滤（可能包含教育内容）
+                    if category in ['automotive', 'music', 'gaming']:
+                        # 保留硬过滤
+                        logger.warning(f"[❌ 硬过滤] 标题包含完全无关内容 ({category}): {matched_keywords}")
+                        return {
+                            "success": True,
+                            "data": {
+                                "quality": "low",
+                                "reason": f"irrelevant_content_{category}",
+                                "domain": domain,
+                                "filter": True,  # 硬过滤
+                                "score_adjustment": -10.0,
+                                "matched_keywords": matched_keywords,
+                                "category": category
+                            },
+                            "text": f"不推荐：完全无关内容（{category}）: {', '.join(matched_keywords)}"
+                        }
+                    else:
+                        # shopping, news_general 改为软过滤
+                        logger.info(f"[⚠️ 软过滤] 标题包含可能无关内容 ({category}): {matched_keywords}")
+                        return {
+                            "success": True,
+                            "data": {
+                                "quality": "medium",
+                                "reason": f"soft_irrelevant_{category}",  # 标记为软过滤
+                                "domain": domain,
+                                "filter": False,  # ✅ 软过滤：不过滤
+                                "score_adjustment": -1.5,  # ✅ 降权1.5分
+                                "matched_keywords": matched_keywords,
+                                "category": category
+                            },
+                            "text": f"降权：可能无关内容（{category}）: {', '.join(matched_keywords)}"
+                        }
 
             # 游戏、电商关键词（原有逻辑）
             spam_keywords = [
