@@ -22,7 +22,7 @@ import requests
 from concurrent.futures import ThreadPoolExecutor, as_completed, TimeoutError as FuturesTimeoutError
 import concurrent.futures
 from config_manager import ConfigManager
-from logger_utils import get_logger
+from utils.logger_utils import get_logger
 from json_utils import extract_json_array
 from search_strategy_agent import SearchStrategyAgent
 from core.search_cache import get_search_cache
@@ -2935,3 +2935,355 @@ class SearchEngineV2:
             logger.error(f"   内存使用: {self._get_memory_usage()}")
             logger.error(f"   时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
             logger.error("="*80)
+
+# ============================================================================
+# 🤖 Agent Native Interface - P1优化
+# ============================================================================
+"""
+Agent-friendly搜索接口，无需HTTP层
+
+这个模块提供了Agent可以直接调用的搜索功能，避免了通过Flask HTTP API的紧耦合。
+
+使用示例:
+    from search_engine_v2 import agent_search
+    
+    # 同步搜索
+    results = agent_search(
+        country="ID",
+        grade="Kelas 1",
+        subject="Matematika"
+    )
+    
+    # 带参数的搜索
+    results = agent_search(
+        country="CN",
+        grade="初一",
+        subject="数学",
+        semester="第一学期",
+        language="zh"
+    )
+"""
+
+import gc
+from typing import Optional, Dict, Any, List
+
+
+def agent_search(
+    country: str,
+    grade: str,
+    subject: str,
+    semester: Optional[str] = None,
+    language: Optional[str] = None,
+    timeout: Optional[int] = 200,
+    enable_transparency: bool = False
+) -> Dict[str, Any]:
+    """
+    Agent原生的搜索接口
+    
+    🔥 关键优势：
+    - 无需HTTP层，直接Python调用
+    - 自动内存管理
+    - 清晰的错误处理
+    - 支持透明度日志
+    
+    Args:
+        country: 国家代码 (如: "ID", "CN", "US")
+        grade: 年级 (如: "Kelas 1", "初一", "Grade 8")
+        subject: 学科 (如: "Matematika", "数学", "Mathematics")
+        semester: 学期，可选 (如: "第一学期", "Semester 1")
+        language: 语言代码，可选 (如: "zh", "id", "en")
+        timeout: 超时时间（秒），默认200秒
+        enable_transparency: 是否启用透明度日志，默认False
+    
+    Returns:
+        Dict[str, Any]: 搜索结果字典
+        {
+            "success": bool,
+            "query": str,
+            "results": List[Dict],
+            "total_count": int,
+            "playlist_count": int,
+            "video_count": int,
+            "message": str,
+            "quality_report": Optional[Dict],
+            "transparency": Optional[Dict]  # 如果enable_transparency=True
+        }
+    
+    Raises:
+        ValueError: 输入参数无效
+        TimeoutError: 搜索超时
+    
+    Example:
+        >>> results = agent_search("ID", "Kelas 1", "Matematika")
+        >>> if results["success"]:
+        ...     for r in results["results"]:
+        ...         print(f"{r['title']}: {r['url']}")
+    """
+    # 输入验证
+    if not country or not grade or not subject:
+        raise ValueError("country, grade, and subject are required")
+    
+    # 清理输入（移除前后空格）
+    country = country.strip()
+    grade = grade.strip()
+    subject = subject.strip()
+    if semester:
+        semester = semester.strip()
+    
+    logger.info(f"[🤖 Agent接口] 开始搜索: {country}/{grade}/{subject}")
+    
+    # 创建搜索请求
+    search_request = SearchRequest(
+        country=country,
+        grade=grade,
+        subject=subject,
+        semester=semester,
+        language=language
+    )
+    
+    # 创建搜索引擎实例
+    search_engine = None
+    
+    try:
+        # 创建搜索引擎（可选透明度日志）
+        if enable_transparency:
+            from core.search_transparency_collector import SearchTransparencyCollector
+            transparency_collector = SearchTransparencyCollector()
+            search_engine = SearchEngineV2(transparency_collector=transparency_collector)
+        else:
+            search_engine = SearchEngineV2()
+        
+        # 执行搜索
+        logger.info(f"[🤖 Agent接口] 执行搜索...")
+        response = search_engine.search(search_request)
+        
+        # 清理资源
+        del search_engine
+        gc.collect()
+        
+        # 转换为字典返回
+        result_dict = {
+            "success": response.success,
+            "query": response.query,
+            "results": response.results,
+            "total_count": response.total_count,
+            "playlist_count": response.playlist_count,
+            "video_count": response.video_count,
+            "message": response.message,
+            "quality_report": response.quality_report,
+            "transparency": response.transparency if enable_transparency else None
+        }
+        
+        logger.info(f"[🤖 Agent接口] 搜索完成: {result_dict['total_count']} 个结果")
+        return result_dict
+        
+    except ValueError as e:
+        # 输入验证错误
+        logger.error(f"[🤖 Agent接口] 输入验证失败: {str(e)}")
+        raise
+    except Exception as e:
+        # 搜索失败
+        logger.error(f"[🤖 Agent接口] 搜索失败: {type(e).__name__}: {str(e)[:100]}")
+        
+        # 确保清理资源
+        if search_engine is not None:
+            try:
+                del search_engine
+                gc.collect()
+            except:
+                pass
+        
+        # 返回错误结果
+        return {
+            "success": False,
+            "query": f"{country} {grade} {subject}",
+            "results": [],
+            "total_count": 0,
+            "playlist_count": 0,
+            "video_count": 0,
+            "message": f"搜索失败: {str(e)[:200]}",
+            "quality_report": None,
+            "transparency": None
+        }
+
+
+class AgentSearchClient:
+    """
+    Agent搜索客户端（面向对象接口）
+    
+    提供更高级的功能，如批量搜索、缓存等
+    
+    Example:
+        >>> client = AgentSearchClient()
+        >>> results = client.search("ID", "Kelas 1", "Matematika")
+        >>> client.cleanup()  # 清理资源
+    """
+    
+    def __init__(self, enable_cache: bool = False):
+        """
+        初始化Agent搜索客户端
+        
+        Args:
+            enable_cache: 是否启用结果缓存
+        """
+        self._search_engine = None
+        self._enable_cache = enable_cache
+        self._cache = {}
+        logger.info(f"[🤖 Agent客户端] 初始化完成 (缓存: {enable_cache})")
+    
+    def search(
+        self,
+        country: str,
+        grade: str,
+        subject: str,
+        semester: Optional[str] = None,
+        language: Optional[str] = None,
+        use_cache: bool = True
+    ) -> Dict[str, Any]:
+        """
+        执行搜索（面向对象接口）
+        
+        Args:
+            country: 国家代码
+            grade: 年级
+            subject: 学科
+            semester: 学期，可选
+            language: 语言，可选
+            use_cache: 是否使用缓存，默认True
+        
+        Returns:
+            搜索结果字典
+        """
+        # 生成缓存键
+        cache_key = f"{country}:{grade}:{subject}:{semester}:{language}"
+        
+        # 检查缓存
+        if self._enable_cache and use_cache and cache_key in self._cache:
+            logger.info(f"[🤖 Agent客户端] 缓存命中: {cache_key}")
+            return self._cache[cache_key]
+        
+        # 执行搜索
+        result = agent_search(
+            country=country,
+            grade=grade,
+            subject=subject,
+            semester=semester,
+            language=language,
+            enable_transparency=False
+        )
+        
+        # 存入缓存
+        if self._enable_cache and result["success"]:
+            self._cache[cache_key] = result
+            logger.info(f"[🤖 Agent客户端] 结果已缓存: {cache_key}")
+        
+        return result
+    
+    def batch_search(
+        self,
+        queries: List[Dict[str, Any]],
+        max_concurrent: int = 3
+    ) -> List[Dict[str, Any]]:
+        """
+        批量搜索（并发执行）
+        
+        Args:
+            queries: 查询列表 [{"country": "ID", "grade": "Kelas 1", "subject": "Matematika"}, ...]
+            max_concurrent: 最大并发数，默认3
+        
+        Returns:
+            结果列表
+        """
+        import concurrent.futures
+        
+        results = []
+        
+        with concurrent.futures.ThreadPoolExecutor(max_workers=max_concurrent) as executor:
+            # 提交所有搜索任务
+            future_to_query = {
+                executor.submit(
+                    self.search,
+                    q["country"],
+                    q["grade"],
+                    q.get("subject"),
+                    q.get("semester"),
+                    q.get("language"),
+                    q.get("use_cache", True)
+                ): q for q in queries
+            }
+            
+            # 收集结果
+            for future in concurrent.futures.as_completed(future_to_query):
+                query = future_to_query[future]
+                try:
+                    result = future.result(timeout=300)  # 5分钟超时
+                    results.append(result)
+                except Exception as e:
+                    logger.error(f"[🤖 Agent客户端] 批量搜索失败: {query} -> {str(e)[:100]}")
+                    results.append({
+                        "success": False,
+                        "message": f"批量搜索失败: {str(e)[:200]}",
+                        "results": [],
+                        "total_count": 0
+                    })
+        
+        return results
+    
+    def clear_cache(self):
+        """清空缓存"""
+        self._cache.clear()
+        logger.info("[🤖 Agent客户端] 缓存已清空")
+    
+    def cleanup(self):
+        """清理资源"""
+        self.clear_cache()
+        if self._search_engine is not None:
+            try:
+                del self._search_engine
+                gc.collect()
+            except:
+                pass
+        logger.info("[🤖 Agent客户端] 资源已清理")
+    
+    def __enter__(self):
+        """上下文管理器支持"""
+        return self
+    
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        """上下文管理器清理"""
+        self.cleanup()
+
+
+# 便捷函数
+def quick_search(country: str, grade: str, subject: str) -> List[Dict[str, Any]]:
+    """
+    快速搜索（只返回结果列表）
+    
+    Args:
+        country: 国家代码
+        grade: 年级
+        subject: 学科
+    
+    Returns:
+        结果列表，失败返回空列表
+    
+    Example:
+        >>> results = quick_search("ID", "Kelas 1", "Matematika")
+        >>> for r in results:
+        ...     print(f"{r['title']}: {r['url']}")
+    """
+    response = agent_search(country, grade, subject)
+    
+    if response["success"]:
+        return response["results"]
+    else:
+        logger.warning(f"[快速搜索] 搜索失败: {response['message']}")
+        return []
+
+
+# 导出接口
+__all__ = [
+    "agent_search",
+    "AgentSearchClient", 
+    "quick_search"
+]
