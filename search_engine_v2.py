@@ -13,7 +13,9 @@ import os
 import json
 import time
 import re
+import threading  # 🔒 P1线程安全: 添加线程锁支持
 from typing import Dict, List, Optional, Any, Callable
+from dataclasses import dataclass
 from pydantic import BaseModel, Field
 from datetime import datetime, timezone
 import requests
@@ -61,6 +63,231 @@ except ImportError:
 
 
 # ============================================================================
+# 配置常量
+# ============================================================================
+DEFAULT_MAX_RESULTS = 50  # 🔧 P0-2: 默认返回50个结果（原20个）
+MIN_SCORE_THRESHOLD = 5.0  # 🔧 P0-3: 最低评分阈值（原6.0）
+
+# ============================================================================
+# 安全工具函数 (P1 - SSRF防护)
+# ============================================================================
+import ipaddress
+from urllib.parse import urlparse
+
+def is_safe_url(url: str) -> bool:
+    """
+    验证URL以防止SSRF攻击
+
+    Args:
+        url: 待验证的URL字符串
+
+    Returns:
+        bool: True表示URL安全，False表示URL不安全
+    """
+    try:
+        parsed = urlparse(url)
+
+        # 检查协议 - 只允许HTTP和HTTPS
+        if parsed.scheme not in ['http', 'https']:
+            logger.warning(f"Blocked URL with unsafe scheme: {parsed.scheme}")
+            return False
+
+        # 解析主机名
+        hostname = parsed.hostname
+        if not hostname:
+            logger.warning(f"Blocked URL with no hostname: {url}")
+            return False
+
+        # 阻止私有/内部IP地址
+        try:
+            ip = ipaddress.ip_address(hostname)
+            if ip.is_private:
+                logger.warning(f"Blocked private IP: {hostname}")
+                return False
+            if ip.is_loopback:
+                logger.warning(f"Blocked loopback IP: {hostname}")
+                return False
+            if ip.is_link_local:
+                logger.warning(f"Blocked link-local IP: {hostname}")
+                return False
+            if ip.is_reserved:
+                logger.warning(f"Blocked reserved IP: {hostname}")
+                return False
+        except ValueError:
+            # 不是IP地址，继续检查主机名
+            pass
+
+        # 阻止localhost和本地域名
+        blocked_domains = [
+            'localhost', '127.0.0.1', '0.0.0.0',
+            'metadata.google.internal',  # GCP
+            '169.254.169.254',           # AWS/Azure元数据端点
+            'instance-data',             # AWS元数据域名
+        ]
+
+        if hostname.lower() in blocked_domains:
+            logger.warning(f"Blocked internal domain: {hostname}")
+            return False
+
+        # 阻止内部主机名模式
+        if hostname.endswith('.local') or hostname.endswith('.internal'):
+            logger.warning(f"Blocked internal hostname pattern: {hostname}")
+            return False
+
+        return True
+
+    except Exception as e:
+        logger.warning(f"URL validation error for {url}: {str(e)}")
+        return False
+
+
+def sanitize_search_query(query: str) -> str:
+    """
+    清理搜索查询以防止注入攻击
+
+    Args:
+        query: 原始搜索查询字符串
+
+    Returns:
+        str: 清理后的安全查询字符串
+    """
+    if not query:
+        return ""
+
+    # 移除危险的搜索运算符（可能被用于SSRF或信息泄露）
+    dangerous_patterns = [
+        r'site:\s*[^\s\)]+',      # site: 运算符（可能用于SSRF）
+        r'filetype:\s*\w+',        # filetype: 运算符
+        r'cache:\s*[^\s\)]+',      # cache: 运算符
+        r'link:\s*[^\s\)]+',       # link: 运算符
+        r'info:\s*[^\s\)]+',       # info: 运算符
+        r'loc:\s*[^\s\)]+',        # location 运算符
+    ]
+
+    original_query = query
+    for pattern in dangerous_patterns:
+        query = re.sub(pattern, '', query, flags=re.IGNORECASE)
+
+    # 如果查询被修改，记录日志
+    if query != original_query:
+        logger.info(f"Sanitized search query (removed dangerous operators): {original_query[:100]} -> {query[:100]}")
+
+    # 限制查询长度（防止DoS）
+    query = query[:500]
+
+    # 移除多余的空格
+    query = ' '.join(query.split())
+
+    return query.strip()
+
+
+def validate_api_key(api_key: Optional[str], key_name: str = "API Key") -> str:
+    """
+    验证API密钥的有效性
+
+    Args:
+        api_key: 待验证的API密钥
+        key_name: 密钥名称（用于错误消息）
+
+    Returns:
+        str: 验证后的API密钥
+
+    Raises:
+        ValueError: 如果API密钥无效
+    """
+    if not api_key:
+        raise ValueError(f"{key_name} cannot be empty or None")
+
+    api_key = api_key.strip()
+
+    # 检查最小长度（防止空字符串或过短的密钥）
+    if len(api_key) < 10:
+        raise ValueError(f"{key_name} is too short (minimum 10 characters)")
+
+    # 检查最大长度（防止DoS）
+    if len(api_key) > 500:
+        raise ValueError(f"{key_name} is too long (maximum 500 characters)")
+
+    # 检查是否包含空白字符（API密钥不应该有空白）
+    if ' ' in api_key or '\t' in api_key or '\n' in api_key:
+        raise ValueError(f"{key_name} contains whitespace characters")
+
+    # 检查是否是常见的占位符或示例值
+    placeholders = [
+        'your_api_key', 'your-key-here', 'replace_with_key',
+        'example_key', 'test_key', 'xxx', 'placeholder',
+        'api_key_here', 'secret_key_here'
+    ]
+    if api_key.lower() in placeholders:
+        raise ValueError(f"{key_name} appears to be a placeholder value")
+
+    return api_key
+
+
+def validate_env_bool(env_var: Optional[str], var_name: str, default: bool = False) -> bool:
+    """
+    验证并解析布尔型环境变量
+
+    Args:
+        env_var: 环境变量的值
+        var_name: 变量名称（用于错误消息）
+        default: 默认值
+
+    Returns:
+        bool: 解析后的布尔值
+    """
+    if not env_var:
+        return default
+
+    env_var = env_var.strip().lower()
+
+    if env_var in ('true', '1', 'yes', 'on', 'enabled'):
+        return True
+    elif env_var in ('false', '0', 'no', 'off', 'disabled'):
+        return False
+    else:
+        logger.warning(f"Invalid boolean value for {var_name}: '{env_var}', using default: {default}")
+        return default
+
+
+def validate_env_int(env_var: Optional[str], var_name: str, default: int,
+                    min_val: Optional[int] = None, max_val: Optional[int] = None) -> int:
+    """
+    验证并解析整数型环境变量
+
+    Args:
+        env_var: 环境变量的值
+        var_name: 变量名称（用于错误消息）
+        default: 默认值
+        min_val: 最小值（可选）
+        max_val: 最大值（可选）
+
+    Returns:
+        int: 解析后的整数值
+    """
+    if not env_var:
+        return default
+
+    try:
+        value = int(env_var)
+
+        # 检查范围
+        if min_val is not None and value < min_val:
+            logger.warning(f"{var_name} value {value} is below minimum {min_val}, using {min_val}")
+            return min_val
+
+        if max_val is not None and value > max_val:
+            logger.warning(f"{var_name} value {value} is above maximum {max_val}, using {max_val}")
+            return max_val
+
+        return value
+
+    except ValueError:
+        logger.warning(f"Invalid integer value for {var_name}: '{env_var}', using default: {default}")
+        return default
+
+
+# ============================================================================
 # 数据模型定义
 # ============================================================================
 
@@ -89,6 +316,37 @@ class SearchResult(BaseModel):
     evaluation_result: Optional[Dict[str, Any]] = Field(description="视频评估结果（如果已评估）", default=None)
 
 
+class SearchQueryMetadata(BaseModel):
+    """单个搜索查询的元数据"""
+    query: str = Field(description="搜索词")
+    engine: str = Field(description="搜索引擎（Tavily/Google/Baidu）")
+    result_count: int = Field(description="该搜索返回的结果数量")
+    timestamp: str = Field(description="搜索时间")
+    duration_ms: float = Field(description="搜索耗时（毫秒）")
+    reasoning: str = Field(description="生成此搜索词的理由", default="")
+
+
+class SearchTransparencyMetadata(BaseModel):
+    """搜索透明度元数据"""
+    # 搜索策略信息
+    search_strategy: Dict[str, Any] = Field(description="搜索策略详情", default_factory=dict)
+
+    # 搜索执行记录（包含所有执行的搜索）
+    search_executions: List[Dict[str, Any]] = Field(description="所有执行的搜索查询", default_factory=list)
+
+    # 搜索执行统计
+    total_raw_results: int = Field(description="原始搜索结果总数", default=0)
+    total_searches: int = Field(description="执行的搜索次数", default=0)
+    total_duration_ms: float = Field(description="总搜索耗时（毫秒）", default=0.0)
+
+    # 过滤流水线
+    filtering_pipeline: List[Dict[str, Any]] = Field(description="过滤流水线各阶段", default_factory=list)
+    filtered_samples: List[Dict[str, Any]] = Field(description="被过滤的结果样本", default_factory=list)
+
+    # 评分分布
+    score_distribution: Dict[str, int] = Field(description="分数分布（如{'8-10': 15, '6-8': 30}）", default_factory=dict)
+
+
 class SearchResponse(BaseModel):
     """搜索响应"""
     success: bool = Field(description="是否成功")
@@ -101,6 +359,9 @@ class SearchResponse(BaseModel):
     timestamp: str = Field(description="时间戳", default_factory=lambda: datetime.now(timezone.utc).isoformat())
     quality_report: Optional[Dict[str, Any]] = Field(description="质量评估报告", default=None)
     optimization_request: Optional[Dict[str, Any]] = Field(description="优化请求（如果检测到质量问题）", default=None)
+
+    # 🔍 透明度元数据（新增）
+    transparency: Optional[SearchTransparencyMetadata] = Field(description="搜索透明度信息", default=None)
 
 
 # ============================================================================
@@ -122,13 +383,31 @@ class AIBuildersClient:
     """
     
     def __init__(self, api_token: Optional[str] = None):
-        self.api_token = api_token or os.getenv("AI_BUILDER_TOKEN")
-        
+        # 🔒 P1 环境变量验证: 获取并验证API token
+        api_token_raw = api_token or os.getenv("AI_BUILDER_TOKEN")
+
+        # 只有在提供了token时才验证（允许None用于某些场景）
+        if api_token_raw:
+            try:
+                self.api_token = validate_api_key(api_token_raw, "AI_BUILDER_TOKEN")
+            except ValueError as e:
+                logger.error(f"Invalid AI_BUILDER_TOKEN: {str(e)}")
+                raise ValueError(f"Invalid AI_BUILDER_TOKEN: {str(e)}")
+        else:
+            self.api_token = None
+
         # 尝试使用统一LLM客户端
         if HAS_UNIFIED_CLIENT:
             try:
                 # 获取公司内部API密钥（可选）
-                internal_api_key = os.getenv("INTERNAL_API_KEY")
+                internal_api_key_raw = os.getenv("INTERNAL_API_KEY")
+                internal_api_key = None
+                if internal_api_key_raw:
+                    try:
+                        internal_api_key = validate_api_key(internal_api_key_raw, "INTERNAL_API_KEY")
+                    except ValueError as e:
+                        logger.warning(f"Invalid INTERNAL_API_KEY, will not use internal API: {str(e)}")
+
                 self.unified_client = UnifiedLLMClient(
                     internal_api_key=internal_api_key,
                     ai_builder_token=self.api_token
@@ -145,7 +424,7 @@ class AIBuildersClient:
             self.use_unified_client = False
             if not self.api_token:
                 raise ValueError("请设置 AI_BUILDER_TOKEN 环境变量")
-        
+
         # 保留原有属性以保持兼容性
         self.base_url = "https://space.ai-builders.com/backend"
         self.headers = {
@@ -269,11 +548,10 @@ class AIBuildersClient:
                 print(f"[❌ 错误] 错误响应: {error_text}")
                 raise ValueError(f"API 调用失败，状态码: {response.status_code}")
         except requests.exceptions.RequestException as e:
-            print(f"[❌ 错误] API 请求异常: {str(e)}")
-            print(f"[❌ 错误] 异常类型: {type(e).__name__}")
-            import traceback
-            print(f"[❌ 错误] 异常堆栈:\n{traceback.format_exc()}")
-            raise ValueError(f"API 请求异常: {str(e)}")
+            # 🔒 P1 安全修复: 不暴露详细的异常信息和堆栈跟踪
+            logger.error(f"API request failed: {type(e).__name__}")
+            print(f"[❌ 错误] API 请求异常，请检查网络连接或联系管理员")
+            raise ValueError(f"API 请求异常，请稍后重试")
             
     def search(self, query: str, max_results: int = 10, include_domains: list = None, country_code: str = None) -> list:
         """
@@ -293,235 +571,27 @@ class AIBuildersClient:
                 # Convert dicts to SearchResult objects
                 results = []
                 for item in results_dicts:
+                    url = item.get('url', '')
+                    # 🔒 P1 SSRF防护: 验证URL安全性
+                    if not is_safe_url(url):
+                        logger.warning(f"Blocked unsafe URL from search results: {url}")
+                        continue  # 跳过不安全的URL
+
                     results.append(SearchResult(
                         title=item.get('title', ''),
-                        url=item.get('url', ''),
+                        url=url,
                         snippet=item.get('snippet', item.get('content', '')),
                         source=item.get('search_engine', 'Unknown'),
                         search_engine=item.get('search_engine', 'Unknown')
                     ))
                 return results
             except Exception as e:
-                print(f"[⚠️ 搜索失败] UnifiedClient 搜索失败: {str(e)}")
-                import traceback
-                traceback.print_exc()
+                # 🔒 P1 安全修复: 不暴露详细的异常信息和堆栈跟踪
+                logger.error(f"UnifiedClient search failed: {type(e).__name__}")
+                print(f"[⚠️ 搜索失败] UnifiedClient 搜索失败，请稍后重试")
         # 2. Fallback：返回空列表
         print(f"[❌ 搜索失败] 无可用的搜索引擎")
         return []
-    
-        """
-        使用 Google 优先搜索 (用户请求: 解决搜索结果不一致问题)
-        
-        Args:
-            query: 搜索查询
-            max_results: 最大结果数
-            include_domains: 可选的域名列表，用于限制搜索范围
-        """
-        # 1. 优先尝试 Google 搜索 (如果启用)
-        if self.google_search_enabled and self.google_hunter:
-            try:
-                print(f"    [🔍 Google搜索] 优先使用 Google: {query}")
-                google_results = self.google_hunter.search(query)
-                
-                # 转换格式
-                results = []
-                for item in google_results[:max_results]:
-                    # GoogleSearchResults 可能返回字典或对象，需适配
-                    # 假设返回的是字典列表，包含 title, link, snippet
-                    url = item.get('link', item.get('url', ''))
-                    title = item.get('title', '')
-                    snippet = item.get('snippet', item.get('body', ''))
-                    
-                    cleaned_title = clean_title(title, url)
-                    cleaned_snippet = clean_snippet(snippet)
-                    
-                    results.append(SearchResult(
-                        title=cleaned_title,
-                        url=url,
-                        snippet=cleaned_snippet,
-                        source="Google",
-                        search_engine="Google"
-                    ))
-                
-                if results:
-                    print(f"    [✅ Google搜索] 成功获取 {len(results)} 个结果")
-                    return results
-                else:
-                    print(f"    [⚠️ Google搜索] 返回结果为空，回退到 Tavily")
-            
-            except Exception as e:
-                print(f"    [❌ Google搜索] 失败: {str(e)}，回退到 Tavily")
-        
-        # 2. 如果使用统一客户端，尝试使用其search方法 (Tavily/Fallback)
-        # 如果使用统一客户端，尝试使用其search方法
-        if self.use_unified_client:
-            try:
-                search_results = self.unified_client.search(
-                    query=query,
-                    max_results=max_results,
-                    include_domains=include_domains
-                )
-                # 转换为SearchResult对象，并清理标题
-                results = []
-                for item in search_results:
-                    original_title = item.get('title', '')
-                    url = item.get('url', '')
-                    # 清理标题
-                    cleaned_title = clean_title(original_title, url)
-                    # 清理摘要
-                    raw_snippet = item.get('content', item.get('snippet', item.get('description', '')))
-                    cleaned_snippet = clean_snippet(raw_snippet)
-
-                    # 🔥 提取search_engine字段
-                    search_engine = item.get('search_engine', 'Tavily')
-
-                    results.append(SearchResult(
-                        title=cleaned_title,
-                        url=url,
-                        snippet=cleaned_snippet,
-                        source="Tavily",
-                        search_engine=search_engine  # 🔥 传递搜索引擎字段
-                    ))
-                return results
-            except Exception as e:
-                print(f"[⚠️] 统一客户端搜索失败: {str(e)}，回退到原有实现")
-                # 回退到原有实现
-        
-        # 原有实现
-        endpoint = f"{self.base_url}/v1/search/"
-        
-        print(f"        [🔍 Tavily搜索] 原始查询: \"{query}\"")
-        print(f"        [⚙️ 参数] max_results={max_results}, include_domains={include_domains}")
-        
-        payload = {
-            "keywords": [query],
-            "max_results": min(max_results, 20)
-        }
-        
-        # 如果提供了域名列表，强制确保查询中包含site:语法
-        # 重要：即使查询中已有site:语法，我们也强制重新构建以确保正确性
-        if include_domains and len(include_domains) > 0:
-            # 检查查询中是否已包含site:语法
-            query_lower = query.lower()
-            has_site_syntax = any(f"site:{domain.lower()}" in query_lower for domain in include_domains)
-            
-            print(f"        [🔍 检查] 查询词包含site:语法: {has_site_syntax}")
-            print(f"        [🔍 检查] 查询词: \"{query}\"")
-            print(f"        [🔍 检查] 目标域名: {include_domains[:5]}")
-            
-            # 强制添加site:语法（即使查询中已有，也重新构建以确保正确性）
-            # 选择前5个最重要的域名（避免查询过长）
-            selected_domains = include_domains[:5]
-            domain_site_clause = " OR ".join([f"site:{domain}" for domain in selected_domains])
-            
-            # 如果查询中已有site:语法，先移除旧的site:部分
-            if has_site_syntax:
-                # 尝试移除旧的site:部分（使用正则表达式）
-                # 移除 (site:xxx OR site:yyy) 这样的模式
-                query_cleaned = re.sub(r'\s*\(site:[^)]+\)', '', query, flags=re.IGNORECASE)
-                query_cleaned = query_cleaned.strip()
-                # 如果清理后为空，使用原始查询
-                if not query_cleaned:
-                    query_cleaned = query
-                enhanced_query = f"{query_cleaned} ({domain_site_clause})"
-                print(f"        [🔧 处理] 查询中已有site:语法，清理后重新添加")
-                print(f"        [🔧 处理] 清理后的查询: \"{query_cleaned}\"")
-            else:
-                # 如果查询中没有site:语法，直接添加
-                enhanced_query = f"{query} ({domain_site_clause})"
-                print(f"        [🔧 处理] 查询中缺少site:语法，添加域名限制")
-            
-            payload["keywords"] = [enhanced_query]
-            print(f"        [✅ 确认] 最终查询（强制包含site:语法）: \"{enhanced_query}\"")
-            print(f"        [✅ 确认] 使用的域名: {selected_domains}")
-            
-            # 同时尝试在payload中添加include_domains参数（如果API支持）
-            # 注意：这取决于Tavily API的实际实现
-            # payload["include_domains"] = include_domains[:5]
-        
-        print(f"        [📤 请求] Endpoint: {endpoint}")
-        print(f"        [📤 请求] Payload: {json.dumps(payload, ensure_ascii=False, indent=2)}")
-        
-        try:
-            from llm_client import get_proxy_config
-            response = requests.post(
-                endpoint,
-                headers=self.headers,
-                json=payload,
-                timeout=30,
-                proxies=None  # [修复] 2026-01-20: AI Builders 是内网 API，不需要代理
-            )
-            
-            print(f"        [📥 响应] 状态码: {response.status_code}")
-            
-            if response.status_code == 200:
-                result = response.json()
-                print(f"[📥 响应] 响应类型: {type(result).__name__}")
-                print(f"[📥 响应] 响应键: {list(result.keys()) if isinstance(result, dict) else 'N/A'}")
-                print(f"[📥 响应] 完整 API 响应:\n{json.dumps(result, ensure_ascii=False, indent=2)}")
-                
-                results = []
-                
-                if isinstance(result, dict) and "queries" in result:
-                    queries = result.get("queries", [])
-                    print(f"[📥 响应] queries 数量: {len(queries)}")
-                    
-                    if queries:
-                        query_result = queries[0]
-                        tavily_response = query_result.get("response", {})
-                        tavily_results = tavily_response.get("results", [])
-                        print(f"[📥 响应] Tavily 结果数量: {len(tavily_results)}")
-                        
-                        for idx, item in enumerate(tavily_results[:max_results], 1):
-                            # 清理标题和摘要
-                            url = item.get('url', '')
-                            original_title = item.get('title', '')
-                            cleaned_title = clean_title(original_title, url)
-                            raw_snippet = item.get('content', item.get('snippet', item.get('description', '')))
-                            cleaned_snippet = clean_snippet(raw_snippet)
-
-                            result_obj = SearchResult(
-                                title=cleaned_title,
-                                url=url,
-                                snippet=cleaned_snippet,
-                                source="Tavily",
-                                search_engine="Tavily"
-                            )
-                            results.append(result_obj)
-                            print(f"[📋 结果{idx}] {result_obj.title[:60]}...")
-                            print(f"    URL: {result_obj.url}")
-                            print(f"    Snippet 长度: {len(result_obj.snippet)} 字符")
-                            print(f"    Snippet (前200字符): {result_obj.snippet[:200]}...")
-                            # 检查是否匹配目标域名
-                            if include_domains:
-                                url_lower = result_obj.url.lower()
-                                matched = any(domain.lower() in url_lower for domain in include_domains)
-                                if matched:
-                                    matched_domain = next((d for d in include_domains if d.lower() in url_lower), None)
-                                    print(f"    ✅ 匹配目标域名: {matched_domain}")
-                                else:
-                                    print(f"    ⚠️ 未匹配目标域名")
-                    else:
-                        print(f"[⚠️ 响应] queries 为空")
-                else:
-                    print(f"[⚠️ 响应] 响应格式异常，缺少 queries 字段")
-                    print(f"[📥 响应] 响应键: {list(result.keys()) if isinstance(result, dict) else 'N/A'}")
-                
-                print(f"[✅ 完成] 返回 {len(results)} 个结果")
-                print(f"{'='*80}\n")
-                return results
-            else:
-                error_text = response.text[:500] if hasattr(response, 'text') else 'N/A'
-                print(f"[❌ 错误] 搜索 API 调用失败")
-                print(f"[❌ 错误] 状态码: {response.status_code}")
-                print(f"[❌ 错误] 错误响应: {error_text}")
-                raise ValueError(f"搜索 API 调用失败，状态码: {response.status_code}")
-        except requests.exceptions.RequestException as e:
-            print(f"[❌ 错误] 搜索 API 请求异常: {str(e)}")
-            print(f"[❌ 错误] 异常类型: {type(e).__name__}")
-            import traceback
-            print(f"[❌ 错误] 异常堆栈:\n{traceback.format_exc()}")
-            raise ValueError(f"搜索 API 请求异常: {str(e)}")
 
 
 # ============================================================================
@@ -742,20 +812,33 @@ class SearchEngineV2:
         self.result_scorer = None  # 将在search时初始化为带知识库的评分器
         self.result_scorer_without_kb = get_result_scorer()  # 无知识库的备用评分器
         self._scorer_cache = {}  # 缓存各国的评分器 {country_code: scorer}
+        self._scorer_cache_lock = threading.Lock()  # 🔒 P1线程安全: 评分器缓存的线程锁
+        self._playlist_cache = {}  # 🚀 P1性能优化: 缓存播放列表信息 {playlist_url: {video_count, duration}}
         self.recommendation_generator = get_recommendation_generator()  # LLM推荐理由生成器
         print(f"    [✅] 智能评分器已初始化（将在搜索时加载知识库）")
         print(f"    [✅] LLM推荐理由生成器已初始化")
         print(f"    [✅] 三级缓存系统已启用 (L1:内存100条/5分钟 + L2:Redis/1小时 + L3:磁盘/24小时)")
 
+        # 🔍 初始化搜索透明度收集器
+        from core.search_transparency_collector import get_transparency_collector
+        self.transparency_collector = get_transparency_collector()
+        logger.debug("    [✅] 搜索透明度收集器已初始化")
+
         # 初始化百度搜索客户端（如果配置了）
         self.baidu_search_enabled = False
         try:
-            baidu_api_key = os.getenv("BAIDU_API_KEY")
-            if baidu_api_key:
-                from search_strategist import SearchHunter
-                self.baidu_hunter = SearchHunter(search_engine="baidu", llm_client=None)
-                self.baidu_search_enabled = True
-                print(f"    [✅] 百度搜索已启用")
+            baidu_api_key_raw = os.getenv("BAIDU_API_KEY")
+            if baidu_api_key_raw:
+                # 🔒 P1 环境变量验证: 验证百度API密钥
+                try:
+                    baidu_api_key = validate_api_key(baidu_api_key_raw, "BAIDU_API_KEY")
+                    from search_strategist import SearchHunter
+                    self.baidu_hunter = SearchHunter(search_engine="baidu", llm_client=None)
+                    self.baidu_search_enabled = True
+                    print(f"    [✅] 百度搜索已启用")
+                except ValueError as e:
+                    logger.warning(f"BAIDU_API_KEY validation failed, skipping Baidu search: {str(e)}")
+                    print(f"    [⚠️] 百度API密钥验证失败，跳过百度搜索: {str(e)}")
             else:
                 print(f"    [ℹ️] 百度搜索未配置（BAIDU_API_KEY未设置）")
         except Exception as e:
@@ -765,13 +848,24 @@ class SearchEngineV2:
         # 初始化 Google 搜索客户端（如果配置了）
         self.google_search_enabled = False
         try:
-            google_api_key = os.getenv("GOOGLE_API_KEY")
-            google_cx = os.getenv("GOOGLE_CX")
-            if google_api_key and google_cx:
-                from search_strategist import SearchHunter
-                self.google_hunter = SearchHunter(search_engine="google", llm_client=None)
-                self.google_search_enabled = True
-                print(f"    [✅] Google 搜索已启用")
+            google_api_key_raw = os.getenv("GOOGLE_API_KEY")
+            google_cx_raw = os.getenv("GOOGLE_CX")
+            if google_api_key_raw and google_cx_raw:
+                # 🔒 P1 环境变量验证: 验证Google API密钥和CX
+                try:
+                    google_api_key = validate_api_key(google_api_key_raw, "GOOGLE_API_KEY")
+                    # CX需要特殊验证（通常较短）
+                    if len(google_cx_raw.strip()) < 5:
+                        raise ValueError("GOOGLE_CX is too short")
+                    google_cx = google_cx_raw.strip()
+
+                    from search_strategist import SearchHunter
+                    self.google_hunter = SearchHunter(search_engine="google", llm_client=None)
+                    self.google_search_enabled = True
+                    print(f"    [✅] Google 搜索已启用")
+                except ValueError as e:
+                    logger.warning(f"Google API credentials validation failed: {str(e)}")
+                    print(f"    [⚠️] Google API凭证验证失败，跳过Google搜索: {str(e)}")
             else:
                 print(f"    [ℹ️] Google 搜索未配置（需要 GOOGLE_API_KEY 和 GOOGLE_CX）")
         except Exception as e:
@@ -1033,8 +1127,12 @@ class SearchEngineV2:
         Returns:
             搜索结果列表
         """
-        # 检查是否启用多级缓存
-        enable_multi_cache = os.getenv("ENABLE_MULTI_CACHE", "false").lower() == "true"
+        # 🔒 P1 环境变量验证: 检查是否启用多级缓存
+        enable_multi_cache = validate_env_bool(
+            os.getenv("ENABLE_MULTI_CACHE"),
+            "ENABLE_MULTI_CACHE",
+            default=False
+        )
 
         if enable_multi_cache:
             # 使用多级缓存系统（带查询规范化）
@@ -1163,6 +1261,18 @@ class SearchEngineV2:
 
                 task_elapsed = time.time() - task_start
                 print(f"    [✅ {task_name}] 完成 ({task_elapsed:.2f}秒, {len(task_results)}个结果)")
+
+                # ========== 🔍 记录搜索执行到透明度收集器（P0-1） ==========
+                self.transparency_collector.record_search_execution(
+                    query=task_query,
+                    engine=engine_name,
+                    result_count=len(task_results),
+                    duration_ms=task_elapsed * 1000,  # 转换为毫秒
+                    reasoning=f"任务{task_name}，搜索{task_query}"
+                )
+                logger.debug(f"[🔍 透明度] 已记录搜索执行: {engine_name} - {len(task_results)}个结果")
+                # ========== 搜索执行记录结束 ==========
+
                 return (task_name, task_results)
             except Exception as e:
                 print(f"    [❌ {task_name}] 失败: {str(e)}")
@@ -1249,8 +1359,11 @@ class SearchEngineV2:
         if request.semester:
             default_query += f" semester {request.semester}"
 
-        logger.info(f"[🔄 规则生成] 生成默认搜索词: \"{default_query}\"")
-        return default_query
+        # 🔒 P1 SSRF防护: 清理搜索查询，移除危险运算符
+        sanitized_query = sanitize_search_query(default_query)
+
+        logger.info(f"[🔄 规则生成] 生成默认搜索词: \"{sanitized_query}\"")
+        return sanitized_query
 
     def incremental_search(self, request: SearchRequest) -> SearchResponse:
         """
@@ -1333,7 +1446,7 @@ class SearchEngineV2:
             # 高质量：直接返回
             print(f"    [✅ 高质量] 直接返回前20个结果")
             logger.info(f"[✅ 高质量] 直接返回前20个结果")
-            return self._build_response(best_query, scored_results[:20], search_start_time, request)
+            return self._build_response(best_query, scored_results[:DEFAULT_MAX_RESULTS], search_start_time, request)
 
         elif avg_score >= 5.0:
             # 中等质量：补充搜索
@@ -1352,10 +1465,10 @@ class SearchEngineV2:
                 all_results = self._merge_and_deduplicate(
                     scored_results, supplementary_results, best_query, request
                 )
-                return self._build_response(best_query, all_results[:20], search_start_time, request)
+                return self._build_response(best_query, all_results[:DEFAULT_MAX_RESULTS], search_start_time, request)
             else:
                 print(f"    [⚠️ 补充搜索无结果]，返回初始结果")
-                return self._build_response(best_query, scored_results[:20], search_start_time, request)
+                return self._build_response(best_query, scored_results[:DEFAULT_MAX_RESULTS], search_start_time, request)
 
         else:
             # 低质量：查询重试
@@ -1394,7 +1507,7 @@ class SearchEngineV2:
                         if retry_avg >= 5.0:
                             print(f"    [✅ 重试成功] 返回重试结果")
                             logger.info(f"[✅ 重试成功] 返回重试结果")
-                            return self._build_response(alt_query, retry_scored[:20], search_start_time, request)
+                            return self._build_response(alt_query, retry_scored[:DEFAULT_MAX_RESULTS], search_start_time, request)
 
                 except Exception as e:
                     logger.warning(f"[⚠️ 重试 {attempt} 失败]: {str(e)}")
@@ -1403,7 +1516,7 @@ class SearchEngineV2:
             # 所有重试都失败，返回初始结果
             print(f"    [⚠️ 所有重试失败]，返回初始最佳结果")
             logger.warning(f"[⚠️ 所有重试失败]，返回初始最佳结果")
-            return self._build_response(best_query, scored_results[:20], search_start_time, request)
+            return self._build_response(best_query, scored_results[:DEFAULT_MAX_RESULTS], search_start_time, request)
 
     def _perform_initial_search(self, query: str, country_code: str) -> List[Dict]:
         """执行初始搜索（使用Tavily/Metaso）"""
@@ -1417,9 +1530,15 @@ class SearchEngineV2:
             # 转换为SearchResult格式
             search_results = []
             for r in results:
+                url = r.get('url', '')
+                # 🔒 P1 SSRF防护: 验证URL安全性
+                if not is_safe_url(url):
+                    logger.warning(f"Blocked unsafe URL from initial search: {url}")
+                    continue  # 跳过不安全的URL
+
                 search_results.append(SearchResult(
                     title=r.get('title', ''),
-                    url=r.get('url', ''),
+                    url=url,
                     snippet=r.get('content', r.get('snippet', '')),
                     source='规则',
                     search_engine=r.get('engine', 'Tavily/Metaso'),
@@ -1447,9 +1566,15 @@ class SearchEngineV2:
             # 转换为SearchResult格式
             search_results = []
             for r in results:
+                url = r.get('url', '')
+                # 🔒 P1 SSRF防护: 验证URL安全性
+                if not is_safe_url(url):
+                    logger.warning(f"Blocked unsafe URL from supplementary search: {url}")
+                    continue  # 跳过不安全的URL
+
                 search_results.append(SearchResult(
                     title=r.get('title', ''),
-                    url=r.get('url', ''),
+                    url=url,
                     snippet=r.get('snippet', ''),
                     source='规则',
                     search_engine='Google',
@@ -1509,7 +1634,7 @@ class SearchEngineV2:
                         alt_query,
                         metadata={'country': request.country, 'grade': request.grade, 'subject': request.subject}
                     )
-                    return self._build_response(alt_query, scored[:20], time.time(), request)
+                    return self._build_response(alt_query, scored[:DEFAULT_MAX_RESULTS], time.time(), request)
 
             except Exception as e:
                 logger.warning(f"[⚠️ 空结果重试 {attempt} 失败]: {str(e)}")
@@ -1549,8 +1674,24 @@ class SearchEngineV2:
         )
 
     def _ensure_result_scorer(self, country_code: str):
-        """确保已初始化带知识库的评分器"""
-        if country_code not in self._scorer_cache:
+        """
+        确保已初始化带知识库的评分器（线程安全）
+
+        Args:
+            country_code: 国家代码
+        """
+        # 🔒 P1线程安全: 首先检查无锁情况（快速路径）
+        if country_code in self._scorer_cache:
+            self.result_scorer = self._scorer_cache[country_code]
+            return
+
+        # 🔒 P1线程安全: 使用锁防止竞态条件
+        with self._scorer_cache_lock:
+            # 双重检查：可能在等待锁时其他线程已经初始化
+            if country_code in self._scorer_cache:
+                self.result_scorer = self._scorer_cache[country_code]
+                return
+
             try:
                 from core.result_scorer import get_result_scorer_with_kb
                 scorer = get_result_scorer_with_kb(country_code)
@@ -1560,7 +1701,168 @@ class SearchEngineV2:
                 logger.warning(f"[⚠️ 评分器] 无法加载知识库评分器: {e}")
                 self._scorer_cache[country_code] = self.result_scorer_without_kb
 
-        self.result_scorer = self._scorer_cache.get(country_code, self.result_scorer_without_kb)
+            self.result_scorer = self._scorer_cache.get(country_code, self.result_scorer_without_kb)
+
+    def _validate_grade_subject_pair(self, request: SearchRequest) -> None:
+        """
+        验证年级-学科配对是否合法
+
+        Args:
+            request: 搜索请求
+        """
+        print(f"[验证] 检查年级-学科配对...")
+        try:
+            validator = GradeSubjectValidator()
+            validation_result = validator.validate(
+                request.country,
+                request.grade,
+                request.subject
+            )
+
+            if not validation_result["valid"]:
+                # 配对不合法，显示警告但仍允许搜索
+                warning_msg = f"⚠️ {validation_result['reason']}"
+                print(f"    {warning_msg}")
+                if validation_result.get("suggestions"):
+                    print(f"    💡 建议: {', '.join(validation_result['suggestions'][:5])}")
+                logger.warning(f"年级-学科配对验证失败: {request.country} {request.grade} {request.subject}")
+            else:
+                print(f"    ✅ 年级-学科配对验证通过")
+                logger.info(f"   ✅ 配对验证通过")
+        except Exception as e:
+            print(f"    ⚠️ 验证失败，继续搜索: {str(e)}")
+            logger.warning(f"配对验证异常: {str(e)}")
+
+    def _initialize_transparency_collector(self) -> None:
+        """初始化搜索透明度收集器"""
+        self.transparency_collector.reset()
+        self.transparency_collector.start_search()
+        logger.debug("[🔍 透明度] 收集器已重置并开始记录")
+
+    def _initialize_intelligent_scorer(self, country_code: str) -> None:
+        """
+        初始化带知识库的智能评分器（线程安全）
+
+        Args:
+            country_code: 国家代码
+        """
+        # 🔒 P1线程安全: 首先检查无锁情况（快速路径）
+        if country_code in self._scorer_cache:
+            self.result_scorer = self._scorer_cache[country_code]
+            # 更新 log_collector（可能是新的搜索请求）
+            if self.log_collector:
+                self.result_scorer.log_collector = self.log_collector
+            logger.debug(f"[📚 知识库] 使用缓存的 {country_code} 评分器")
+            return
+
+        # 🔒 P1线程安全: 使用锁防止竞态条件
+        with self._scorer_cache_lock:
+            # 双重检查：可能在等待锁时其他线程已经初始化
+            if country_code in self._scorer_cache:
+                self.result_scorer = self._scorer_cache[country_code]
+                # 更新 log_collector（可能是新的搜索请求）
+                if self.log_collector:
+                    self.result_scorer.log_collector = self.log_collector
+                logger.debug(f"[📚 知识库] 使用缓存的 {country_code} 评分器")
+                return
+
+            try:
+                from core.result_scorer import IntelligentResultScorer
+
+                # 创建带知识库的评分器（传递 log_collector）
+                self.result_scorer = IntelligentResultScorer(
+                    country_code=country_code,
+                    log_collector=self.log_collector
+                )
+                self._scorer_cache[country_code] = self.result_scorer
+                logger.info(f"[📚 知识库] 已加载 {country_code} 评分器（带知识库和日志记录）")
+                print(f"    [✅ 知识库] 已加载 {country_code} 搜索知识库")
+
+            except Exception as e:
+                # 如果知识库加载失败，使用不带知识库的评分器
+                logger.warning(f"[📚 知识库] 加载失败，使用备用评分器: {str(e)}")
+                self.result_scorer = self.result_scorer_without_kb
+                self._scorer_cache[country_code] = self.result_scorer_without_kb
+
+            # 也更新 log_collector
+            if self.log_collector:
+                self.result_scorer.log_collector = self.log_collector
+
+    def get_playlist_info_fast(self, url: str) -> Optional[Dict[str, Any]]:
+        """
+        快速获取播放列表信息（带缓存）- P1性能优化
+
+        Args:
+            url: 播放列表URL
+
+        Returns:
+            包含video_count和total_duration_minutes的字典，或None
+        """
+        if not url or 'list=' not in url:
+            return None
+
+        # 🔒 P1 SSRF防护: 验证URL安全性
+        if not is_safe_url(url):
+            logger.warning(f"Blocked unsafe URL in playlist info extraction: {url}")
+            return None
+
+        # 🚀 P1性能优化: 检查缓存
+        if url in self._playlist_cache:
+            logger.debug(f"Playlist info cache hit for: {url[:50]}...")
+            return self._playlist_cache[url]
+
+        try:
+            import yt_dlp
+
+            ydl_opts = {
+                'quiet': True,
+                'no_warnings': True,
+                'extract_flat': True,  # 快速提取
+                'http_headers': {
+                    'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X)',
+                },
+                'extractor_args': {
+                    'youtube': {
+                        'player_client': ['ios'],
+                    }
+                },
+            }
+
+            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                info = ydl.extract_info(url, download=False)
+
+            if not info:
+                return None
+
+            entries = info.get('entries', [])
+            if not entries:
+                return None
+
+            video_count = len(entries)
+
+            # 计算总时长（分钟）
+            total_duration_seconds = 0
+            for entry in entries:
+                duration = entry.get('duration', 0)
+                if duration:
+                    total_duration_seconds += duration
+
+            total_duration_minutes = total_duration_seconds / 60 if total_duration_seconds > 0 else 0
+
+            result = {
+                'video_count': video_count,
+                'total_duration_minutes': total_duration_minutes
+            }
+
+            # 🚀 P1性能优化: 存入缓存
+            self._playlist_cache[url] = result
+            logger.info(f"Cached playlist info: {video_count} videos, {total_duration_minutes:.1f} minutes")
+
+            return result
+
+        except Exception as e:
+            logger.warning(f"获取播放列表信息失败: {str(e)[:100]}")
+            return None
 
     def search(self, request: SearchRequest) -> SearchResponse:
         """
@@ -1591,63 +1893,18 @@ class SearchEngineV2:
         print(f"学科: {request.subject}")
         print(f"{'='*80}\n")
 
-        # ========== 年级-学科配对验证 ==========
+        # ========== 初始化步骤 ==========
+        # 年级-学科配对验证
         logger.info(f"[步骤 0] 年级-学科配对验证...")
-        print(f"[验证] 检查年级-学科配对...")
-        try:
-            validator = GradeSubjectValidator()
-            validation_result = validator.validate(
-                request.country,
-                request.grade,
-                request.subject
-            )
+        self._validate_grade_subject_pair(request)
 
-            if not validation_result["valid"]:
-                # 配对不合法，显示警告但仍允许搜索
-                warning_msg = f"⚠️ {validation_result['reason']}"
-                print(f"    {warning_msg}")
-                if validation_result.get("suggestions"):
-                    print(f"    💡 建议: {', '.join(validation_result['suggestions'][:5])}")
-                logger.warning(f"年级-学科配对验证失败: {request.country} {request.grade} {request.subject}")
-            else:
-                print(f"    ✅ 年级-学科配对验证通过")
-                logger.info(f"   ✅ 配对验证通过")
-        except Exception as e:
-            print(f"    ⚠️ 验证失败，继续搜索: {str(e)}")
-            logger.warning(f"配对验证异常: {str(e)}")
-        # ========== 验证结束 ==========
+        # 初始化透明度收集器
+        self._initialize_transparency_collector()
 
-        # ========== 📚 初始化带知识库的评分器 ==========
-        try:
-            from core.result_scorer import IntelligentResultScorer
-
-            # 检查缓存中是否已有该国家的评分器
-            country_code = request.country.upper()
-            if country_code not in self._scorer_cache:
-                # 创建带知识库的评分器（传递 log_collector）
-                self.result_scorer = IntelligentResultScorer(
-                    country_code=country_code,
-                    log_collector=self.log_collector
-                )
-                self._scorer_cache[country_code] = self.result_scorer
-                logger.info(f"[📚 知识库] 已加载 {country_code} 评分器（带知识库和日志记录）")
-                print(f"    [✅ 知识库] 已加载 {country_code} 搜索知识库")
-            else:
-                # 使用缓存的评分器（更新其 log_collector）
-                self.result_scorer = self._scorer_cache[country_code]
-                # 更新 log_collector（可能是新的搜索请求）
-                if self.log_collector:
-                    self.result_scorer.log_collector = self.log_collector
-                logger.debug(f"[📚 知识库] 使用缓存的 {country_code} 评分器")
-
-        except Exception as e:
-            # 如果知识库加载失败，使用不带知识库的评分器
-            logger.warning(f"[📚 知识库] 加载失败，使用备用评分器: {str(e)}")
-            self.result_scorer = self.result_scorer_without_kb
-            # 也更新备用评分器的 log_collector
-            if self.log_collector:
-                self.result_scorer.log_collector = self.log_collector
-        # ========== 评分器初始化结束 ==========
+        # 初始化智能评分器
+        country_code = request.country.upper()
+        self._initialize_intelligent_scorer(country_code)
+        # ========== 初始化步骤结束 ==========
 
         try:
             # Step 0: 获取搜索策略（已跳过LLM生成，直接使用默认策略）
@@ -1666,6 +1923,9 @@ class SearchEngineV2:
             default_query = f"{request.subject} {request.grade} playlist"
             if request.semester:
                 default_query += f" semester {request.semester}"
+
+            # 🔒 P1 SSRF防护: 清理搜索查询，移除危险运算符
+            default_query = sanitize_search_query(default_query)
 
             # 生成多个播放列表优先的搜索查询（7个高度差异化的变体）
             playlist_keywords_map = {
@@ -1704,7 +1964,19 @@ class SearchEngineV2:
             print(f"    [✅ 策略] 平台列表: {', '.join(strategy.platforms[:5])}")
             print(f"    [✅ 策略] 优先域名: {', '.join(strategy.priority_domains[:5])}")
             print(f"    [⚡ 优化] 跳过LLM生成，使用默认规则策略，提升响应速度")
-            
+
+            # ========== 🔍 记录搜索策略到透明度收集器（P0-1） ==========
+            self.transparency_collector.record_strategy({
+                "search_language": strategy.search_language,
+                "use_chinese_search_engine": strategy.use_chinese_search_engine,
+                "platforms": strategy.platforms,
+                "search_queries": strategy.search_queries,
+                "priority_domains": strategy.priority_domains,
+                "notes": strategy.notes
+            })
+            logger.debug(f"[🔍 透明度] 已记录搜索策略: {len(strategy.search_queries)} 个查询")
+            # ========== 策略记录结束 ==========
+
             # Step 1: 使用搜索策略中的搜索词
             print(f"\n[步骤 1] 使用搜索策略生成的高质量搜索词...")
 
@@ -1731,8 +2003,12 @@ class SearchEngineV2:
             print(f"\n[步骤 2] 执行混合搜索...")
 
             # ========== 并行搜索实现 (新版本) ==========
-            # 检查是否启用并行搜索（默认启用）
-            use_parallel_search = os.getenv("ENABLE_PARALLEL_SEARCH", "true").lower() == "true"
+            # 🔒 P1 环境变量验证: 检查是否启用并行搜索（默认启用）
+            use_parallel_search = validate_env_bool(
+                os.getenv("ENABLE_PARALLEL_SEARCH"),
+                "ENABLE_PARALLEL_SEARCH",
+                default=True
+            )
 
             if use_parallel_search:
                 print(f"    [⚡ 模式] 使用并行搜索")
@@ -1932,16 +2208,27 @@ class SearchEngineV2:
                         # [修复] 2026-01-20: 处理字典和SearchResult对象两种类型
                         if isinstance(item, dict):
                             # 如果是字典，使用.get()方法
+                            url = item.get('url', '')
+                            # 🔒 P1 SSRF防护: 验证URL安全性
+                            if not is_safe_url(url):
+                                logger.warning(f"Blocked unsafe URL from search A: {url}")
+                                continue  # 跳过不安全的URL
+
                             search_engine = item.get('search_engine', 'Tavily')
                             search_results_a.append(SearchResult(
                                 title=item.get('title', ''),
-                                url=item.get('url', ''),
+                                url=url,
                                 snippet=item.get('snippet', ''),
                                 source=item.get('source', 'Tavily'),
                                 search_engine=search_engine
                             ))
                         else:
                             # 如果是SearchResult对象，直接使用属性访问
+                            # 🔒 P1 SSRF防护: 验证URL安全性
+                            if not is_safe_url(item.url):
+                                logger.warning(f"Blocked unsafe URL from search A (SearchResult): {item.url}")
+                                continue  # 跳过不安全的URL
+
                             search_results_a.append(item)
                     print(f"    [✅ 搜索A-Tavily] 找到 {len(search_results_a)} 个结果")
                 except Exception as e:
@@ -2097,6 +2384,31 @@ class SearchEngineV2:
             search_results = unique_results
             print(f"    [📊 合并后] 去重: {duplicate_count} 个, 保留: {len(search_results)} 个")
             print(f"    [📊 统计] 通用: {len(search_results_a)}, 本地: {len(search_results_b)}, 最终: {len(search_results)}")
+
+            # ========== 🔍 记录去重过滤阶段到透明度收集器（P0-1） ==========
+            # 收集被过滤的样本（重复URL）
+            duplicate_samples = []
+            seen_urls_set = set()
+            for result in all_results:
+                if result.url in seen_urls_set:
+                    duplicate_samples.append({
+                        "title": result.title[:80],
+                        "url": result.url[:100],
+                        "reason": "URL重复"
+                    })
+                    if len(duplicate_samples) >= 3:  # 最多3个样本
+                        break
+                seen_urls_set.add(result.url)
+
+            self.transparency_collector.record_filtering_stage(
+                stage_name="去重",
+                input_count=len(all_results),
+                output_count=len(search_results),
+                filter_reason=f"移除 {duplicate_count} 个重复URL",
+                filtered_samples=duplicate_samples
+            )
+            logger.debug(f"[🔍 透明度] 已记录去重过滤: {len(all_results)} → {len(search_results)}")
+            # ========== 去重过滤记录结束 ==========
             
             # Step 3: 评估结果
             step3_start = time.time()
@@ -2116,60 +2428,7 @@ class SearchEngineV2:
             logger.info(f"[步骤 3.5] 智能评分开始... (内存: {self._get_memory_usage()})")
             print(f"\n[步骤 3.5] 智能评分...")
 
-            # 快速获取播放列表信息（用于评分）
-            def get_playlist_info_fast(url: str) -> Optional[Dict[str, Any]]:
-                """快速获取播放列表信息（视频数量和总时长）"""
-                if not url or 'list=' not in url:
-                    return None
-
-                try:
-                    import yt_dlp
-
-                    ydl_opts = {
-                        'quiet': True,
-                        'no_warnings': True,
-                        'extract_flat': True,  # 快速提取
-                        'http_headers': {
-                            'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X)',
-                        },
-                        'extractor_args': {
-                            'youtube': {
-                                'player_client': ['ios'],
-                            }
-                        },
-                    }
-
-                    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-                        info = ydl.extract_info(url, download=False)
-
-                    if not info:
-                        return None
-
-                    entries = info.get('entries', [])
-                    if not entries:
-                        return None
-
-                    video_count = len(entries)
-
-                    # 计算总时长（分钟）
-                    total_duration_seconds = 0
-                    for entry in entries:
-                        duration = entry.get('duration', 0)
-                        if duration:
-                            total_duration_seconds += duration
-
-                    total_duration_minutes = total_duration_seconds / 60 if total_duration_seconds > 0 else 0
-
-                    return {
-                        'video_count': video_count,
-                        'total_duration_minutes': total_duration_minutes
-                    }
-
-                except Exception as e:
-                    logger.warning(f"获取播放列表信息失败: {str(e)[:100]}")
-                    return None
-
-            # 🚀 并发获取播放列表信息（优化性能）
+            # 🚀 并发获取播放列表信息（优化性能，使用类方法带缓存）
             print(f"\n[步骤 3.5.1] 并发获取播放列表信息...")
 
             # 第一步：将SearchResult对象转换为字典，并识别播放列表
@@ -2206,9 +2465,9 @@ class SearchEngineV2:
                 fail_count = 0
 
                 with concurrent.futures.ThreadPoolExecutor(max_workers=MAX_PLAYLIST_WORKERS) as executor:
-                    # 提交所有任务
+                    # 提交所有任务（使用类方法带缓存）
                     future_to_result = {
-                        executor.submit(get_playlist_info_fast, r['url']): r
+                        executor.submit(self.get_playlist_info_fast, r['url']): r
                         for r in playlist_results
                     }
 
@@ -2250,11 +2509,21 @@ class SearchEngineV2:
             #
             # [修复] 2026-01-20: 启用视觉评估（默认true），但限制评估数量为TOP 5避免超时
 
-            # 读取环境变量控制是否启用（默认启用）
-            ENABLE_VISUAL_EVALUATION = os.getenv('ENABLE_VISUAL_EVALUATION', 'true').lower() == 'true'
+            # 🔒 P1 环境变量验证: 读取环境变量控制是否启用（默认启用）
+            ENABLE_VISUAL_EVALUATION = validate_env_bool(
+                os.getenv('ENABLE_VISUAL_EVALUATION'),
+                'ENABLE_VISUAL_EVALUATION',
+                default=True
+            )
 
-            # 读取环境变量控制LLM评分数量（默认TOP 10，避免超时）
-            LLM_SCORE_TOP_N = int(os.getenv('LLM_SCORE_TOP_N', '10'))
+            # 🔒 P1 环境变量验证: 读取环境变量控制LLM评分数量（默认TOP 10，避免超时）
+            LLM_SCORE_TOP_N = validate_env_int(
+                os.getenv('LLM_SCORE_TOP_N'),
+                'LLM_SCORE_TOP_N',
+                default=10,
+                min_val=1,
+                max_val=50
+            )
 
             if not ENABLE_VISUAL_EVALUATION:
                 print(f"\n[步骤 3.5] 视觉评估已禁用（使用快速LLM评分模式）")
@@ -2577,8 +2846,12 @@ class SearchEngineV2:
             optimization_request = None
 
             try:
-                # 检查是否启用智能优化（环境变量控制）
-                enable_intelligent_optimization = os.getenv("ENABLE_INTELLIGENT_OPTIMIZATION", "true").lower() == "true"
+                # 🔒 P1 环境变量验证: 检查是否启用智能优化（环境变量控制）
+                enable_intelligent_optimization = validate_env_bool(
+                    os.getenv("ENABLE_INTELLIGENT_OPTIMIZATION"),
+                    "ENABLE_INTELLIGENT_OPTIMIZATION",
+                    default=True
+                )
 
                 if enable_intelligent_optimization:
                     print(f"\n[🤖 智能优化] 开始质量评估...")
@@ -2626,6 +2899,34 @@ class SearchEngineV2:
                 logger.warning(f"智能优化失败: {str(opt_error)}", exc_info=True)
             # ========== 智能优化循环结束 ==========
 
+            # ========== 🔍 记录评分分布和过滤到透明度收集器（P0-1） ==========
+            # 记录评分分布
+            scores = [r.score for r in evaluated_results if hasattr(r, 'score')]
+            self.transparency_collector.record_score_distribution(scores)
+            
+            # 记录阈值过滤（如果有）
+            if MIN_SCORE_THRESHOLD:
+                above_threshold = [r for r in evaluated_results if hasattr(r, 'score') and r.score >= MIN_SCORE_THRESHOLD]
+                below_threshold = [r for r in evaluated_results if hasattr(r, 'score') and r.score < MIN_SCORE_THRESHOLD]
+                
+                # 收集被过滤的低分样本
+                filtered_low_score_samples = [{
+                    "title": r.title[:80] if hasattr(r, 'title') else '',
+                    "url": r.url[:100] if hasattr(r, 'url') else '',
+                    "score": r.score if hasattr(r, 'score') else 0,
+                    "reason": f"评分 {r.score:.1f} < {MIN_SCORE_THRESHOLD}"
+                } for r in below_threshold[:5]]  # 最多5个样本
+                
+                self.transparency_collector.record_filtering_stage(
+                    stage_name="评分阈值过滤",
+                    input_count=len(evaluated_results),
+                    output_count=len(above_threshold),
+                    filter_reason=f"评分低于 {MIN_SCORE_THRESHOLD} 分",
+                    filtered_samples=filtered_low_score_samples
+                )
+                logger.debug(f"[🔍 透明度] 已记录评分阈值过滤: {len(evaluated_results)} → {len(above_threshold)}")
+            # ========== 评分分布和过滤记录结束 ==========
+
             # 🔍 详细日志：搜索完成
             total_elapsed = time.time() - search_start_time
             logger.info("="*80)
@@ -2638,6 +2939,15 @@ class SearchEngineV2:
                 logger.info(f"   质量分数: {quality_report['overall_quality_score']:.1f}/100")
             logger.info("="*80)
 
+            # ========== 🔍 附加透明度元数据到响应（P0-1） ==========
+            transparency_metadata = self.transparency_collector.get_transparency_metadata()
+            logger.debug(f"[🔍 透明度] 准备返回透明度元数据: {len(transparency_metadata.get('search_executions', []))} 次搜索, "
+                       f"{transparency_metadata.get('total_raw_results', 0)} 个原始结果")
+            
+            # 可选：打印透明度摘要（调试用）
+            # self.transparency_collector.print_summary()
+            # ========== 透明度元数据附加结束 ==========
+
             return SearchResponse(
                 success=True,
                 query=query,
@@ -2647,13 +2957,16 @@ class SearchEngineV2:
                 video_count=video_count,
                 message="搜索成功",
                 quality_report=quality_report,
-                optimization_request=optimization_request
+                optimization_request=optimization_request,
+                transparency=transparency_metadata  # 🔍 新增透明度字段
             )
-            
+
         except Exception as e:
-            print(f"\n[❌ 错误] 搜索失败: {str(e)}")
-            import traceback
-            traceback.print_exc()
+            # 🔒 P1 安全修复: 不暴露详细的异常信息和堆栈跟踪
+            logger.error(f"Search failed for {request.country}/{request.grade}/{request.subject}: {type(e).__name__}")
+            print(f"\n[❌ 错误] 搜索失败，请稍后重试")
+            print(f"    [💡 提示] 如果问题持续存在，请联系管理员并提供以下信息:")
+            print(f"           国家: {request.country}, 年级: {request.grade}, 学科: {request.subject}")
 
             # 性能监控 - 记录失败的搜索
             search_duration = time.time() - search_start_time
@@ -2682,10 +2995,10 @@ class SearchEngineV2:
             logger.error("="*80)
             logger.error(f"❌ [搜索失败] {request.country} - {request.grade} - {request.subject}")
             logger.error(f"   错误类型: {type(e).__name__}")
-            logger.error(f"   错误信息: {str(e)[:200]}")
+            # 🔒 P1 安全修复: 只记录简短的错误信息，不记录堆栈跟踪
+            error_msg = str(e)[:200] if str(e) else "No error message"
+            logger.error(f"   错误信息: {error_msg}")
             logger.error(f"   耗时: {total_elapsed:.2f}秒")
             logger.error(f"   内存使用: {self._get_memory_usage()}")
             logger.error(f"   时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
             logger.error("="*80)
-            import traceback
-            logger.error(f"堆栈信息:\n{traceback.format_exc()}")
