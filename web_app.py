@@ -25,15 +25,7 @@ logger = get_logger('web_app')
 # ============================================================================
 # Request ID 上下文变量（用于关联日志）
 # ============================================================================
-request_id_var: contextvars.ContextVar[str] = contextvars.ContextVar('request_id', default='')
-
-def get_request_id() -> str:
-    """获取当前请求的 request_id"""
-    return request_id_var.get('')
-
-def set_request_id(request_id: str):
-    """设置当前请求的 request_id"""
-    request_id_var.set(request_id)
+from utils.request_context import get_request_id, set_request_id
 
 # 保存原始 print 函数
 import builtins
