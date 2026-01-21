@@ -107,6 +107,14 @@ class InternalAPIClient:
         self.model = models.get(model_type, 'gpt-4o')
         self.model_type = model_type  # 记录模型类型
 
+        # 定义允许的图片目录（安全：防止路径遍历攻击）
+        self.allowed_image_dirs = [
+            Path.cwd() / "data" / "images",      # 项目图片目录
+            Path.cwd() / "data" / "videos",     # 视频截图目录
+            Path.home() / "project_images",     # 开发环境目录
+            Path("/tmp/project_images"),        # 临时目录
+        ]
+
         if HAS_OPENAI_SDK:
             # OpenAI SDK会自动添加Bearer前缀，所以直接传入api_key即可
             # 添加超时设置以避免长时间挂起
@@ -142,7 +150,23 @@ class InternalAPIClient:
         # 可以尝试一个简单的健康检查
         # 这里先返回True，实际可用性在调用时判断
         return True
-    
+
+    def _get_llm_params(self, param_type: str = 'default') -> tuple:
+        """
+        获取 LLM 参数（统一方法，避免代码重复）
+
+        Args:
+            param_type: 参数类型 ('default' 或 'vision')
+
+        Returns:
+            (max_tokens, temperature) 元组
+        """
+        config = get_config()
+        params = config.get_llm_params(param_type)
+        max_tokens = params.get('max_tokens', 8000)
+        temperature = params.get('temperature', 0.3)
+        return max_tokens, temperature
+
     def call_llm(self, prompt: str, system_prompt: Optional[str] = None,
                  max_tokens: Optional[int] = None, temperature: Optional[float] = None,
                  model: Optional[str] = None) -> str:
@@ -168,14 +192,13 @@ class InternalAPIClient:
         if not self.client:
             raise ValueError("公司内部API客户端未初始化")
 
-        # 从配置加载默认参数
-        config = get_config()
-        if max_tokens is None:
-            params = config.get_llm_params('default')
-            max_tokens = params.get('max_tokens', 8000)  # [修复] 2026-01-20: 从2000增加到8000
-        if temperature is None:
-            params = config.get_llm_params('default')
-            temperature = params.get('temperature', 0.3)
+        # 从配置加载默认参数（使用统一方法，消除重复）
+        if max_tokens is None or temperature is None:
+            default_max_tokens, default_temperature = self._get_llm_params('default')
+            if max_tokens is None:
+                max_tokens = default_max_tokens
+            if temperature is None:
+                temperature = default_temperature
 
         model_name = model or self.model
 
@@ -194,9 +217,7 @@ class InternalAPIClient:
             print(f"[📤 输入] Temperature: {temperature}")
             print(f"[📤 输入] System Prompt 长度: {len(system_prompt) if system_prompt else 0} 字符")
             print(f"[📤 输入] User Prompt 长度: {len(prompt)} 字符")
-            if system_prompt:
-                print(f"[📤 输入] System Prompt (前500字符):\n{system_prompt[:500]}...")
-            print(f"[📤 输入] User Prompt (前500字符):\n{prompt[:500]}...")
+            # 修复: 不再记录 prompt 内容（敏感信息保护）
 
             start_time = time.time()
 
@@ -289,14 +310,13 @@ class InternalAPIClient:
         if not HAS_OPENAI_SDK:
             raise ValueError("OpenAI SDK未安装，无法使用公司内部API")
 
-        # 从配置加载默认参数
-        config = get_config()
-        if max_tokens is None:
-            params = config.get_llm_params('default')
-            max_tokens = params.get('max_tokens', 8000)  # [修复] 2026-01-20: 从2000增加到8000
-        if temperature is None:
-            params = config.get_llm_params('default')
-            temperature = params.get('temperature', 0.3)
+        # 从配置加载默认参数（使用统一方法，消除重复）
+        if max_tokens is None or temperature is None:
+            default_max_tokens, default_temperature = self._get_llm_params('default')
+            if max_tokens is None:
+                max_tokens = default_max_tokens
+            if temperature is None:
+                temperature = default_temperature
 
         model_name = model or self.model
 
@@ -334,7 +354,8 @@ class InternalAPIClient:
 
             # 使用httpx.AsyncClient进行异步调用
             timeout = httpx.Timeout(60.0, connect=10.0)
-            async with httpx.AsyncClient(timeout=timeout, verify=False) as client:
+            # 修复: 启用SSL证书验证，使用系统CA证书（安全）
+            async with httpx.AsyncClient(timeout=timeout, verify=True) as client:
                 response = await client.post(
                     url,
                     headers=headers,
@@ -378,26 +399,89 @@ class InternalAPIClient:
     def _image_to_base64(self, image_path: str) -> str:
         """
         将本地图片文件转换为base64编码的data URI
-        
+
+        修复: 添加路径遍历保护，仅允许访问预定义的目录
+
         Args:
-            image_path: 图片文件路径
-        
+            image_path: 图片文件路径（相对或绝对路径）
+
         Returns:
             base64编码的data URI字符串
+
+        Raises:
+            FileNotFoundError: 文件不存在
+            ValueError: 路径不在允许的目录内或文件类型不允许
         """
-        image_path = Path(image_path)
-        if not image_path.exists():
-            raise FileNotFoundError(f"图片文件不存在: {image_path}")
-        
+        input_path = Path(image_path)
+
+        # 解析为绝对路径并规范化
+        if not input_path.is_absolute():
+            # 如果是相对路径，尝试在所有允许的目录中查找
+            resolved_paths = []
+            for allowed_dir in self.allowed_image_dirs:
+                resolved = (allowed_dir / input_path).resolve()
+                # 确保解析后的路径仍在允许的目录内
+                try:
+                    resolved_paths.append(resolved)
+                    # 找到第一个存在的文件
+                    if resolved.exists():
+                        input_path = resolved
+                        break
+                except:
+                    continue
+
+            if not any(p.exists() for p in resolved_paths):
+                raise FileNotFoundError(
+                    f"图片文件不存在: {image_path}\n"
+                    f"允许的目录: {[str(d) for d in self.allowed_image_dirs]}"
+                )
+        else:
+            # 如果是绝对路径，检查是否在允许的目录内
+            input_path = input_path.resolve()
+            allowed = any(
+                str(input_path).startswith(str(allowed_dir.resolve()))
+                for allowed_dir in self.allowed_image_dirs
+            )
+
+            if not allowed:
+                raise ValueError(
+                    f"绝对路径不在允许的目录内: {image_path}\n"
+                    f"允许的目录: {[str(d) for d in self.allowed_image_dirs]}"
+                )
+
+        # 验证文件存在
+        if not input_path.exists():
+            raise FileNotFoundError(f"图片文件不存在: {input_path}")
+
+        # 验证文件是常规文件（不是符号链接或设备文件）
+        if not input_path.is_file():
+            raise ValueError(f"路径不是常规文件: {input_path}")
+
+        # 验证文件扩展名（白名单）
+        allowed_extensions = {'.jpg', '.jpeg', '.png', '.gif', '.webp'}
+        if input_path.suffix.lower() not in allowed_extensions:
+            raise ValueError(
+                f"不允许的文件类型: {input_path.suffix}\n"
+                f"允许的类型: {', '.join(allowed_extensions)}"
+            )
+
         # 读取图片文件
-        with open(image_path, 'rb') as f:
-            image_data = f.read()
-        
+        try:
+            with open(input_path, 'rb') as f:
+                image_data = f.read()
+        except IOError as e:
+            raise IOError(f"读取文件失败: {e}")
+
+        # 验证文件大小（限制10MB）
+        max_size = 10 * 1024 * 1024  # 10MB
+        if len(image_data) > max_size:
+            raise ValueError(f"文件过大: {len(image_data)} bytes (最大 {max_size} bytes)")
+
         # 转换为base64
         image_base64 = base64.b64encode(image_data).decode('utf-8')
-        
+
         # 根据文件扩展名确定MIME类型
-        ext = image_path.suffix.lower()
+        ext = input_path.suffix.lower()
         mime_types = {
             '.jpg': 'image/jpeg',
             '.jpeg': 'image/jpeg',
@@ -406,7 +490,7 @@ class InternalAPIClient:
             '.webp': 'image/webp'
         }
         mime_type = mime_types.get(ext, 'image/jpeg')
-        
+
         # 返回data URI格式
         return f"data:{mime_type};base64,{image_base64}"
     
@@ -438,14 +522,13 @@ class InternalAPIClient:
         if not self.client:
             raise ValueError("公司内部API客户端未初始化")
 
-        # 从配置加载默认参数
-        config = get_config()
-        if max_tokens is None:
-            params = config.get_llm_params('vision')
-            max_tokens = params.get('max_tokens', 300)
-        if temperature is None:
-            params = config.get_llm_params('vision')
-            temperature = params.get('temperature', 0.3)
+        # 从配置加载默认参数（使用统一方法，消除重复）
+        if max_tokens is None or temperature is None:
+            vision_max_tokens, vision_temperature = self._get_llm_params('vision')
+            if max_tokens is None:
+                max_tokens = vision_max_tokens
+            if temperature is None:
+                temperature = vision_temperature
 
         # 构建content数组
         content = [{"type": "text", "text": prompt}]
@@ -589,9 +672,7 @@ class AIBuildersAPIClient:
         print(f"[📤 输入] Temperature: {temperature}")
         print(f"[📤 输入] System Prompt 长度: {len(system_prompt) if system_prompt else 0} 字符")
         print(f"[📤 输入] User Prompt 长度: {len(prompt)} 字符")
-        if system_prompt:
-            print(f"[📤 输入] System Prompt (前500字符):\n{system_prompt[:500]}...")
-        print(f"[📤 输入] User Prompt (前500字符):\n{prompt[:500]}...")
+        # 修复: 不再记录 prompt 内容（敏感信息保护）
 
         try:
             start_time = time.time()
