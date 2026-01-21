@@ -209,14 +209,14 @@ class InternalAPIClient:
 
         try:
             print(f"\n{'='*80}")
-            print(f"[🏢 公司内部API] 开始调用 {model_name}")
+            logger.info(f"公司内部API 开始调用 {model_name}")
             print(f"{'='*80}")
-            print(f"[📤 输入] Base URL: {self.base_url}")
-            print(f"[📤 输入] Model: {model_name}")
-            print(f"[📤 输入] Max Tokens: {max_tokens}")
-            print(f"[📤 输入] Temperature: {temperature}")
-            print(f"[📤 输入] System Prompt 长度: {len(system_prompt) if system_prompt else 0} 字符")
-            print(f"[📤 输入] User Prompt 长度: {len(prompt)} 字符")
+            logger.debug(f" Base URL: {self.base_url}")
+            logger.debug(f" Model: {model_name}")
+            logger.debug(f" Max Tokens: {max_tokens}")
+            logger.debug(f" Temperature: {temperature}")
+            logger.debug(f" System Prompt 长度: {len(system_prompt) if system_prompt else 0} 字符")
+            logger.debug(f" User Prompt 长度: {len(prompt)} 字符")
             # 修复: 不再记录 prompt 内容（敏感信息保护）
 
             start_time = time.time()
@@ -239,7 +239,7 @@ class InternalAPIClient:
                 try:
                     completion = future.result(timeout=60)  # 60秒超时
                 except concurrent.futures.TimeoutError:
-                    print(f"[❌ 错误] API调用超时（60秒），取消请求...")
+                    logger.error(f" API调用超时（60秒），取消请求...")
                     future.cancel()
                     raise TimeoutError("公司内部API调用超时（60秒）")
 
@@ -250,8 +250,8 @@ class InternalAPIClient:
             if completion.choices and len(completion.choices) > 0:
                 content = completion.choices[0].message.content
                 if content and content.strip():
-                    print(f"[📥 响应] Content 长度: {len(content)} 字符")
-                    print(f"[📥 响应] Content (前1000字符):\n{content[:1000]}...")
+                    logger.debug(f" Content 长度: {len(content)} 字符")
+                    logger.debug(f" Content (前1000字符):\n{content[:1000]}...")
                     print(f"{'='*80}\n")
                     return content.strip()
                 else:
@@ -261,26 +261,16 @@ class InternalAPIClient:
 
         except TimeoutError as e:
             error_msg = str(e)
-            print(f"[❌ 错误] 公司内部API调用超时: {error_msg}")
-            print(f"[❌ 错误] 建议: 检查网络连接或减小请求体大小")
+            logger.error(f"公司内部API调用超时: {error_msg}，建议: 检查网络连接或减小请求体大小")
             # 超时错误不应该立即失败，应该允许降级到备用API
             raise TimeoutError(f"公司内部API调用超时: {error_msg}")
 
         except Exception as e:
             error_msg = str(e)
-            print(f"[❌ 错误] 公司内部API调用失败: {error_msg}")
-            print(f"[❌ 错误] 异常类型: {type(e).__name__}")
-
             # 检查是否是405错误（WAF拦截）
             if '405' in error_msg or 'blocked' in error_msg.lower():
-                print(f"[⚠️ 警告] 请求被WAF拦截，可能原因:")
-                print(f"  - 请求体过大 ({len(prompt)} 字符)")
-                print(f"  - User-Agent或请求头问题")
-                print(f"  - 触发了安全规则")
-                print(f"[💡 建议] 尝试减小请求体或联系API管理员")
-
-            import traceback
-            print(f"[❌ 错误] 异常堆栈:\n{traceback.format_exc()}")
+                logger.warning(f"请求被WAF拦截: {error_msg}，可能原因: 请求体过大({len(prompt)}字符)、User-Agent或请求头问题、触发了安全规则")
+            logger.error(f"公司内部API调用失败: {error_msg}，异常类型: {type(e).__name__}\n{traceback.format_exc()}")
             raise ValueError(f"公司内部API调用失败: {error_msg}")
 
     async def call_llm_async(self, prompt: str, system_prompt: Optional[str] = None,
@@ -341,14 +331,14 @@ class InternalAPIClient:
 
         try:
             print(f"\n{'='*80}")
-            print(f"[🏢 公司内部API] 开始异步调用 {model_name}")
+            logger.info(f"公司内部API 开始异步调用 {model_name}")
             print(f"[⚡ 异步模式] 使用 httpx.AsyncClient")
             print(f"{'='*80}")
-            print(f"[📤 输入] URL: {url}")
-            print(f"[📤 输入] Model: {model_name}")
-            print(f"[📤 输入] Max Tokens: {max_tokens}")
-            print(f"[📤 输入] Temperature: {temperature}")
-            print(f"[📤 输入] User Prompt 长度: {len(prompt)} 字符")
+            logger.debug(f" URL: {url}")
+            logger.debug(f" Model: {model_name}")
+            logger.debug(f" Max Tokens: {max_tokens}")
+            logger.debug(f" Temperature: {temperature}")
+            logger.debug(f" User Prompt 长度: {len(prompt)} 字符")
 
             start_time = time.time()
 
@@ -371,7 +361,7 @@ class InternalAPIClient:
                 if 'choices' in result and len(result['choices']) > 0:
                     content = result['choices'][0]['message']['content']
                     if content and content.strip():
-                        print(f"[📥 响应] Content 长度: {len(content)} 字符")
+                        logger.debug(f" Content 长度: {len(content)} 字符")
                         print(f"{'='*80}\n")
                         return content.strip()
                     else:
@@ -381,19 +371,17 @@ class InternalAPIClient:
 
         except httpx.TimeoutException as e:
             error_msg = str(e)
-            print(f"[❌ 错误] 异步API调用超时: {error_msg}")
+            logger.error(f"异步API调用超时: {error_msg}")
             raise TimeoutError(f"公司内部API异步调用超时: {error_msg}")
 
         except httpx.HTTPStatusError as e:
             error_msg = str(e)
-            print(f"[❌ 错误] HTTP状态错误: {error_msg}")
-            print(f"[❌ 错误] 响应状态码: {e.response.status_code}")
+            logger.error(f"HTTP状态错误: {error_msg}，响应状态码: {e.response.status_code}")
             raise ValueError(f"公司内部API调用失败: {error_msg}")
 
         except Exception as e:
             error_msg = str(e)
-            print(f"[❌ 错误] 异步API调用失败: {error_msg}")
-            print(f"[❌ 错误] 异常类型: {type(e).__name__}")
+            logger.error(f"异步API调用失败: {error_msg}，异常类型: {type(e).__name__}")
             raise ValueError(f"公司内部API异步调用失败: {error_msg}")
 
     def _image_to_base64(self, image_path: str) -> str:
@@ -555,17 +543,17 @@ class InternalAPIClient:
 
         try:
             print(f"\n{'='*80}")
-            print(f"[🏢 公司内部API] 开始调用视觉模型 {self.model}")
+            logger.info(f"公司内部API 开始调用视觉模型 {self.model}")
             print(f"{'='*80}")
-            print(f"[📤 输入] Prompt 长度: {len(prompt)} 字符")
+            logger.debug(f" Prompt 长度: {len(prompt)} 字符")
             if image_url:
-                print(f"[📤 输入] Image URL: {image_url}")
+                logger.debug(f" Image URL: {image_url}")
             if image_paths:
-                print(f"[📤 输入] 图片数量: {len(image_paths)}")
+                logger.debug(f" 图片数量: {len(image_paths)}")
                 for i, path in enumerate(image_paths, 1):
-                    print(f"[📤 输入]   图片 {i}: {path}")
-            print(f"[📤 输入] Max Tokens: {max_tokens}")
-            print(f"[📤 输入] Temperature: {temperature}")
+                    logger.debug(f"   图片 {i}: {path}")
+            logger.debug(f" Max Tokens: {max_tokens}")
+            logger.debug(f" Temperature: {temperature}")
 
             start_time = time.time()
             response = self.client.chat.completions.create(
@@ -581,8 +569,8 @@ class InternalAPIClient:
             if response.choices and len(response.choices) > 0:
                 content_text = response.choices[0].message.content
                 if content_text and content_text.strip():
-                    print(f"[📥 响应] Content 长度: {len(content_text)} 字符")
-                    print(f"[📥 响应] Content (前1000字符):\n{content_text[:1000]}...")
+                    logger.debug(f" Content 长度: {len(content_text)} 字符")
+                    logger.debug(f" Content (前1000字符):\n{content_text[:1000]}...")
                     print(f"{'='*80}\n")
                     return content_text.strip()
                 else:
@@ -592,10 +580,10 @@ class InternalAPIClient:
 
         except Exception as e:
             error_msg = str(e)
-            print(f"[❌ 错误] 公司内部API视觉调用失败: {error_msg}")
-            print(f"[❌ 错误] 异常类型: {type(e).__name__}")
+            logger.error(f" 公司内部API视觉调用失败: {error_msg}")
+            logger.error(f" 异常类型: {type(e).__name__}")
             import traceback
-            print(f"[❌ 错误] 异常堆栈:\n{traceback.format_exc()}")
+            logger.error(f" 异常堆栈:\n{traceback.format_exc()}")
             raise ValueError(f"公司内部API视觉调用失败: {error_msg}")
 
 
@@ -664,14 +652,14 @@ class AIBuildersAPIClient:
         }
 
         print(f"\n{'='*80}")
-        print(f"[🌐 AI Builders API] 开始调用 {model}")
+        logger.info(f"AI Builders API 开始调用 {model}")
         print(f"{'='*80}")
-        print(f"[📤 输入] Endpoint: {endpoint}")
-        print(f"[📤 输入] Model: {model}")
-        print(f"[📤 输入] Max Tokens: {max_tokens}")
-        print(f"[📤 输入] Temperature: {temperature}")
-        print(f"[📤 输入] System Prompt 长度: {len(system_prompt) if system_prompt else 0} 字符")
-        print(f"[📤 输入] User Prompt 长度: {len(prompt)} 字符")
+        logger.debug(f" Endpoint: {endpoint}")
+        logger.debug(f" Model: {model}")
+        logger.debug(f" Max Tokens: {max_tokens}")
+        logger.debug(f" Temperature: {temperature}")
+        logger.debug(f" System Prompt 长度: {len(system_prompt) if system_prompt else 0} 字符")
+        logger.debug(f" User Prompt 长度: {len(prompt)} 字符")
         # 修复: 不再记录 prompt 内容（敏感信息保护）
 
         try:
@@ -687,7 +675,7 @@ class AIBuildersAPIClient:
             elapsed_time = time.time() - start_time
 
             print(f"\n[📥 响应] HTTP 状态码: {response.status_code}")
-            print(f"[📥 响应] 响应时间: {elapsed_time:.2f} 秒")
+            logger.debug(f" 响应时间: {elapsed_time:.2f} 秒")
 
             if response.status_code == 200:
                 result = response.json()
@@ -697,8 +685,8 @@ class AIBuildersAPIClient:
                     content = message.get("content", "")
 
                     if content and content.strip():
-                        print(f"[📥 响应] Content 长度: {len(content)} 字符")
-                        print(f"[📥 响应] Content (前1000字符):\n{content[:1000]}...")
+                        logger.debug(f" Content 长度: {len(content)} 字符")
+                        logger.debug(f" Content (前1000字符):\n{content[:1000]}...")
                         print(f"{'='*80}\n")
                         return content.strip()
                     else:
@@ -717,16 +705,16 @@ class AIBuildersAPIClient:
                     raise ValueError("API 响应格式异常，缺少 choices 字段")
             else:
                 error_text = response.text[:500] if hasattr(response, 'text') else 'N/A'
-                print(f"[❌ 错误] API 调用失败")
-                print(f"[❌ 错误] 状态码: {response.status_code}")
-                print(f"[❌ 错误] 错误响应: {error_text}")
+                logger.error(f" API 调用失败")
+                logger.error(f" 状态码: {response.status_code}")
+                logger.error(f" 错误响应: {error_text}")
                 raise ValueError(f"API 调用失败，状态码: {response.status_code}")
 
         except requests.exceptions.RequestException as e:
-            print(f"[❌ 错误] API 请求异常: {str(e)}")
-            print(f"[❌ 错误] 异常类型: {type(e).__name__}")
+            logger.error(f" API 请求异常: {str(e)}")
+            logger.error(f" 异常类型: {type(e).__name__}")
             import traceback
-            print(f"[❌ 错误] 异常堆栈:\n{traceback.format_exc()}")
+            logger.error(f" 异常堆栈:\n{traceback.format_exc()}")
             raise ValueError(f"API 请求异常: {str(e)}")
     
     def call_gemini(self, prompt: str, system_prompt: Optional[str] = None,
@@ -746,7 +734,7 @@ class AIBuildersAPIClient:
         Returns:
             模型返回的文本内容
         """
-        print(f"[⚠️ 注意] call_gemini 已废弃，自动切换到 deepseek 模型")
+        logger.warning(f" call_gemini 已废弃，自动切换到 deepseek 模型")
         return self.call_llm(prompt, system_prompt, max_tokens, temperature, "deepseek")
 
 
@@ -777,20 +765,20 @@ class UnifiedLLMClient:
                 base_url=internal_base_url
             )
             if self.internal_client.is_available():
-                print(f"[✅] 公司内部API客户端初始化成功 (Base URL: {self.internal_client.base_url})")
+                logger.info(f"] 公司内部API客户端初始化成功 (Base URL: {self.internal_client.base_url})")
             else:
-                print("[⚠️] 公司内部API客户端初始化失败（可能不在内网环境）")
+                logger.warning(" 公司内部API客户端初始化失败（可能不在内网环境）")
                 self.internal_client = None
         except Exception as e:
-            print(f"[⚠️] 公司内部API客户端初始化失败: {str(e)}")
+            logger.warning(f" 公司内部API客户端初始化失败: {str(e)}")
             self.internal_client = None
         
         # 初始化AI Builders API客户端（备用）
         try:
             self.ai_builders_client = AIBuildersAPIClient(ai_builder_token)
-            print("[✅] AI Builders API客户端初始化成功")
+            logger.info(" AI Builders API客户端初始化成功")
         except Exception as e:
-            print(f"[⚠️] AI Builders API客户端初始化失败: {str(e)}")
+            logger.warning(f" AI Builders API客户端初始化失败: {str(e)}")
             # 如果两个客户端都失败，抛出异常
             if not self.internal_client:
                 raise ValueError("无法初始化任何API客户端，请检查环境变量配置")
@@ -798,10 +786,10 @@ class UnifiedLLMClient:
         # 初始化Metaso搜索客户端（主要搜索引擎）
         try:
             self.metaso_client = MetasoSearchClient()
-            print("[✅] Metaso搜索客户端初始化成功")
+            logger.info(" Metaso搜索客户端初始化成功")
             print(f"[💰 Metaso] 免费额度: 5,000 次，超出后 ¥0.03/次")
         except Exception as e:
-            print(f"[⚠️] Metaso搜索客户端初始化失败: {str(e)}")
+            logger.warning(f" Metaso搜索客户端初始化失败: {str(e)}")
             print(f"[ℹ️] 将使用 AI Builders Tavily 作为主要搜索引擎")
             self.metaso_client = None
 
@@ -813,16 +801,16 @@ class UnifiedLLMClient:
             if google_api_key and google_cx:
                 self.google_hunter = SearchHunter(search_engine="google", llm_client=None)
                 self.google_usage = 0  # 使用计数器（每天重置）
-                print("[✅] Google搜索客户端初始化成功")
+                logger.info(" Google搜索客户端初始化成功")
                 print(f"[💰 Google] 免费额度: 10,000 次/天，完全免费")
             else:
                 self.google_hunter = None
                 self.google_usage = 0
-                print("[⚠️] Google搜索客户端未配置（缺少 GOOGLE_API_KEY 或 GOOGLE_CX）")
+                logger.warning(" Google搜索客户端未配置（缺少 GOOGLE_API_KEY 或 GOOGLE_CX）")
         except Exception as e:
             self.google_hunter = None
             self.google_usage = 0
-            print(f"[⚠️] Google搜索客户端初始化失败: {str(e)}")
+            logger.warning(f" Google搜索客户端初始化失败: {str(e)}")
 
         # 初始化Baidu搜索客户端（中文备用）
         try:
@@ -832,16 +820,16 @@ class UnifiedLLMClient:
             if baidu_api_key and baidu_secret_key:
                 self.baidu_hunter = BaiduSearchClient()
                 self.baidu_usage = 0  # 使用计数器（每天重置）
-                print("[✅] Baidu搜索客户端初始化成功")
+                logger.info(" Baidu搜索客户端初始化成功")
                 print(f"[💰 Baidu] 免费额度: 100 次/天，完全免费")
             else:
                 self.baidu_hunter = None
                 self.baidu_usage = 0
-                print("[⚠️] Baidu搜索客户端未配置（缺少 BAIDU_API_KEY 或 BAIDU_SECRET_KEY）")
+                logger.warning(" Baidu搜索客户端未配置（缺少 BAIDU_API_KEY 或 BAIDU_SECRET_KEY）")
         except Exception as e:
             self.baidu_hunter = None
             self.baidu_usage = 0
-            print(f"[⚠️] Baidu搜索客户端初始化失败: {str(e)}")
+            logger.warning(f" Baidu搜索客户端初始化失败: {str(e)}")
 
         # 初始化 Tavily 使用计数器（每月重置）
         self.tavily_usage = 0
@@ -877,7 +865,7 @@ class UnifiedLLMClient:
                     model=None  # 公司内部API使用gpt-4o
                 )
             except Exception as e:
-                print(f"[⚠️] 公司内部API调用失败: {str(e)}")
+                logger.warning(f" 公司内部API调用失败: {str(e)}")
                 print(f"[🔄] 切换到AI Builders API...")
                 # Fallback到AI Builders API
                 if self.ai_builders_client:
@@ -930,7 +918,7 @@ class UnifiedLLMClient:
                     model=None
                 )
             except Exception as e:
-                print(f"[⚠️] 公司内部API调用失败: {str(e)}")
+                logger.warning(f" 公司内部API调用失败: {str(e)}")
                 print(f"[🔄] 切换到AI Builders API（Gemini）...")
                 if self.ai_builders_client:
                     return self.ai_builders_client.call_gemini(
@@ -987,7 +975,7 @@ class UnifiedLLMClient:
                     temperature=temperature
                 )
             except Exception as e:
-                print(f"[⚠️] 公司内部API视觉调用失败: {str(e)}")
+                logger.warning(f" 公司内部API视觉调用失败: {str(e)}")
                 # AI Builders API不支持视觉，抛出异常
                 raise ValueError(f"公司内部API视觉调用失败，且AI Builders API不支持视觉: {str(e)}")
         else:
@@ -1037,17 +1025,17 @@ class UnifiedLLMClient:
                                                    reason=f"中文内容（Google优先，剩余免费: {google_remaining:,}）")
                 # 如果 Google 返回空结果，降级到 Metaso
                 if not results and metaso_remaining > 0:
-                    print(f"[⚠️ Google] 未返回结果，降级到 Metaso")
+                    logger.warning(f"Google] 未返回结果，降级到 Metaso")
                     return self._search_with_metaso(query, max_results, include_domains,
                                                    reason=f"中文内容（剩余免费: {metaso_remaining:,}）")
                 # 如果 Metaso 也返回空结果，继续降级到 Baidu
                 if not results and baidu_remaining > 0:
-                    print(f"[⚠️ Metaso] 未返回结果，降级到 Baidu")
+                    logger.warning(f"Metaso] 未返回结果，降级到 Baidu")
                     return self._search_with_baidu(query, max_results,
                                                    reason=f"中文内容（剩余免费: {baidu_remaining:,}）")
                 # 最后降级到 Tavily
                 if not results:
-                    print(f"[⚠️ Baidu] 未返回结果，降级到 Tavily")
+                    logger.warning(f"Baidu] 未返回结果，降级到 Tavily")
                     return self._search_with_tavily(query, max_results, include_domains,
                                                    reason="中文内容（其他引擎额度用尽）")
                 return results
@@ -1068,7 +1056,7 @@ class UnifiedLLMClient:
                                                    reason=f"英语内容（Google优先，剩余免费: {google_remaining:,}）")
                 # 如果 Google 返回空结果，降级到 Metaso
                 if not results and metaso_remaining > 0:
-                    print(f"[⚠️ Google] 未返回结果，降级到 Metaso")
+                    logger.warning(f"Google] 未返回结果，降级到 Metaso")
                     return self._search_with_metaso(query, max_results, include_domains,
                                                    reason=f"英语内容（剩余免费: {metaso_remaining:,}）")
                 return results
@@ -1086,7 +1074,7 @@ class UnifiedLLMClient:
                                                    reason=f"非英语内容（Google优先，剩余免费: {google_remaining:,}）")
                 # 如果 Google 返回空结果，降级到 Tavily
                 if not results and tavily_remaining > 0:
-                    print(f"[⚠️ Google] 未返回结果，降级到 Tavily")
+                    logger.warning(f"Google] 未返回结果，降级到 Tavily")
                     return self._search_with_tavily(query, max_results, include_domains,
                                                    reason=f"非英语内容（Tavily优先，剩余免费: {tavily_remaining:,}）")
                 return results
@@ -1119,15 +1107,15 @@ class UnifiedLLMClient:
             搜索结果列表
         """
         if not self.metaso_client:
-            print(f"[⚠️ Metaso] 客户端未初始化，降级到 Tavily")
+            logger.warning(f"Metaso] 客户端未初始化，降级到 Tavily")
             return self._search_with_tavily(query, max_results, include_domains, reason="Metaso不可用")
 
         # 显示选择原因
         if self.metaso_client.usage_count < 5000:
             remaining = 5000 - self.metaso_client.usage_count
-            print(f"[🔍 搜索] 使用 Metaso（{reason}，免费额度剩余: {remaining:,} 次）")
+            logger.info(f"搜索 使用 Metaso（{reason}，免费额度剩余: {remaining:,} 次）")
         else:
-            print(f"[🔍 搜索] 使用 Metaso（{reason}，付费模式 ¥0.03/次）")
+            logger.info(f"搜索 使用 Metaso（{reason}，付费模式 ¥0.03/次）")
 
         try:
             results = self.metaso_client.search(
@@ -1139,12 +1127,12 @@ class UnifiedLLMClient:
                 # 🔥 为每个结果添加search_engine字段
                 for item in results:
                     item["search_engine"] = "Metaso"
-                print(f"[✅ Metaso] 搜索成功，返回 {len(results)} 个结果")
+                logger.info(f" Metaso] 搜索成功，返回 {len(results)} 个结果")
                 return results
             else:
-                print(f"[⚠️ Metaso] 未返回结果，尝试 Tavily")
+                logger.warning(f"Metaso] 未返回结果，尝试 Tavily")
         except Exception as e:
-            print(f"[⚠️ Metaso] 搜索失败: {str(e)}，尝试 Tavily")
+            logger.warning(f"Metaso] 搜索失败: {str(e)}，尝试 Tavily")
 
         # 降级到 Tavily
         print(f"[🔄 降级] 切换到 Tavily")
@@ -1177,9 +1165,9 @@ class UnifiedLLMClient:
 
         # 显示选择原因
         if reason:
-            print(f"[🔍 搜索] 使用 Tavily（{reason}）")
+            logger.info(f"搜索 使用 Tavily（{reason}）")
         else:
-            print(f"[🔍 搜索] 使用 Tavily（AI Builders）")
+            logger.info(f"搜索 使用 Tavily（AI Builders）")
 
         endpoint = f"{self.ai_builders_client.base_url}/v1/search/"
 
@@ -1213,7 +1201,7 @@ class UnifiedLLMClient:
                         results = query_result["response"]["results"]
                         for item in results:
                             item["search_engine"] = "Tavily"
-                        print(f"[✅ Tavily] 搜索成功，返回 {len(results)} 个结果")
+                        logger.info(f" Tavily] 搜索成功，返回 {len(results)} 个结果")
                         return results
 
             raise ValueError(f"Tavily搜索API调用失败，状态码: {response.status_code}")
@@ -1247,7 +1235,7 @@ class UnifiedLLMClient:
         self.google_usage += 1
 
         # 显示选择原因
-        print(f"[🔍 搜索] 使用 Google（{reason}）")
+        logger.info(f"搜索 使用 Google（{reason}）")
 
         try:
             results = self.google_hunter.search(query, max_results=max_results, country_code=country_code)
@@ -1263,11 +1251,11 @@ class UnifiedLLMClient:
                     "search_engine": "Google"
                 })
 
-            print(f"[✅ Google] 搜索成功，返回 {len(formatted_results)} 个结果")
+            logger.info(f" Google] 搜索成功，返回 {len(formatted_results)} 个结果")
             return formatted_results
 
         except Exception as e:
-            print(f"[⚠️ Google] 搜索失败: {str(e)}")
+            logger.warning(f"Google] 搜索失败: {str(e)}")
             return []
 
     def _search_with_baidu(
@@ -1294,7 +1282,7 @@ class UnifiedLLMClient:
         self.baidu_usage += 1
 
         # 显示选择原因
-        print(f"[🔍 搜索] 使用 Baidu（{reason}）")
+        logger.info(f"搜索 使用 Baidu（{reason}）")
 
         try:
             results = self.baidu_hunter.search(query, max_results=max_results)
@@ -1310,11 +1298,11 @@ class UnifiedLLMClient:
                     "search_engine": "Baidu"
                 })
 
-            print(f"[✅ Baidu] 搜索成功，返回 {len(formatted_results)} 个结果")
+            logger.info(f" Baidu] 搜索成功，返回 {len(formatted_results)} 个结果")
             return formatted_results
 
         except Exception as e:
-            print(f"[⚠️ Baidu] 搜索失败: {str(e)}")
+            logger.warning(f"Baidu] 搜索失败: {str(e)}")
             return []
 
     def _is_chinese_content(self, query: str) -> bool:
