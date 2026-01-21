@@ -11,7 +11,7 @@ from pathlib import Path
 
 from utils.logger_utils import get_logger
 from search_strategist import AIBuildersClient
-from json_utils import extract_and_parse_json, extract_json_object
+from utils.json_utils import extract_and_parse_json, extract_json_object
 from core.config_loader import get_config
 
 logger = get_logger('video_evaluator')

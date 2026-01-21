@@ -117,7 +117,7 @@ flask_logger.setLevel(logging.WARNING)
 # ============================================================================
 # 配置和模块导入
 # ============================================================================
-from config_manager import ConfigManager
+from utils.config_manager import ConfigManager
 from core.grade_subject_validator import GradeSubjectValidator
 from core.manual_review_system import ManualReviewSystem, ReviewStatus
 from core.university_search_engine import UniversitySearchEngine, UniversitySearchRequest
@@ -1136,7 +1136,7 @@ def export_excel():
         import pandas as pd
         from openpyxl import Workbook
         from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
-        from config_manager import ConfigManager
+        from utils.config_manager import ConfigManager
 
         data = request.get_json()
         # 支持两种字段名：results 和 selected_results
@@ -1389,7 +1389,7 @@ def export_batch_excel():
         import pandas as pd
         from openpyxl import Workbook
         from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
-        from config_manager import ConfigManager
+        from utils.config_manager import ConfigManager
 
         data = request.get_json()
         results = data.get('results', [])

@@ -19,7 +19,7 @@ from pydantic import BaseModel
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from tools.discovery_agent import CountryDiscoveryAgent
-from config_manager import ConfigManager
+from utils.config_manager import ConfigManager
 from utils.logger_utils import get_logger
 
 logger = get_logger('batch_discovery_agent')

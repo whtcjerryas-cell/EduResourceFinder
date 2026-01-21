@@ -9,9 +9,9 @@ import yaml
 from pathlib import Path
 from typing import Dict, List, Optional, Any
 from pydantic import BaseModel, Field
-from config_manager import ConfigManager
+from utils.config_manager import ConfigManager
 from utils.logger_utils import get_logger
-from json_utils import extract_json_object
+from utils.json_utils import extract_json_object
 
 # 导入提示词管理器
 try:

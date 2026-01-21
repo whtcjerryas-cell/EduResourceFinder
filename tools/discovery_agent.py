@@ -12,7 +12,7 @@ from typing import Dict, List, Optional, Any
 from pydantic import BaseModel, Field
 from search_strategist import AIBuildersClient, SearchResult
 from utils.logger_utils import get_logger
-from json_utils import extract_and_parse_json, extract_json_object, extract_json_array
+from utils.json_utils import extract_and_parse_json, extract_json_object, extract_json_array
 
 # 初始化日志记录器
 logger = get_logger('discovery_agent')

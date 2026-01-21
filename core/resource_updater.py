@@ -17,7 +17,7 @@ import threading
 # 添加项目根目录到路径
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from config_manager import ConfigManager
+from utils.config_manager import ConfigManager
 from utils.logger_utils import get_logger
 from video_evaluator import VideoEvaluator
 
